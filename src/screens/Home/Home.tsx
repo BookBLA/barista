@@ -4,8 +4,6 @@ import { Button } from 'react-native';
 import { SafeAreaViewStyled, TitleStyled } from './Home.styles';
 
 const Home = ({ navigation }: { navigation: any }) => {
-  const [qqq, setQqq] = useState();
-
   return (
     <SafeAreaViewStyled>
       <TitleStyled>BookBla</TitleStyled>
