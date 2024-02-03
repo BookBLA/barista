@@ -1,10 +1,8 @@
 import axios from 'axios';
 
-export const httpApi = axios.create({ baseURL: '/assets/json/api.json' });
+export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
-const config = {
-  baseURL: process.env.REACT_APP_BASE_URL,
-};
+const config = {};
 
 export const Get = async <T>(url: string): Promise<T> => {
   return await httpApi
