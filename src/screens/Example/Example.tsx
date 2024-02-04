@@ -3,7 +3,7 @@ import * as S from './Example.styles';
 import { useCounter } from '../../commons/store/useCounter';
 import { TouchableOpacity } from 'react-native';
 import Button from '../../commons/components/ButtonExample/Button';
-import { postExampleApi } from '../../commons/api/example.api';
+import { getExampleApi, postExampleApi } from '../../commons/api/example.api';
 
 const Example = ({ navigation }: { navigation: any }) => {
   const count = useCounter((state) => state.count);
@@ -13,8 +13,13 @@ const Example = ({ navigation }: { navigation: any }) => {
   const decrement = useCounter((state) => state.decrement);
   const reset = useCounter((state) => state.reset);
 
-  const onClickUserData = async () => {
+  const onClickPostData = async () => {
     const result = await postExampleApi('contents');
+    console.log('result: {}', result);
+  };
+
+  const onClickGetData = async () => {
+    const result = await getExampleApi('string');
     console.log('result: {}', result);
   };
 
@@ -33,7 +38,10 @@ const Example = ({ navigation }: { navigation: any }) => {
       <S.RowStyled>
         <Button title="-" onPress={decrement} />
         <Button title="+" onPress={increment} />
-        <Button title="api" onPress={onClickUserData} />
+      </S.RowStyled>
+      <S.RowStyled>
+        <Button title="POST" onPress={onClickPostData} />
+        <Button title="GET" onPress={onClickGetData} />
       </S.RowStyled>
     </S.SafeAreaViewStyled>
   );
