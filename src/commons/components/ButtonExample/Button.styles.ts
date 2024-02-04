@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const TouchableOpacityStyled = styled.TouchableOpacity`
-  width: 70px;
+  width: 130px;
   height: 70px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   display: flex;
