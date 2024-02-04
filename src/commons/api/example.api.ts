@@ -11,4 +11,4 @@ export interface testRequest {
 }
 
 export const postExampleApi = (contents: string): Promise<ResponseData<testRequest>> =>
-  Post<ResponseData<testRequest>, string>('test', contents);
+  Post<ResponseData<testRequest>, string>('tests', contents);
