@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { colors } from '../../styles/variablesStyles';
 
 interface IProps {
   isSelect: boolean;
@@ -17,7 +18,7 @@ export const ButtonStyled = styled.TouchableOpacity`
   border: 1px solid rgba(0, 0, 0, 0.2);
   display: flex;
   justify-content: center;
-  background-color: ${(props: IProps) => (props.isSelect ? 'yellow' : 'white')};
+  background-color: ${(props: IProps) => (props.isSelect ? colors.primary : 'white')};
 `;
 
 export const TextStyled = styled.Text`
