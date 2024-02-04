@@ -12,6 +12,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       <TitleStyled>BookBla</TitleStyled>
       <Button title="example" onPress={() => navigation.navigate('example')} />
       <Button title="example02" onPress={() => navigation.navigate('example02')} />
+      <Button title="auth" onPress={() => navigation.navigate('Login')} />
     </SafeAreaViewStyled>
   );
 };

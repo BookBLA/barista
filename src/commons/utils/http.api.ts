@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
@@ -15,15 +15,19 @@ export const Get = async <T>(url: string): Promise<T> => {
     });
 };
 
-export const Post = async <T, D>(url: string, data?: D): Promise<T> => {
-  return await httpApi
-    .post(url, data, config)
-    .then((response) => {
-      return response?.data;
-    })
-    .catch((error) => {
-      console.log(error.message);
-    });
+export const Post = async <T, D>(url: string, data?: D, headers?: AxiosRequestConfig['headers']): Promise<T> => {
+  try {
+    console.log(url, data);
+    const response = await httpApi.post(url, data, { ...config, headers });
+    const { headers: responseHeaders, data: responseData } = response;
+    return {
+      headers: responseHeaders,
+      data: responseData,
+    } as T;
+  } catch (error: any) {
+    console.error(error.message);
+    return Promise.reject(error);
+  }
 };
 
 export const Put = async <T, D>(url: string, data?: D): Promise<T> => {
