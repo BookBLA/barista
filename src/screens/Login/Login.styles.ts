@@ -14,3 +14,8 @@ export const RowStyled = styled.View`
   flex-direction: row;
   width: 80%;
 `;
+
+export const ImageStyled = styled.Image`
+  width: 30px;
+  height: 30px;
+`;
