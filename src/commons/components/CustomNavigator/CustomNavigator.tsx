@@ -9,9 +9,9 @@ const Stack = createNativeStackNavigator();
 
 export const CustomNavigator = ({ ...rest }) => {
   const screens = [
-    { name: 'Home', component: Home },
-    { name: 'Example', component: Example },
-    { name: 'Example02', component: Example02 },
+    { name: 'home', component: Home },
+    { name: 'example', component: Example },
+    { name: 'example02', component: Example02 },
   ];
 
   return (
