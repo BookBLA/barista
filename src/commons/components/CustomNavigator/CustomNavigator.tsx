@@ -1,23 +1,23 @@
 import React from 'react';
-import { CustomScreen } from '../CustomScreen/CustomScreen';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Home from '../../../screens/Home/Home';
 import Example from '../../../screens/Example/Example';
 import Example02 from '../../../screens/Example02/Example02';
+import { TapScreens } from '../TapComponent/TapScreens';
+import { CustomScreen } from '../CustomScreen/CustomScreen';
 
 const Stack = createNativeStackNavigator();
 
-export const CustomNavigator = ({ ...rest }) => {
-  const screens = [
-    { name: 'home', component: Home },
-    { name: 'example', component: Example },
-    { name: 'example02', component: Example02 },
-  ];
+const screens = [
+  { name: 'tapScreens', component: TapScreens },
+  { name: 'example', component: CustomScreen(Example) },
+  { name: 'example02', component: CustomScreen(Example02) },
+];
 
+export const CustomNavigator = () => {
   return (
-    <Stack.Navigator {...rest} screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
+        <Stack.Screen key={name} name={name} component={component} />
       ))}
     </Stack.Navigator>
   );
