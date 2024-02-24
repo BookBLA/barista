@@ -1,6 +1,11 @@
 import React from 'react';
 import * as S from './Login.styles';
 import { IProps } from './Login.types';
+import KakaoLoginButton from './KakaoLoginButton';
+import LoginScreen from './Login.service';
+// import {LoginScreen} from "./Login.service"
+
+
 
 const Login: React.FC<IProps> = ({ navigation }) => {
   return (
@@ -14,7 +19,9 @@ const Login: React.FC<IProps> = ({ navigation }) => {
       </S.InnerWrapper>
       <S.InnerWrapper style={{ marginTop: 50 }}>
         <S.SnsText>SNS 간편 로그인</S.SnsText>
-        <S.LoginButton source={require('../../../assets/images/buttons/kakaoLogin.png')}></S.LoginButton>
+        {/* <LoginScreen/> */}
+        <KakaoLoginButton/>
+        <S.LoginButton onPrssed={LoginScreen} source={require('../../../assets/images/buttons/kakaoLogin.png')}></S.LoginButton>
         <S.LoginButton source={require('../../../assets/images/buttons/appleLogin.png')}></S.LoginButton>
       </S.InnerWrapper>
     </S.Wrapper>
