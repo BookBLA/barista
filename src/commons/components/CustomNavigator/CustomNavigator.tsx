@@ -16,7 +16,7 @@ const screens = [
 ];
 
 export const CustomNavigator = () => {
-  const [accessToken, setAccessToken] = useState(false);
+  const [accessToken, setAccessToken] = useState(true);
 
   return accessToken ? (
     <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
