@@ -17,12 +17,12 @@ const handleLogin = (loginMethod: string) => {
 // 우리는 로그인 후의 값이 필요하기 때문에 분기문을 통하여 처리 해줍니다.
 const getLoginCode = async (data: string) => {
   if (!data.startsWith(REDIRECT_URI)) return;
-const parsedQs = qs.parse(data.split('?')[1]);
+
+  const parsedQs = qs.parse(data.split('?')[1]);
   const code = parsedQs?.code as string;
   const state = parsedQs?.state as string;
   // code와 state 값을 가지고 login api params로 세팅.
   if (code && state && ['kakao', 'google', 'apple'].includes(state)) {
     logIn(code, state);
     }
-};
 };

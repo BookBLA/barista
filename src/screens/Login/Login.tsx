@@ -21,7 +21,15 @@ const Login: React.FC<IProps> = ({ navigation }) => {
         <S.SnsText>SNS 간편 로그인</S.SnsText>
         {/* <LoginScreen/> */}
         <KakaoLoginButton/>
-        <S.LoginButton onPrssed={LoginScreen} source={require('../../../assets/images/buttons/kakaoLogin.png')}></S.LoginButton>
+        {/* <S.LoginButton onPrssed={LoginScreen} source={require('../../../assets/images/buttons/kakaoLogin.png')}></S.LoginButton> */}
+        <S.LoginButton onPrssed={() => handleLogin('Kakao')} source={require('../../../assets/images/buttons/kakaoLogin.png')}></S.LoginButton>
+        {/* <LoginModal
+  uri={uri}
+	isOpen={showModal}
+	onClose={handleModalClose}
+  onMessage={event => getLoginCode(event.nativeEvent.url)}
+  loginMethod={loginMethod}
+/> */}
         <S.LoginButton source={require('../../../assets/images/buttons/appleLogin.png')}></S.LoginButton>
       </S.InnerWrapper>
     </S.Wrapper>
