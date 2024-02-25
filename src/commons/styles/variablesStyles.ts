@@ -6,6 +6,8 @@ export const colors = {
   secondaryActive: '',
   secondaryFocus: '',
   background: '#F7F4ED',
+  buttonMain: '#FFF5D6',
+  textGray2: '#A8AAB2',
 };
 
 export const sizes = {};
