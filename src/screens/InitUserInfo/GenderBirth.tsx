@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { Text } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import * as S from './InitUserInfo.styles';
 import { IProps } from '../../commons/components/MbtiItem/MbtiItem.types';
 import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
 import DateTimePicker from './DateTimePicker';
+import { TouchableOpacity, View, Image } from 'react-native';
+import nextButton from '../../../assets/images/icons/next_button.png';
 
-const InitUserInfo = () => {
+const GenderBirth = ({ navigation }: { navigation: any }) => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
+
+  const handleNext = () => {
+    navigation.navigate('namePhone');
+  };
 
   return (
     <S.Wrapper>
@@ -33,8 +38,13 @@ const InitUserInfo = () => {
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>YYYY/MM/DD</Text>
       </S.DateButtonStyled> */}
       <DateTimePicker />
+      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
+        <TouchableOpacity onPress={handleNext}>
+          <Image source={nextButton} style={{ width: 11, height: 15 }} />
+        </TouchableOpacity>
+      </View>
     </S.Wrapper>
   );
 };
 
-export default InitUserInfo;
+export default GenderBirth;

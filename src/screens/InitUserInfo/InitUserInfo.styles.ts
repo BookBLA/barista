@@ -64,6 +64,7 @@ export const DateButtonStyled = styled.TouchableOpacity`
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
+  margin-bottom: 20px;
 `;
 
 export const TextFiledStyled = styled.TextInput`
@@ -74,4 +75,8 @@ export const TextFiledStyled = styled.TextInput`
   font-size: 16px;
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
+  //align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  text-align: center;
 `;
