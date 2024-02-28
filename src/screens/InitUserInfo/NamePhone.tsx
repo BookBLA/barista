@@ -40,11 +40,11 @@ const NamePhone = ({ navigation }: { navigation: any }) => {
     }
   };
   const handlePrevious = () => {
-    navigation.navigate('genderBirth');
+    navigation.goBack();
   };
 
   const handleNext = () => {
-    navigation.navigate();
+    navigation.navigate('schoolStudentID');
   };
 
   return (
@@ -62,7 +62,7 @@ const NamePhone = ({ navigation }: { navigation: any }) => {
         //contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled" // Ensure taps outside text fields dismiss keyboard
       > */}
-      <S.ContentStyled style={{ marginTop: 90, marginBottom: 16 }}>이름을 입력해 주세요.</S.ContentStyled>
+      <S.ContentStyled style={{ marginTop: 127, marginBottom: 16 }}>이름을 입력해 주세요.</S.ContentStyled>
       <S.TextFiledStyled
         value={name}
         onChangeText={setName}
@@ -86,10 +86,10 @@ const NamePhone = ({ navigation }: { navigation: any }) => {
       {/* </KeyboardAvoidingView> */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
         <TouchableOpacity onPress={handlePrevious}>
-          <Image source={prevButton} style={{ width: 11, height: 15 }} />
+          <Image source={prevButton} style={{ width: 11 }} />
         </TouchableOpacity>
         <TouchableOpacity onPress={handleNext}>
-          <Image source={nextButton} style={{ width: 11, height: 15 }} />
+          <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>
     </S.Wrapper>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Text } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import { DateButtonStyled } from './InitUserInfo.styles';
+import { ButtonStyled } from './InitUserInfo.styles';
 import { colors } from '../../commons/styles/variablesStyles';
 
 const DateTimePicker = () => {
@@ -10,9 +10,9 @@ const DateTimePicker = () => {
 
   return (
     <>
-      <DateButtonStyled onPress={() => setOpen(true)}>
+      <ButtonStyled onPress={() => setOpen(true)}>
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>YYYY/MM/DD</Text>
-      </DateButtonStyled>
+      </ButtonStyled>
       <DatePicker
         modal
         mode="date"

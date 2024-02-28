@@ -12,10 +12,10 @@ export const PrevNextButton = () => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
       <TouchableOpacity onPress={handlePrevious}>
-        <Image source={prevButton} style={{ width: 11, height: 15 }} />
+        <Image source={prevButton} style={{ width: 11 }} />
       </TouchableOpacity>
       <TouchableOpacity onPress={handleNext}>
-        <Image source={nextButton} style={{ width: 11, height: 15 }} />
+        <Image source={nextButton} style={{ width: 11 }} />
       </TouchableOpacity>
     </View>
   );

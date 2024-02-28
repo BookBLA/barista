@@ -57,14 +57,23 @@ export const BooleanTextStyled = styled.Text`
   color: ${(props: IProps) => (props.isSelect ? colors.secondary : colors.textGray2)};
 `;
 
-export const DateButtonStyled = styled.TouchableOpacity`
+export const ButtonStyled = styled.TouchableOpacity`
   width: 80%;
   height: 40px;
-  border-radius: 60px;
+  /* border-radius: 60px; */
+  border-radius: ${({ borderRadius }) => (borderRadius ? `${borderRadius}px` : '60px')};
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
+`;
+export const NextButtonStyled = styled.TouchableOpacity`
+  width: 95%;
+  height: 60px;
+  border-radius: 60px;
+  background-color: ${colors.primary};
+  align-items: center;
+  justify-content: center;
 `;
 
 export const TextFiledStyled = styled.TextInput`

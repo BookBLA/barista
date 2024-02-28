@@ -40,7 +40,7 @@ const GenderBirth = ({ navigation }: { navigation: any }) => {
       <DateTimePicker />
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
         <TouchableOpacity onPress={handleNext}>
-          <Image source={nextButton} style={{ width: 11, height: 15 }} />
+          <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>
     </S.Wrapper>

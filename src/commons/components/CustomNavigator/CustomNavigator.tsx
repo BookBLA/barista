@@ -6,6 +6,9 @@ import { TapScreens } from '../TapComponent/TapScreens';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
 import GenderBirth from '../../../screens/InitUserInfo/GenderBirth';
 import NamePhone from '../../../screens/InitUserInfo/NamePhone';
+import SchoolStudentID from '../../../screens/InitUserInfo/SchoolStudentID';
+import EmailAuth from '../../../screens/InitUserInfo/EmailAuth';
+import CompletePage from '../../../screens/InitUserInfo/CompletePage';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +18,14 @@ const screens = [
   { name: 'example02', component: CustomScreen(Example02) },
   { name: 'genderBirth', component: CustomScreen(GenderBirth) },
   { name: 'namePhone', component: CustomScreen(NamePhone) },
+  { name: 'schoolStudentID', component: CustomScreen(SchoolStudentID) },
+  { name: 'emailAuth', component: CustomScreen(EmailAuth) },
+  { name: 'completePage', component: CustomScreen(CompletePage) },
 ];
 
 export const CustomNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="namePhone" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="genderBirth" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={component} />
       ))}
