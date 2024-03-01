@@ -9,6 +9,12 @@ import NamePhone from '../../../screens/InitUserInfo/NamePhone';
 import SchoolStudentID from '../../../screens/InitUserInfo/SchoolStudentID';
 import EmailAuth from '../../../screens/InitUserInfo/EmailAuth';
 import CompletePage from '../../../screens/InitUserInfo/CompletePage';
+import Mbti from '../../../screens/InitStyle/Mbti';
+import SmokeDrink from '../../../screens/InitStyle/SmokeDrink';
+import OppositeSex from '../../../screens/InitStyle/OppositeSex';
+import CommStyle from '../../../screens/InitStyle/CommStyle';
+import DateCost from '../../../screens/InitStyle/DateCost';
+import PersonalQuestion from '../../../screens/InitStyle/PersonalQuestion';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,11 +27,17 @@ const screens = [
   { name: 'schoolStudentID', component: CustomScreen(SchoolStudentID) },
   { name: 'emailAuth', component: CustomScreen(EmailAuth) },
   { name: 'completePage', component: CustomScreen(CompletePage) },
+  { name: 'mbti', component: CustomScreen(Mbti) },
+  { name: 'smokeDrink', component: CustomScreen(SmokeDrink) },
+  { name: 'oppositeSex', component: CustomScreen(OppositeSex) },
+  { name: 'commStyle', component: CustomScreen(CommStyle) },
+  { name: 'dateCost', component: CustomScreen(DateCost) },
+  { name: 'personalQeustion', component: CustomScreen(PersonalQuestion) },
 ];
 
 export const CustomNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="genderBirth" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="oppositeSex" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={component} />
       ))}

@@ -49,15 +49,29 @@ const EmailAuth = ({ navigation }: { navigation: any }) => {
       </S.SafeAreaViewStyled>
       <ProgressBar progress={100} />
       <S.ContentStyled style={{ marginTop: 117, marginBottom: 16 }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
-      <S.TextFiledStyled
-        value={email}
-        onChangeText={setEamil}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        style={{
-          color: email === 'example@gachon.ac.kr' ? colors.textGray2 : colors.primary,
-        }}
-      />
+      <S.RowStyled>
+        <S.TextFiledStyled
+          value={email}
+          onChangeText={setEamil}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          style={{
+            color: email === 'example@gachon.ac.kr' ? colors.textGray2 : colors.primary,
+            width: 270,
+            textAlign: 'start',
+            paddingLeft: 20,
+          }}
+        />
+        <S.ButtonStyled style={{ width: 70, marginBottom: 20, backgroundColor: colors.primary }}>
+          <Text
+            //   onPress={}
+            style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}
+          >
+            인증
+          </Text>
+        </S.ButtonStyled>
+      </S.RowStyled>
+
       <Text style={{ color: colors.primary, fontFamily: 'fontMedium', fontSize: 14, textAlign: 'right' }}>
         올바른 이메일 형식을 입력해주세요.
       </Text>
@@ -70,7 +84,9 @@ const EmailAuth = ({ navigation }: { navigation: any }) => {
           onBlur={handleBlur}
           style={{
             color: code === '000000' ? colors.textGray2 : colors.primary,
-            width: 200,
+            width: 270,
+            textAlign: 'start',
+            paddingLeft: 20,
           }}
         />
         <S.ButtonStyled style={{ width: 70, marginBottom: 20, backgroundColor: colors.primary }}>
@@ -78,7 +94,7 @@ const EmailAuth = ({ navigation }: { navigation: any }) => {
             //   onPress={}
             style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}
           >
-            인증
+            확인
           </Text>
         </S.ButtonStyled>
       </S.RowStyled>

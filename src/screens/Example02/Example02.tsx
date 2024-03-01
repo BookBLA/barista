@@ -5,10 +5,10 @@ import MbtiItem from '../../commons/components/MbtiItem/MbtiItem';
 
 const Example02 = () => {
   const mbtiNames: string[][] = [
-    ['E', 'I'],
-    ['S', 'N'],
-    ['T', 'F'],
-    ['J', 'P'],
+    ['E\n외향형', 'I\n내향형'],
+    ['S\n감각형', 'N\n직관형'],
+    ['T\n사고형', 'F\n감정형'],
+    ['J\n판단형', 'P\n인식형'],
   ];
 
   // 1. mbtiNames 배열의 길이가 4이므로 map(바복문)메소드를 이용하여 컴포넌트 4개를 생성
@@ -16,8 +16,6 @@ const Example02 = () => {
 
   return (
     <S.SafeAreaViewStyled>
-      <S.TitleStyled style={{ fontSize: 30 }}>본인의 MBTI를 알려주세요!</S.TitleStyled>
-      <Text style={{ fontSize: 15 }}>모르면 다음으로 넘어가주세요.</Text>
       {mbtiNames.map((name: string[], index: number) => (
         <MbtiItem key={index} name={name} />
       ))}

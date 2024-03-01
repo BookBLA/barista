@@ -23,14 +23,14 @@ const GenderBirth = ({ navigation }: { navigation: any }) => {
       <S.ContentStyled style={{ marginTop: 90, marginBottom: 16 }}>성별을 선택해 주세요.</S.ContentStyled>
       <S.RowStyled>
         <S.BooleanButtonStyled isSelect={isSelect} onPress={() => setSelect(true)}>
-          <S.BooleanTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
+          <S.ButtonTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
             여성
-          </S.BooleanTextStyled>
+          </S.ButtonTextStyled>
         </S.BooleanButtonStyled>
         <S.BooleanButtonStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-          <S.BooleanTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
+          <S.ButtonTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
             남성
-          </S.BooleanTextStyled>
+          </S.ButtonTextStyled>
         </S.BooleanButtonStyled>
       </S.RowStyled>
       <S.ContentStyled style={{ marginTop: 151, marginBottom: 16 }}>생년월일을 선택해 주세요.</S.ContentStyled>

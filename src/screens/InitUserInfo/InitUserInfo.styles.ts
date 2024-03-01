@@ -39,7 +39,7 @@ export const RowStyled = styled.View`
   justify-content: space-evenly;
   margin: 0 5px;
   flex-direction: row;
-  width: 80%;
+  width: 90%;
 `;
 
 export const BooleanButtonStyled = styled.TouchableOpacity`
@@ -51,9 +51,10 @@ export const BooleanButtonStyled = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const BooleanTextStyled = styled.Text`
+export const ButtonTextStyled = styled.Text`
   font-size: 16px;
   font-family: fontMedium;
+  text-align: center;
   color: ${(props: IProps) => (props.isSelect ? colors.secondary : colors.textGray2)};
 `;
 
