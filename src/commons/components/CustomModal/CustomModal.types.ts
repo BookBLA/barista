@@ -1,22 +1,21 @@
 export interface IProps {
-  visible: boolean;
-  onClose: () => void;
   children: React.ReactNode;
-  close: boolean;
-  buttons?: IButtons[];
-  mode?: TMode;
-  size?: string | number;
-
-  color?: string;
-  width?: string;
-  bgColor?: string;
+  modalConfig: IModalConfig;
 }
 
+export interface IModalConfig {
+  onClose: () => void;
+  buttons?: IButtons[];
+  close: boolean;
+  mode?: string;
+  size?: string | number;
+  visible: boolean;
+}
 export interface IButtons {
-  label?: string;
   action: () => void;
   bgColor?: string;
   color?: string;
+  label?: string;
 }
 
-export type TMode = 'arrow' | 'round';
+export interface IStyledProps extends Pick<IModalConfig, 'close' | 'size'> {}
