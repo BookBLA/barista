@@ -2,6 +2,8 @@ import React from 'react';
 import { Image } from 'react-native';
 import * as S from './ModalButtons.styles';
 import { IProps } from './ModalButtons.types';
+import { CustomText } from '../../CustomText/CustomText';
+import { colors } from '../../../styles/variablesStyles';
 
 export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
   if (!buttons || !mode) return null;
@@ -23,7 +25,9 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
       {mode === 'round' &&
         buttons.map((button, index) => (
           <S.RoundButton key={index} onPress={button.action} width={buttonWidth} bgColor={button.bgColor}>
-            <S.ButtonText color={button.color}>{button.label}</S.ButtonText>
+            <CustomText size={'14px'} color={button.color || colors.secondary}>
+              {button.label}
+            </CustomText>
           </S.RoundButton>
         ))}
     </S.BottomWrapper>
