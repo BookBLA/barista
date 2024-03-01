@@ -10,7 +10,7 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
 
   return (
     <S.BottomWrapper>
-      {mode === 'arrow' ? (
+      {mode === 'arrow' && (
         <>
           <S.ArrowButton onPress={buttons[0].action}>
             <Image source={require('../../../../../assets/images/icons/leftArrow.png')} />
@@ -19,13 +19,13 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
             <Image source={require('../../../../../assets/images/icons/rightArrow.png')} />
           </S.ArrowButton>
         </>
-      ) : (
+      )}
+      {mode === 'round' &&
         buttons.map((button, index) => (
           <S.RoundButton key={index} onPress={button.action} width={buttonWidth} bgColor={button.bgColor}>
             <S.ButtonText color={button.color}>{button.label}</S.ButtonText>
           </S.RoundButton>
-        ))
-      )}
+        ))}
     </S.BottomWrapper>
   );
 };
