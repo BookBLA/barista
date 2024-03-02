@@ -28,7 +28,6 @@ export const TapScreens = () => {
           ...Platform.select({
             ios: {
               paddingTop: 10,
-              paddingBottom: 15,
             },
             android: {
               paddingTop: 10,
