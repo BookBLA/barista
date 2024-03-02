@@ -4,6 +4,7 @@ import Example from '../../../screens/Example/Example';
 import Example02 from '../../../screens/Example02/Example02';
 import { TapScreens } from '../TapComponent/TapScreens';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
+import Matching from '../../../screens/Matching/Matching';
 
 const Stack = createNativeStackNavigator();
 
@@ -11,6 +12,7 @@ const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'example', component: CustomScreen(Example) },
   { name: 'example02', component: CustomScreen(Example02) },
+  { name: 'matching', component: CustomScreen(Matching) },
 ];
 
 export const CustomNavigator = () => {
