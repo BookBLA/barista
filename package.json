@@ -27,7 +27,8 @@
     "react-native-screens": "^3.29.0",
     "react-native-status-bar-height": "^2.6.0",
     "styled-components": "^6.1.8",
-    "zustand": "^4.5.0"
+    "zustand": "^4.5.0",
+    "expo-apple-authentication": "~6.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
