@@ -1,25 +1,40 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
-import AppLoading from 'expo-app-loading';
 import { IFontLoaderProps } from './FontLoader.types';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
-  const loadFonts = async () => {
-    await Font.loadAsync({
-      fontBold: require('../../../../assets/fonts/pretendardBold.ttf'),
-      fontExtraLight: require('../../../../assets/fonts/pretendardExtraLight.ttf'),
-      fontLight: require('../../../../assets/fonts/pretendardLight.ttf'),
-      fontMedium: require('../../../../assets/fonts/pretendardMedium.ttf'),
-      fontRegular: require('../../../../assets/fonts/pretendardRegular.ttf'),
-      fontSemiBold: require('../../../../assets/fonts/pretendardSemiBold.ttf'),
+  useEffect(() => {
+    const loadFonts = async () => {
+      try {
+        await Font.loadAsync({
+          fontBold: require('../../../../assets/fonts/pretendardBold.ttf'),
+          fontExtraLight: require('../../../../assets/fonts/pretendardExtraLight.ttf'),
+          fontLight: require('../../../../assets/fonts/pretendardLight.ttf'),
+          fontMedium: require('../../../../assets/fonts/pretendardMedium.ttf'),
+          fontRegular: require('../../../../assets/fonts/pretendardRegular.ttf'),
+          fontSemiBold: require('../../../../assets/fonts/pretendardSemiBold.ttf'),
+        });
+
+        await SplashScreen.preventAutoHideAsync();
+        await SplashScreen.hideAsync();
+
+        setFontsLoaded(true);
+      } catch (error) {
+        console.error('Error loading assets:', error);
+      }
+    };
+
+    loadFonts().then(() => {
+      console.debug('Complete Font Loading');
     });
-    setFontsLoaded(true);
-  };
+  }, []);
 
   if (!fontsLoaded) {
-    return <AppLoading startAsync={loadFonts} onFinish={() => setFontsLoaded(true)} onError={console.warn} />;
+    console.debug('Not Loaded Font');
+    return null;
   }
 
   return children;
