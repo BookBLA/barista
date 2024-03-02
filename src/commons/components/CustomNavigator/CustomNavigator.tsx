@@ -5,6 +5,7 @@ import Example02 from '../../../screens/Example02/Example02';
 import { TapScreens } from '../TapComponent/TapScreens';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
 import Matching from '../../../screens/Matching/Matching';
+import { Platform, SafeAreaView } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,10 +18,19 @@ const screens = [
 
 export const CustomNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
-      {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={component} />
-      ))}
-    </Stack.Navigator>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        marginHorizontal: 16,
+        marginTop: Platform.OS === 'android' ? 50 : 0,
+      }}
+    >
+      <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
+        {screens.map(({ name, component }) => (
+          <Stack.Screen key={name} name={name} component={component} />
+        ))}
+      </Stack.Navigator>
+    </SafeAreaView>
   );
 };
