@@ -6,6 +6,10 @@ export const colors = {
   secondaryActive: '',
   secondaryFocus: '',
   background: '#F7F4ED',
+  buttonPrimary: '#1D2E61',
+  buttonYellow: '#FFF5D6',
+  textBlack: '#000000',
+  textYellow: '#FFEBAC',
 };
 
 export const sizes = {};
