@@ -7,9 +7,9 @@ import matchingDark from '../../../../assets/images/icons/MatchingDark.png';
 import matchingBright from '../../../../assets/images/icons/MatchingBright.png';
 import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
-import Example from '../../../screens/Example/Example';
 import Example02 from '../../../screens/Example02/Example02';
 import { colors } from '../../styles/variablesStyles';
+import Matching from '../../../screens/Matching/Matching';
 
 export const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -49,7 +49,7 @@ export const TapScreens = () => {
       />
       <Tab.Screen
         name="매칭"
-        component={Example}
+        component={Matching}
         options={{
           tabBarIcon: ({ focused }) => (
             <Image
