@@ -4,6 +4,7 @@ import { Button, Text, View } from 'react-native';
 import { SafeAreaViewStyled, TitleStyled } from './Home.styles';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import { CustomButton } from '../../commons/components/CustomButton/CustomButton';
 
 // type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'home'>;
 
@@ -19,7 +20,7 @@ const Home = ({ navigation }: { navigation: any }) => {
       <TitleStyled>BookBla</TitleStyled>
       <Button title="example" onPress={() => navigation.navigate('example')} />
       <Button title="example02" onPress={() => navigation.navigate('example02')} />
-      <Button onPress={handlePresentModalPress} title="Present Modal" color="black" />
+      <CustomButton onPress={handlePresentModalPress} contents="Present Modal" />
       <CustomBottomSheetModal ref={bottomSheetModalRef} index={0} snapPoints={snapPoints}>
         <View>
           <Text>BottomSheet 테스뚜! 🎉</Text>
