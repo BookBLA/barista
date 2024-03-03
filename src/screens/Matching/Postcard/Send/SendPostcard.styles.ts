@@ -28,8 +28,21 @@ export const GenderIconStyled = styled.Image`
   height: 20px;
 `;
 
-export const PostcardTextViewStyled = styled.Text`
+export const UserNameText = styled.Text`
+  font-size: 16px;
   color: ${colors.textBlack};
+  margin-bottom: 4px;
+`;
+
+export const SchoolNameText = styled.Text`
+  font-size: 12px;
+  color: #858585;
+  margin-bottom: 4px;
+`;
+
+export const BookInfoText = styled.Text`
+  font-size: 14px;
+  color: #787878;
   margin-bottom: 4px;
 `;
 

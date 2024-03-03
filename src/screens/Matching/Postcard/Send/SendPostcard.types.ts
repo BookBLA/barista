@@ -17,5 +17,7 @@ export interface ISendPostcardProps {
   gender: EGender;
   schoolName: string;
   age: number;
-  postcardStatus: EPostcardStatus; // 대기중, 거절, 연락하기
+  postcardStatus: EPostcardStatus;
+  bookName: string;
+  bookAuthor: string;
 }
