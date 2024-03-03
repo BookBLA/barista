@@ -13,8 +13,8 @@ export default function App() {
       <FontLoader>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <BottomSheetModalProvider>
-            <StatusBar style="auto" />
             <NavigationContainer>
+              <StatusBar backgroundColor="white" style="auto" />
               <CustomNavigator />
             </NavigationContainer>
             <GlobalErrorModal />
