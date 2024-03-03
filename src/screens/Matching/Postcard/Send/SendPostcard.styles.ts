@@ -13,6 +13,11 @@ export const UserInfoViewStyled = styled.View`
   align-items: center;
 `;
 
+export const UserInfoWrapper = styled.View`
+  flex: 5;
+  padding: 8px;
+`;
+
 export const UserInfoNameWrapper = styled.View`
   flex-direction: row;
   align-items: center;
