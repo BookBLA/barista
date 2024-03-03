@@ -21,16 +21,16 @@ export const TapScreens = () => {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: {
-          fontSize: 12,
+          fontSize: 14,
         },
         tabBarStyle: {
           height: '8%',
           ...Platform.select({
             ios: {
-              paddingTop: 10,
+              paddingTop: 8,
             },
             android: {
-              paddingTop: 10,
+              paddingTop: 8,
               paddingBottom: 10,
             },
           }),

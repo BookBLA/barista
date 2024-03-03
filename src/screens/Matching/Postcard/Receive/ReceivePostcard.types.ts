@@ -1,4 +1,4 @@
-export interface IPostcardProps {
+export interface IReceivePostcardProps {
   index: number;
   userId: number;
   quizScore: number;

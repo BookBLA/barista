@@ -1,9 +1,10 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
+import { Platform } from 'react-native';
 
 export const InfoTextStyled = styled.Text`
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 500;
   text-align: center;
   color: ${colors.textGray};
 `;
@@ -30,19 +31,22 @@ export const PressableStyled = styled.Pressable`
   flex: 1;
   align-items: center;
   justify-content: center;
-  padding: 12px 40px;
   border-radius: 40px;
-  margin: 0 16px;
-  height: 40px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin: 0 6px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  ${Platform.select({
+    android: `
+      elevation: 5;
+    `,
+  })}
 `;
 
 export const PressableTextStyled = styled.Text`
-  flex: 1;
-  font-size: 14px;
   font-weight: 500;
   text-align: center;
   color: #4a4a4a;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const postcardCountViewStyled = styled.View`
@@ -51,10 +55,10 @@ export const postcardCountViewStyled = styled.View`
 `;
 
 export const postcardCountTextStyled = styled.Text`
-  font-size: 18;
+  font-size: 18px;
 `;
 
-export const postcardViewStyled = styled.View`
+export const receivedPostcardViewStyled = styled.View`
   flex: 1;
   margin-bottom: 10px;
   align-items: center;
@@ -63,4 +67,13 @@ export const postcardViewStyled = styled.View`
   border-radius: 8px;
   margin-right: ${({ index }: any) => (index % 2 === 0 ? '5px' : 0)};
   margin-left: ${({ index }: any) => (index % 2 !== 0 ? '5px' : 0)};
+`;
+
+export const sendPostcardViewStyled = styled.View`
+  height: 140px;
+  margin-bottom: 10px;
+`;
+
+export const ListWrapper = styled.View`
+  margin-top: 10px;
 `;

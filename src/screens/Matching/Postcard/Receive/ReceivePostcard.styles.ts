@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { colors } from '../../styles/variablesStyles';
+import { colors } from '../../../../commons/styles/variablesStyles';
 import { StyleSheet } from 'react-native';
 
 export const ContainerViewStyled = styled.View`

@@ -1,10 +1,10 @@
 import { Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { IPostcardProps } from './Postcard.types';
-import * as S from './Postcard.styles';
-import postcardImage from '../../../../assets/images/example-postcard.png';
+import { IReceivePostcardProps } from './ReceivePostcard.types';
+import * as S from './ReceivePostcard.styles';
+import postcardImage from '../../../../../assets/images/example-postcard.png';
 
-export const Postcard: React.FC<IPostcardProps> = ({ index, ...rest }) => {
+export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, ...rest }) => {
   const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
   return (
     <S.ContainerViewStyled>
