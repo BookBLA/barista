@@ -44,7 +44,7 @@ const Matching = () => {
   return (
     <View style={{ backgroundColor: 'white', flex: 1 }}>
       <S.ViewStyled>
-        <View>
+        <View style={{ flex: 1, height: '80%' }}>
           <S.PressableStyled
             onPress={() => {
               setIsReceivedPostcard(true);
@@ -59,7 +59,7 @@ const Matching = () => {
             <S.PressableTextStyled>받은 엽서</S.PressableTextStyled>
           </S.PressableStyled>
         </View>
-        <View>
+        <View style={{ flex: 1, height: '80%' }}>
           <S.PressableStyled
             onPress={() => {
               setIsReceivedPostcard(false);
