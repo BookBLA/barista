@@ -1,15 +1,19 @@
 import styled from 'styled-components/native';
+import { colors } from '../../commons/styles/variablesStyles';
 
-export const TitleStyled = styled.Text`
-  font-size: 50px;
+export const InfoTextStyled = styled.Text`
+  font-size: 14px;
   font-weight: 300;
   text-align: center;
-  color: #4a4a4a;
+  color: ${colors.textGray};
 `;
 
-export const StyledFlatList = styled.TouchableHighlight`
-  margin: 10px;
-  width: 100%;
+export const InfoViewStyled = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 16px;
 `;
 
 export const ViewStyled = styled.View`
@@ -39,4 +43,24 @@ export const PressableTextStyled = styled.Text`
   font-weight: 500;
   text-align: center;
   color: #4a4a4a;
+`;
+
+export const postcardCountViewStyled = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const postcardCountTextStyled = styled.Text`
+  font-size: 18;
+`;
+
+export const postcardViewStyled = styled.View`
+  flex: 1;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  background: #d9d9d9;
+  border-radius: 8px;
+  margin-right: ${({ index }: any) => (index % 2 === 0 ? '5px' : 0)};
+  margin-left: ${({ index }: any) => (index % 2 !== 0 ? '5px' : 0)};
 `;

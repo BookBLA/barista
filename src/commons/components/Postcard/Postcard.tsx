@@ -1,24 +1,25 @@
-import { Text, View } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { IProps } from './Postcard.types';
+import { IPostcardProps } from './Postcard.types';
+import * as S from './Postcard.styles';
+import postcardImage from '../../../../assets/images/example-postcard.png';
 
-export const Postcard: React.FC<IProps> = ({ index }) => {
-  // 이 컴포넌트는 실제로 레이지 로딩이지만, 여기에서는 간단한 텍스트로 대체합니다.
+export const Postcard: React.FC<IPostcardProps> = ({ index, ...rest }) => {
+  const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
   return (
-    <View
-      style={{
-        width: '50%',
-        height: 200,
-        marginBottom: 10,
-        backgroundColor: '#eee',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        borderColor: 'black',
-      }}
-    >
-      <Text>포스트카드 {index}</Text>
-    </View>
+    <S.ContainerViewStyled>
+      <TouchableOpacity onPress={() => console.log('엽서 누름', index)} style={{ height: '100%' }}>
+        <Image source={postcardImage} style={S.styles.image} />
+        <S.PostcardInfoViewStyled>
+          <S.PostcardInfoFirstViewStyled>
+            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${age}살 `}</S.PostcardTextViewStyled>
+            <S.PostcardTextViewStyled style={{ fontSize: 10 }}>
+              {`(독서퀴즈: ${quizScore}점)`}{' '}
+            </S.PostcardTextViewStyled>
+          </S.PostcardInfoFirstViewStyled>
+          <S.PostcardTextViewStyled style={{ fontSize: 12 }}>{schoolName}</S.PostcardTextViewStyled>
+        </S.PostcardInfoViewStyled>
+      </TouchableOpacity>
+    </S.ContainerViewStyled>
   );
 };
