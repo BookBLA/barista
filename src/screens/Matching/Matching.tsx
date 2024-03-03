@@ -1,9 +1,9 @@
 import { FlatList, Image, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import { Postcard } from '../../commons/components/Postcard/Postcard';
+import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import postcardIcon from '../../../assets/images/icons/Postcard.png';
-import { IPostcardProps } from '../../commons/components/Postcard/Postcard.types';
+import { IPostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
@@ -72,7 +72,7 @@ const Matching = () => {
             data={items}
             renderItem={({ item, index }) => (
               <S.postcardViewStyled index={index}>
-                <Postcard key={index} {...item} />
+                <ReceivePostcard key={index} {...item} />
               </S.postcardViewStyled>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -86,7 +86,7 @@ const Matching = () => {
           <FlatList
             numColumns={2}
             data={items}
-            renderItem={({ item, index }) => <Postcard key={index} {...item} />}
+            renderItem={({ item, index }) => <ReceivePostcard key={index} {...item} />}
             keyExtractor={(item, index) => index.toString()}
           />
         </>
