@@ -69,3 +69,7 @@ export const sendPostcardViewStyled = styled.View`
   height: 140px;
   margin-bottom: 10px;
 `;
+
+export const ListWrapper = styled.View`
+  margin-top: 10px;
+`;

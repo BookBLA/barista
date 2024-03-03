@@ -75,49 +75,48 @@ const Matching = () => {
           </S.PressableStyled>
         </View>
       </S.ViewStyled>
-      {isReceivedPostcard && (
-        //todo 수신 받은 엽서
-        <>
-          <S.InfoViewStyled>
-            <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
-            <S.postcardCountViewStyled>
-              <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
-              <S.postcardCountTextStyled>{postcardCount}</S.postcardCountTextStyled>
-            </S.postcardCountViewStyled>
-          </S.InfoViewStyled>
-          <FlatList
-            data={receivedPostcards}
-            renderItem={({ item, index }) => (
-              <S.receivedPostcardViewStyled index={index}>
-                <ReceivePostcard key={index} {...item} />
-              </S.receivedPostcardViewStyled>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            numColumns={2}
-            alwaysBounceVertical={false}
-            ListFooterComponent={<View style={{ height: 20 }} />}
-          />
-        </>
-      )}
-      {!isReceivedPostcard && (
-        //todo 보낸 엽서
-        <>
-          <FlatList
-            contentContainerStyle={{
-              marginTop: 14,
-            }}
-            data={sendPostcards}
-            renderItem={({ item, index }) => (
-              <S.sendPostcardViewStyled>
-                <SendPostcard key={index} {...item} />
-              </S.sendPostcardViewStyled>
-            )}
-            keyExtractor={(item, index) => index.toString()}
-            alwaysBounceVertical={false}
-            ListFooterComponent={<View style={{ height: 20 }} />}
-          />
-        </>
-      )}
+      <S.ListWrapper>
+        {isReceivedPostcard && (
+          //todo 수신 받은 엽서
+          <>
+            <S.InfoViewStyled>
+              <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
+              <S.postcardCountViewStyled>
+                <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
+                <S.postcardCountTextStyled>{postcardCount}</S.postcardCountTextStyled>
+              </S.postcardCountViewStyled>
+            </S.InfoViewStyled>
+            <FlatList
+              data={receivedPostcards}
+              renderItem={({ item, index }) => (
+                <S.receivedPostcardViewStyled index={index}>
+                  <ReceivePostcard key={index} {...item} />
+                </S.receivedPostcardViewStyled>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              numColumns={2}
+              alwaysBounceVertical={false}
+              ListFooterComponent={<View style={{ height: 20 }} />}
+            />
+          </>
+        )}
+        {!isReceivedPostcard && (
+          //todo 보낸 엽서
+          <>
+            <FlatList
+              data={sendPostcards}
+              renderItem={({ item, index }) => (
+                <S.sendPostcardViewStyled>
+                  <SendPostcard key={index} {...item} />
+                </S.sendPostcardViewStyled>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              alwaysBounceVertical={false}
+              ListFooterComponent={<View style={{ height: 20 }} />}
+            />
+          </>
+        )}
+      </S.ListWrapper>
     </View>
   );
 };
