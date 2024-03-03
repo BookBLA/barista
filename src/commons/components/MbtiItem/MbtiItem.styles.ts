@@ -9,21 +9,21 @@ export const RowStyled = styled.View`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 80%;
+  width: 70%;
 `;
 
 export const ButtonStyled = styled.TouchableOpacity`
-  width: 70px;
-  height: 70px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 122px;
+  height: 93px;
+  border-radius: 30px;
   display: flex;
   justify-content: center;
-  background-color: ${(props: IProps) => (props.isSelect ? colors.primary : 'white')};
+  background-color: ${(props: IProps) => (props.isSelect ? colors.primary : colors.buttonMain)};
 `;
 
 export const TextStyled = styled.Text`
-  font-size: 50px;
-  font-weight: 300;
+  font-size: 20px;
+  font-family: fontMedium;
   text-align: center;
-  color: #4a4a4a;
+  color: ${(props: IProps) => (props.isSelect ? colors.secondary : colors.textGray2)};
 `;

@@ -14,11 +14,11 @@ const useMovePage = <T extends ParamListBase>() => {
     // navigation?.navigate('InitUserInfoStack', { isEditing: true });
   };
 
-  const paveMove = (screenName?: string, params?: T[keyof T]) => () => {
+  const movePage = (screenName?: string, params?: T[keyof T]) => () => {
     if (screenName) {
-      handleNext(screenName, params);
+      navigation?.navigate(screenName, params);
     } else {
-      goBack();
+      navigation?.goBack();
     }
   };
 
@@ -38,7 +38,7 @@ const useMovePage = <T extends ParamListBase>() => {
   //   navigation?.reset(state);
   // };
 
-  return { goBack, handleNext, paveMove };
+  return { goBack, handleNext, movePage };
 };
 
 export default useMovePage;
