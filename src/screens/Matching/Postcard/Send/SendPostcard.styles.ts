@@ -1,36 +1,31 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { StyleSheet } from 'react-native';
 
 export const ContainerViewStyled = styled.View`
-  width: 100%;
-  height: 244px;
   color: white;
+  height: 100%;
 `;
 
-export const PostcardInfoViewStyled = styled.View`
-  background: #1d2e61;
-  height: 20%;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 4px 8px;
-`;
-
-export const PostcardTextViewStyled = styled.Text`
-  color: ${colors.textYellow};
-`;
-
-export const PostcardInfoFirstViewStyled = styled.View`
+export const UserInfoViewStyled = styled.View`
+  flex: 1;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
+`;
+export const PostcardTextViewStyled = styled.Text`
+  color: ${colors.textBlack};
   margin-bottom: 4px;
 `;
 
-export const styles = StyleSheet.create({
-  image: {
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    width: '100%',
-    height: '80%',
-  },
-});
+export const CircularImage = styled.Image`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  border: 1px solid black;
+  margin-right: 4px;
+`;
+
+export const dashLineViewStyled = styled.View`
+  margin: 8px 0;
+  border: 1px dashed #d2d6e2;
+`;
