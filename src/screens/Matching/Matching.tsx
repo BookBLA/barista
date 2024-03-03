@@ -4,6 +4,7 @@ import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import postcardIcon from '../../../assets/images/icons/Postcard.png';
 import { IPostcardProps } from './Postcard/Receive/ReceivePostcard.types';
+import { SendPostcard } from './Postcard/Send/SendPostcard';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
@@ -71,9 +72,9 @@ const Matching = () => {
           <FlatList
             data={items}
             renderItem={({ item, index }) => (
-              <S.postcardViewStyled index={index}>
+              <S.receivedPostcardViewStyled index={index}>
                 <ReceivePostcard key={index} {...item} />
-              </S.postcardViewStyled>
+              </S.receivedPostcardViewStyled>
             )}
             keyExtractor={(item, index) => index.toString()}
             numColumns={2} // 열 갯수 설정
@@ -84,9 +85,15 @@ const Matching = () => {
         //todo 보낸 엽서
         <>
           <FlatList
-            numColumns={2}
+            contentContainerStyle={{
+              marginTop: 14,
+            }}
             data={items}
-            renderItem={({ item, index }) => <ReceivePostcard key={index} {...item} />}
+            renderItem={({ item, index }) => (
+              <S.sendPostcardViewStyled>
+                <SendPostcard key={index} {...item} />
+              </S.sendPostcardViewStyled>
+            )}
             keyExtractor={(item, index) => index.toString()}
           />
         </>
