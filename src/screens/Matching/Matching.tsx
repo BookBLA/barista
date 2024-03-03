@@ -1,10 +1,12 @@
-import { FlatList, View } from 'react-native';
+import { FlatList, Image, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Postcard } from '../../commons/components/Postcard/Postcard';
 import * as S from './Matching.styles';
+import postcardIcon from '../../../assets/images/icons/Postcard.png';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
+  const [postcardCount, setPostcardCount] = useState<number>(0);
   const [items, setItems] = useState<number[]>([]);
 
   useEffect(() => {
@@ -50,7 +52,13 @@ const Matching = () => {
       {isReceivedPostcard && (
         //todo 수신 받은 엽서
         <>
-          <S.TitleStyled style={{ fontSize: 30 }}>보낸 엽서</S.TitleStyled>
+          <S.InfoViewStyled>
+            <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
+            <S.postcardCountViewStyled>
+              <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
+              <S.postcardCountTextStyled>{postcardCount}</S.postcardCountTextStyled>
+            </S.postcardCountViewStyled>
+          </S.InfoViewStyled>
           <FlatList
             numColumns={2}
             data={items}
@@ -62,7 +70,6 @@ const Matching = () => {
       {!isReceivedPostcard && (
         //todo 보낸 엽서
         <>
-          <S.TitleStyled style={{ fontSize: 30 }}>내가 받은 엽서</S.TitleStyled>
           <FlatList
             numColumns={2}
             data={items}
