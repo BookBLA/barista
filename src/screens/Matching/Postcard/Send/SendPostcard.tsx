@@ -4,16 +4,21 @@ import * as S from './SendPostcard.styles';
 import postcardImage from '../../../../../assets/images/example-postcard.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { TouchableWithoutFeedback } from 'react-native';
+import { Platform, TouchableWithoutFeedback } from 'react-native';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) => {
   console.log(rest);
   const { userId, userName, userProfileImageUrl, gender, schoolName, age, postcardStatus, bookName, bookAuthor } = rest;
+  const platformBlurRadius = Platform.select({
+    ios: postcardStatus === EPostcardStatus.APPROVE ? 0 : 7,
+    android: postcardStatus === EPostcardStatus.APPROVE ? 0 : 30,
+  });
+
   return (
     <>
       <S.ContainerViewStyled>
         <S.UserInfoViewStyled>
-          <S.CircularImage source={postcardImage} resizeMode="contain" />
+          <S.CircularImage source={postcardImage} resizeMode="contain" blurRadius={platformBlurRadius} />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText style={{ fontSize: 16 }}>{`${userName}|${age}`}</S.UserNameText>
