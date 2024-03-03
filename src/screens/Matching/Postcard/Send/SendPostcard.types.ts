@@ -2,6 +2,7 @@ export enum EPostcardStatus {
   PENDING,
   REJECT,
   APPROVE,
+  FAIL,
 }
 
 export enum EGender {
