@@ -42,7 +42,7 @@ const Matching = () => {
   }, []);
 
   return (
-    <View style={{ backgroundColor: 'white' }}>
+    <View style={{ backgroundColor: 'white', flex: 1 }}>
       <S.ViewStyled>
         <View>
           <S.PressableStyled
@@ -93,7 +93,9 @@ const Matching = () => {
               </S.receivedPostcardViewStyled>
             )}
             keyExtractor={(item, index) => index.toString()}
-            numColumns={2} // 열 갯수 설정
+            numColumns={2}
+            alwaysBounceVertical={false}
+            ListFooterComponent={<View style={{ height: 20 }} />}
           />
         </>
       )}
@@ -111,6 +113,8 @@ const Matching = () => {
               </S.sendPostcardViewStyled>
             )}
             keyExtractor={(item, index) => index.toString()}
+            alwaysBounceVertical={false}
+            ListFooterComponent={<View style={{ height: 20 }} />}
           />
         </>
       )}
