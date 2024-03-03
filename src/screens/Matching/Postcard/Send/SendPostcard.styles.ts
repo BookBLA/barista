@@ -78,5 +78,5 @@ export const SingleButtonContainer = styled(ButtonContainer)`
 export const ButtonText = styled.Text`
   color: ${(props: any) => props.fontColor ?? 'white'};
   text-align: center;
-  font-size: 16px;
+  font-size: 14px;
 `;
