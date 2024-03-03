@@ -10,6 +10,7 @@ export const colors = {
   buttonYellow: '#FFF5D6',
   textBlack: '#000000',
   textYellow: '#FFEBAC',
+  textGray: '#858585',
 };
 
 export const sizes = {};
