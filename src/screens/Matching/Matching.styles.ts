@@ -53,3 +53,14 @@ export const postcardCountViewStyled = styled.View`
 export const postcardCountTextStyled = styled.Text`
   font-size: 18;
 `;
+
+export const postcardViewStyled = styled.View`
+  flex: 1;
+  margin-bottom: 10px;
+  align-items: center;
+  justify-content: center;
+  background: #d9d9d9;
+  border-radius: 8px;
+  margin-right: ${({ index }: any) => (index % 2 === 0 ? '5px' : 0)};
+  margin-left: ${({ index }: any) => (index % 2 !== 0 ? '5px' : 0)};
+`;
