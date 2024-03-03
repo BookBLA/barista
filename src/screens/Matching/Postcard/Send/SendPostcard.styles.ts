@@ -12,6 +12,17 @@ export const UserInfoViewStyled = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+export const UserInfoNameWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const GenderIconStyled = styled.Image`
+  width: 20px;
+  height: 20px;
+`;
+
 export const PostcardTextViewStyled = styled.Text`
   color: ${colors.textBlack};
   margin-bottom: 4px;
