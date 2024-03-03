@@ -1,14 +1,13 @@
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
-import { colors } from '../../commons/styles/variablesStyles';
-import Example02 from '../Example02/Example02';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
+import { colors } from '../../../commons/styles/variablesStyles';
+import Example02 from '../../Example02/Example02';
+import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import nextButton from '../../../assets/images/icons/next_button.png';
+import nextButton from '../../../../assets/images/icons/next_button.png';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
 const Mbti = ({ navigation }: { navigation: any }) => {
-  const handleNext = () => {
-    navigation.navigate('smokeDrink');
-  };
+  const { movePage } = useMovePage();
 
   return (
     <S.Wrapper>
@@ -22,7 +21,7 @@ const Mbti = ({ navigation }: { navigation: any }) => {
       </Text>
       <Example02 />
       <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%' }}>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={movePage('smokeDrink')}>
           <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>

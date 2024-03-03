@@ -1,24 +1,19 @@
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
-import { colors } from '../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
-import * as T from './InitStyle.styles';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
+import { colors } from '../../../commons/styles/variablesStyles';
+import * as S from '../../InitUserInfo/InitUserInfo.styles';
+import * as T from '../InitStyle.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import prevButton from '../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../assets/images/icons/next_button.png';
+import prevButton from '../../../../assets/images/icons/prev_button.png';
+import nextButton from '../../../../assets/images/icons/next_button.png';
 import { useState } from 'react';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
-const SmokeDrink = ({ navigation }: { navigation: any }) => {
+const SmokeDrink = () => {
   const [selectedButton, setSelectedButton] = useState<null | string>(null);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const buttonTitles = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
 
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
-
-  const handleNext = () => {
-    navigation.navigate('oppositeSex');
-  };
+  const { movePage } = useMovePage();
 
   return (
     <S.Wrapper>
@@ -75,10 +70,10 @@ const SmokeDrink = ({ navigation }: { navigation: any }) => {
         ))}
       </S.RowStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
-        <TouchableOpacity onPress={handlePrevious}>
+        <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} style={{ width: 11 }} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={movePage('oppositeSex')}>
           <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>

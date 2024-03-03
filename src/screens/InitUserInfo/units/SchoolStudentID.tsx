@@ -1,14 +1,15 @@
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
-import { colors } from '../../commons/styles/variablesStyles';
-import * as S from './InitUserInfo.styles';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
+import { colors } from '../../../commons/styles/variablesStyles';
+import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
-import prevButton from '../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../assets/images/icons/next_button.png';
-import photo from '../../../assets/images/photo.png';
+import prevButton from '../../../../assets/images/icons/prev_button.png';
+import nextButton from '../../../../assets/images/icons/next_button.png';
+import photo from '../../../../../assets/images/photo.png';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
-const SchoolStudentID = ({ navigation }: { navigation: any }) => {
+const SchoolStudentID = () => {
   const [school, setSchool] = useState('학교');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -24,14 +25,7 @@ const SchoolStudentID = ({ navigation }: { navigation: any }) => {
       setIsFocused(false);
     }
   };
-
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
-
-  const handleNext = () => {
-    navigation.navigate('emailAuth');
-  };
+  const { movePage } = useMovePage();
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState('');
@@ -55,9 +49,9 @@ const SchoolStudentID = ({ navigation }: { navigation: any }) => {
 
     setImageUrl(result.assets[0].uri);
     console.log(result);
-    console.log(imageUrl);
   };
 
+  console.log('imageUrl', imageUrl);
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
@@ -84,7 +78,7 @@ const SchoolStudentID = ({ navigation }: { navigation: any }) => {
         borderRadius={10}
       >
         <Image
-          source={imageUrl === '' ? require('../../../assets/images/photo.png') : { uri: imageUrl }}
+          source={imageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }}
           style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
         />
       </S.ButtonStyled>
@@ -95,10 +89,10 @@ const SchoolStudentID = ({ navigation }: { navigation: any }) => {
       </View>
 
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
-        <TouchableOpacity onPress={handlePrevious}>
+        <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} style={{ width: 11 }} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={movePage('emailAuth')}>
           <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>

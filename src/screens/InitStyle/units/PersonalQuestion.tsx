@@ -1,11 +1,12 @@
-import { colors } from '../../commons/styles/variablesStyles';
+import { colors } from '../../../commons/styles/variablesStyles';
 import { Text } from 'react-native';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
-import * as T from './InitStyle.styles';
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
+import * as S from '../../InitUserInfo/InitUserInfo.styles';
+import * as T from '../InitStyle.styles';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { useState } from 'react';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
-const PersonalQuestion = ({ navigation }: { navigation: any }) => {
+const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
@@ -22,6 +23,7 @@ const PersonalQuestion = ({ navigation }: { navigation: any }) => {
       setIsFocused(false);
     }
   };
+  const { movePage } = useMovePage();
 
   return (
     <S.Wrapper>
@@ -43,7 +45,7 @@ const PersonalQuestion = ({ navigation }: { navigation: any }) => {
           color: question === '' ? colors.textGray2 : colors.primary,
         }}
       />
-      <S.NextButtonStyled onPress={() => navigation.navigate('')}>
+      <S.NextButtonStyled onPress={movePage()}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
       </S.NextButtonStyled>
     </S.Wrapper>

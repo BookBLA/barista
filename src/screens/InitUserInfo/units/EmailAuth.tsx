@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
-import { colors } from '../../commons/styles/variablesStyles';
-import * as S from './InitUserInfo.styles';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
+import { colors } from '../../../commons/styles/variablesStyles';
+import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
-import prevButton from '../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../assets/images/icons/next_button.png';
+import prevButton from '../../../../assets/images/icons/prev_button.png';
+import nextButton from '../../../../assets/images/icons/next_button.png';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
-const EmailAuth = ({ navigation }: { navigation: any }) => {
+const EmailAuth = () => {
   const [email, setEamil] = useState('example@gachon.ac.kr');
   const [code, setCode] = useState('000000');
+  const { movePage } = useMovePage();
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
 
@@ -35,13 +37,6 @@ const EmailAuth = ({ navigation }: { navigation: any }) => {
     }
   };
 
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
-
-  const handleNext = () => {
-    navigation.navigate('completePage');
-  };
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
@@ -99,10 +94,10 @@ const EmailAuth = ({ navigation }: { navigation: any }) => {
         </S.ButtonStyled>
       </S.RowStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
-        <TouchableOpacity onPress={handlePrevious}>
+        <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} style={{ width: 11 }} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={movePage('completePage')}>
           <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>

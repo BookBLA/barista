@@ -1,22 +1,18 @@
 import React, { useState } from 'react';
-import { colors } from '../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
-import { IProps } from '../../commons/components/MbtiItem/MbtiItem.types';
-import ProgressBar from '../../commons/components/ProgressBar/ProgressBar';
+import { colors } from '../../../commons/styles/variablesStyles';
+import * as S from '../../InitUserInfo/InitUserInfo.styles';
+import { IProps } from '../../../commons/components/MbtiItem/MbtiItem.types';
+import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { TouchableOpacity, View, Image } from 'react-native';
-import prevButton from '../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../assets/images/icons/next_button.png';
+import prevButton from '../../../../assets/images/icons/prev_button.png';
+import nextButton from '../../../../assets/images/icons/next_button.png';
+import useMovePage from '../../../commons/hooks/useMovePage';
 
 const CommStyle = ({ navigation }: { navigation: any }) => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
   const [isSelect2, setSelect2] = useState<null | boolean>(null);
 
-  const handlePrevious = () => {
-    navigation.goBack();
-  };
-  const handleNext = () => {
-    navigation.navigate('dateCost');
-  };
+  const { movePage } = useMovePage();
 
   return (
     <S.Wrapper>
@@ -51,10 +47,10 @@ const CommStyle = ({ navigation }: { navigation: any }) => {
         </S.BooleanButtonStyled>
       </S.RowStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
-        <TouchableOpacity onPress={handlePrevious}>
+        <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} style={{ width: 11 }} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleNext}>
+        <TouchableOpacity onPress={movePage('dateCost')}>
           <Image source={nextButton} style={{ width: 11 }} />
         </TouchableOpacity>
       </View>
