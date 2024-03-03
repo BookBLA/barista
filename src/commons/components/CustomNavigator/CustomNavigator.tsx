@@ -15,6 +15,8 @@ import OppositeSex from '../../../screens/InitStyle/OppositeSex';
 import CommStyle from '../../../screens/InitStyle/CommStyle';
 import DateCost from '../../../screens/InitStyle/DateCost';
 import PersonalQuestion from '../../../screens/InitStyle/PersonalQuestion';
+import Matching from '../../../screens/Matching/Matching';
+import { Platform, SafeAreaView } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,14 +35,24 @@ const screens = [
   { name: 'commStyle', component: CustomScreen(CommStyle) },
   { name: 'dateCost', component: CustomScreen(DateCost) },
   { name: 'personalQeustion', component: CustomScreen(PersonalQuestion) },
+  { name: 'matching', component: CustomScreen(Matching) },
 ];
 
 export const CustomNavigator = () => {
   return (
-    <Stack.Navigator initialRouteName="oppositeSex" screenOptions={{ headerShown: false }}>
-      {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={component} />
-      ))}
-    </Stack.Navigator>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: 'white',
+        marginHorizontal: 16,
+        marginTop: Platform.OS === 'android' ? 50 : 0,
+      }}
+    >
+      <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
+        {screens.map(({ name, component }) => (
+          <Stack.Screen key={name} name={name} component={component} />
+        ))}
+      </Stack.Navigator>
+    </SafeAreaView>
   );
 };
