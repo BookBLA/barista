@@ -14,8 +14,8 @@ export const UserInfoViewStyled = styled.View`
 `;
 
 export const UserInfoWrapper = styled.View`
-  flex: 5;
-  padding: 8px;
+  flex: 4;
+  padding: 0 8px;
 `;
 
 export const UserInfoNameWrapper = styled.View`
@@ -43,19 +43,40 @@ export const SchoolNameText = styled.Text`
 export const BookInfoText = styled.Text`
   font-size: 14px;
   color: #787878;
-  margin-bottom: 4px;
 `;
 
 export const CircularImage = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  border-width: 1px;
-  border-color: black;
-  margin-right: 4px;
+`;
+
+export const ButtonContainerViewStyled = styled.View`
+  flex-direction: row;
 `;
 
 export const dashLineViewStyled = styled.View`
-  margin: 8px 0;
+  margin-top: 16px;
+  margin-bottom: 8px;
   border: 1px dashed #d2d6e2;
+`;
+
+export const ButtonContainer = styled.View`
+  flex: 1;
+  padding: 6px;
+  border-radius: 10px;
+  margin-right: ${(props: any) => (props.left ? '4px' : 0)};
+  margin-left: ${(props: any) => (props.right ? '4px' : 0)};
+  background-color: ${(props: any) => props.backgroundColor ?? 'black'};
+`;
+
+export const SingleButtonContainer = styled(ButtonContainer)`
+  flex: ${(props: any) => props.flex ?? 0.5};
+  margin-left: auto;
+`;
+
+export const ButtonText = styled.Text`
+  color: ${(props: any) => props.fontColor ?? 'white'};
+  text-align: center;
+  font-size: 16px;
 `;

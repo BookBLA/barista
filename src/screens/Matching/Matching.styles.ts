@@ -67,6 +67,5 @@ export const receivedPostcardViewStyled = styled.View`
 
 export const sendPostcardViewStyled = styled.View`
   height: 140px;
-  margin: 10px 0;
-  border: 1px solid red;
+  margin-bottom: 10px;
 `;
