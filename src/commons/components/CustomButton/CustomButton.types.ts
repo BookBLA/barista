@@ -5,4 +5,5 @@ export interface IProps extends TouchableWithoutFeedbackProps {
   fontColor?: string;
   fontSize?: string;
   backgroundColor?: string;
+  borderRadius?: string;
 }

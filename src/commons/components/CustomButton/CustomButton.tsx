@@ -4,6 +4,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { IProps } from './CustomButton.types';
 
 export const CustomButton: React.FC<IProps> = ({ contents, onPress, ...rest }) => {
+  console.log(rest);
   return (
     <ButtonStyled props={rest}>
       <TouchableOpacity onPress={onPress}>

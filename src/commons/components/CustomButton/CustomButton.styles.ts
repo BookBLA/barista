@@ -3,7 +3,7 @@ import { colors } from '../../styles/variablesStyles';
 
 export const ButtonStyled = styled.TouchableOpacity`
   background: ${(props: any) => props.backgroundColor || colors.buttonPrimary};
-  border-radius: 60px;
+  border-radius: ${(props: any) => props.borderRadius || '60px'};
   padding: 12px 24px;
   align-items: center;
   justify-content: center;
