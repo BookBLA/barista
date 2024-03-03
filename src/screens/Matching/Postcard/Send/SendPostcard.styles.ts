@@ -21,7 +21,8 @@ export const CircularImage = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 30px;
-  border: 1px solid black;
+  border-width: 1px;
+  border-color: black;
   margin-right: 4px;
 `;
 

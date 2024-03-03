@@ -3,26 +3,40 @@ import React, { useEffect, useState } from 'react';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import postcardIcon from '../../../assets/images/icons/Postcard.png';
-import { IPostcardProps } from './Postcard/Receive/ReceivePostcard.types';
+import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
+import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
   const [postcardCount, setPostcardCount] = useState<number>(0);
-  const [items, setItems] = useState<IPostcardProps[]>([]);
+  const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
+  const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
 
   useEffect(() => {
     //todo api 활용해서 데이터 받아오는 부분
-    const fakeData: IPostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
+    const receivedFakeData: IReceivePostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
       index,
-      userId: Math.floor(Math.random() * 1000) + 1, // 임의의 userId 생성 (1 이상 1000 이하의 난수)
-      quizScore: Math.floor(Math.random() * 101), // 임의의 퀴즈 점수 생성 (0 이상 100 이하의 난수)
-      schoolName: `School ${index + 1}`, // 학교 이름 생성
+      userId: Math.floor(Math.random() * 1000) + 1,
+      quizScore: Math.floor(Math.random() * 101),
+      schoolName: `School ${index + 1}`,
       age: index + 1,
-      postcardImageUrl: `https://example.com/postcard-${index + 1}.jpg`, // 가짜 이미지 URL 생성
+      postcardImageUrl: `https://example.com/postcard-${index + 1}.jpg`,
     }));
 
-    setItems(fakeData);
+    const sendFakeData: ISendPostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
+      index,
+      userId: Math.floor(Math.random() * 1000) + 1,
+      userName: '방근호',
+      userProfileImageUrl: 'https://source.unsplash.com/random/300×300',
+      gender: Math.floor(Math.random() * 2),
+      schoolName: `가천대학교`,
+      age: Math.floor(Math.random() * 10) + 20,
+      postcardStatus: Math.floor(Math.random() * 3),
+    }));
+
+    setReceivedPostcards(receivedFakeData);
+    setSendPostcards(sendFakeData);
   }, []);
 
   return (
@@ -70,7 +84,7 @@ const Matching = () => {
             </S.postcardCountViewStyled>
           </S.InfoViewStyled>
           <FlatList
-            data={items}
+            data={receivedPostcards}
             renderItem={({ item, index }) => (
               <S.receivedPostcardViewStyled index={index}>
                 <ReceivePostcard key={index} {...item} />
@@ -88,7 +102,7 @@ const Matching = () => {
             contentContainerStyle={{
               marginTop: 14,
             }}
-            data={items}
+            data={sendPostcards}
             renderItem={({ item, index }) => (
               <S.sendPostcardViewStyled>
                 <SendPostcard key={index} {...item} />
