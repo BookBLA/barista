@@ -3,7 +3,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 
 export const InfoTextStyled = styled.Text`
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 500;
   text-align: center;
   color: ${colors.textGray};
 `;
