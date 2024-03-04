@@ -15,7 +15,7 @@ const Mbti = ({ navigation }: { navigation: any }) => {
         <S.TitleStyled>스타일</S.TitleStyled>
       </S.SafeAreaViewStyled>
       <ProgressBar progress={16} />
-      <S.ContentStyled style={{ marginTop: 30 }}>MBTI를 알려주세요.</S.ContentStyled>
+      <S.ContentStyled style={{ marginTop: 30, marginBottom: 8 }}>MBTI를 알려주세요.</S.ContentStyled>
       <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 10 }}>
         4가지 모두 골라주세요.
       </Text>

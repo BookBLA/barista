@@ -6,6 +6,7 @@ import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollVi
 import prevButton from '../../../../assets/images/icons/prev_button.png';
 import nextButton from '../../../../assets/images/icons/next_button.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
+import { TitleProgress } from './TitleProgress';
 
 const NamePhone = () => {
   const [name, setName] = useState('이름');
@@ -44,10 +45,7 @@ const NamePhone = () => {
 
   return (
     <S.Wrapper>
-      <S.SafeAreaViewStyled>
-        <S.TitleStyled>정보 입력</S.TitleStyled>
-      </S.SafeAreaViewStyled>
-      <ProgressBar progress={50} />
+      <TitleProgress gauge={50} />
       {/* <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -57,36 +55,43 @@ const NamePhone = () => {
         //contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled" // Ensure taps outside text fields dismiss keyboard
       > */}
-      <S.ContentStyled style={{ marginTop: 127, marginBottom: 16 }}>이름을 입력해 주세요.</S.ContentStyled>
-      <S.TextFiledStyled
-        value={name}
-        onChangeText={setName}
-        onFocus={handleFocus2}
-        onBlur={handleBlur}
-        style={{
-          color: name === '이름' ? colors.textGray2 : colors.primary,
-        }}
-      />
-      <S.ContentStyled style={{ marginTop: 151, marginBottom: 16 }}>전화번호를 입력해 주세요.</S.ContentStyled>
-      <S.TextFiledStyled
-        value={text}
-        onChangeText={setText}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        style={{
-          color: text === '010-1234-5678' ? colors.textGray2 : colors.primary,
-        }}
-      />
-      {/* </ScrollView> */}
-      {/* </KeyboardAvoidingView> */}
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}>
-        <TouchableOpacity onPress={movePage()}>
-          <Image source={prevButton} style={{ width: 11 }} />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={movePage('schoolStudentID')}>
-          <Image source={nextButton} style={{ width: 11 }} />
-        </TouchableOpacity>
-      </View>
+      <S.ColumnStyled>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
+          <S.TextFiledStyled
+            value={name}
+            onChangeText={setName}
+            onFocus={handleFocus2}
+            onBlur={handleBlur}
+            style={{
+              color: name === '이름' ? colors.textGray2 : colors.primary,
+            }}
+          />
+        </View>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
+          <S.TextFiledStyled
+            value={text}
+            onChangeText={setText}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+            style={{
+              color: text === '010-1234-5678' ? colors.textGray2 : colors.primary,
+            }}
+          />
+        </View>
+
+        {/* </ScrollView> */}
+        {/* </KeyboardAvoidingView> */}
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
+          <TouchableOpacity onPress={movePage()}>
+            <Image source={prevButton} style={{ width: 11 }} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={movePage('schoolStudentID')}>
+            <Image source={nextButton} style={{ width: 11 }} />
+          </TouchableOpacity>
+        </View>
+      </S.ColumnStyled>
     </S.Wrapper>
   );
 };
