@@ -7,7 +7,7 @@ import nextButton from '../../../../assets/images/icons/next_button.png';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 
-const DateCost = ({ navigation }: { navigation: any }) => {
+const DateCost = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const buttonTitles = ['더치페이', '번갈아가며 사기', '여유있는 사람이 좀 더', '데이트 통장'];
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
@@ -17,6 +17,16 @@ const GenderBirth = () => {
   const { movePage } = useMovePage();
   // console.log(date);
   // console.log(userInfo.birthDate);
+  useEffect(() => {
+    genderSelect();
+  }, []);
+  const genderSelect = () => {
+    if (userInfo.gender === '여성') {
+      setSelect(true);
+    } else if (userInfo.gender === '남성') {
+      setSelect(false);
+    }
+  };
   const { isOpen, toggle } = useToggle();
   const dateSelect = () => {
     setDate(date);
@@ -50,6 +60,8 @@ const GenderBirth = () => {
               onPress={() => {
                 setSelect(true);
                 updateUserInfo('gender', '여성');
+                console.log('gender 여성');
+                console.log(userInfo.gender);
               }}
             >
               <S.ButtonTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
@@ -61,6 +73,8 @@ const GenderBirth = () => {
               onPress={() => {
                 setSelect(false);
                 updateUserInfo('gender', '남성');
+                console.log('gender 남성');
+                console.log(userInfo.gender);
               }}
             >
               <S.ButtonTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
@@ -105,7 +119,7 @@ const GenderBirth = () => {
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
           <TouchableOpacity onPress={movePage('namePhone')}>
-            <Image source={nextButton} style={{ width: 11 }} />
+            <Image source={nextButton} />
           </TouchableOpacity>
         </View>
       </S.ColumnStyled>

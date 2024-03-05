@@ -8,7 +8,7 @@ import prevButton from '../../../../assets/images/icons/prev_button.png';
 import nextButton from '../../../../assets/images/icons/next_button.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 
-const CommStyle = ({ navigation }: { navigation: any }) => {
+const CommStyle = () => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
   const [isSelect2, setSelect2] = useState<null | boolean>(null);
 

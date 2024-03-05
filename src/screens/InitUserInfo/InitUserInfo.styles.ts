@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
-import { deviceWidth } from '../../utils/dimensions';
 
 interface IProps {
   isSelect: boolean;
@@ -14,7 +13,7 @@ export const Wrapper = styled.View`
 `;
 
 export const SafeAreaViewStyled = styled.SafeAreaView`
-  height: 10%;
+  height: 9%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,6 +78,18 @@ export const ButtonStyled = styled.TouchableOpacity`
   justify-content: center;
   margin-bottom: 20px;
 `;
+export const CodeFiledStyled = styled.View`
+  width: 270px;
+  height: 40px;
+  border-radius: 60px;
+  background-color: ${colors.buttonMain};
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 11px;
+`;
+
 export const NextButtonStyled = styled.TouchableOpacity`
   width: 95%;
   height: 60px;
@@ -96,6 +107,20 @@ export const TextFiledStyled = styled.TextInput`
   font-size: 16px;
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
+  //align-items: center;
+  justify-content: center;
+  //margin-bottom: 20px;
+  text-align: center;
+`;
+
+export const InputStyled = styled.TextInput`
+  /* width: 80%; */
+  /* height: 40px; */
+  /* border-radius: 60px; */
+  //padding: 0 20px;
+  font-size: 16px;
+  font-family: fontMedium;
+  /* background-color: ${colors.buttonMain}; */
   //align-items: center;
   justify-content: center;
   //margin-bottom: 20px;

@@ -7,7 +7,7 @@ import nextButton from '../../../../assets/images/icons/next_button.png';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 
-const OppositeSex = ({ navigation }: { navigation: any }) => {
+const OppositeSex = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const buttonTitles = ['허용 X', '단 둘이 밥먹기', '단 둘이 술마시기', '단 둘이 여행가기', '상관없음'];
 
