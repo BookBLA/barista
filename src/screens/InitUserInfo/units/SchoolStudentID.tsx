@@ -1,13 +1,14 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
-import prevButton from '../../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../../assets/images/icons/next_button.png';
+import prevButton from '../../../../assets/images/icons/prevButton.png';
+import nextButton from '../../../../assets/images/icons/nextButton.png';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
+import notYetNextButton from '../../../../assets/images/icons/NotYetNextButton.png';
 
 const SchoolStudentID = () => {
   // const [school, setSchool] = useState('학교');
@@ -113,10 +114,17 @@ const SchoolStudentID = () => {
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
           <TouchableOpacity onPress={movePage()}>
-            <Image source={prevButton} style={{ width: 11 }} />
+            <Image source={prevButton} />
           </TouchableOpacity>
+          {/* {userInfo.schoolName === '' || userInfo.studentIdImageUrl === '' ? (
+            <Image source={notYetNextButton} />
+          ) : (
+            <TouchableOpacity onPress={movePage('emailAuth')}>
+              <Image source={nextButton} />
+            </TouchableOpacity>
+          )} */}
           <TouchableOpacity onPress={movePage('emailAuth')}>
-            <Image source={nextButton} style={{ width: 11 }} />
+            <Image source={nextButton} />
           </TouchableOpacity>
         </View>
       </S.ColumnStyled>

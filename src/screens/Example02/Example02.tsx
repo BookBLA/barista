@@ -2,6 +2,7 @@ import { Text, View } from 'react-native';
 
 import * as S from './Example02.styles';
 import MbtiItem from '../../commons/components/MbtiItem/MbtiItem';
+import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
 
 const Example02 = () => {
   const mbtiNames: string[][] = [
@@ -15,7 +16,7 @@ const Example02 = () => {
   // 2. 각각의 컴포넌트는 고유의 인스턴스(복제품)이므로 각 컴포넌트 안에 있는 스테이트 변수도 고유의 변수이다.
 
   return (
-    <View style={{ height: '60%', justifyContent: 'space-between' }}>
+    <View style={{ height: deviceHeight * 0.52, justifyContent: 'space-between' }}>
       {mbtiNames.map((name: string[], index: number) => (
         <MbtiItem key={index} name={name} />
       ))}

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import nextButton from '../../../../assets/images/icons/next_button.png';
+import nextButton from '../../../../assets/images/icons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
 import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
+import notYetNextButton from '../../../../assets/images/icons/NotYetNextButton.png';
 
 const GenderBirth = () => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
@@ -118,6 +119,13 @@ const GenderBirth = () => {
           </CustomModal>
         </View>
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
+          {/* {userInfo.gender === '' || userInfo.birthDate === '' ? (
+            <Image source={notYetNextButton} />
+          ) : (
+            <TouchableOpacity onPress={movePage('namePhone')}>
+              <Image source={nextButton} />
+            </TouchableOpacity>
+          )} */}
           <TouchableOpacity onPress={movePage('namePhone')}>
             <Image source={nextButton} />
           </TouchableOpacity>

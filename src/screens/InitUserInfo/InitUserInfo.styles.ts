@@ -28,6 +28,13 @@ export const ColumnStyled = styled.View`
   align-items: center;
   justify-content: space-around;
 `;
+export const TouchableStyled = styled.TouchableHighlight`
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
 
 export const TitleStyled = styled.Text`
   font-size: 16px;
@@ -76,7 +83,7 @@ export const ButtonStyled = styled.TouchableOpacity`
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
 `;
 export const CodeFiledStyled = styled.View`
   width: 270px;
@@ -92,7 +99,7 @@ export const CodeFiledStyled = styled.View`
 
 export const NextButtonStyled = styled.TouchableOpacity`
   width: 95%;
-  height: 60px;
+  height: 44px;
   border-radius: 60px;
   background-color: ${colors.primary};
   align-items: center;

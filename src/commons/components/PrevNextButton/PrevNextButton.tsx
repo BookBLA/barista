@@ -1,6 +1,6 @@
 import { TouchableOpacity, View, Image } from 'react-native';
-import prevButton from '../../../assets/images/icons/prev_button.png';
-import nextButton from '../../../assets/images/icons/next_button.png';
+import prevButton from '../../../assets/images/icons/prevButton.png';
+import nextButton from '../../../assets/images/icons/nextButton.png';
 
 const handlePrevious = () => {
   //navigation.navigate('genderBirth');

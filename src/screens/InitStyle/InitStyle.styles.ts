@@ -5,13 +5,6 @@ interface IProps {
   isSelect: boolean;
 }
 
-export const ColumnStyled = styled.SafeAreaView`
-  display: flex;
-  //height: 50%;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const ButtonStyled = styled.TouchableOpacity`
   width: 105px;
   height: 44px;
@@ -35,6 +28,7 @@ export const LongButtonStyled = styled.TouchableOpacity`
 export const TextFiledStyled = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
   maxLength: 80, // 최대 글자 수
+  maxLine: 3,
 })`
   width: 80%;
   height: 72;
@@ -43,8 +37,7 @@ export const TextFiledStyled = styled.TextInput.attrs({
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
   justify-content: center;
-  margin-bottom: 20px;
   text-align: start;
-  text-align-vertical: top;
+
   flex-shrink: 1;
 `;
