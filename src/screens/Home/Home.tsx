@@ -1,32 +1,59 @@
-import React, { useCallback, useMemo, useRef } from 'react';
-import { Button, Text, View } from 'react-native';
+import React from 'react';
+import { IProps } from './Home.types';
+import * as S from './Home.styles';
 
-import { SafeAreaViewStyled, TitleStyled } from './Home.styles';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
-import { CustomButton } from '../../commons/components/CustomButton/CustomButton';
-
-// type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'home'>;
-
-const Home = ({ navigation }: { navigation: any }) => {
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['30%', '50%'], []);
-  const handlePresentModalPress = useCallback(() => {
-    bottomSheetModalRef.current?.present();
-  }, []);
+const Home = ({ navigation }: IProps) => {
+  const tempData = new Array(11).fill(0);
 
   return (
-    <SafeAreaViewStyled>
-      <TitleStyled>BookBla</TitleStyled>
-      <Button title="example" onPress={() => navigation.navigate('example')} />
-      <Button title="example02" onPress={() => navigation.navigate('example02')} />
-      <CustomButton onPress={handlePresentModalPress} contents="Present Modal" />
-      <CustomBottomSheetModal ref={bottomSheetModalRef} index={0} snapPoints={snapPoints}>
-        <View>
-          <Text>BottomSheet 테스뚜! 🎉</Text>
-        </View>
-      </CustomBottomSheetModal>
-    </SafeAreaViewStyled>
+    <S.Wrapper>
+      <S.TopWrapper>
+        <S.HeaderWrapper>
+          <S.LogoWrapper>
+            <S.LogoImage source={require('../../../assets/images/logos/logoDarkBg.png')} />
+            <S.LogoTitle>BOOK BLA</S.LogoTitle>
+          </S.LogoWrapper>
+          <S.IconWrapper>
+            <S.IconImage source={require('../../../assets/images/icons/letter.png')} />
+            <S.IconText>3</S.IconText>
+            <S.IconImage source={require('../../../assets/images/icons/notice.png')} />
+          </S.IconWrapper>
+        </S.HeaderWrapper>
+        <S.MenuWrapper>
+          <S.MenuTitle>서재 구경하기</S.MenuTitle>
+          <S.FilterWrapper horizontal={true}>
+            {new Array(7).fill(0).map((el) => (
+              <S.FilterBox>
+                <S.FilterText>성별</S.FilterText>
+                <S.FilterImage source={require('../../../assets/images/icons/arrowBottom.png')} />
+              </S.FilterBox>
+            ))}
+          </S.FilterWrapper>
+        </S.MenuWrapper>
+      </S.TopWrapper>
+      <S.ContentWrapper>
+        {tempData.map((_, index) => {
+          if (index % 2 === 0) {
+            return (
+              <>
+                <S.RowStyled key={index}>
+                  <S.ProfileWrapper>
+                    <S.BookImage source={require('../../../assets/images/bookTest.png')} />
+                  </S.ProfileWrapper>
+                  {index + 1 < tempData.length && (
+                    <S.ProfileWrapper>
+                      <S.BookImage source={require('../../../assets/images/bookTest.png')} />
+                    </S.ProfileWrapper>
+                  )}
+                </S.RowStyled>
+                <S.Line></S.Line>
+              </>
+            );
+          }
+          return null;
+        })}
+      </S.ContentWrapper>
+    </S.Wrapper>
   );
 };
 
