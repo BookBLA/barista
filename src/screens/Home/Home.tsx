@@ -2,9 +2,11 @@ import React from 'react';
 import * as S from './Home.styles';
 import { CustomText } from '../../commons/components/CustomText/CustomText.styles';
 import { colors } from '../../commons/styles/variablesStyles';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const Home = () => {
   const tempData = new Array(11).fill(0);
+  useManageMargin();
 
   return (
     <S.Wrapper>
