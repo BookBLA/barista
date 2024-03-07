@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { IProps } from '../../../commons/components/MbtiItem/MbtiItem.types';
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import nextButton from '../../../../assets/images/icons/next_button.png';
+import nextButton from '../../../../assets/images/icons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
 import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
+import { TitleProgress } from './TitleProgress';
+import notYetNextButton from '../../../../assets/images/icons/NotYetNextButton.png';
 
-const GenderBirth = ({ navigation }: { navigation: any }) => {
+const GenderBirth = () => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
   const [date, setDate] = useState(new Date());
-  const { updateUserInfo } = useUserStore();
-  const { movePage, handleNext } = useMovePage();
-  const dateString = date.toISOString();
-  console.log(dateString.slice(0, 10));
-
+  const { updateUserInfo, userInfo } = useUserStore();
+  const { movePage } = useMovePage();
+  // console.log(date);
+  // console.log(userInfo.birthDate);
+  useEffect(() => {
+    genderSelect();
+  }, []);
+  const genderSelect = () => {
+    if (userInfo.gender === '여성') {
+      setSelect(true);
+    } else if (userInfo.gender === '남성') {
+      setSelect(false);
+    }
+  };
   const { isOpen, toggle } = useToggle();
   const dateSelect = () => {
     setDate(date);
+    const dateString = date.toISOString();
     updateUserInfo('birthDate', dateString.slice(0, 10));
     toggle();
   };
@@ -41,48 +51,86 @@ const GenderBirth = ({ navigation }: { navigation: any }) => {
 
   return (
     <S.Wrapper>
-      <S.SafeAreaViewStyled>
-        <S.TitleStyled>정보 입력</S.TitleStyled>
-      </S.SafeAreaViewStyled>
-      <ProgressBar progress={25} />
-      <S.ContentStyled style={{ marginTop: 90, marginBottom: 16 }}>성별을 선택해 주세요.</S.ContentStyled>
-      <S.RowStyled>
-        <S.BooleanButtonStyled isSelect={isSelect} onPress={() => setSelect(true)}>
-          <S.ButtonTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
-            여성
-          </S.ButtonTextStyled>
-        </S.BooleanButtonStyled>
-        <S.BooleanButtonStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-          <S.ButtonTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-            남성
-          </S.ButtonTextStyled>
-        </S.BooleanButtonStyled>
-      </S.RowStyled>
-      <S.ContentStyled style={{ marginTop: 151, marginBottom: 16 }}>생년월일을 선택해 주세요.</S.ContentStyled>
-      <S.ButtonStyled onPress={toggle}>
-        {date === null ? (
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>YYYY/MM/DD</Text>
-        ) : (
-          <Text style={{ color: colors.primary, fontFamily: 'fontMedium' }}>{dateString.slice(0, 10)}</Text>
-        )}
-      </S.ButtonStyled>
-      <CustomModal modalConfig={modalConfig}>
-        <View style={{ marginBottom: 43, marginTop: 43 }}>
-          <DatePicker
-            value={date}
-            onChange={(value) => setDate(value)}
-            format="yyyy-mm-dd"
-            startYear={1980}
-            endYear={2024}
-            markWidth={97}
-          />
+      <TitleProgress gauge={25} />
+      <S.ColumnStyled>
+        <View>
+          <S.ContentStyled>성별을 선택해 주세요.</S.ContentStyled>
+          <S.RowStyled>
+            <S.BooleanButtonStyled
+              isSelect={isSelect}
+              onPress={() => {
+                setSelect(true);
+                updateUserInfo('gender', '여성');
+                console.log('gender 여성');
+                console.log(userInfo.gender);
+              }}
+            >
+              <S.ButtonTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
+                여성
+              </S.ButtonTextStyled>
+            </S.BooleanButtonStyled>
+            <S.BooleanButtonStyled
+              isSelect={isSelect === false}
+              onPress={() => {
+                setSelect(false);
+                updateUserInfo('gender', '남성');
+                console.log('gender 남성');
+                console.log(userInfo.gender);
+              }}
+            >
+              <S.ButtonTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
+                남성
+              </S.ButtonTextStyled>
+            </S.BooleanButtonStyled>
+          </S.RowStyled>
         </View>
-      </CustomModal>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
-        <TouchableOpacity onPress={movePage('namePhone')}>
-          <Image source={nextButton} style={{ width: 11 }} />
-        </TouchableOpacity>
-      </View>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <S.ContentStyled>생년월일을 선택해 주세요.</S.ContentStyled>
+          <S.ButtonStyled onPress={toggle}>
+            {userInfo.birthDate === '' ? (
+              <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>YYYY/MM/DD</Text>
+            ) : (
+              <Text style={{ color: colors.primary, fontFamily: 'fontMedium' }}>{userInfo.birthDate}</Text>
+            )}
+          </S.ButtonStyled>
+          <CustomModal modalConfig={modalConfig}>
+            <S.RowStyled style={{ justifyContent: 'flex-start' }}>
+              <Text
+                style={{
+                  color: 'black',
+                  fontFamily: 'fontMedium',
+                  fontSize: 16,
+                  justifyContent: 'flex-start',
+                }}
+              >
+                생년월일을 설정해 주세요.
+              </Text>
+            </S.RowStyled>
+            <View style={{ marginBottom: 43, marginTop: 27 }}>
+              <DatePicker
+                value={date}
+                onChange={(value) => setDate(value)}
+                format="yyyy-mm-dd"
+                startYear={1980}
+                endYear={2024}
+                markWidth={97}
+              />
+            </View>
+          </CustomModal>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
+          {/* {userInfo.gender === '' || userInfo.birthDate === '' ? (
+            <Image source={notYetNextButton} />
+          ) : (
+            <TouchableOpacity onPress={movePage('namePhone')}>
+              <Image source={nextButton} />
+            </TouchableOpacity>
+          )} */}
+          <TouchableOpacity onPress={movePage('namePhone')}>
+            <Image source={nextButton} />
+          </TouchableOpacity>
+        </View>
+      </S.ColumnStyled>
     </S.Wrapper>
   );
 };

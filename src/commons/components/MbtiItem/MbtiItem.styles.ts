@@ -9,7 +9,7 @@ export const RowStyled = styled.View`
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 70%;
+  width: 75%;
 `;
 
 export const ButtonStyled = styled.TouchableOpacity`
