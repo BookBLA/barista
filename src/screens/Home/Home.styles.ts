@@ -1,20 +1,21 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
+import { deviceWidth } from '../../commons/utils/dimensions';
 
-export const Wrapper = styled.View`
+export const Wrapper = styled.SafeAreaView`
   display: flex;
   flex-direction: column;
+  width: 100%;
   height: 100%;
-  /* padding: 15px 20px 0;  */
-`;
-
-export const TopWrapper = styled.View`
-  padding: 20px 20px 0px 20px;
 `;
 
 export const RowStyled = styled.View`
   display: flex;
   flex-direction: row;
+  width: 100%;
+  padding: 20px 20px 0px 20px;
+
+  justify-content: space-between;
 `;
 
 export const HeaderWrapper = styled.View`
@@ -22,6 +23,7 @@ export const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 32px;
+  padding: 20px 20px 0px 20px;
 `;
 
 export const LogoWrapper = styled.View`
@@ -39,12 +41,13 @@ export const LogoImage = styled.Image`
 export const LogoTitle = styled.Text`
   font-size: 24px;
   font-weight: 500;
-  font-family: fontMedium;
+  font-family: 'fontMedium';
 `;
 
 export const MenuWrapper = styled.View`
   display: flex;
   flex-direction: column;
+  padding: 20px 0px 0px 20px;
 `;
 
 export const MenuTitle = styled.Text`
@@ -56,6 +59,7 @@ export const MenuTitle = styled.Text`
 export const FilterWrapper = styled.ScrollView`
   display: flex;
   flex-direction: row;
+  /* height: 20px; */
   margin-bottom: 19px;
 `;
 
@@ -65,13 +69,13 @@ export const FilterBox = styled.View`
   border-radius: 30px;
   margin-right: 6px;
   padding: 8px 10px;
-  background-color: ${colors.secondary};
+  background-color: ${colors.buttonMain};
   color: red;
 `;
 
 export const FilterText = styled.Text`
   font-size: 12;
-  font-family: fontRegular;
+  font-family: 'fontRegular';
 `;
 
 export const FilterImage = styled.Image`
@@ -83,6 +87,7 @@ export const IconWrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
+  align-items: center;
 `;
 
 export const IconImage = styled.Image`
@@ -92,22 +97,22 @@ export const IconImage = styled.Image`
 
 export const IconText = styled.Text`
   font-size: 16px;
-  font-family: fontExtrLight;
+  font-family: 'fontExtrLight';
 `;
 
 export const ContentWrapper = styled.ScrollView`
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  background-color: red;
-  padding: 20px;
+  width: ${deviceWidth}px;
+  color: #f7f4ed;
 `;
 
 export const ProfileWrapper = styled.View`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 162px;
+  /* align-items: center; */
+  width: 46%;
   height: 236px;
   padding: 5px 6px 0px 6px;
   background-color: #fff;
@@ -115,12 +120,13 @@ export const ProfileWrapper = styled.View`
 `;
 
 export const Line = styled.View`
+  width: ${deviceWidth}px;
   border-width: 12px;
-  border-color: #000;
+  border-color: #f1ead5;
 `;
 
 export const BookImage = styled.Image`
-  width: 150px;
+  width: 100%;
   height: 175px;
   object-fit: contain;
 `;
