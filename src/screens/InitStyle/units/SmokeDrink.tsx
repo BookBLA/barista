@@ -20,7 +20,7 @@ const SmokeDrink = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={32} />
-      <S.ColumnStyled>
+      <S.ColumnStyled style={{ height: '80%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%' }}>
@@ -41,7 +41,7 @@ const SmokeDrink = () => {
             </T.ButtonStyled>
           </S.RowStyled>
         </View>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', alignItems: 'center', height: '30%' }}>
           <S.ContentStyled>음주 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%', marginBottom: 10 }}>
             {buttonTitles.slice(0, 3).map((title, index) => (
@@ -76,15 +76,15 @@ const SmokeDrink = () => {
             ))}
           </S.RowStyled>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-          <TouchableOpacity onPress={movePage()}>
-            <Image source={prevButton} />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={movePage('oppositeSex')}>
-            <Image source={nextButton} />
-          </TouchableOpacity>
-        </View>
       </S.ColumnStyled>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
+        <TouchableOpacity onPress={movePage()}>
+          <Image source={prevButton} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={movePage('oppositeSex')}>
+          <Image source={nextButton} />
+        </TouchableOpacity>
+      </View>
     </S.Wrapper>
   );
 };
