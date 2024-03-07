@@ -10,7 +10,6 @@ export const ProgressBarContainer = styled.View`
 
 export const ProgressBarFill = styled.View`
   height: 100%;
-  /* width: 10px; */
   width: ${(props: { progress: number }) => props.progress}%;
   background-color: ${colors.primary}; /* Progress color */
 `;

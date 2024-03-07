@@ -1,6 +1,6 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import { Image, Text } from 'react-native';
-import logo from '../../../../assets/images/logos/logoDarkBg.png';
+import logo from '../../../../assets/images/logos/logoDark.png';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/useMovePage';
 
