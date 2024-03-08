@@ -14,6 +14,7 @@ export const colors = {
   textYellow: '#FFEBAC',
   textGray: '#858585',
   errorMessageRed: '#F04C4C',
+  lineDivider: '#D2D6E2',
 };
 
 export const sizes = {};

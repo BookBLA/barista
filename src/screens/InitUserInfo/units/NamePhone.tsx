@@ -3,12 +3,12 @@ import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native';
-import prevButton from '../../../../assets/images/icons/prevButton.png';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
+import prevButton from '../../../../assets/images/buttons/prevButton.png';
+import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import notYetNextButton from '../../../../assets/images/icons/NotYetNextButton.png';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
 const NamePhone = () => {
   const [name, setName] = useState('이름');

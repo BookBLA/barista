@@ -28,16 +28,17 @@ export const LongButtonStyled = styled.TouchableOpacity`
 export const TextFiledStyled = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
   maxLength: 80, // 최대 글자 수
-  maxLine: 3,
 })`
-  width: 80%;
-  height: 72;
+  width: 85%;
+  height: 32%;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 14px;
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
   justify-content: center;
   text-align: start;
+  padding: 12px;
+  /* padding-top: 12px; */
 
   flex-shrink: 1;
 `;

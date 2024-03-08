@@ -1,26 +1,52 @@
 import useMovePage from '../../../commons/hooks/useMovePage';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import { Text } from 'react-native';
+import * as T from '../InitBook.styles';
+import { Text, Image, View } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
+import plusCircle from '../../../../assets/images/icons/PlusCircle.png';
+import { useState } from 'react';
+import { FavBookList } from '../../../commons/components/FavBookList/FavBookList';
+import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
 
 const AddBook = () => {
   const { movePage } = useMovePage();
+  const [isActivate, setIsActivate] = useState<boolean>(false);
 
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
-        <S.TitleStyled>스타일</S.TitleStyled>
+        <S.TitleStyled>내 서재</S.TitleStyled>
       </S.SafeAreaViewStyled>
-      <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16 }}>내가 좋아하는 책</Text>
-      <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
-        첫 번째 책이 나의 대표책으로 등록됩니다.
-      </Text>
-      <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
-        책은 최대 3권까지 추가할 수 있습니다.
-      </Text>
-      <S.NextButtonStyled onPress={movePage()}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-      </S.NextButtonStyled>
+      <S.ColumnStyled style={{ justifyContent: 'flex-start', height: deviceHeight * 0.8, width: deviceWidth }}>
+        <View style={{ height: '13%', alignItems: 'center', margin: '10%' }}>
+          <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16, marginBottom: 14 }}>
+            내가 좋아하는 책
+          </Text>
+          <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 7 }}>
+            첫 번째 책이 나의 대표책으로 등록됩니다.
+          </Text>
+          <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
+            책은 최대 3권까지 추가할 수 있습니다.
+          </Text>
+        </View>
+        <>
+          <FavBookList />
+          <T.BoundaryStyled />
+
+          <T.ButtonStyled onPress={movePage('searchBook')}>
+            <Image source={plusCircle} style={{ width: 29, height: 28 }} />
+          </T.ButtonStyled>
+        </>
+      </S.ColumnStyled>
+      {isActivate === false ? (
+        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      ) : (
+        <S.NextButtonStyled onPress={movePage('initQuiz')}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      )}
     </S.Wrapper>
   );
 };

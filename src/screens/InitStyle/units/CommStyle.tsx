@@ -4,8 +4,8 @@ import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import { IProps } from '../../../commons/components/MbtiItem/MbtiItem.types';
 import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { TouchableOpacity, View, Image } from 'react-native';
-import prevButton from '../../../../assets/images/icons/prevButton.png';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
+import prevButton from '../../../../assets/images/buttons/prevButton.png';
+import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 
