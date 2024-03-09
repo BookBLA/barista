@@ -15,10 +15,14 @@ const MbtiItem = ({ name }: IProps) => {
     <>
       <S.RowStyled>
         <S.ButtonStyled isSelect={isSelect} onPress={() => setSelect(true)}>
-          <S.TextStyled>{name[0]}</S.TextStyled>
+          <S.TextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
+            {name[0]}
+          </S.TextStyled>
         </S.ButtonStyled>
         <S.ButtonStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-          <S.TextStyled>{name[1]}</S.TextStyled>
+          <S.TextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
+            {name[1]}
+          </S.TextStyled>
         </S.ButtonStyled>
       </S.RowStyled>
     </>

@@ -6,6 +6,14 @@ export const colors = {
   secondaryActive: '',
   secondaryFocus: '',
   background: '#F7F4ED',
+  buttonMain: '#FFF5D6',
+  textGray2: '#A8AAB2',
+  buttonPrimary: '#1D2E61',
+  buttonYellow: '#FFF5D6',
+  textBlack: '#000000',
+  textYellow: '#FFEBAC',
+  textGray: '#858585',
+  errorMessageRed: '#F04C4C',
 };
 
 export const sizes = {};
