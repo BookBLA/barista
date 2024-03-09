@@ -12,6 +12,9 @@ import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
 import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
+import Kakao from '../../../screens/Login/KakaoLogin';
+import Login from '../../../screens/Login/Login';
+
 const Stack = createNativeStackNavigator();
 
 const screens = [
@@ -22,6 +25,8 @@ const screens = [
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'initUserinfoStack', component: CustomScreen(InitUserInfoStack) },
   { name: 'initStyleStack', component: CustomScreen(InitStyleStack) },
+  { name: 'login', component: CustomScreen(Login) },
+  { name: 'kakao', component: CustomScreen(Kakao) },
 ];
 
 export const CustomNavigator = () => {
@@ -36,7 +41,7 @@ export const CustomNavigator = () => {
         marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
       }}
     >
-      <Stack.Navigator initialRouteName="initUserinfoStack" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="login" screenOptions={{ headerShown: false }}>
         {screens.map(({ name, component }) => (
           <Stack.Screen key={name} name={name} component={component} />
         ))}

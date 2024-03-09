@@ -1,28 +1,102 @@
-const BASE_URL = 'https://kauth.kakao.com/oauth/authorize';
-const KAKAO_CLIENT_ID = '68f6f971eae2c6a3dcf201934d369f23'; // Replace with your Kakao Client ID
-const REDIRECT_URI = 'http://localhost:8081/';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import WebView from 'react-native-webview';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+// import { proxyUrl } from '../constant/common';
+import axios from 'axios';
 
-const handleLogin = (loginMethod: string) => {
-  /* ********* 카카오 로그인 ******** */
-  if (loginMethod === 'kakao') {
-    setLoginMethod('kakao');
-    setUri(
-      `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${REDIRECT_URI}&state=kakao`,
-    );
-    setShowModal(true);
-  }
-};
-/* 웹 뷰에서 응답 받은 결과를 핸들링 하는 함수 */
-// onMessage 함수는 로그인 화면으로 접속할 때와, 로그인 후 결과 화면에서 전부 실행됩니다.
-// 우리는 로그인 후의 값이 필요하기 때문에 분기문을 통하여 처리 해줍니다.
-const getLoginCode = async (data: string) => {
-  if (!data.startsWith(REDIRECT_URI)) return;
+const REST_API_KEY = '68f6f971eae2c6a3dcf201934d369f23';
+const REDIRECT_URI = 'http://localhost:8081';
+const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
-  const parsedQs = qs.parse(data.split('?')[1]);
-  const code = parsedQs?.code as string;
-  const state = parsedQs?.state as string;
-  // code와 state 값을 가지고 login api params로 세팅.
-  if (code && state && ['kakao', 'google', 'apple'].includes(state)) {
-    logIn(code, state);
+const Kakao = () => {
+  const [showOverlay, setShowOverlay] = useState(true);
+
+  const navigation = useNavigation();
+
+  const kakao_url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+
+  const handleWebViewMessage = (data: any) => {
+    KakaoLoginWebView(data);
+  };
+
+  function KakaoLoginWebView(data: string) {
+    console.log('카카오 로그인 시도:::');
+    const exp = 'code=';
+    var condition = data.indexOf(exp);
+    if (condition != -1) {
+      var authorize_code = data.substring(condition + exp.length);
+      console.log('코드:::', authorize_code);
+      // fetchData();
     }
+  }
+
+  // const fetchData = async () => {
+  //   console.log('카카오 fetch 실행');
+  //   try {
+  //     const response = await axios.get(kakao_url, {
+  //       headers: {
+  //         'Content-Type': 'application/json; charset=utf-8',
+  //       },
+  //     });
+  //     // const access_token = response.headers.authorization;
+  //     const access_token = response.data.data.accessToken;
+  //     const refresh_token = response.data.data.refreshToken;
+  //     await AsyncStorage.setItem('access_token', access_token);
+  //     await AsyncStorage.setItem('refresh_token', refresh_token);
+  //     console.log('저장함::', access_token);
+  //     // postData();
+  //     navigation.replace('SignUpScreen', { screen: 'SignUp' });
+  //   } catch (error) {
+  //     console.log('errorMessage:::', error);
+  //     if (error.response) {
+  //       console.error('서버 응답 오류:', error.response);
+  //     } else {
+  //       console.error('에러:', error);
+  //     }
+  //   }
+  // };
+
+  return (
+    <View style={styles.container}>
+      <WebView
+        style={{ flex: 1 }}
+        originWhitelist={['*']}
+        scalesPageToFit={false}
+        source={{
+          uri: kakao_url,
+        }}
+        startInLoadingState={true}
+        renderLoading={() => (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#000" />
+          </View>
+        )}
+        injectedJavaScript={INJECTED_JAVASCRIPT}
+        javaScriptEnabled
+        onMessage={(event: { nativeEvent: { [x: string]: any } }) => {
+          handleWebViewMessage(event.nativeEvent['url']);
+        }}
+      />
+    </View>
+  );
 };
+
+export default Kakao;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginTop: 24,
+    backgroundColor: '#fff',
+    zIndex: 100,
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});

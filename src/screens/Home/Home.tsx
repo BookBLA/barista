@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import { Button } from 'react-native';
-
-import { SafeAreaViewStyled, TitleStyled } from './Home.styles';
-
-const Home = ({ navigation }: { navigation: any }) => {
-  return (
-    <SafeAreaViewStyled>
-      <TitleStyled>BookBla</TitleStyled>
-      <Button title="example" onPress={() => navigation.navigate('example')} />
-    </SafeAreaViewStyled>
-=======
 import React from 'react';
 import * as S from './Home.styles';
 import { CustomText } from '../../commons/components/CustomText/CustomText.styles';
@@ -78,7 +65,6 @@ const Home = () => {
         })}
       </S.ContentWrapper>
     </S.Wrapper>
->>>>>>> 9c920c7a93053f16c14d517681f4d3c2b058f224
   );
 };
 

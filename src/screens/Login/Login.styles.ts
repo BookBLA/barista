@@ -48,7 +48,7 @@ export const SnsText = styled.Text`
   font-weight: 700;
 `;
 
-export const LoginButton = styled.Image`
+export const LoginButton = styled.TouchableOpacity`
   width: 300px;
   height: 45px;
 `;
