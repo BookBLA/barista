@@ -34,8 +34,12 @@
     "react-native-webview": "^13.8.1",
     "styled-components": "^6.1.8",
     "zustand": "^4.5.0",
+<<<<<<< HEAD
     "react-native-web": "~0.19.6",
     "@expo/metro-runtime": "~3.1.3"
+=======
+    "expo-apple-authentication": "~6.3.0"
+>>>>>>> df38014623cc2946e0d91ca236fdc493b46abb29
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
