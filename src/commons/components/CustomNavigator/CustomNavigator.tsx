@@ -13,6 +13,9 @@ import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import InitBookStack from '../../../screens/InitBook/initBook';
 
+import Kakao from '../../../screens/Login/KakaoLogin';
+import Login from '../../../screens/Login/Login';
+
 const Stack = createNativeStackNavigator();
 
 const screens = [
@@ -24,6 +27,8 @@ const screens = [
   { name: 'initUserinfoStack', component: CustomScreen(InitUserInfoStack) },
   { name: 'initStyleStack', component: CustomScreen(InitStyleStack) },
   { name: 'initBookStack', component: CustomScreen(InitBookStack) },
+  { name: 'login', component: CustomScreen(Login) },
+  { name: 'kakao', component: CustomScreen(Kakao) },
 ];
 
 export const CustomNavigator = () => {
