@@ -8,7 +8,10 @@ import { useState } from 'react';
 import answerA from '../../../../assets/images/icons/AnswerA.png';
 import answerB from '../../../../assets/images/icons/AnswerB.png';
 import answerC from '../../../../assets/images/icons/AnswerC.png';
-import { deviceHeight } from '../../../commons/utils/dimensions';
+import backArrow from '../../../../assets/images/icons/BackArrow.png';
+import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
+import Dash from 'react-native-dash';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const InitQuiz = () => {
   const [comment, setComment] = useState('');
@@ -32,56 +35,100 @@ const InitQuiz = () => {
 
   return (
     <S.Wrapper>
-      <S.SafeAreaViewStyled>
-        <S.TitleStyled>나미야 잡화점의 기적</S.TitleStyled>
-      </S.SafeAreaViewStyled>
-      <TouchableHighlight
-        style={{
-          height: deviceHeight * 0.75,
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-        onPress={Keyboard.dismiss}
-        underlayColor="transparent"
-      >
-        <View style={{ height: '100%', width: '100%', alignItems: 'center' }}>
-          <>
-            <S.ContentStyled style={{ marginTop: 30, marginBottom: 38, fontSize: 18 }}>
-              책 한줄 감상문 남기기
-            </S.ContentStyled>
-            <U.TextFiledStyled
-              value={comment}
-              onChangeText={setComment}
-              onFocus={handleFocus}
-              onBlur={handleBlur}
-              style={{
-                color: colors.primary,
-              }}
-            />
-          </>
-          <U.BoundaryStyled />
-          <View style={{ height: deviceHeight * 0.5, width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginBottom: 26, fontSize: 18 }}>독서퀴즈</S.ContentStyled>
-            <U.QuizTextFiledStyled style={{ height: 'auto', marginBotom: 32 }}>
-              {/* <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q</Text> */}
-            </U.QuizTextFiledStyled>
-            <U.RowStyled>
-              <Image source={answerA} style={{ width: 32, height: 32 }} />
-              <U.QuizTextFiledStyled />
-            </U.RowStyled>
-            <U.RowStyled>
-              <Image source={answerB} style={{ width: 32, height: 32 }} />
-              <U.QuizTextFiledStyled />
-            </U.RowStyled>
-            <U.RowStyled>
-              <Image source={answerC} style={{ width: 32, height: 32 }} />
-              <U.QuizTextFiledStyled />
-            </U.RowStyled>
-          </View>
+      <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', height: '9%' }}>
+        <TouchableOpacity onPress={movePage()}>
+          <Image source={backArrow} style={{ width: 24, height: 24, marginLeft: 14 }} />
+        </TouchableOpacity>
+        <View
+          style={{
+            width: '80%',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'row',
+            height: 'auto',
+          }}
+        >
+          <S.TitleStyled>나미야 잡화점의 기적</S.TitleStyled>
         </View>
-      </TouchableHighlight>
+      </View>
+      <S.ColumnStyled style={{ height: '70%' }}>
+        <TouchableHighlight
+          style={{
+            height: '100%',
+            width: '100%',
+            alignItems: 'center',
+          }}
+          onPress={Keyboard.dismiss}
+          underlayColor="transparent"
+        >
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'space-around',
+            }}
+          >
+            <View style={{ width: '100%', height: '30%', alignItems: 'center' }}>
+              <S.ContentStyled style={{ marginBottom: 36, fontSize: 18 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+              <U.TextFiledStyled
+                value={comment}
+                onChangeText={setComment}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                style={{
+                  color: colors.primary,
+                }}
+              />
+              <S.RowStyled style={{ justifyContent: 'flex-end', width: '85%' }}>
+                <Text
+                  style={{
+                    color: colors.textGray2,
+                    fontFamily: 'fontRegular',
+                    fontSize: 12,
+                    marginTop: 5,
+                  }}
+                >
+                  {comment.length}/100자
+                </Text>
+              </S.RowStyled>
+            </View>
+            <Dash
+              style={{
+                width: '85%',
+                height: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginBottom: 10,
+                marginTop: 10,
+              }}
+              dashGap={5}
+              dashLength={5}
+              dashThickness={1.5}
+              dashColor={colors.lineDivider}
+            />
+
+            <View style={{ height: 'auto', width: '100%', alignItems: 'center' }}>
+              <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>독서퀴즈</S.ContentStyled>
+              <U.QuizTextFiledStyled style={{ height: 'auto', marginBottom: 32 }}>
+                {/* <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q</Text> */}
+              </U.QuizTextFiledStyled>
+              <U.RowStyled>
+                <Image source={answerA} style={{ width: 32, height: 32 }} />
+                <U.QuizTextFiledStyled />
+              </U.RowStyled>
+              <U.RowStyled>
+                <Image source={answerB} style={{ width: 32, height: 32 }} />
+                <U.QuizTextFiledStyled />
+              </U.RowStyled>
+              <U.RowStyled>
+                <Image source={answerC} style={{ width: 32, height: 32 }} />
+                <U.QuizTextFiledStyled />
+              </U.RowStyled>
+            </View>
+          </View>
+        </TouchableHighlight>
+      </S.ColumnStyled>
       {isActivate === false ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>

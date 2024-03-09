@@ -15,10 +15,10 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
       {mode === 'arrow' && (
         <>
           <S.ArrowButton onPress={buttons[0].action}>
-            <Image source={require('../../../../../assets/images/icons/leftArrow.png')} />
+            <Image source={require('../../../../../assets/images/buttons/prevButton.png')} />
           </S.ArrowButton>
           <S.ArrowButton onPress={buttons[1].action}>
-            <Image source={require('../../../../../assets/images/icons/rightArrow.png')} />
+            <Image source={require('../../../../../assets/images/buttons/nextButton.png')} />
           </S.ArrowButton>
         </>
       )}

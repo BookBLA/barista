@@ -18,20 +18,12 @@ export const RowStyled = styled.View`
   margin-bottom: 10px;
 `;
 
-export const BoundaryStyled = styled.View`
-  height: 0.5px;
-  width: 100%;
-  border-color: ${colors.lineDivider};
-  border-style: dashed;
-  border-width: 2px;
-`;
-
 export const TextFiledStyled = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
   maxLength: 100, // 최대 글자 수
 })`
-  width: 85%;
-  height: 13%;
+  width: 88%;
+  height: 55%;
   border-radius: 10px;
   font-size: 14px;
   font-family: fontMedium;
@@ -40,7 +32,7 @@ export const TextFiledStyled = styled.TextInput.attrs({
   text-align: start;
   padding: 12px;
   padding-top: 12px;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   flex-shrink: 1;
 `;
 

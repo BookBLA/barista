@@ -45,7 +45,7 @@ const PersonalQuestion = () => {
       >
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled style={{ marginBottom: 10 }}>상대방에게 궁금한 점을 적어주세요</S.ContentStyled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 28 }}>
+          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 10 }}>
             ex) 주로 어디서 책을 읽나요?
           </Text>
           <T.TextFiledStyled
@@ -54,7 +54,7 @@ const PersonalQuestion = () => {
             onFocus={handleFocus}
             onBlur={handleBlur}
             style={{
-              color: colors.primary,
+              color: question === '' ? colors.textGray2 : colors.primary,
             }}
           />
           <S.RowStyled style={{ justifyContent: 'flex-end', width: '80%' }}>
@@ -71,7 +71,7 @@ const PersonalQuestion = () => {
           </S.RowStyled>
         </View>
       </TouchableHighlight>
-      <S.NextButtonStyled onPress={movePage()}>
+      <S.NextButtonStyled onPress={movePage('initBookStack')}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
       </S.NextButtonStyled>
     </S.Wrapper>

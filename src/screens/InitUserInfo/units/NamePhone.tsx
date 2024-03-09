@@ -85,7 +85,7 @@ const NamePhone = () => {
               onFocus={handleFocus2}
               onBlur={handleBlur2}
               style={{
-                color: userInfo.name === '' ? colors.textGray2 : colors.primary,
+                color: name === '이름' /*|| isFocused2 === true*/ ? colors.textGray2 : colors.primary,
               }}
             />
           </View>
@@ -104,7 +104,7 @@ const NamePhone = () => {
                 keyboardType="numeric" // 숫자 키패드만 허용
                 maxLength={13} // 최대 길이 제한 (하이픈 포함)
                 style={{
-                  color: userInfo.phoneNumber === '' ? colors.textGray2 : colors.primary,
+                  color: phNum === '010-1234-5678' ? colors.textGray2 : colors.primary,
                 }}
               />
             </View>
