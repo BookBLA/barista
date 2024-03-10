@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
@@ -9,44 +9,30 @@ import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import notYetNextButton from '../../../../assets/images/icons/NotYetNextButton.png';
 
 const GenderBirth = () => {
-  const [isSelect, setSelect] = useState<null | boolean>(null);
-  const [date, setDate] = useState(new Date());
+  const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  // console.log(date);
-  // console.log(userInfo.birthDate);
-  useEffect(() => {
-    genderSelect();
-  }, []);
-  const genderSelect = () => {
-    if (userInfo.gender === '여성') {
-      setSelect(true);
-    } else if (userInfo.gender === '남성') {
-      setSelect(false);
-    }
-  };
-  const { isOpen, toggle } = useToggle();
+  const [date, setDate] = useState(new Date());
+
+  console.log('userInfo', userInfo);
+
   const dateSelect = () => {
-    setDate(date);
-    const dateString = date.toISOString();
-    updateUserInfo('birthDate', dateString.slice(0, 10));
+    const dateString = date.toISOString().slice(0, 10);
+    updateUserInfo('birthDate', dateString);
     toggle();
   };
 
   const modalConfig = {
-    visible: isOpen, // 모달 온오프 상태관리 변수입니다. // 필수값
-    onClose: toggle, // 모달 온오프 관리하는 함수입니다. // 필수값
-    close: true, // 우측 상단 x 버튼 표시 유무 입니다. // 선택값
-    mode: 'round', // 모달 하단에 버튼 표시 유무 arrow 모드, round모드가 있습니다. // 선택값
+    visible: isOpen,
+    onClose: toggle,
+    close: true,
+    mode: 'round',
     buttons: [
       { label: '취소', action: toggle, color: 'black', bgColor: colors.buttonMain },
       { label: '확인', action: dateSelect, color: colors.secondary },
     ],
-    // 모달 하단에 버탠의 갯수 최대 2개  // mode 속성 등록 시에만 필수값 입니다.
-    // label: 선택, action: 필수, color: 선택, bgColor: 선택
   };
 
   return (
@@ -57,41 +43,30 @@ const GenderBirth = () => {
           <S.ContentStyled>성별을 선택해 주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
-              isSelect={isSelect}
-              onPress={() => {
-                setSelect(true);
-                updateUserInfo('gender', '여성');
-                console.log('gender 여성');
-                console.log(userInfo.gender);
-              }}
+              isSelect={userInfo.gender === '여성'}
+              onPress={() => updateUserInfo('gender', '여성')}
             >
-              <S.ButtonTextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
-                여성
-              </S.ButtonTextStyled>
+              <S.ButtonTextStyled>여성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
-              isSelect={isSelect === false}
-              onPress={() => {
-                setSelect(false);
-                updateUserInfo('gender', '남성');
-                console.log('gender 남성');
-                console.log(userInfo.gender);
-              }}
+              isSelect={userInfo.gender === '남성'}
+              onPress={() => updateUserInfo('gender', '남성')}
             >
-              <S.ButtonTextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-                남성
-              </S.ButtonTextStyled>
+              <S.ButtonTextStyled>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>생년월일을 선택해 주세요.</S.ContentStyled>
           <S.ButtonStyled onPress={toggle}>
-            {userInfo.birthDate === '' ? (
-              <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>YYYY/MM/DD</Text>
-            ) : (
-              <Text style={{ color: colors.primary, fontFamily: 'fontMedium' }}>{userInfo.birthDate}</Text>
-            )}
+            <Text
+              style={{
+                color: userInfo.birthDate === '' ? colors.textGray2 : colors.primary,
+                fontFamily: 'fontMedium',
+              }}
+            >
+              {userInfo.birthDate === '' ? 'YYYY/MM/DD' : userInfo.birthDate}
+            </Text>
           </S.ButtonStyled>
           <CustomModal modalConfig={modalConfig}>
             <S.RowStyled style={{ justifyContent: 'flex-start' }}>
