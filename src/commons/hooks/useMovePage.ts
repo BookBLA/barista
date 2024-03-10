@@ -22,22 +22,6 @@ const useMovePage = <T extends ParamListBase>() => {
     navigation?.navigate(screenName, params);
   };
 
-  // const push = (screenName: string, params?: any) => {
-  //   navigation?.push(screenName, params);
-  // };
-
-  // const popToTop = () => {
-  //   navigation?.popToTop();
-  // };
-
-  // const replace = (screenName: string, params?: any) => {
-  //   navigation?.replace(screenName, params);
-  // };
-
-  // const reset = (state: any) => {
-  //   navigation?.reset(state);
-  // };
-
   return { goBack, handleNext, movePage };
 };
 
