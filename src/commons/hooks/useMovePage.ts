@@ -5,7 +5,7 @@ const useMovePage = <T extends ParamListBase>() => {
   const navigation = useContext(NavigationContext);
 
   const goBack = () => {
-    navigation?.goBack();
+    navigation?.canGoBack() ? navigation?.goBack() : navigation?.navigate('example');
   };
 
   const handleNext = (screenName: string, params?: T[keyof T]) => () => {
@@ -15,28 +15,12 @@ const useMovePage = <T extends ParamListBase>() => {
   };
 
   const movePage = (screenName?: string, params?: T[keyof T]) => () => {
-    if (screenName) {
-      navigation?.navigate(screenName, params);
-    } else {
-      navigation?.goBack();
+    if (!screenName) {
+      navigation?.canGoBack() ? navigation?.goBack() : navigation?.navigate('example');
+      return;
     }
+    navigation?.navigate(screenName, params);
   };
-
-  // const push = (screenName: string, params?: any) => {
-  //   navigation?.push(screenName, params);
-  // };
-
-  // const popToTop = () => {
-  //   navigation?.popToTop();
-  // };
-
-  // const replace = (screenName: string, params?: any) => {
-  //   navigation?.replace(screenName, params);
-  // };
-
-  // const reset = (state: any) => {
-  //   navigation?.reset(state);
-  // };
 
   return { goBack, handleNext, movePage };
 };

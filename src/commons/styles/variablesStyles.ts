@@ -1,20 +1,50 @@
 export const colors = {
   primary: '#1D2E61',
-  primaryActive: '',
-  primaryFocus: '',
+  primary02: '#FFEBAC',
   secondary: '#F7E2A4',
-  secondaryActive: '',
-  secondaryFocus: '',
   background: '#F7F4ED',
+  dividerLine: '#D2D6E2',
+
+  // 버튼 색상
+  buttonAuthToggle: '#BBBFCF',
   buttonMain: '#FFF5D6',
-  textGray2: '#A8AAB2',
   buttonPrimary: '#1D2E61',
   buttonYellow: '#FFF5D6',
+  buttonPrevNext: '#E9DCB9',
+  buttonWrong: '#EE3D3D',
+  buttonCorrect: '#2EA16A',
+  buttonAddBook: '#49526E',
+  buttonEditProfile: '#F0E7CF',
+  buttonPostcard: '#F7F4ED',
+  buttonReauth: '#8D96B0',
+  buttonNavStroke: '#ECEDEF',
+  buttonEditReply: '#F5F0E2',
+  buttonDeleteBook: '#E65D5D',
+
+  // 텍스트 색상
+  textQaGray: '#BBBFCF',
+  errorMessageRed: '#F04C4C',
+  textNavy: '#1D2E61',
+  textLinkBlue: '#3151C2',
+  textAuthorName: '#616C90',
+  textMain: '#000000',
   textBlack: '#000000',
   textYellow: '#FFEBAC',
   textGray: '#858585',
+<<<<<<< HEAD
   errorMessageRed: '#F04C4C',
   lineDivider: '#D2D6E2',
+=======
+  textGray2: '#A8AAB2',
+  textGray3: '#858585',
+  textGray4: '#787878',
+  textGray5: '#2a2a2a',
+
+  // 아이콘 색상
+  iconLoadBG: '#D6EFFB',
+  iconLoadFill: '#AFDFF8',
+  iconLoadStroke: '#E6F5FD',
+>>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
 };
 
 export const sizes = {};
