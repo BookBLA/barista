@@ -2,7 +2,7 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import Example02 from '../../Example02/Example02';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
+import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 

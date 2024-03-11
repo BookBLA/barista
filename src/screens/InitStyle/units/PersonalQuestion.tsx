@@ -71,7 +71,7 @@ const PersonalQuestion = () => {
           </S.RowStyled>
         </View>
       </TouchableHighlight>
-      <S.NextButtonStyled onPress={movePage()}>
+      <S.NextButtonStyled onPress={movePage('initBookStack')}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
       </S.NextButtonStyled>
     </S.Wrapper>
