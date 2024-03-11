@@ -15,6 +15,7 @@ import InitBookStack from '../../../screens/InitBook/initBook';
 
 import Kakao from '../../../screens/Login/KakaoLogin';
 import Login from '../../../screens/Login/Login';
+import TOS from '../../../screens/TOS/TOS';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ const screens = [
   { name: 'initBookStack', component: CustomScreen(InitBookStack) },
   { name: 'login', component: CustomScreen(Login) },
   { name: 'kakao', component: CustomScreen(Kakao) },
+  { name: 'tos', component: CustomScreen(TOS) },
 ];
 
 export const CustomNavigator = () => {
@@ -43,7 +45,7 @@ export const CustomNavigator = () => {
         marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
       }}
     >
-      <Stack.Navigator initialRouteName="initBookStack" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="tos" screenOptions={{ headerShown: false }}>
         {screens.map(({ name, component }) => (
           <Stack.Screen key={name} name={name} component={component} />
         ))}
