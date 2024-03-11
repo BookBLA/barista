@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import {

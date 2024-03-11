@@ -40,6 +40,7 @@ export const QuizTextFiledStyled = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
   maxLength: 60, // 최대 글자 수
 })`
+  placeholdertextcolor: ${colors.textGray2};
   width: 86%;
   height: 38px;
   border-radius: 60px;
@@ -52,4 +53,28 @@ export const QuizTextFiledStyled = styled.TextInput.attrs({
   margin: 7px 0;
   text-align: start;
   padding-left: 16px;
+`;
+
+export const QuizStyled = styled.View`
+  width: 86%;
+  height: 38px;
+  border-radius: 60px;
+  padding: 12px 0;
+  background-color: ${colors.buttonMain};
+  align-items: center;
+  /* justify-content: start; */
+  flex-direction: row;
+  padding-left: 16px;
+`;
+
+export const QuizTextInput = styled.TextInput.attrs({
+  multiline: true, // 여러 줄 입력 가능
+  maxLength: 60, // 최대 글자 수
+})`
+  width: 80%;
+  height: 38px;
+  font-size: 12px;
+  font-family: fontMedium;
+  text-align: start;
+  padding-left: 5px;
 `;

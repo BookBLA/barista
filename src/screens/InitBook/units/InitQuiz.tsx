@@ -2,7 +2,7 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitStyle/InitStyle.styles';
 import * as U from '../InitBook.styles';
-import { Text, Image, TouchableHighlight, Keyboard, View } from 'react-native';
+import { Text, Image, TouchableHighlight, Keyboard, View, TextInput } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { useState } from 'react';
 import answerA from '../../../../assets/images/icons/AnswerA.png';
@@ -17,6 +17,10 @@ const InitQuiz = () => {
   const [comment, setComment] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [isActivate, setIsActivate] = useState<boolean>(false);
+  const [quiz, setQuiz] = useState<string[]>([]);
+  const [correctAnswer, setCorrectAnswer] = useState<string>('');
+  const [wrongAnswer1, setWrongAnswer1] = useState<string>('');
+  const [wrongAnswer2, setWrongAnswer2] = useState<string>('');
   const { movePage } = useMovePage();
 
   const handleFocus = () => {
@@ -110,20 +114,32 @@ const InitQuiz = () => {
 
             <View style={{ height: 'auto', width: '100%', alignItems: 'center' }}>
               <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>독서퀴즈</S.ContentStyled>
-              <U.QuizTextFiledStyled style={{ height: 'auto', marginBottom: 32 }}>
-                {/* <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q</Text> */}
-              </U.QuizTextFiledStyled>
+              {/* <U.QuizTextFiledStyled
+                style={{ height: 'auto', marginBottom: 32 }}
+                placeholder="책을 읽었는지 확일할 질문을 적어주세요."
+                
+              >
+                <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
+              </U.QuizTextFiledStyled> */}
+              <U.QuizStyled style={{ height: 'auto', marginBottom: 32 }}>
+                <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
+                <U.QuizTextInput
+                  style={{ height: 'auto' }} // Adjust margin as needed
+                  placeholder="책을 읽었는지 확인할 질문을 적어주세요."
+                  placeholderTextColor={colors.textGray2} // Assuming colors.placeholder is defined
+                />
+              </U.QuizStyled>
               <U.RowStyled>
                 <Image source={answerA} style={{ width: 32, height: 32 }} />
-                <U.QuizTextFiledStyled />
+                <U.QuizTextFiledStyled placeholder="정답이 들어갈 영역입니다." />
               </U.RowStyled>
               <U.RowStyled>
                 <Image source={answerB} style={{ width: 32, height: 32 }} />
-                <U.QuizTextFiledStyled />
+                <U.QuizTextFiledStyled placeholder="오답이 들어갈 영역입니다." />
               </U.RowStyled>
               <U.RowStyled>
                 <Image source={answerC} style={{ width: 32, height: 32 }} />
-                <U.QuizTextFiledStyled />
+                <U.QuizTextFiledStyled placeholder="오답이 들어갈 영역입니다." />
               </U.RowStyled>
             </View>
           </View>

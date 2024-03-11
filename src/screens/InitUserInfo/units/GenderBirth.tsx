@@ -9,10 +9,7 @@ import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
-<<<<<<< HEAD
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-=======
->>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
 
 const GenderBirth = () => {
   const { isOpen, toggle } = useToggle();

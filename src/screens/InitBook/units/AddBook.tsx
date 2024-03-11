@@ -34,7 +34,14 @@ const AddBook = () => {
           <FavBookList />
 
           <Dash
-            style={{ width: '85%', height: 1, flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}
+            style={{
+              width: '85%',
+              height: 1,
+              flexDirection: 'row',
+              justifyContent: 'center',
+              marginBottom: 20,
+              marginTop: 20,
+            }}
             dashGap={5}
             dashLength={5}
             dashThickness={1.5}

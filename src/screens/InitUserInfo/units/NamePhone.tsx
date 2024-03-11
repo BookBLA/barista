@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-<<<<<<< HEAD
 import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
@@ -9,14 +8,6 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-=======
-import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, Keyboard } from 'react-native';
-import prevButton from '../../../../assets/images/icons/prevButton.png';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
-import useMovePage from '../../../commons/hooks/useMovePage';
-import { TitleProgress } from './TitleProgress';
-import { useUserStore } from '../../../commons/store/useUserinfo';
->>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
 
 const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
@@ -55,21 +46,11 @@ const NamePhone = () => {
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
-<<<<<<< HEAD
-              value={userInfo.name === '' ? name : userInfo.name}
-              onChangeText={setName}
-              onFocus={handleFocus2}
-              onBlur={handleBlur2}
-              style={{
-                color: name === '이름' /*|| isFocused2 === true*/ ? colors.textGray2 : colors.primary,
-              }}
-=======
               defaultValue={userInfo.name}
               onChangeText={(text: string) => setName(text)}
               onBlur={() => updateUserInfo('name', name)}
               placeholder="이름"
               placeholderTextColor={colors.textGray2}
->>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
             />
           </View>
           <KeyboardAvoidingView
@@ -85,14 +66,8 @@ const NamePhone = () => {
                 onBlur={() => updateUserInfo('phoneNumber', phNum)}
                 keyboardType="numeric" // 숫자 키패드만 허용
                 maxLength={13} // 최대 길이 제한 (하이픈 포함)
-<<<<<<< HEAD
-                style={{
-                  color: phNum === '010-1234-5678' ? colors.textGray2 : colors.primary,
-                }}
-=======
                 placeholder="010-1234-5678"
                 placeholderTextColor={colors.textGray2}
->>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
               />
             </View>
           </KeyboardAvoidingView>

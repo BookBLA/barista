@@ -31,10 +31,8 @@ export const colors = {
   textBlack: '#000000',
   textYellow: '#FFEBAC',
   textGray: '#858585',
-<<<<<<< HEAD
-  errorMessageRed: '#F04C4C',
+
   lineDivider: '#D2D6E2',
-=======
   textGray2: '#A8AAB2',
   textGray3: '#858585',
   textGray4: '#787878',
@@ -44,7 +42,6 @@ export const colors = {
   iconLoadBG: '#D6EFFB',
   iconLoadFill: '#AFDFF8',
   iconLoadStroke: '#E6F5FD',
->>>>>>> ea0ed25b73722ff0fcd1a95b62376e823440b57a
 };
 
 export const sizes = {};
