@@ -1,10 +1,11 @@
 import useMovePage from '../../commons/hooks/useMovePage';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import * as T from './TOS.styles';
-import { Text } from 'react-native';
+import { Text, TouchableOpacity, Image, View, Linking } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import nextArrow from '../../../assets/images/icons/NextArrow.png';
 
 const TOS = () => {
   const { movePage } = useMovePage();
@@ -17,8 +18,20 @@ const TOS = () => {
     '민감정보 수집 및 이용 동의 (필수)',
     '마케팅 정보 수신 동의 (선택)',
   ];
-  const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
+  const agreementUrls = [
+    'https://rust-sprite-73f.notion.site/9f79f7b3c5a24e01b4d592a8be8ba5b7',
+    'https://rust-sprite-73f.notion.site/8048e82a8d964df3ac5298ecb03f9114',
+    'https://rust-sprite-73f.notion.site/3-c7de210a0d9f4500844ff813d73451ea',
+    'https://rust-sprite-73f.notion.site/442c4ef7242f42dc935849e159e8f65d',
+  ];
 
+  const handleAgreementLinkPress = (index: number) => {
+    const url = agreementUrls[index - 2]; // index는 1부터 시작하므로 1을 빼줘야 해당 인덱스의 주소에 접근 가능
+    Linking.openURL(url);
+  };
+
+  const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
+  const [isActive, setIsActive] = useState<boolean>(false);
   const handleCheckboxChange = (index: number) => {
     const updatedChecked = [...isChecked];
     if (index === 0) {
@@ -35,6 +48,11 @@ const TOS = () => {
       }
     }
     setIsChecked(updatedChecked);
+
+    // 체크박스가 1, 2, 3, 4, 5 중 하나라도 체크되었을 때 isActive를 true로 설정
+    const anyCheckboxChecked = updatedChecked.slice(1, 6).every((checked) => checked);
+    if (anyCheckboxChecked === true) updatedChecked[0] = true;
+    setIsActive(anyCheckboxChecked);
   };
 
   return (
@@ -43,21 +61,43 @@ const TOS = () => {
         <S.TitleStyled>약관 동의</S.TitleStyled>
       </S.SafeAreaViewStyled>
       <T.ColumnStyled>
-        <S.ContentStyled>북블라 서비스 동의</S.ContentStyled>
+        <S.ContentStyled style={{ marginBottom: 30 }}>북블라 서비스 동의</S.ContentStyled>
         {agreementTitles.map((title, index) => (
-          <T.RowStyled>
-            <Checkbox
-              value={isChecked[index]}
-              onValueChange={() => handleCheckboxChange(index)}
-              color={isChecked[index] ? colors.primary : undefined}
-            />
-            <Text>{title}</Text>
-          </T.RowStyled>
+          <React.Fragment key={index}>
+            <T.RowStyled>
+              <View style={{ flexDirection: 'row' }}>
+                <Checkbox
+                  value={isChecked[index]}
+                  onValueChange={() => handleCheckboxChange(index)}
+                  color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
+                />
+                <Text style={{ marginLeft: 6 }}>{title}</Text>
+              </View>
+
+              {(index === 2 || index === 3 || index === 4 || index === 5) && (
+                <TouchableOpacity onPress={() => handleAgreementLinkPress(index)}>
+                  <Image source={nextArrow} style={{ width: 8, height: 16 }} />
+                </TouchableOpacity>
+              )}
+            </T.RowStyled>
+            {index === 0 && <T.DividerStyled />}
+            {index === 6 && (
+              <Text style={{ color: colors.textGray3, fontSize: 12, marginLeft: 26 }}>
+                이벤트 및 혜택 정보를 보내드립니다.
+              </Text>
+            )}
+          </React.Fragment>
         ))}
       </T.ColumnStyled>
-      <S.NextButtonStyled onPress={movePage('initStyleStack')}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-      </S.NextButtonStyled>
+      {isActive === false ? (
+        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      ) : (
+        <S.NextButtonStyled onPress={movePage('initUserinfoStack')}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      )}
     </S.Wrapper>
   );
 };
