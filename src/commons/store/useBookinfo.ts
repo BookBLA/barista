@@ -15,5 +15,5 @@ export const useBookStore = create<BookState>((set) => ({
     title: '',
     authors: [],
   },
-  updateUserInfo: (field, value) => set((state) => ({ userInfo: { ...state.userInfo, [field]: value } })),
+  updateBookInfo: (field, value) => set((state) => ({ bookInfo: { ...state.bookInfo, [field]: value } })),
 }));

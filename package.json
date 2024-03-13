@@ -37,7 +37,8 @@
     "react-native-web": "~0.19.6",
     "react-native-webview": "^13.8.1",
     "styled-components": "^6.1.8",
-    "zustand": "^4.5.0"
+    "zustand": "^4.5.0",
+    "expo-checkbox": "~2.7.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

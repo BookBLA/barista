@@ -2,14 +2,13 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitStyle/InitStyle.styles';
 import * as U from '../InitBook.styles';
-import { Text, Image, TouchableHighlight, Keyboard, View, TextInput } from 'react-native';
+import { Text, Image, TouchableHighlight, Keyboard, View } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { useState } from 'react';
 import answerA from '../../../../assets/images/icons/AnswerA.png';
 import answerB from '../../../../assets/images/icons/AnswerB.png';
 import answerC from '../../../../assets/images/icons/AnswerC.png';
 import backArrow from '../../../../assets/images/icons/BackArrow.png';
-import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
 import Dash from 'react-native-dash';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
