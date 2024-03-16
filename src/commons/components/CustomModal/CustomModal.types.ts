@@ -1,5 +1,5 @@
 export interface IProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   modalConfig: IModalConfig;
 }
 
@@ -10,6 +10,8 @@ export interface IModalConfig {
   mode?: string;
   size?: string | number;
   visible: boolean;
+  title?: React.ReactNode;
+  contents?: React.ReactNode;
 }
 export interface IButtons {
   action: () => void;

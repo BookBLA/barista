@@ -6,7 +6,7 @@ import { ModalButtons } from './ModalButtons/ModalButtons';
 import { CloseButton } from './CloseButton/CloseButton';
 
 export const CustomModal: React.FC<IProps> = ({ children, modalConfig }) => {
-  const { buttons, size, mode, close, onClose, visible } = modalConfig;
+  const { buttons, size, mode, close, onClose, visible, title, contents } = modalConfig;
 
   return (
     <Modal animationType="fade" transparent={true} visible={visible} onRequestClose={onClose}>
@@ -14,7 +14,8 @@ export const CustomModal: React.FC<IProps> = ({ children, modalConfig }) => {
         <S.Wrapper>
           <TouchableWithoutFeedback>
             <S.InnerWrapper close={close} size={size}>
-              {close && <CloseButton onClose={onClose} />}
+              {close && <CloseButton onClose={onClose} title={title} />}
+              {contents}
               {children}
               {buttons && mode && <ModalButtons buttons={buttons} mode={mode} />}
             </S.InnerWrapper>
