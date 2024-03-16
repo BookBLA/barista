@@ -10,7 +10,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
   console.log(rest);
   const { userId, userName, userProfileImageUrl, gender, schoolName, age, postcardStatus, bookName, bookAuthor } = rest;
   const platformBlurRadius = Platform.select({
-    ios: postcardStatus === EPostcardStatus.APPROVE ? 0 : 7,
+    ios: postcardStatus === EPostcardStatus.APPROVE ? 0 : 9,
     android: postcardStatus === EPostcardStatus.APPROVE ? 0 : 30,
   });
 
