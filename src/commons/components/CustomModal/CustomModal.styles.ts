@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { IStyledProps } from './CustomModal.types';
-import { deviceWidth } from '../../utils/dimensions';
 
 export const Wrapper = styled.View`
   flex: 1;
@@ -10,8 +9,8 @@ export const Wrapper = styled.View`
 `;
 
 export const InnerWrapper = styled.View`
-  width: ${({ size }: IStyledProps) => size || deviceWidth - 40};
   display: flex;
+  margin: 0 16px;
   flex-direction: column;
   background-color: #fff;
   border-radius: 10px;
