@@ -7,18 +7,20 @@ interface IProps {
 
 export const Wrapper = styled.View`
   flex: 1;
-  background-color: white;
+  background-color: grey;
   align-items: center;
-  /* justify-content: space-between; */
+  justify-content: space-between;
 `;
 
 export const SafeAreaViewStyled = styled.SafeAreaView`
   height: 9%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   align-self: center;
   justify-content: center;
+  background-color: skyblue;
 `;
 export const ColumnStyled = styled.View`
   display: flex;
@@ -27,9 +29,10 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
+  background-color: mistyrose;
 `;
 export const TouchableStyled = styled.TouchableHighlight`
-  height: 100%;
+  height: 80%;
   width: 100%;
   flex-direction: column;
   justify-content: space-around;
@@ -75,11 +78,10 @@ export const ButtonTextStyled = styled.Text`
   color: ${(props: IProps) => (props.isSelect ? colors.secondary : colors.textGray2)};
 `;
 
-export const ButtonStyled = styled.TouchableOpacity`
+export const ButtonStyled = styled.TouchableOpacity<{ borderRadius?: number }>`
   width: 80%;
   height: 40px;
-  /* border-radius: 60px; */
-  border-radius: ${({ borderRadius }) => (borderRadius ? `${borderRadius}px` : '60px')};
+  border-radius: ${({ borderRadius }: { borderRadius?: number }) => (borderRadius ? `${borderRadius}px` : '60px')};
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
@@ -99,7 +101,7 @@ export const CodeFiledStyled = styled.View`
 
 export const NextButtonStyled = styled.TouchableOpacity`
   width: 95%;
-  height: 44px;
+  height: 6%;
   border-radius: 60px;
   background-color: ${colors.primary};
   align-items: center;
@@ -132,4 +134,11 @@ export const InputStyled = styled.TextInput`
   justify-content: center;
   //margin-bottom: 20px;
   text-align: center;
+`;
+
+export const TextStyled = styled.Text`
+  font-size: 16px;
+  font-family: fontMedium;
+  text-align: center;
+  color: ${colors.textGray2};
 `;

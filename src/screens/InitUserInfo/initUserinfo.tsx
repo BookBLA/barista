@@ -6,6 +6,8 @@ import NamePhone from './units/NamePhone';
 import SchoolStudentID from './units/SchoolStudentID';
 import EmailAuth from './units/EmailAuth';
 import CompletePage from './units/CompletePage';
+import ProfileImage from './units/ProfileImage';
+import OpenChatLink from './units/OpenChatLink';
 
 const Stack = createStackNavigator();
 
@@ -14,6 +16,8 @@ const screens = [
   { name: 'namePhone', component: NamePhone },
   { name: 'schoolStudentID', component: SchoolStudentID },
   { name: 'emailAuth', component: EmailAuth },
+  { name: 'profileImage', component: ProfileImage },
+  { name: 'openChatLink', component: OpenChatLink },
   { name: 'completePage', component: CompletePage },
 ];
 

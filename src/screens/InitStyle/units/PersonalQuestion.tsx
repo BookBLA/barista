@@ -9,10 +9,12 @@ import { TitleProgress } from './TitleProgress';
 import { deviceHeight } from '../../../commons/utils/dimensions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TouchableHighlight } from '@gorhom/bottom-sheet';
+import { useStyleStore } from '../../../commons/store/useStyle';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const { updateStyleInfo, styleInfo } = useStyleStore();
 
   const handleFocus = () => {
     if (!isFocused) {
@@ -49,12 +51,12 @@ const PersonalQuestion = () => {
             ex) 주로 어디서 책을 읽나요?
           </Text>
           <T.TextFiledStyled
-            value={question}
-            onChangeText={setQuestion}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+            defaultValue={styleInfo.memberAsk}
+            onChangeText={(text: string) => setQuestion(text)}
+            //onFocus={handleFocus}
+            onBlur={() => updateStyleInfo('memberAsk', question)}
             style={{
-              color: question === '' ? colors.textGray2 : colors.primary,
+              color: colors.primary,
             }}
           />
           <S.RowStyled style={{ justifyContent: 'flex-end', width: '80%' }}>
@@ -71,9 +73,15 @@ const PersonalQuestion = () => {
           </S.RowStyled>
         </View>
       </TouchableHighlight>
-      <S.NextButtonStyled onPress={movePage()}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-      </S.NextButtonStyled>
+      {styleInfo.memberAsk === '' ? (
+        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      ) : (
+        <S.NextButtonStyled onPress={movePage('initBookStack')}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      )}
     </S.Wrapper>
   );
 };

@@ -9,6 +9,7 @@ interface UserInfo {
   schoolName: string;
   studentIdImageUrl: string;
   schoolEmail: string;
+  profileImageUrl: string;
 }
 
 interface UserState {
@@ -26,6 +27,7 @@ export const useUserStore = create<UserState>((set) => ({
     schoolName: '',
     studentIdImageUrl: '',
     schoolEmail: '',
+    profileImageUrl: '',
   },
   updateUserInfo: (field, value) => set((state) => ({ userInfo: { ...state.userInfo, [field]: value } })),
 }));

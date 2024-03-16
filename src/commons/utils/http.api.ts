@@ -10,64 +10,78 @@ const config = {
   },
 };
 
-export const Get = async <T>(url: string): Promise<T | undefined> => {
+export interface ResponseData<T> {
+  code: number;
+  isSuccess: boolean;
+  result: T;
+}
+
+export const Get = async (url: string, showModal: boolean = false) => {
   try {
-    const response = await httpApi.get<T>(url, config);
+    const response = await httpApi.get(url, config);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      useErrorMessage.getState().setErrorMessage(error.message);
+      if (showModal) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
+      return Promise.reject(error.message);
     }
-    return undefined;
   }
 };
 
-export const Post = async <T, D>(url: string, data?: D): Promise<T | undefined> => {
+export const Post = async <D>(url: string, data?: D, showModal: boolean = false) => {
   try {
-    const response = await httpApi.post<T>(url, data, config);
-    return response.data;
-  } catch (error) {
-    if (error instanceof Error) {
-      useErrorMessage.getState().setErrorMessage(error.message);
-    }
-    return undefined;
-  }
-};
-
-export const Put = async <T, D>(url: string, data?: D): Promise<T | undefined> => {
-  try {
-    const response = await httpApi.put<T>(url, data, config);
+    const response = await httpApi.post(url, data, config);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      useErrorMessage.getState().setErrorMessage(error.message);
+      if (showModal) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
+      return Promise.reject(error.message);
     }
-    return undefined;
   }
 };
 
-export const Delete = async <T>(url: string): Promise<T | undefined> => {
+export const Put = async <D>(url: string, data?: D, showModal: boolean = false) => {
   try {
-    const response = await httpApi.delete<T>(url, config);
+    const response = await httpApi.put(url, data, config);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      useErrorMessage.getState().setErrorMessage(error.message);
+      if (showModal) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
+      return Promise.reject(error.message);
     }
-    return undefined;
   }
 };
 
-// const handleResponse = <T>(response: AxiosResponse<T>): ApiResponse<T> => {
-//   return response;
-// };
+export const Delete = async (url: string, showModal: boolean = false) => {
+  try {
+    const response = await httpApi.delete(url, config);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (showModal) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
+      return Promise.reject(error.message);
+    }
+  }
+};
 
-// const handleError = <T>(error: unknown): ApiResponse<T> => {
-//   let message = 'An unknown error occurred';
-//   if (error instanceof Error) {
-//     message = error.message;
-//   }
-//   useErrorMessage.getState().setErrorMessage(message);
-
-//   return error;
-// };
+export const PATCH = async <D>(url: string, data?: D, showModal: boolean = false) => {
+  try {
+    const response = await httpApi.patch(url, data, config);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (showModal) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
+      return Promise.reject(error.message);
+    }
+  }
+};

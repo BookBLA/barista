@@ -3,16 +3,18 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
 import { TouchableOpacity, View, Image } from 'react-native';
-import prevButton from '../../../../assets/images/icons/prevButton.png';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
+import prevButton from '../../../../assets/images/buttons/prevButton.png';
+import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { deviceWidth } from '../../../commons/utils/dimensions';
+import { useStyleStore } from '../../../commons/store/useStyle';
 
 const SmokeDrink = () => {
-  const [selectedButton, setSelectedButton] = useState<null | string>(null);
-  const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
+  // const [selectedButton, setSelectedButton] = useState<null | string>(null);
+  const { updateStyleInfo, styleInfo } = useStyleStore();
+  // const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const buttonTitles = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
 
   const { movePage } = useMovePage();
@@ -24,20 +26,23 @@ const SmokeDrink = () => {
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%' }}>
-            <T.ButtonStyled isSelect={selectedButton === '흡연'} onPress={() => setSelectedButton('흡연')}>
-              <S.ButtonTextStyled isSelect={selectedButton === '흡연'} onPress={() => setSelectedButton('흡연')}>
-                흡연
-              </S.ButtonTextStyled>
+            <T.ButtonStyled
+              isSelect={styleInfo.smokeTypes === '흡연'}
+              onPress={() => updateStyleInfo('smokeTypes', '흡연')}
+            >
+              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '흡연'}>흡연</S.ButtonTextStyled>
             </T.ButtonStyled>
-            <T.ButtonStyled isSelect={selectedButton === '비흡연'} onPress={() => setSelectedButton('비흡연')}>
-              <S.ButtonTextStyled isSelect={selectedButton === '비흡연'} onPress={() => setSelectedButton('비흡연')}>
-                비흡연
-              </S.ButtonTextStyled>
+            <T.ButtonStyled
+              isSelect={styleInfo.smokeTypes === '비흡연'}
+              onPress={() => updateStyleInfo('smokeTypes', '비흡연')}
+            >
+              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '비흡연'}>비흡연</S.ButtonTextStyled>
             </T.ButtonStyled>
-            <T.ButtonStyled isSelect={selectedButton === '가끔'} onPress={() => setSelectedButton('가끔')}>
-              <S.ButtonTextStyled isSelect={selectedButton === '가끔'} onPress={() => setSelectedButton('가끔')}>
-                가끔
-              </S.ButtonTextStyled>
+            <T.ButtonStyled
+              isSelect={styleInfo.smokeTypes === '가끔'}
+              onPress={() => updateStyleInfo('smokeTypes', '가끔')}
+            >
+              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '가끔'}>가끔</S.ButtonTextStyled>
             </T.ButtonStyled>
           </S.RowStyled>
         </View>
@@ -47,15 +52,10 @@ const SmokeDrink = () => {
             {buttonTitles.slice(0, 3).map((title, index) => (
               <T.ButtonStyled
                 key={index}
-                isSelect={selectedButtonIndex === index}
-                onPress={() => setSelectedButtonIndex(index)}
+                isSelect={styleInfo.drinkTypes === title}
+                onPress={() => updateStyleInfo('drinkTypes', title)}
               >
-                <S.ButtonTextStyled
-                  isSelect={selectedButtonIndex === index}
-                  onPress={() => setSelectedButtonIndex(index)}
-                >
-                  {title}
-                </S.ButtonTextStyled>
+                <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title}>{title}</S.ButtonTextStyled>
               </T.ButtonStyled>
             ))}
           </S.RowStyled>
@@ -63,15 +63,10 @@ const SmokeDrink = () => {
             {buttonTitles.slice(3).map((title, index) => (
               <T.ButtonStyled
                 key={index + 3}
-                isSelect={selectedButtonIndex === index + 3}
-                onPress={() => setSelectedButtonIndex(index + 3)}
+                isSelect={styleInfo.drinkTypes === title + 3}
+                onPress={() => updateStyleInfo('drinkTypes', title + 3)}
               >
-                <S.ButtonTextStyled
-                  isSelect={selectedButtonIndex === index + 3}
-                  onPress={() => setSelectedButtonIndex(index + 3)}
-                >
-                  {title}
-                </S.ButtonTextStyled>
+                <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title + 3}>{title}</S.ButtonTextStyled>
               </T.ButtonStyled>
             ))}
           </S.RowStyled>

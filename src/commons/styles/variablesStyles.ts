@@ -31,6 +31,8 @@ export const colors = {
   textBlack: '#000000',
   textYellow: '#FFEBAC',
   textGray: '#858585',
+
+  lineDivider: '#D2D6E2',
   textGray2: '#A8AAB2',
   textGray3: '#858585',
   textGray4: '#787878',

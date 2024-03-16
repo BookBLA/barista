@@ -1,11 +1,12 @@
 import styled from 'styled-components/native';
+import { IModalConfig } from '../CustomModal.types';
 
 export const TopWrapper = styled.View`
   width: 100%;
   height: 18px;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: ${({ title }: Pick<IModalConfig, 'title'>) => (title ? 'space-between' : 'flex-end')};
 `;
 
 export const CloseButton = styled.Image`

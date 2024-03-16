@@ -11,9 +11,11 @@ import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
 import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
+import InitBookStack from '../../../screens/InitBook/initBook';
 
 import Kakao from '../../../screens/Login/KakaoLogin';
 import Login from '../../../screens/Login/Login';
+import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 
 const Stack = createNativeStackNavigator();
 
@@ -25,8 +27,10 @@ const screens = [
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'initUserinfoStack', component: CustomScreen(InitUserInfoStack) },
   { name: 'initStyleStack', component: CustomScreen(InitStyleStack) },
+  { name: 'initBookStack', component: CustomScreen(InitBookStack) },
   { name: 'login', component: CustomScreen(Login) },
   { name: 'kakao', component: CustomScreen(Kakao) },
+  { name: 'termsOfService', component: CustomScreen(TermsOfService) },
 ];
 
 export const CustomNavigator = () => {
@@ -41,7 +45,7 @@ export const CustomNavigator = () => {
         marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
       }}
     >
-      <Stack.Navigator initialRouteName="login" screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName="termsOfService" screenOptions={{ headerShown: false }}>
         {screens.map(({ name, component }) => (
           <Stack.Screen key={name} name={name} component={component} />
         ))}

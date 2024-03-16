@@ -2,19 +2,22 @@ import React, { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
-import nextButton from '../../../../assets/images/icons/nextButton.png';
+import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
 import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import ModalTitle from './ModalTitle';
+import ModalContent from './ModalContent';
 
 const GenderBirth = () => {
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date('1980-01-01'));
 
   console.log('userInfo', userInfo);
 
@@ -25,10 +28,12 @@ const GenderBirth = () => {
   };
 
   const modalConfig = {
+    title: <ModalTitle />,
     visible: isOpen,
     onClose: toggle,
     close: true,
     mode: 'round',
+    contents: <ModalContent date={date} setDate={setDate} />,
     buttons: [
       { label: '취소', action: toggle, color: 'black', bgColor: colors.buttonMain },
       { label: '확인', action: dateSelect, color: colors.secondary },
@@ -46,13 +51,13 @@ const GenderBirth = () => {
               isSelect={userInfo.gender === '여성'}
               onPress={() => updateUserInfo('gender', '여성')}
             >
-              <S.ButtonTextStyled>여성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === '여성'}>여성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === '남성'}
               onPress={() => updateUserInfo('gender', '남성')}
             >
-              <S.ButtonTextStyled>남성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === '남성'}>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>
@@ -68,31 +73,8 @@ const GenderBirth = () => {
               {userInfo.birthDate === '' ? 'YYYY/MM/DD' : userInfo.birthDate}
             </Text>
           </S.ButtonStyled>
-          <CustomModal modalConfig={modalConfig}>
-            <S.RowStyled style={{ justifyContent: 'flex-start' }}>
-              <Text
-                style={{
-                  color: 'black',
-                  fontFamily: 'fontMedium',
-                  fontSize: 16,
-                  justifyContent: 'flex-start',
-                }}
-              >
-                생년월일을 설정해 주세요.
-              </Text>
-            </S.RowStyled>
-            <View style={{ marginBottom: 43, marginTop: 27 }}>
-              <DatePicker
-                value={date}
-                onChange={(value) => setDate(value)}
-                format="yyyy-mm-dd"
-                startYear={1980}
-                endYear={2024}
-                markWidth={97}
-              />
-            </View>
-          </CustomModal>
         </View>
+        <CustomModal modalConfig={modalConfig} />
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
           {/* {userInfo.gender === '' || userInfo.birthDate === '' ? (
             <Image source={notYetNextButton} />

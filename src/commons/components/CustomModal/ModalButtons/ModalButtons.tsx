@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import * as S from './ModalButtons.styles';
 import { IProps } from './ModalButtons.types';
-import { CustomText } from '../../CustomText/CustomText';
+import { CustomText } from '../../TextComponents/CustomText/CustomText';
 import { colors } from '../../../styles/variablesStyles';
 
 export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
@@ -15,10 +15,10 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
       {mode === 'arrow' && (
         <>
           <S.ArrowButton onPress={buttons[0].action}>
-            <Image source={require('../../../../../assets/images/icons/leftArrow.png')} />
+            <Image source={require('../../../../../assets/images/buttons/prevButton.png')} />
           </S.ArrowButton>
           <S.ArrowButton onPress={buttons[1].action}>
-            <Image source={require('../../../../../assets/images/icons/rightArrow.png')} />
+            <Image source={require('../../../../../assets/images/buttons/nextButton.png')} />
           </S.ArrowButton>
         </>
       )}

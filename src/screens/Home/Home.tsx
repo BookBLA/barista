@@ -1,6 +1,6 @@
 import React from 'react';
 import * as S from './Home.styles';
-import { CustomText } from '../../commons/components/CustomText/CustomText.styles';
+import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { colors } from '../../commons/styles/variablesStyles';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 

@@ -14,10 +14,15 @@ const Example = ({ navigation }: { navigation: any }) => {
   const reset = useCounter((state) => state.reset);
 
   const onClickUserData = async () => {
-    const result = await postExampleApi('contents');
-    console.log('result: {}', result);
+    try {
+      const result = await postExampleApi({
+        contents: 'contents',
+      });
+      console.log('result:', result);
+    } catch (error) {
+      console.error(error);
+    }
   };
-
   return (
     <S.SafeAreaViewStyled>
       <S.RowStyled>
