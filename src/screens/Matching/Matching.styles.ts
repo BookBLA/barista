@@ -55,6 +55,7 @@ export const postcardCountViewStyled = styled.View`
 `;
 
 export const postcardCountTextStyled = styled.Text`
+  margin-left: 4px;
   font-size: 18px;
 `;
 

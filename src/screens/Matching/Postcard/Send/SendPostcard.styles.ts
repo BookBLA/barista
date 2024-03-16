@@ -32,12 +32,13 @@ export const UserNameText = styled.Text`
   font-size: 16px;
   color: ${colors.textBlack};
   margin-bottom: 4px;
+  font-weight: 500;
 `;
 
 export const SchoolNameText = styled.Text`
   font-size: 12px;
   color: #858585;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 `;
 
 export const BookInfoText = styled.Text`
@@ -63,7 +64,7 @@ export const dashLineViewStyled = styled.View`
 
 export const ButtonContainer = styled.View`
   flex: 1;
-  padding: 6px;
+  padding: 10px;
   border-radius: 10px;
   margin-right: ${(props: any) => (props.left ? '4px' : 0)};
   margin-left: ${(props: any) => (props.right ? '4px' : 0)};

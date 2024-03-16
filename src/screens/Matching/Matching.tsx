@@ -112,7 +112,7 @@ const Matching = () => {
               )}
               keyExtractor={(item, index) => index.toString()}
               alwaysBounceVertical={false}
-              ListFooterComponent={<View style={{ height: 20 }} />}
+              ListFooterComponent={<View style={{ height: 100 }} />}
             />
           </>
         )}

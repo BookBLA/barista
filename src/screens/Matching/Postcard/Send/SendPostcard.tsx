@@ -21,11 +21,11 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
           <S.CircularImage source={postcardImage} resizeMode="contain" blurRadius={platformBlurRadius} />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
-              <S.UserNameText style={{ fontSize: 16 }}>{`${userName}|${age}`}</S.UserNameText>
+              <S.UserNameText style={{ fontSize: 16 }}>{`${userName} | ${age}`}</S.UserNameText>
               <S.GenderIconStyled source={gender === EGender.MAN ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
             <S.SchoolNameText>{schoolName}</S.SchoolNameText>
-            <S.BookInfoText>{`${bookName}·${bookAuthor}`}</S.BookInfoText>
+            <S.BookInfoText>{`${bookName} · ${bookAuthor}`}</S.BookInfoText>
           </S.UserInfoWrapper>
         </S.UserInfoViewStyled>
         <S.ButtonContainerViewStyled>
@@ -64,7 +64,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
           {postcardStatus === EPostcardStatus.FAIL && (
             <>
               <TouchableWithoutFeedback>
-                <S.SingleButtonContainer right backgroundColor="#FE6868" flex={1}>
+                <S.SingleButtonContainer right backgroundColor="#616C90" flex={1}>
                   <S.ButtonText fontColor="#FFFFFF">독서퀴즈를 모두 틀렸습니다. 책을 다시 읽어봐요!</S.ButtonText>
                 </S.SingleButtonContainer>
               </TouchableWithoutFeedback>
