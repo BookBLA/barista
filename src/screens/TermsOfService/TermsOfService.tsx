@@ -6,9 +6,11 @@ import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
 import nextArrow from '../../../assets/images/icons/NextArrow.png';
+import { useAgreementStore } from '../../commons/store/useAgreement';
 
 const TermsOfService = () => {
   const { movePage } = useMovePage();
+  const { updateAgreement, agreementInfo } = useAgreementStore();
   const agreementTitles = [
     '약관 전체 동의',
     '만 18세 이상입니다 (필수)',
@@ -42,6 +44,9 @@ const TermsOfService = () => {
       }
     } else {
       updatedChecked[index] = !updatedChecked[index];
+      if (index === 6) {
+        updateAgreement('adAgreementPolicy', updatedChecked[index]);
+      }
       // If any other checkbox is clicked, and it becomes false, set the first checkbox to false
       if (!updatedChecked[index]) {
         updatedChecked[0] = false;
@@ -54,7 +59,7 @@ const TermsOfService = () => {
     if (anyCheckboxChecked === true) updatedChecked[0] = true;
     setIsActive(anyCheckboxChecked);
   };
-
+  console.log('agreementInfo', agreementInfo);
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
