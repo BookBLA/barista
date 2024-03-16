@@ -17,7 +17,9 @@ const GenderBirth = () => {
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date('1980-01-01'));
+
+  console.log('userInfo', userInfo);
 
   const dateSelect = () => {
     const dateString = date.toISOString().slice(0, 10);
@@ -49,13 +51,13 @@ const GenderBirth = () => {
               isSelect={userInfo.gender === '여성'}
               onPress={() => updateUserInfo('gender', '여성')}
             >
-              <S.ButtonTextStyled>여성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === '여성'}>여성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === '남성'}
               onPress={() => updateUserInfo('gender', '남성')}
             >
-              <S.ButtonTextStyled>남성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === '남성'}>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>

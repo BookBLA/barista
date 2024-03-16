@@ -29,10 +29,10 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: teal;
+  background-color: mistyrose;
 `;
 export const TouchableStyled = styled.TouchableHighlight`
-  height: 100%;
+  height: 80%;
   width: 100%;
   flex-direction: column;
   justify-content: space-around;
@@ -134,4 +134,11 @@ export const InputStyled = styled.TextInput`
   justify-content: center;
   //margin-bottom: 20px;
   text-align: center;
+`;
+
+export const TextStyled = styled.Text`
+  font-size: 16px;
+  font-family: fontMedium;
+  text-align: center;
+  color: ${colors.textGray2};
 `;

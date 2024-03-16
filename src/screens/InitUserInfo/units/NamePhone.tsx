@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Keyboard } from 'react-native';
+import { TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
@@ -40,24 +41,26 @@ const NamePhone = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={50} />
-
-      <S.TouchableStyled onPress={Keyboard.dismiss} underlayColor="transparent">
-        <>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
-            <S.TextFiledStyled
-              defaultValue={userInfo.name}
-              onChangeText={(text: string) => setName(text)}
-              onBlur={() => updateUserInfo('name', name)}
-              placeholder="이름"
-              placeholderTextColor={colors.textGray2}
-            />
-          </View>
-          <KeyboardAvoidingView
+      <S.ColumnStyled style={{ height: '80%' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <KeyboardAwareScrollView
             style={{ width: '100%' }}
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : -500}
+            contentContainerStyle={{
+              height: '80%',
+              justifyContent: 'space-around',
+            }}
           >
+            <View style={{ width: '100%', alignItems: 'center' }}>
+              <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
+              <S.TextFiledStyled
+                defaultValue={userInfo.name}
+                onChangeText={(text: string) => setName(text)}
+                onBlur={() => updateUserInfo('name', name)}
+                placeholder="이름"
+                placeholderTextColor={colors.textGray2}
+              />
+            </View>
+
             <View style={{ width: '100%', alignItems: 'center' }}>
               <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
               <S.TextFiledStyled
@@ -70,25 +73,24 @@ const NamePhone = () => {
                 placeholderTextColor={colors.textGray2}
               />
             </View>
-          </KeyboardAvoidingView>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-            <TouchableOpacity onPress={movePage()}>
-              <Image source={prevButton} />
-            </TouchableOpacity>
-            {/* {userInfo.name === '' || userInfo.phoneNumber === '' ? (
+          </KeyboardAwareScrollView>
+        </TouchableWithoutFeedback>
+      </S.ColumnStyled>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
+        <TouchableOpacity onPress={movePage()}>
+          <Image source={prevButton} />
+        </TouchableOpacity>
+        {/* {userInfo.name === '' || userInfo.phoneNumber === '' ? (
             <Image source={notYetNextButton} />
           ) : (
             <TouchableOpacity onPress={movePage('schoolStudentID')}>
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-            <TouchableOpacity onPress={movePage('schoolStudentID')}>
-              <Image source={nextButton} />
-            </TouchableOpacity>
-          </View>
-        </>
-      </S.TouchableStyled>
+        <TouchableOpacity onPress={movePage('schoolStudentID')}>
+          <Image source={nextButton} />
+        </TouchableOpacity>
+      </View>
     </S.Wrapper>
   );
 };

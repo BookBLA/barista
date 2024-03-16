@@ -7,11 +7,12 @@ import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
+import { useStyleStore } from '../../../commons/store/useStyle';
 
 const OppositeSex = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
-  const buttonTitles = ['허용 X', '단 둘이 밥먹기', '단 둘이 술마시기', '단 둘이 여행가기', '상관없음'];
-
+  const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관없음'];
+  const { updateStyleInfo, styleInfo } = useStyleStore();
   const { movePage } = useMovePage();
 
   return (
@@ -23,15 +24,10 @@ const OppositeSex = () => {
           {buttonTitles.map((title, index) => (
             <T.LongButtonStyled
               key={index}
-              isSelect={selectedButtonIndex === index}
-              onPress={() => setSelectedButtonIndex(index)}
+              isSelect={styleInfo.justFriendTypes === title}
+              onPress={() => updateStyleInfo('justFriendTypes', title)}
             >
-              <S.ButtonTextStyled
-                isSelect={selectedButtonIndex === index}
-                onPress={() => setSelectedButtonIndex(index)}
-              >
-                {title}
-              </S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.justFriendTypes === title}>{title}</S.ButtonTextStyled>
             </T.LongButtonStyled>
           ))}
         </View>
