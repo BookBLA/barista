@@ -6,12 +6,13 @@ import postcardIcon from '../../../assets/images/icons/Postcard.png';
 import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
+import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
-  const [postcardCount, setPostcardCount] = useState<number>(0);
   const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
   const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
+  const postcardCounter = usePostcardCounter((state) => state.count);
 
   useEffect(() => {
     //todo api 활용해서 데이터 받아오는 부분
@@ -83,7 +84,7 @@ const Matching = () => {
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
                 <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
-                <S.postcardCountTextStyled>{postcardCount}</S.postcardCountTextStyled>
+                <S.postcardCountTextStyled>{postcardCounter}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
             <FlatList
