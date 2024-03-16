@@ -18,6 +18,7 @@ const Matching = () => {
     //todo api 활용해서 데이터 받아오는 부분
     const receivedFakeData: IReceivePostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
       index,
+      postcardId: Math.floor(Math.random() * 1000) + 1,
       userId: Math.floor(Math.random() * 1000) + 1,
       quizScore: Math.floor(Math.random() * 101),
       schoolName: `School ${index + 1}`,

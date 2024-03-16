@@ -8,7 +8,7 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
 import { useNavigation } from '@react-navigation/native';
 
-export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, ...rest }) => {
+export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postcardId, ...rest }) => {
   const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
   const postcardCounter = usePostcardCounter((state) => state.count);
@@ -25,7 +25,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, ...res
       //todo 엽서 열람 정보를 넣어줘야할듯
       decrementPostcardCounter();
       // @ts-ignore
-      navigation.navigate('receivePostcardDetail', {});
+      navigation.navigate('receivePostcardDetail', { postcardId });
     } else {
       console.debug('엽서 부족');
       toggleModal();
