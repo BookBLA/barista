@@ -15,6 +15,6 @@ export const InnerWrapper = styled.View`
   flex-direction: column;
   background-color: #fff;
   border-radius: 10px;
-  padding: ${({ close }: IStyledProps) => (close ? '10px 20px 20px 20px' : '28px 20px 20px 20px')};
+  padding: ${({ close }: IStyledProps) => (close ? '20px 20px' : '28px 20px 20px')};
   align-items: center;
 `;
