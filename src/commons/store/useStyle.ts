@@ -9,6 +9,7 @@ interface StyleInfo {
   dateStyleTypes: string;
   dateCostTypes: string;
   justFriendTypes: string;
+  memberAsk: string;
 }
 
 interface StyleState {
@@ -26,6 +27,7 @@ export const useStyleStore = create<StyleState>((set) => ({
     dateStyleTypes: '',
     dateCostTypes: '',
     justFriendTypes: '',
+    memberAsk: '',
   },
   updateStyleInfo: (field, value) => set((state) => ({ styleInfo: { ...state.styleInfo, [field]: value } })),
 }));
