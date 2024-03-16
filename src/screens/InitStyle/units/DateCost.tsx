@@ -7,10 +7,12 @@ import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
+import { useStyleStore } from '../../../commons/store/useStyle';
 
 const DateCost = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
-  const buttonTitles = ['더치페이', '번갈아가며 사기', '여유있는 사람이 좀 더', '데이트 통장'];
+  const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
+  const { updateStyleInfo, styleInfo } = useStyleStore();
 
   const { movePage } = useMovePage();
 
@@ -23,15 +25,10 @@ const DateCost = () => {
           {buttonTitles.map((title, index) => (
             <T.LongButtonStyled
               key={index}
-              isSelect={selectedButtonIndex === index}
-              onPress={() => setSelectedButtonIndex(index)}
+              isSelect={styleInfo.dateCostTypes === title}
+              onPress={() => updateStyleInfo('dateCostTypes', title)}
             >
-              <S.ButtonTextStyled
-                isSelect={selectedButtonIndex === index}
-                onPress={() => setSelectedButtonIndex(index)}
-              >
-                {title}
-              </S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.dateCostTypes === title}>{title}</S.ButtonTextStyled>
             </T.LongButtonStyled>
           ))}
         </View>

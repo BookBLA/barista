@@ -1,13 +1,13 @@
 import useMovePage from '../../commons/hooks/useMovePage';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
-import * as T from './TOS.styles';
+import * as T from './TermsOfService.styles';
 import { Text, TouchableOpacity, Image, View, Linking } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
 import nextArrow from '../../../assets/images/icons/NextArrow.png';
 
-const TOS = () => {
+const TermsOfService = () => {
   const { movePage } = useMovePage();
   const agreementTitles = [
     '약관 전체 동의',
@@ -101,4 +101,4 @@ const TOS = () => {
     </S.Wrapper>
   );
 };
-export default TOS;
+export default TermsOfService;

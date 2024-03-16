@@ -33,7 +33,7 @@ const SchoolStudentID = () => {
   }, []);
 
   //이미지 업로드 함수
-  const [imageUrl, setImageUrl] = useState('');
+  // const [imageUrl, setImageUrl] = useState('');
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
   const uploadeImage = async () => {
     if (!status?.granted) {
@@ -52,7 +52,7 @@ const SchoolStudentID = () => {
       return null; //이미지 업로드 취소시
     }
 
-    setImageUrl(result.assets[0].uri);
+    // setImageUrl(result.assets[0].uri);
     updateUserInfo('studentIdImageUrl', result.assets[0].uri);
   };
   // console.log('학교', userInfo.schoolName);

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-
 import * as S from './MbtiItem.styles';
 import { IProps } from './MbtiItem.types';
+import { useStyleStore } from '../../store/useStyle';
 
 const MbtiItem = ({ name }: IProps) => {
   const [isSelect, setSelect] = useState<null | boolean>(null);
+  const { updateStyleInfo, styleInfo } = useStyleStore();
 
   // ButtonStyled 스타일 컴포넌트에게 props로 isSelect 값을 전달해 준다.
   // background-color: ${(props: IProps) => (props.isSelect ? 'yellow' : 'white')};
@@ -14,7 +15,13 @@ const MbtiItem = ({ name }: IProps) => {
   return (
     <>
       <S.RowStyled>
-        <S.ButtonStyled isSelect={isSelect} onPress={() => setSelect(true)}>
+        <S.ButtonStyled
+          isSelect={isSelect}
+          onPress={() => {
+            setSelect(true);
+            updateStyleInfo('mbtiList', name[0]);
+          }}
+        >
           <S.TextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
             {name[0]}
           </S.TextStyled>

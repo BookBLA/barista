@@ -37,7 +37,7 @@ export const TextFiledStyled = styled.TextInput.attrs({
   background-color: ${colors.buttonMain};
   justify-content: center;
   text-align: start;
-  padding: 12px;
+  padding: 12px 12px 12px 12px;
   /* padding-top: 12px; */
 
   flex-shrink: 1;
