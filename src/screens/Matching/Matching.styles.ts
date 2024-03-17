@@ -79,13 +79,6 @@ export const ListWrapper = styled.View`
   margin-top: 10px;
 `;
 
-export const GoToTopButton = styled.TouchableOpacity`
-  border-radius: 25px;
-  background-color: #ffffff;
-  align-items: center;
-  justify-content: center;
-`;
-
 export const GoToTopImage = styled.Image`
   width: 14px;
   height: 14px;

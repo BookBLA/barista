@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const HeaderView = styled.View`
   flex-direction: row;
@@ -178,10 +178,33 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const styles = StyleSheet.create({
-  image: {
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    width: '100%',
-    height: '80%',
+  GoToTopButton: {
+    position: 'absolute',
+    bottom: 60,
+    right: 7,
+    borderRadius: 20,
+    padding: 12,
+    backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 10,
+          height: 10,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
   },
 });
+
+export const GoToTopImage = styled.Image`
+  width: 14px;
+  height: 14px;
+  align-content: center;
+  justify-content: center;
+`;
