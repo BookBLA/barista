@@ -74,7 +74,7 @@ export const BetweenWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin: 16px 0;
+  align-items: center;
 `;
 
 export const RowWrapper = styled.View`
