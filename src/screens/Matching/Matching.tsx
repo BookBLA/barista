@@ -8,6 +8,8 @@ import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types'
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
 import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
+import { EType } from './Postcard/EmptyPostcard.types';
+import { EmptyPostcard } from './Postcard/EmptyPostcard';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
@@ -57,12 +59,12 @@ const Matching = () => {
       bookAuthor: '베르베르 베르베뉘뉘',
     }));
 
-    setReceivedPostcards(receivedFakeData);
-    setSendPostcards(sendFakeData);
+    // setReceivedPostcards(receivedFakeData);
+    // setSendPostcards(sendFakeData);
   }, []);
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1 }}>
+    <View style={{ backgroundColor: 'white', flex: 1, height: '100%' }}>
       <S.ViewStyled>
         <View style={{ flex: 1, height: '80%' }}>
           <S.PressableStyled
@@ -108,38 +110,44 @@ const Matching = () => {
                 <S.postcardCountTextStyled>{postcardCounter}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
-            <FlatList
-              ref={flatListRef}
-              onScroll={handleScroll}
-              data={receivedPostcards}
-              renderItem={({ item, index }) => (
-                <S.receivedPostcardViewStyled index={index}>
-                  <ReceivePostcard key={index} {...item} />
-                </S.receivedPostcardViewStyled>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              numColumns={2}
-              alwaysBounceVertical={false}
-              ListFooterComponent={<View style={{ height: 100 }} />}
-            />
+            {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}
+            {receivedPostcards.length > 0 && (
+              <FlatList
+                ref={flatListRef}
+                onScroll={handleScroll}
+                data={receivedPostcards}
+                renderItem={({ item, index }) => (
+                  <S.receivedPostcardViewStyled index={index}>
+                    <ReceivePostcard key={index} {...item} />
+                  </S.receivedPostcardViewStyled>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                numColumns={2}
+                alwaysBounceVertical={false}
+                ListFooterComponent={<View style={{ height: 100 }} />}
+              />
+            )}
           </>
         )}
         {!isReceivedPostcard && (
           //todo 보낸 엽서
           <>
-            <FlatList
-              ref={flatListRef}
-              onScroll={handleScroll}
-              data={sendPostcards}
-              renderItem={({ item, index }) => (
-                <S.sendPostcardViewStyled>
-                  <SendPostcard key={index} {...item} />
-                </S.sendPostcardViewStyled>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-              alwaysBounceVertical={false}
-              ListFooterComponent={<View style={{ height: 100 }} />}
-            />
+            {sendPostcards.length === 0 && <EmptyPostcard type={EType.SEND} />}
+            {sendPostcards.length > 0 && (
+              <FlatList
+                ref={flatListRef}
+                onScroll={handleScroll}
+                data={sendPostcards}
+                renderItem={({ item, index }) => (
+                  <S.sendPostcardViewStyled>
+                    <SendPostcard key={index} {...item} />
+                  </S.sendPostcardViewStyled>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+                alwaysBounceVertical={false}
+                ListFooterComponent={<View style={{ height: 100 }} />}
+              />
+            )}
           </>
         )}
       </S.ListWrapper>
