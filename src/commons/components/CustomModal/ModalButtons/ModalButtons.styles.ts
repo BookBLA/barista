@@ -19,7 +19,7 @@ export const RoundButton = styled.TouchableOpacity`
   align-items: center;
   width: ${({ width }: IStyledProps) => width};
   height: 36px;
-  padding: 9px 42px;
+  padding: 9px 40px;
   border-radius: 60px;
   font-family: 'fontMedium';
   font-size: 16px;

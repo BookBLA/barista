@@ -1,22 +1,42 @@
-import { FlatList, Image, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
+import GoToTopButton from '../../../assets/images/icons/GoToTop.png';
 import postcardIcon from '../../../assets/images/icons/Postcard.png';
 import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
+import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 
 const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
-  const [postcardCount, setPostcardCount] = useState<number>(0);
   const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
   const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
+  const postcardCounter = usePostcardCounter((state) => state.count);
+  const [showButton, setShowButton] = useState<boolean>(false);
+  const flatListRef = useRef<FlatList>(null);
+
+  const handleScroll = (event: any) => {
+    const currentOffset: number = event.nativeEvent.contentOffset.y;
+    const buttonThreshold: number = 100;
+
+    if (currentOffset > buttonThreshold) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  };
+
+  const scrollToTop = () => {
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+  };
 
   useEffect(() => {
     //todo api 활용해서 데이터 받아오는 부분
     const receivedFakeData: IReceivePostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
       index,
+      postcardId: Math.floor(Math.random() * 1000) + 1,
       userId: Math.floor(Math.random() * 1000) + 1,
       quizScore: Math.floor(Math.random() * 101),
       schoolName: `School ${index + 1}`,
@@ -48,6 +68,7 @@ const Matching = () => {
           <S.PressableStyled
             onPress={() => {
               setIsReceivedPostcard(true);
+              setShowButton(false);
             }}
             style={({ pressed }: any) => [
               {
@@ -63,6 +84,7 @@ const Matching = () => {
           <S.PressableStyled
             onPress={() => {
               setIsReceivedPostcard(false);
+              setShowButton(false);
             }}
             style={({ pressed }: any) => [
               {
@@ -83,10 +105,12 @@ const Matching = () => {
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
                 <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
-                <S.postcardCountTextStyled>{postcardCount}</S.postcardCountTextStyled>
+                <S.postcardCountTextStyled>{postcardCounter}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
             <FlatList
+              ref={flatListRef}
+              onScroll={handleScroll}
               data={receivedPostcards}
               renderItem={({ item, index }) => (
                 <S.receivedPostcardViewStyled index={index}>
@@ -96,7 +120,7 @@ const Matching = () => {
               keyExtractor={(item, index) => index.toString()}
               numColumns={2}
               alwaysBounceVertical={false}
-              ListFooterComponent={<View style={{ height: 20 }} />}
+              ListFooterComponent={<View style={{ height: 100 }} />}
             />
           </>
         )}
@@ -104,6 +128,8 @@ const Matching = () => {
           //todo 보낸 엽서
           <>
             <FlatList
+              ref={flatListRef}
+              onScroll={handleScroll}
               data={sendPostcards}
               renderItem={({ item, index }) => (
                 <S.sendPostcardViewStyled>
@@ -112,11 +138,16 @@ const Matching = () => {
               )}
               keyExtractor={(item, index) => index.toString()}
               alwaysBounceVertical={false}
-              ListFooterComponent={<View style={{ height: 20 }} />}
+              ListFooterComponent={<View style={{ height: 100 }} />}
             />
           </>
         )}
       </S.ListWrapper>
+      {showButton && (
+        <TouchableOpacity style={S.styles.GoToTopButton} onPress={scrollToTop}>
+          <S.GoToTopImage source={GoToTopButton} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
