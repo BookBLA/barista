@@ -43,7 +43,6 @@ export const TitleStyled = styled.Text`
   font-size: 16px;
   color: black;
   font-family: fontMedium;
-  //font-weight: bold;
 `;
 
 export const ContentStyled = styled.Text`

@@ -9,9 +9,9 @@ import postcardImage from '../../../../../assets/images/example-postcard.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender } from '../Send/SendPostcard.types';
-import { CustomText } from '../../../../commons/components/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import GoToTopButton from '../../../../../assets/images/icons/GoToTop.png';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 
 type RootStackParamList = {
   ReceivePostcardDetail: { postcardId: number };
