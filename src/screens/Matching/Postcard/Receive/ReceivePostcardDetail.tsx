@@ -79,6 +79,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
           </S.UserLibraryButtonContainer>
         </S.UserInfoContainerView>
 
+        <S.DividerLine />
+
         <S.BodyView>
           <S.QuizStatusView>
             <S.QuizStatusTile>퀴즈 맞춤 여부</S.QuizStatusTile>

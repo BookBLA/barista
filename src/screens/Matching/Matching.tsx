@@ -59,8 +59,8 @@ const Matching = () => {
       bookAuthor: '베르베르 베르베뉘뉘',
     }));
 
-    // setReceivedPostcards(receivedFakeData);
-    // setSendPostcards(sendFakeData);
+    setReceivedPostcards(receivedFakeData);
+    setSendPostcards(sendFakeData);
   }, []);
 
   return (

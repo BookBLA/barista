@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { Platform, StyleSheet } from 'react-native';
+import { deviceWidth } from '../../../../commons/utils/dimensions';
 
 export const HeaderView = styled.View`
   flex-direction: row;
@@ -84,6 +85,11 @@ export const UserLibraryButtonText = styled.Text`
   font-size: 14px;
   color: ${colors.textYellow};
   font-family: fontMedium;
+`;
+
+export const DividerLine = styled.View`
+  width: ${deviceWidth}px;
+  border: 3px solid #fafafa;
 `;
 
 export const BodyView = styled.View`
