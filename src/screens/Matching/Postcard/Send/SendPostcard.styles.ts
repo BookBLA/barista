@@ -13,6 +13,13 @@ export const UserInfoViewStyled = styled.View`
   align-items: center;
 `;
 
+export const ModalUserInfoViewStyled = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
 export const UserInfoWrapper = styled.View`
   flex: 4;
   padding: 0 8px;
@@ -30,6 +37,7 @@ export const GenderIconStyled = styled.Image`
 
 export const UserNameText = styled.Text`
   font-size: 16px;
+  font-family: 'fontMedium';
   color: ${colors.textBlack};
   margin-bottom: 4px;
   font-weight: 500;
@@ -37,6 +45,14 @@ export const UserNameText = styled.Text`
 
 export const SchoolNameText = styled.Text`
   font-size: 12px;
+  font-family: 'fontLight';
+  color: #858585;
+  margin-bottom: 8px;
+`;
+
+export const ModalSchoolNameText = styled.Text`
+  font-size: 14px;
+  font-family: 'fontLight';
   color: #858585;
   margin-bottom: 8px;
 `;
@@ -80,4 +96,29 @@ export const ButtonText = styled.Text`
   color: ${(props: any) => props.fontColor ?? 'white'};
   text-align: center;
   font-size: 14px;
+`;
+
+export const ModalBookListContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+`;
+
+export const ModalBookWrapper = styled.View`
+  flex: 1;
+  margin-bottom: -8px;
+`;
+
+export const ModalBookShelves = styled.View`
+  margin: 0 0 16px;
+  border: 6px solid #f1ead5;
+`;
+
+export const ModalBookImage = styled.Image`
+  width: 100%;
+  height: 130px;
+  object-fit: contain;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  overflow: hidden;
 `;

@@ -40,7 +40,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
       { label: '아니요', action: toggleModal, color: colors.textBlack, bgColor: colors.buttonMain },
       { label: '충전하러 가기', action: toggleModal, color: colors.textYellow, bgColor: colors.buttonPrimary },
     ],
-    // label: 선택, action: 필수, color: 선택, bgColor: 선택
   };
 
   return (
