@@ -97,7 +97,7 @@ export const IconImage = styled.Image`
 
 export const IconText = styled.Text`
   font-size: 16px;
-  font-family: 'fontExtrLight';
+  font-family: 'fontExtraLight';
 `;
 
 export const ContentWrapper = styled.ScrollView`
