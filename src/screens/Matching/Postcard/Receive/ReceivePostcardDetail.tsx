@@ -1,14 +1,16 @@
-import { TouchableOpacity, View } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import React from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
-import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import * as S from './ReceivePostcardDetail.styles';
+import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
 import { RouteProp } from '@react-navigation/native';
 import postcardImage from '../../../../../assets/images/example-postcard.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender } from '../Send/SendPostcard.types';
+import { CustomText } from '../../../../commons/components/CustomText/CustomText';
+import { colors } from '../../../../commons/styles/variablesStyles';
 
 type RootStackParamList = {
   ReceivePostcardDetail: { postcardId: number };
@@ -28,7 +30,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   console.log(postcardId);
 
   return (
-    <View style={{ backgroundColor: 'white' }}>
+    <ScrollView style={{ backgroundColor: 'white' }}>
       <S.HeaderView>
         <TouchableOpacity onPress={movePage()}>
           <S.HeaderImage source={prevButtonBlack} />
@@ -86,13 +88,92 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             </S.QuizBookTitleWrapper>
           </S.QuizInfoView>
         </S.QuizStatusView>
-        <S.dashLineViewStyled />
+
+        <S.DashLineView />
+
+        <S.UserStyleView>
+          {/*todo data foreach로 구현하기*/}
+          <CustomText size="16px" font="fontMedium">
+            스타일
+          </CustomText>
+          <S.UserStyleBoxContainer>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                ENEJ
+              </CustomText>
+            </UserStyleBox>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                비흡연
+              </CustomText>
+            </UserStyleBox>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                음주 1회
+              </CustomText>
+            </UserStyleBox>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                할 일 다하고 연락해
+              </CustomText>
+            </UserStyleBox>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                야외 데이트 선호
+              </CustomText>
+            </UserStyleBox>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                여유있는 사람이 좀 더
+              </CustomText>
+            </UserStyleBox>
+          </S.UserStyleBoxContainer>
+        </S.UserStyleView>
+
+        <S.DashLineView />
+
+        <S.UserStyleView>
+          <CustomText size="16px" font="fontMedium">
+            남사친 / 여사친
+          </CustomText>
+          <S.UserStyleBoxContainer>
+            <UserStyleBox>
+              <CustomText size="12px" font="fontLight">
+                단둘이 영화 보기까지 가능
+              </CustomText>
+            </UserStyleBox>
+          </S.UserStyleBoxContainer>
+        </S.UserStyleView>
+
+        <S.DashLineView />
+
+        <S.UserStyleView>
+          <CustomText size="16px" font="fontMedium">
+            개인 질문 답
+          </CustomText>
+          <S.UserStyleBoxContainer>
+            <PersonalQuizAnswerBox>
+              <CustomText size="14px" font="fontLight">
+                단둘이 영화 보기까지 가능
+              </CustomText>
+            </PersonalQuizAnswerBox>
+          </S.UserStyleBoxContainer>
+        </S.UserStyleView>
       </S.BodyView>
-      <View>
-        <CustomButton contents="거절하기" />
-        <CustomButton contents="수락하기" />
-      </View>
-    </View>
+      <S.ButtonContainer>
+        {/*todo onPress 구현하기*/}
+        <S.Button type="reject">
+          <CustomText size="14px" font="fontMedium" color="white">
+            거절하기
+          </CustomText>
+        </S.Button>
+        <S.Button>
+          <CustomText size="14px" font="fontMedium" color={colors.textYellow}>
+            수락하기
+          </CustomText>
+        </S.Button>
+      </S.ButtonContainer>
+    </ScrollView>
   );
 };
 

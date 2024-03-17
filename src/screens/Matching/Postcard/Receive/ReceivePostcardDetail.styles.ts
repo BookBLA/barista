@@ -88,6 +88,7 @@ export const UserLibraryButtonText = styled.Text`
 
 export const BodyView = styled.View`
   padding: 14px 0;
+  margin-bottom: 20px;
 `;
 
 export const QuizStatusView = styled.View`
@@ -132,19 +133,48 @@ export const QuizBookTitleText = styled.Text`
   color: black;
 `;
 
-export const dashLineViewStyled = styled.View`
-  margin-top: 16px;
-  margin-bottom: 8px;
+export const DashLineView = styled.View`
+  margin: 16px 0;
   border: 1px dashed #d2d6e2;
 `;
 
-export const ButtonContainer = styled.View`
-  flex: 1;
-  padding: 10px;
+export const UserStyleView = styled.View``;
+
+export const UserStyleBoxContainer = styled.View`
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 14px;
+`;
+
+export const UserStyleBox = styled.View`
+  margin: 5px 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color: #fff5d6;
+`;
+
+export const PersonalQuizAnswerBox = styled.View`
+  width: 100%;
+  height: 100%;
+  padding: 10px 20px;
   border-radius: 10px;
-  margin-right: ${(props: any) => (props.left ? '4px' : 0)};
-  margin-left: ${(props: any) => (props.right ? '4px' : 0)};
-  background-color: ${(props: any) => props.backgroundColor ?? 'black'};
+  background-color: #fff5d6;
+`;
+
+export const ButtonContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+`;
+
+export const Button = styled.TouchableOpacity`
+  flex: 1;
+  padding: 16px 20px;
+  background-color: ${({ type }: any) => (type === 'reject' ? colors.buttonReauth : colors.buttonPrimary)};
+  justify-content: center;
+  align-items: center;
+  border-radius: 20px;
 `;
 
 export const styles = StyleSheet.create({
