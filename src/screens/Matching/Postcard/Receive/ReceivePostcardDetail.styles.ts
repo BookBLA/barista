@@ -70,6 +70,7 @@ export const CircularImage = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 30px;
+  margin-right: 10px;
 `;
 
 export const UserLibraryButtonContainer = styled.TouchableOpacity`
@@ -92,19 +93,19 @@ export const BodyView = styled.View`
 export const QuizStatusView = styled.View`
   padding: 16px;
   border-radius: 10px;
-  background-color: #ffebac;
+  background-color: #fff5d6;
   justify-content: center;
 `;
 
 export const QuizStatusTile = styled.Text`
   font-size: 16px;
   font-family: fontMedium;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
 `;
 
 export const QuizInfoView = styled.View`
   flex-direction: row;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 `;
 
 export const QuizCircle = styled.View`
@@ -135,34 +136,6 @@ export const dashLineViewStyled = styled.View`
   margin-top: 16px;
   margin-bottom: 8px;
   border: 1px dashed #d2d6e2;
-`;
-
-export const PostcardInfoViewStyled = styled.View`
-  background: #1d2e61;
-  height: 20%;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
-  padding: 4px 8px;
-`;
-
-export const PostcardTextViewStyled = styled.Text`
-  color: ${colors.textYellow};
-`;
-
-export const PostcardInfoFirstViewStyled = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 4px;
-`;
-
-export const ButtonContainerViewStyled = styled.View`
-  flex-direction: row;
-`;
-
-export const ButtonText = styled.Text`
-  color: ${(props: any) => props.fontColor ?? 'white'};
-  text-align: center;
-  font-size: 14px;
 `;
 
 export const ButtonContainer = styled.View`

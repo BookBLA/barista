@@ -43,10 +43,10 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
           <S.CircularImage source={postcardImage} resizeMode="contain" />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
-              <S.UserNameText style={{ fontSize: 16 }}>{`방근호 | 21`}</S.UserNameText>
+              <S.UserNameText>방근호 | 21</S.UserNameText>
               <S.GenderIconStyled source={EGender.MAN ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
-            <S.SchoolNameText>{'가천대'}</S.SchoolNameText>
+            <S.SchoolNameText>가천대</S.SchoolNameText>
           </S.UserInfoWrapper>
         </S.UserInfoView>
 
