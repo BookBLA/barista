@@ -5,13 +5,31 @@ import * as S from './ReceivePostcard.styles';
 import postcardImage from '../../../../../assets/images/example-postcard.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
+import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
+import { useNavigation } from '@react-navigation/native';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, ...rest }) => {
   const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
+  const postcardCounter = usePostcardCounter((state) => state.count);
+  const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
+  const navigation = useNavigation();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+
+  const handlePostcardClick = () => {
+    if (postcardCounter > 0) {
+      console.debug('엽서 차감', postcardCounter);
+      //todo 엽서 열람 정보를 넣어줘야할듯
+      decrementPostcardCounter();
+      // @ts-ignore
+      navigation.navigate('receivePostcardDetail', {});
+    } else {
+      console.debug('엽서 부족');
+      toggleModal();
+    }
   };
 
   const modalConfig = {
@@ -27,7 +45,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, ...res
 
   return (
     <S.ContainerViewStyled>
-      <TouchableOpacity onPress={toggleModal} style={{ height: '100%' }}>
+      <TouchableOpacity onPress={handlePostcardClick} style={{ height: '100%' }}>
         <Image source={postcardImage} style={S.styles.image} />
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
