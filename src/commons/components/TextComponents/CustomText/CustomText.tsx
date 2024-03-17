@@ -12,11 +12,15 @@ export const CustomText = <T extends unknown[] = []>({
   style,
   onPress,
 }: IProps<T>) => {
-  return (
+  return onPress ? (
     <S.Wrapper onPress={onPress} margin={margin}>
       <S.CustomText size={size} color={color} font={font} weight={weight} style={style}>
         {children}
       </S.CustomText>
     </S.Wrapper>
+  ) : (
+    <S.CustomText size={size} color={color} font={font} weight={weight} style={style} margin={margin}>
+      {children}
+    </S.CustomText>
   );
 };
