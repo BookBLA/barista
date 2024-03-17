@@ -77,6 +77,7 @@ export const sendPostcardViewStyled = styled.View`
 
 export const ListWrapper = styled.View`
   margin-top: 10px;
+  height: 100%;
 `;
 
 export const GoToTopImage = styled.Image`
