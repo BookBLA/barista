@@ -48,7 +48,7 @@ const OpenChatLink = () => {
           </S.ButtonStyled>
         </View>
       </S.ColumnStyled>
-      <S.NextButtonStyled onPress={movePage('initStyleStack')}>
+      <S.NextButtonStyled onPress={movePage('waitConfirm')}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
       </S.NextButtonStyled>
     </S.Wrapper>

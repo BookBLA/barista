@@ -1,7 +1,6 @@
 import create from 'zustand';
 
 interface UserInfo {
-  aggredStatues: boolean[];
   gender: string;
   birthDate: string;
   name: string;
@@ -19,7 +18,6 @@ interface UserState {
 
 export const useUserStore = create<UserState>((set) => ({
   userInfo: {
-    aggredStatues: [],
     gender: '',
     birthDate: '',
     name: '',

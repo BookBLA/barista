@@ -8,6 +8,7 @@ import EmailAuth from './units/EmailAuth';
 import CompletePage from './units/CompletePage';
 import ProfileImage from './units/ProfileImage';
 import OpenChatLink from './units/OpenChatLink';
+import WaitConfirm from './units/WaitConfirm';
 
 const Stack = createStackNavigator();
 
@@ -18,6 +19,7 @@ const screens = [
   { name: 'emailAuth', component: EmailAuth },
   { name: 'profileImage', component: ProfileImage },
   { name: 'openChatLink', component: OpenChatLink },
+  { name: 'waitConfirm', component: CustomScreen(WaitConfirm) },
   { name: 'completePage', component: CompletePage },
 ];
 
