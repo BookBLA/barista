@@ -4,7 +4,6 @@ import Example from '../../../screens/Example/Example';
 import Example02 from '../../../screens/Example02/Example02';
 import { TapScreens } from '../TapComponent/TapScreens';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
-import Matching from '../../../screens/Matching/Matching';
 import { Platform, SafeAreaView } from 'react-native';
 import Example03 from '../../../screens/Example03/Example03';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
@@ -15,6 +14,8 @@ import InitBookStack from '../../../screens/InitBook/initBook';
 
 import Kakao from '../../../screens/Login/KakaoLogin';
 import Login from '../../../screens/Login/Login';
+import Matching from '../../../screens/Matching/Matching';
+import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +31,7 @@ const screens = [
   { name: 'initBookStack', component: CustomScreen(InitBookStack) },
   { name: 'login', component: CustomScreen(Login) },
   { name: 'kakao', component: CustomScreen(Kakao) },
+  { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
 ];
 

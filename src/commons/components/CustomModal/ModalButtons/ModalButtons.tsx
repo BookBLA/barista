@@ -2,7 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import * as S from './ModalButtons.styles';
 import { IProps } from './ModalButtons.types';
-import { CustomText } from '../../CustomText/CustomText';
+import { CustomText } from '../../TextComponents/CustomText/CustomText';
 import { colors } from '../../../styles/variablesStyles';
 
 export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {

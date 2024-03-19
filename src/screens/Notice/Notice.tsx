@@ -1,5 +1,5 @@
 import { Image, TouchableOpacity } from 'react-native';
-import { CustomText } from '../../commons/components/CustomText/CustomText';
+import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import * as S from './Notice.styles';
 import { colors } from '../../commons/styles/variablesStyles';
 

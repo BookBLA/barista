@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
-import { Platform } from 'react-native';
+import { Platform, StyleSheet } from 'react-native';
 
 export const InfoTextStyled = styled.Text`
   font-size: 14px;
@@ -55,6 +55,7 @@ export const postcardCountViewStyled = styled.View`
 `;
 
 export const postcardCountTextStyled = styled.Text`
+  margin-left: 4px;
   font-size: 18px;
 `;
 
@@ -76,4 +77,37 @@ export const sendPostcardViewStyled = styled.View`
 
 export const ListWrapper = styled.View`
   margin-top: 10px;
+  height: 100%;
 `;
+
+export const GoToTopImage = styled.Image`
+  width: 14px;
+  height: 14px;
+  align-content: center;
+  justify-content: center;
+`;
+
+export const styles: any = StyleSheet.create({
+  GoToTopButton: {
+    position: 'absolute',
+    bottom: 12,
+    right: 5,
+    borderRadius: 20,
+    padding: 12,
+    backgroundColor: '#fff',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 10,
+          height: 10,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+  },
+});
