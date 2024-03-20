@@ -18,6 +18,7 @@
     "@types/styled-components-react-native": "^5.2.5",
     "axios": "^1.6.5",
     "bamb14": "https://github.com/bamb14/react-native-date-picker",
+    "deprecated-react-native-prop-types": "^5.0.0",
     "expo": "~50.0.2",
     "expo-apple-authentication": "~6.3.0",
     "expo-checkbox": "~2.7.0",
