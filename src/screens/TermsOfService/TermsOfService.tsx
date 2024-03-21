@@ -44,9 +44,7 @@ const TermsOfService = () => {
       }
     } else {
       updatedChecked[index] = !updatedChecked[index];
-      if (index === 6) {
-        updateAgreement('adAgreementPolicy', updatedChecked[index]);
-      }
+
       // If any other checkbox is clicked, and it becomes false, set the first checkbox to false
       if (!updatedChecked[index]) {
         updatedChecked[0] = false;
@@ -54,10 +52,13 @@ const TermsOfService = () => {
     }
     setIsChecked(updatedChecked);
 
-    // 체크박스가 1, 2, 3, 4, 5 중 하나라도 체크되었을 때 isActive를 true로 설정
     const anyCheckboxChecked = updatedChecked.slice(1, 6).every((checked) => checked);
     if (anyCheckboxChecked === true) updatedChecked[0] = true;
     setIsActive(anyCheckboxChecked);
+
+    if (index === 0 || index === 6) {
+      updateAgreement('adAgreementPolicy', !isChecked[6]);
+    }
   };
   console.log('agreementInfo', agreementInfo);
   return (
