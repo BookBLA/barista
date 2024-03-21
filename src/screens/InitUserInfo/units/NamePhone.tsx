@@ -17,25 +17,16 @@ const NamePhone = () => {
   const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
   const handlePhoneNumberChange = (phNum: string) => {
-    // 정규식을 사용하여 숫자만 필터링합니다.
-    const formattedPhoneNumber = phNum.replace(/[^0-9]/g, '');
-
-    // 하이픈을 추가해주는 로직
-    let formattedWithHyphen = '';
-    if (formattedPhoneNumber.length >= 3) {
-      formattedWithHyphen += formattedPhoneNumber.substr(0, 3) + '-';
-      if (formattedPhoneNumber.length >= 7) {
-        formattedWithHyphen += formattedPhoneNumber.substr(3, 4) + '-';
-        if (formattedPhoneNumber.length > 7) {
-          formattedWithHyphen += formattedPhoneNumber.substr(7);
-        }
-      } else {
-        formattedWithHyphen += formattedPhoneNumber.substr(3);
-      }
+    const onlyNums = phNum.replace(/[^0-9]/g, '');
+    let formattedNumber = '';
+    if (onlyNums.length <= 3) {
+      formattedNumber = onlyNums;
+    } else if (onlyNums.length <= 7) {
+      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
     } else {
-      formattedWithHyphen = formattedPhoneNumber;
+      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
     }
-    setPhNum(formattedWithHyphen);
+    setPhNum(formattedNumber);
   };
 
   return (
