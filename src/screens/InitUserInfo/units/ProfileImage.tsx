@@ -14,13 +14,47 @@ const ProfileImage = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   //   const [imageUrl, setImageUrl] = useState('');
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  const uploadeImage = async () => {
-    if (!status?.granted) {
-      const permission = await requestPermission();
-      if (!permission.granted) {
-        return null;
+  // const uploadeImage = async () => {
+  //   if (!status?.granted) {
+  //     const permission = await requestPermission();
+  //     if (!permission.granted) {
+  //       return null;
+  //     }
+  //   }
+  //   const result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: true,
+  //     aspect: [1, 1],
+  //     quality: 1,
+  //   });
+  //   if (result.canceled) {
+  //     return null; //이미지 업로드 취소시
+  //   }
+
+  //   // setImageUrl(result.assets[0].uri);
+  //   updateUserInfo('profileImageUrl', result.assets[0].uri);
+  // };
+  useEffect(() => {
+    const requestPermissionIfNeeded = async () => {
+      if (!status?.granted || status?.status === 'denied') {
+        const permission = await requestPermission();
+        if (!permission.granted) {
+          // 권한 거부됨
+          // 여기서 사용자에게 권한을 요청하는 모달이나 메시지를 보여줄 수 있습니다.
+        }
       }
+    };
+
+    requestPermissionIfNeeded();
+  }, [status, requestPermission]);
+
+  const uploadImage = async () => {
+    if (!status?.granted || status?.status === 'denied') {
+      // 이미지 권한이 없는 경우, 권한을 요청합니다.
+      await requestPermission();
+      return;
     }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
@@ -31,10 +65,9 @@ const ProfileImage = () => {
       return null; //이미지 업로드 취소시
     }
 
-    // setImageUrl(result.assets[0].uri);
     updateUserInfo('profileImageUrl', result.assets[0].uri);
   };
-
+  console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={25} />
@@ -67,7 +100,7 @@ const ProfileImage = () => {
             }
           />
           <S.ButtonStyled
-            onPress={() => uploadeImage()}
+            onPress={() => uploadImage()}
             style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
           >
             <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>사진 등록하기</Text>
