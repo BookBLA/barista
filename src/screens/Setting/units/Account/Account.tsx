@@ -1,11 +1,22 @@
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import * as S from '../../SettingStack.styles';
 import { useToggle } from '../../../../commons/hooks/useToggle';
 import { Switch } from 'react-native-switch';
+import * as S from '../../SettingStack.styles';
+import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+import useMovePage from '../../../../commons/hooks/useMovePage';
+import Home from '../../../../../assets/images/icons/HomeBlack.png';
 
 const Account = () => {
   const { toggle, isOpen } = useToggle();
+  const { movePage } = useMovePage();
+  useHeaderControl({
+    title: '계정',
+    right: {
+      image: Home,
+      onPress: movePage('tapScreens'),
+    },
+  });
 
   return (
     <S.BottomWrapper>
