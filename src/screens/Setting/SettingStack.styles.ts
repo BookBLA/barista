@@ -2,18 +2,14 @@ import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
 
 export const Wrapper = styled.View`
-  width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
 `;
 
 export const ProfileWrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-
   margin: 0 20px 20px;
 `;
 
@@ -21,7 +17,7 @@ export const LeftWrapper = styled.View`
   width: 60px;
   height: 60px;
   margin-right: 8px;
-  border-radius: 50%;
+  border-radius: 50px;
   background-color: #d9d9d9;
 `;
 
@@ -45,7 +41,7 @@ export const MenuWrapper = styled.View`
   background-color: ${colors.background};
 `;
 
-export const MenuBox = styled.View`
+export const MenuButton = styled.TouchableOpacity`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -54,8 +50,8 @@ export const MenuBox = styled.View`
 export const MenuImage = styled.Image`
   width: 36px;
   height: 30px;
-  object-fit: contain;
   margin-bottom: 10px;
+  object-fit: contain;
 `;
 
 export const Line = styled.View`
