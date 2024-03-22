@@ -1,4 +1,6 @@
 {
   "extends": "universe/native",
-  "rules": {},
+  "rules": {
+    "import/order": "off",
+  },
 }

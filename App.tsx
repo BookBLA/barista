@@ -1,22 +1,26 @@
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-
-import Example from './src/screens/Example/Example';
-import Home from './src/screens/Home/Home';
-
-const Stack = createNativeStackNavigator();
+import { CustomNavigator } from './src/commons/components/CustomNavigator/CustomNavigator';
+import { FontLoader } from './src/commons/components/FontLoader/FontLoader';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import GlobalErrorModal from './src/commons/components/GlobalErrorModal/GlobalErrorModal';
 
 export default function App() {
   return (
     <>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="home" component={Home} />
-          <Stack.Screen name="example" component={Example} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <FontLoader>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <BottomSheetModalProvider>
+            <NavigationContainer>
+              <StatusBar backgroundColor="white" style="auto" />
+              <CustomNavigator />
+            </NavigationContainer>
+            <GlobalErrorModal />
+          </BottomSheetModalProvider>
+        </GestureHandlerRootView>
+      </FontLoader>
     </>
   );
 }

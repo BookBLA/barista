@@ -1,14 +1,7 @@
-import { Get } from '../utils/http.api';
+import { Post } from '../utils/http.api';
 
-export interface ResponseData<T> {
-  status: number;
-  message: string;
-  body: T;
+export interface testRequest {
+  contents: string;
 }
 
-export interface usersRequest {
-  name: string;
-  age: number;
-}
-
-export const getUsersApi = (): Promise<ResponseData<usersRequest[]>> => Get<ResponseData<usersRequest[]>>('');
+export const postExampleApi = (contents: testRequest) => Post('tests', contents, true);
