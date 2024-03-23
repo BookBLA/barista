@@ -143,7 +143,9 @@ export const DashLineView = styled.View`
   border: 1px dashed #d2d6e2;
 `;
 
-export const UserStyleView = styled.View``;
+export const UserStyleView = styled.View`
+  margin-bottom: 20px;
+`;
 
 export const UserStyleBoxContainer = styled.View`
   flex-direction: row;
@@ -170,7 +172,7 @@ export const ButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 `;
 
 export const Button = styled.TouchableOpacity`

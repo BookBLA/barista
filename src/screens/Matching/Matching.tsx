@@ -125,6 +125,7 @@ const Matching = () => {
                 numColumns={2}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
+                overScrollMode="never"
               />
             )}
           </>
@@ -146,6 +147,7 @@ const Matching = () => {
                 keyExtractor={(item, index) => index.toString()}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
+                overScrollMode="never"
               />
             )}
           </>

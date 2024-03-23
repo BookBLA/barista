@@ -45,6 +45,7 @@ export const ButtonContainer = styled.View`
   background-color: ${(props: any) => props.backgroundColor ?? 'black'};
 `;
 
+//todo 자기가 열람했을때 색 변할 수 도있음. 투명도
 export const styles = StyleSheet.create({
   image: {
     borderTopLeftRadius: 8,
