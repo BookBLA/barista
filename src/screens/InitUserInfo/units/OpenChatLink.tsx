@@ -27,7 +27,7 @@ const OpenChatLink = () => {
   // };
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={25} />
+      <TitleProgress2 gauge={50} />
       <S.ColumnStyled style={{ height: '80%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
@@ -41,16 +41,22 @@ const OpenChatLink = () => {
             }}
           />
           <S.ButtonStyled
-            onPress={movePage()}
+            onPress={movePage('infoOpenChat')}
             style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
           >
             <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>링크 가져오는 법</Text>
           </S.ButtonStyled>
         </View>
       </S.ColumnStyled>
-      <S.NextButtonStyled onPress={movePage('initStyleStack')}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-      </S.NextButtonStyled>
+      {link === '' ? (
+        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      ) : (
+        <S.NextButtonStyled onPress={movePage('waitConfirm')}>
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+        </S.NextButtonStyled>
+      )}
     </S.Wrapper>
   );
 };

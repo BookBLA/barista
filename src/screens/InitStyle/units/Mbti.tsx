@@ -5,9 +5,26 @@ import { TouchableOpacity, View, Image, Text } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
+import { useEffect, useState } from 'react';
+import { useStyleStore } from '../../../commons/store/useStyle';
 
 const Mbti = () => {
+  const { updateStyleInfo, styleInfo } = useStyleStore();
+  console.log('styleInfp', styleInfo);
+
   const { movePage } = useMovePage();
+  const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
+
+  useEffect(() => {
+    console.log('mbti', mbti);
+  }, [mbti]);
+
+  const nextPage = () => {
+    const mbtiString = mbti.join('');
+    updateStyleInfo('mbti', mbtiString);
+    console.log('styleInfo', styleInfo);
+    movePage('smokeDrink')();
+  };
 
   return (
     <S.Wrapper>
@@ -20,7 +37,7 @@ const Mbti = () => {
           </Text>
         </View>
 
-        <Example02 />
+        <Example02 setMbti={setMbti} />
 
         <View
           style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '13%', marginBottom: '5%' }}

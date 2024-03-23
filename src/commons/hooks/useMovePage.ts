@@ -23,11 +23,15 @@ const useMovePage = <T extends ParamListBase>() => {
     }
   };
 
-  const handleReplace = (screenName: string, params?: T[keyof T]) => {
-    navigation?.replace(screenName, params); // 현재 스택을 제거하고 다른 화면으로 이동할 때 사용
+  const handleReset = (screenName: string, params?: T[keyof T]) => {
+    // 현재 스택을 제거하고 다른 화면으로 이동할 때 사용
+    navigation?.reset({
+      index: 0,
+      routes: [{ name: screenName, params }],
+    });
   };
 
-  return { goBack, handleNext, movePage, handleReplace };
+  return { goBack, handleNext, movePage, handleReset };
 };
 
 export default useMovePage;

@@ -66,38 +66,40 @@ const TermsOfService = () => {
 
   return (
     <S.Wrapper>
-      <S.SafeAreaViewStyled>
-        <S.TitleStyled>약관 동의</S.TitleStyled>
-      </S.SafeAreaViewStyled>
-      <T.ColumnStyled>
-        <S.ContentStyled style={{ marginBottom: 30 }}>북블라 서비스 동의</S.ContentStyled>
-        {agreementTitles.map((title, index) => (
-          <React.Fragment key={index}>
-            <T.RowStyled>
-              <View style={{ flexDirection: 'row' }}>
-                <Checkbox
-                  value={isChecked[index]}
-                  onValueChange={() => handleCheckboxChange(index)}
-                  color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
-                />
-                <Text style={{ marginLeft: 6 }}>{title}</Text>
-              </View>
+      <View style={{ width: '100%' }}>
+        <S.SafeAreaViewStyled>
+          <S.TitleStyled>약관 동의</S.TitleStyled>
+        </S.SafeAreaViewStyled>
+        <T.ColumnStyled>
+          <S.ContentStyled style={{ marginTop: 30, marginBottom: 30 }}>북블라 서비스 동의</S.ContentStyled>
+          {agreementTitles.map((title, index) => (
+            <React.Fragment key={index}>
+              <T.RowStyled>
+                <View style={{ flexDirection: 'row' }}>
+                  <Checkbox
+                    value={isChecked[index]}
+                    onValueChange={() => handleCheckboxChange(index)}
+                    color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
+                  />
+                  <Text style={{ marginLeft: 6 }}>{title}</Text>
+                </View>
 
-              {(index === 2 || index === 3 || index === 4 || index === 5) && (
-                <TouchableOpacity onPress={() => handleAgreementLinkPress(index)}>
-                  <Image source={nextArrow} style={{ width: 8, height: 16 }} />
-                </TouchableOpacity>
+                {(index === 2 || index === 3 || index === 4 || index === 5) && (
+                  <TouchableOpacity onPress={() => handleAgreementLinkPress(index)}>
+                    <Image source={nextArrow} style={{ width: 8, height: 16 }} />
+                  </TouchableOpacity>
+                )}
+              </T.RowStyled>
+              {index === 0 && <T.DividerStyled />}
+              {index === 6 && (
+                <Text style={{ color: colors.textGray3, fontSize: 12, marginLeft: 26 }}>
+                  이벤트 및 혜택 정보를 보내드립니다.
+                </Text>
               )}
-            </T.RowStyled>
-            {index === 0 && <T.DividerStyled />}
-            {index === 6 && (
-              <Text style={{ color: colors.textGray3, fontSize: 12, marginLeft: 26 }}>
-                이벤트 및 혜택 정보를 보내드립니다.
-              </Text>
-            )}
-          </React.Fragment>
-        ))}
-      </T.ColumnStyled>
+            </React.Fragment>
+          ))}
+        </T.ColumnStyled>
+      </View>
       {isActive === false ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>

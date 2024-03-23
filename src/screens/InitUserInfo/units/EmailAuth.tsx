@@ -10,14 +10,18 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { postPolicyApi } from '../../../commons/api/memberPolicy';
+import { useAgreementStore } from '../../../commons/store/useAgreement';
+import { postAuthApi } from '../../../commons/api/memberAuth';
 
 const EmailAuth = () => {
-  const [email, setEamil] = useState('example@gachon.ac.kr');
+  const [email, setEamil] = useState('');
   const [code, setCode] = useState('000000');
   const { updateUserInfo, userInfo } = useUserStore();
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
+  const { agreementInfo } = useAgreementStore();
 
   const [time, setTime] = useState(300); // 5분을 초 단위로 표현
 
@@ -36,6 +40,8 @@ const EmailAuth = () => {
   }, [isActive, time]);
 
   const startTimer = () => {
+    callPostPolicyApi();
+    callPostAuthApi();
     setIsActive(true);
   };
   const resetTimer = () => {
@@ -63,11 +69,46 @@ const EmailAuth = () => {
     if (email === '') {
       setEamil('example@gachon.ac.kr'); // Restore the initial text if the TextInput is left empty
       setIsFocused1(false);
-      updateUserInfo('schoolEmail', email);
     }
     if (code === '') {
       setCode('000000');
       setIsFocused2(false);
+    }
+    updateUserInfo('schoolEmail', email);
+  };
+
+  const callPostPolicyApi = async () => {
+    try {
+      const response = await postPolicyApi(
+        {
+          agreedStatuses: {
+            adAgreementPolicy: agreementInfo.adAgreementPolicy,
+          },
+        },
+        1,
+      );
+      console.log('callPostPolicyApi', response);
+    } catch (error) {
+      console.log('callPostPolicyApi error', error);
+    }
+  };
+
+  const callPostAuthApi = async () => {
+    try {
+      const response = await postAuthApi(
+        {
+          // phoneNumber: userInfo.phoneNumber,
+          // studentIdImageUrl: userInfo.studentIdImageUrl,
+          schoolEmail: userInfo.schoolEmail,
+          // phoneNumber: '010-1234-5678',
+          // studentIdImageUrl: 'https://www.google.com',
+          // schoolEmail: 'althcjstk08@gachon.ac.kr',
+        },
+        1,
+      );
+      console.log('callPostAuthApi', response);
+    } catch (error) {
+      console.log('callPostAuthApi error', error);
     }
   };
 
@@ -86,21 +127,24 @@ const EmailAuth = () => {
           >
             <View>
               <S.ContentStyled>학교 이메일을 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%', backgroundColor: 'pink' }}>
+              <S.RowStyled style={{ width: '100%' }}>
                 <S.TextFiledStyled
-                  value={userInfo.schoolEmail === '' ? email : userInfo.schoolEmail}
-                  onChangeText={setEamil}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
+                  // value={userInfo.schoolEmail === '' ? email : userInfo.schoolEmail}
+                  defaultValue={userInfo.schoolEmail}
+                  onChangeText={(text: string) => setEamil(text)}
+                  placeholder="example@gachon.ac.kr"
+                  placeholderTextColor={colors.textGray2}
+                  // onFocus={handleFocus}
+                  onBlur={() => updateUserInfo('schoolEmail', email)}
                   style={{
-                    color: email === 'example@gachon.ac.kr' ? colors.textGray2 : colors.primary,
+                    color: colors.primary,
                     width: '78%',
                     textAlign: 'start',
                     paddingLeft: 20,
                   }}
                 />
                 <S.ButtonStyled
-                  onPress={startTimer}
+                  onPress={userInfo.schoolEmail !== '' ? startTimer : undefined}
                   style={{ width: 70, marginBottom: 6, backgroundColor: colors.primary }}
                 >
                   <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}>인증</Text>
@@ -113,7 +157,7 @@ const EmailAuth = () => {
             </View>
             <View>
               <S.ContentStyled>인증 코드를 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%', backgroundColor: 'pink' }}>
+              <S.RowStyled style={{ width: '100%' }}>
                 <S.CodeFiledStyled>
                   <S.InputStyled
                     value={code}
@@ -168,7 +212,8 @@ const EmailAuth = () => {
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-        <TouchableOpacity onPress={movePage('profileImage')}>
+        <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
+          {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
           <Image source={nextButton} />
         </TouchableOpacity>
       </View>

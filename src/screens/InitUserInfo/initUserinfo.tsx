@@ -8,6 +8,8 @@ import EmailAuth from './units/EmailAuth';
 import CompletePage from './units/CompletePage';
 import ProfileImage from './units/ProfileImage';
 import OpenChatLink from './units/OpenChatLink';
+import WaitConfirm from './units/WaitConfirm';
+import InfoOpenChat from './units/InfoOpenChat';
 
 const Stack = createStackNavigator();
 
@@ -16,16 +18,13 @@ const screens = [
   { name: 'namePhone', component: NamePhone },
   { name: 'schoolStudentID', component: SchoolStudentID },
   { name: 'emailAuth', component: EmailAuth },
-  { name: 'profileImage', component: ProfileImage },
-  { name: 'openChatLink', component: OpenChatLink },
-  { name: 'completePage', component: CompletePage },
 ];
 
 const InitUserInfoStack = () => {
   return (
     <Stack.Navigator initialRouteName="genderBirth" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
+        <Stack.Screen key={name} name={name} component={component} />
       ))}
     </Stack.Navigator>
   );
