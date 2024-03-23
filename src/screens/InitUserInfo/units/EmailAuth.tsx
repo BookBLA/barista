@@ -15,7 +15,7 @@ import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postAuthApi } from '../../../commons/api/memberAuth';
 
 const EmailAuth = () => {
-  const [email, setEamil] = useState();
+  const [email, setEamil] = useState('');
   const [code, setCode] = useState('000000');
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
@@ -144,7 +144,7 @@ const EmailAuth = () => {
                   }}
                 />
                 <S.ButtonStyled
-                  onPress={startTimer}
+                  onPress={userInfo.schoolEmail !== '' ? startTimer : undefined}
                   style={{ width: 70, marginBottom: 6, backgroundColor: colors.primary }}
                 >
                   <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}>인증</Text>

@@ -41,7 +41,7 @@ const OpenChatLink = () => {
             }}
           />
           <S.ButtonStyled
-            onPress={movePage()}
+            onPress={movePage('infoOpenChat')}
             style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
           >
             <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>링크 가져오는 법</Text>
