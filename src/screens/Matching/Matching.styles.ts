@@ -110,4 +110,19 @@ export const styles: any = StyleSheet.create({
       },
     }),
   },
+  PostcardShadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { width: 1, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 3,
+        shadowOpacity: 0.13,
+        shadowRadius: 5,
+      },
+    }),
+  },
 });

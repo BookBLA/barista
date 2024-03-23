@@ -117,7 +117,7 @@ const Matching = () => {
                 onScroll={handleScroll}
                 data={receivedPostcards}
                 renderItem={({ item, index }) => (
-                  <S.receivedPostcardViewStyled index={index}>
+                  <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
                     <ReceivePostcard key={index} {...item} />
                   </S.receivedPostcardViewStyled>
                 )}
