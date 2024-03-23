@@ -9,6 +9,8 @@ import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useNativeBase } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
@@ -29,6 +31,12 @@ const NamePhone = () => {
     setPhNum(formattedNumber);
   };
 
+  const nextPage = () => {
+    updateUserInfo('name', name);
+    updateUserInfo('phoneNumber', phNum);
+    movePage('schoolStudentID')();
+  };
+
   return (
     <S.Wrapper>
       <TitleProgress gauge={50} />
@@ -46,7 +54,7 @@ const NamePhone = () => {
               <S.TextFiledStyled
                 defaultValue={userInfo.name}
                 onChangeText={(text: string) => setName(text)}
-                onBlur={() => updateUserInfo('name', name)}
+                // onBlur={() => updateUserInfo('name', name)}
                 placeholder="이름"
                 placeholderTextColor={colors.textGray2}
               />
@@ -57,7 +65,7 @@ const NamePhone = () => {
               <S.TextFiledStyled
                 value={phNum}
                 onChangeText={handlePhoneNumberChange}
-                onBlur={() => updateUserInfo('phoneNumber', phNum)}
+                // onBlur={() => updateUserInfo('phoneNumber', phNum)}
                 keyboardType="numeric" // 숫자 키패드만 허용
                 maxLength={13} // 최대 길이 제한 (하이픈 포함)
                 placeholder="010-1234-5678"
@@ -78,7 +86,7 @@ const NamePhone = () => {
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-        <TouchableOpacity onPress={movePage('schoolStudentID')}>
+        <TouchableOpacity onPress={nextPage}>
           <Image source={nextButton} />
         </TouchableOpacity>
       </View>

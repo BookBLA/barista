@@ -18,12 +18,14 @@ import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/Re
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 import SettingStack from '../../../screens/Setting/SettingStack';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
+import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 
 const Stack = createNativeStackNavigator();
 
 const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'initUserinfoStack', component: InitUserInfoStack },
+  { name: 'initProfileStack', component: InitProfileStack },
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },

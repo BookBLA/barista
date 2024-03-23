@@ -30,6 +30,11 @@ const PersonalQuestion = () => {
     }
   };
   const { movePage } = useMovePage();
+  const nextPage = () => {
+    updateStyleInfo('memberAsk', question);
+    movePage('initBookStack')();
+    console.log('styleInfo', styleInfo);
+  };
 
   return (
     <S.Wrapper>
@@ -73,12 +78,12 @@ const PersonalQuestion = () => {
           </S.RowStyled>
         </View>
       </TouchableHighlight>
-      {styleInfo.memberAsk === '' ? (
+      {question === '' ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
       ) : (
-        <S.NextButtonStyled onPress={movePage('initBookStack')}>
+        <S.NextButtonStyled onPress={nextPage}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
       )}

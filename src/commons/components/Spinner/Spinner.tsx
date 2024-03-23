@@ -10,7 +10,7 @@ const Spinner = () => {
     Animated.loop(
       Animated.timing(animationValue, {
         toValue: 1,
-        duration: 700, // Adjust the duration to slow down the animation (e.g., 5000 milliseconds)
+        duration: 1000, // Adjust the duration to slow down the animation (e.g., 5000 milliseconds)
         useNativeDriver: true,
       }),
       { iterations: -1 }, // Infinite iterations

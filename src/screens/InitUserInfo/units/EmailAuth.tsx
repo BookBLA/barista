@@ -18,7 +18,7 @@ const EmailAuth = () => {
   const [email, setEamil] = useState('');
   const [code, setCode] = useState('000000');
   const { updateUserInfo, userInfo } = useUserStore();
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
   const { agreementInfo } = useAgreementStore();
@@ -97,8 +97,8 @@ const EmailAuth = () => {
     try {
       const response = await postAuthApi(
         {
-          phoneNumber: userInfo.phoneNumber,
-          studentIdImageUrl: userInfo.studentIdImageUrl,
+          // phoneNumber: userInfo.phoneNumber,
+          // studentIdImageUrl: userInfo.studentIdImageUrl,
           schoolEmail: userInfo.schoolEmail,
           // phoneNumber: '010-1234-5678',
           // studentIdImageUrl: 'https://www.google.com',
@@ -127,7 +127,7 @@ const EmailAuth = () => {
           >
             <View>
               <S.ContentStyled>학교 이메일을 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%', backgroundColor: 'pink' }}>
+              <S.RowStyled style={{ width: '100%' }}>
                 <S.TextFiledStyled
                   // value={userInfo.schoolEmail === '' ? email : userInfo.schoolEmail}
                   defaultValue={userInfo.schoolEmail}
@@ -157,7 +157,7 @@ const EmailAuth = () => {
             </View>
             <View>
               <S.ContentStyled>인증 코드를 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%', backgroundColor: 'pink' }}>
+              <S.RowStyled style={{ width: '100%' }}>
                 <S.CodeFiledStyled>
                   <S.InputStyled
                     value={code}
@@ -212,7 +212,8 @@ const EmailAuth = () => {
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-        <TouchableOpacity onPress={movePage('profileImage')}>
+        <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
+          {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
           <Image source={nextButton} />
         </TouchableOpacity>
       </View>

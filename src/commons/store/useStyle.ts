@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 
 interface StyleInfo {
-  mbtiList: string[];
   mbti: string;
   smokeTypes: string;
   drinkTypes: string;
@@ -19,7 +18,6 @@ interface StyleState {
 
 export const useStyleStore = create<StyleState>((set) => ({
   styleInfo: {
-    mbtiList: [],
     mbti: '',
     smokeTypes: '',
     drinkTypes: '',

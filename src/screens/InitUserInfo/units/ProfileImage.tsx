@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Image, Text, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
@@ -72,7 +72,7 @@ const ProfileImage = () => {
     <S.Wrapper>
       <TitleProgress2 gauge={25} />
       <S.ColumnStyled style={{ height: '80%' }}>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
           <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
           <Text
             style={{
@@ -86,24 +86,25 @@ const ProfileImage = () => {
             본인 얼굴이 나온 사진으로 등록하면 매칭률이 80% 높아져요!{'\n'}프로필 사진은 모두 흐릿하게 보여지며{'\n'}
             매칭이 성사된 상대에게만 원본 사진으로 보입니다
           </Text>
-
-          <Image
-            source={
-              userInfo.profileImageUrl === ''
-                ? require('../../../../assets/images/icons/Circle2.png')
-                : { uri: userInfo.profileImageUrl }
-            }
-            style={
-              userInfo.profileImageUrl === ''
-                ? { height: 190, aspectRatio: 1 }
-                : { height: 190, aspectRatio: 1, borderRadius: 100 }
-            }
-          />
+          <TouchableOpacity onPress={uploadImage}>
+            <Image
+              source={
+                userInfo.profileImageUrl === ''
+                  ? require('../../../../assets/images/icons/Circle.png')
+                  : { uri: userInfo.profileImageUrl }
+              }
+              style={
+                userInfo.profileImageUrl === ''
+                  ? { height: 190, aspectRatio: 1 }
+                  : { height: 190, aspectRatio: 1, borderRadius: 100 }
+              }
+            />
+          </TouchableOpacity>
           <S.ButtonStyled
             onPress={() => uploadImage()}
             style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
           >
-            <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>사진 등록하기</Text>
+            <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>사진 가이드 보기</Text>
           </S.ButtonStyled>
         </View>
       </S.ColumnStyled>

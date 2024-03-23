@@ -18,16 +18,11 @@ const screens = [
   { name: 'namePhone', component: NamePhone },
   { name: 'schoolStudentID', component: SchoolStudentID },
   { name: 'emailAuth', component: EmailAuth },
-  { name: 'profileImage', component: ProfileImage },
-  { name: 'openChatLink', component: OpenChatLink },
-  { name: 'waitConfirm', component: WaitConfirm },
-  { name: 'completePage', component: CompletePage },
-  { name: 'infoOpenChat', component: InfoOpenChat },
 ];
 
 const InitUserInfoStack = () => {
   return (
-    <Stack.Navigator initialRouteName="waitConfirm" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="genderBirth" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={component} />
       ))}

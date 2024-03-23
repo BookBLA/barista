@@ -7,9 +7,10 @@ import optionA from '../../../../assets/images/icons/OptionA.png';
 import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
+import useMovePage from '../../../commons/hooks/useMovePage';
 const WaitConfirm = () => {
   const [loading, setLoading] = useState(true);
-
+  const { movePage } = useMovePage();
   // Simulating loading with useEffect
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -21,7 +22,7 @@ const WaitConfirm = () => {
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={75} />
-      <S.ColumnStyled style={{ height: '80%' }}>
+      <S.ColumnStyled style={{ height: '90%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <Spinner />
           <S.ContentStyled>프로필을 확인하고 있어요!{'\n'}1시간 이내로 처리 됩니다!</S.ContentStyled>
@@ -67,6 +68,9 @@ const WaitConfirm = () => {
                   </S.TextStyled>
                 </S.RowStyled>
               </TouchableOpacity>
+              <S.NextButtonStyled onPress={movePage('completePage')}>
+                <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
+              </S.NextButtonStyled>
             </View>
           </View>
         </View>

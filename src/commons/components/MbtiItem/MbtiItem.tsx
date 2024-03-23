@@ -3,33 +3,34 @@ import * as S from './MbtiItem.styles';
 import { IProps } from './MbtiItem.types';
 import { useStyleStore } from '../../store/useStyle';
 
-const MbtiItem = ({ name }: IProps) => {
-  const [isSelect, setSelect] = useState<null | boolean>(null);
-  const { updateStyleInfo, styleInfo } = useStyleStore();
+const MbtiItem = ({ name, setMbti, index }: IProps) => {
+  const [isSelect, setSelect] = useState<boolean>(true);
 
-  // ButtonStyled 스타일 컴포넌트에게 props로 isSelect 값을 전달해 준다.
-  // background-color: ${(props: IProps) => (props.isSelect ? 'yellow' : 'white')};
-  // isSelect값이 트루일 때만 노랑색으로 변경해 준다.
-  // 두번째 ButtonStyled 스타일 컴포넌트는 isSelect값이 false라면 true로 바꿔서 props로 전달해 준다.
+  const handleSelect = (selectedName: string) => () => {
+    setSelect((prev) => !prev);
+    setMbti((prev) => {
+      const newMbti = [...prev];
+      newMbti[index] = selectedName;
+      return newMbti;
+    });
+  };
 
   return (
     <>
       <S.RowStyled>
         <S.ButtonStyled
           isSelect={isSelect}
-          onPress={() => {
-            setSelect(true);
-            updateStyleInfo('mbtiList', name[0]);
-          }}
+          // onPress={() => {
+          //   setSelect(true);
+          //   // updateStyleInfo('mbtiList', name[0]);
+          // }}
         >
-          <S.TextStyled isSelect={isSelect} onPress={() => setSelect(true)}>
+          <S.TextStyled isSelect={isSelect} onPress={handleSelect(name[0][0])}>
             {name[0]}
           </S.TextStyled>
         </S.ButtonStyled>
-        <S.ButtonStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-          <S.TextStyled isSelect={isSelect === false} onPress={() => setSelect(false)}>
-            {name[1]}
-          </S.TextStyled>
+        <S.ButtonStyled isSelect={isSelect === false} onPress={handleSelect(name[1][0])}>
+          <S.TextStyled isSelect={isSelect === false}>{name[1]}</S.TextStyled>
         </S.ButtonStyled>
       </S.RowStyled>
     </>

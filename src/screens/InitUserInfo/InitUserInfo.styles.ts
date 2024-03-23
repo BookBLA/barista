@@ -7,7 +7,7 @@ interface IProps {
 
 export const Wrapper = styled.View`
   flex: 1;
-  background-color: grey;
+  background-color: white;
   align-items: center;
   justify-content: space-between;
 `;
@@ -20,7 +20,7 @@ export const SafeAreaViewStyled = styled.SafeAreaView`
   align-items: center;
   align-self: center;
   justify-content: center;
-  background-color: skyblue;
+  /* background-color: skyblue; */
 `;
 export const ColumnStyled = styled.View`
   display: flex;
@@ -29,7 +29,7 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  background-color: mistyrose;
+  /* background-color: mistyrose; */
 `;
 export const TouchableStyled = styled.TouchableHighlight`
   height: 80%;
