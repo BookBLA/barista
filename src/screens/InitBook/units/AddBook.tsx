@@ -52,15 +52,18 @@ const AddBook = () => {
           </T.ButtonStyled>
         </>
       </S.ColumnStyled>
-      {isActivate === false ? (
+      {/* {isActivate === false ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
       ) : (
-        <S.NextButtonStyled onPress={movePage('initQuiz')}>
+        <S.NextButtonStyled onPress={movePage('tapScreens')}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
-      )}
+      )} */}
+      <S.NextButtonStyled onPress={movePage('tapScreens')}>
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };

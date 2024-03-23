@@ -144,7 +144,7 @@ const InitQuiz = () => {
           </View>
         </TouchableHighlight>
       </S.ColumnStyled>
-      {isActivate === false ? (
+      {/* {isActivate === false ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
         </S.NextButtonStyled>
@@ -152,7 +152,10 @@ const InitQuiz = () => {
         <S.NextButtonStyled onPress={movePage('initQuiz')}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
         </S.NextButtonStyled>
-      )}
+      )} */}
+      <S.NextButtonStyled onPress={movePage('initQuiz')}>
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };
