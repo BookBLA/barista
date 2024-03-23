@@ -1,5 +1,5 @@
 import { ScrollView, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
@@ -10,7 +10,6 @@ import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender } from '../Send/SendPostcard.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import GoToTopButton from '../../../../../assets/images/icons/GoToTop.png';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 
 type RootStackParamList = {
@@ -26,33 +25,10 @@ type Props = {
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const { movePage } = useMovePage();
   const { postcardId } = route.params;
-  const [showButton, setShowButton] = useState<boolean>(false);
-  const scrollRef = useRef<ScrollView>(null);
-
-  const handleScroll = (event: any) => {
-    const currentOffset: number = event.nativeEvent.contentOffset.y;
-    const buttonThreshold: number = 50;
-
-    if (currentOffset > buttonThreshold) {
-      setShowButton(true);
-    } else {
-      setShowButton(false);
-    }
-  };
-
-  const scrollToTop = () => {
-    scrollRef.current?.scrollTo({ x: 0, y: 0, animated: true });
-  };
 
   return (
     <>
-      <ScrollView
-        alwaysBounceHorizontal={false}
-        ref={scrollRef}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        style={{ backgroundColor: 'white' }}
-      >
+      <ScrollView alwaysBounceHorizontal={false} scrollEventThrottle={16} style={{ backgroundColor: 'white' }}>
         <S.HeaderView>
           <TouchableOpacity onPress={movePage()}>
             <S.HeaderImage source={prevButtonBlack} />
@@ -200,11 +176,6 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
           </S.Button>
         </S.ButtonContainer>
       </ScrollView>
-      {showButton && (
-        <TouchableOpacity style={S.styles.GoToTopButton} onPress={scrollToTop}>
-          <S.GoToTopImage source={GoToTopButton} />
-        </TouchableOpacity>
-      )}
     </>
   );
 };
