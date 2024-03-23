@@ -8,7 +8,6 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: start;
   justify-content: flex-start;
-  background-color: lemonchiffon;
   padding-left: 20px;
 `;
 
@@ -19,7 +18,6 @@ export const RowStyled = styled.View`
   align-items: center;
   width: 95%;
   height: 7%;
-  background-color: lightcoral;
 `;
 
 export const DividerStyled = styled.View`
