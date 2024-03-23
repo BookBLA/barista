@@ -4,12 +4,14 @@ import { Image } from 'react-native';
 import { CustomText } from '../TextComponents/CustomText/CustomText';
 import { ICustomHeader } from './CustomHeader.types';
 import * as S from './CustomHeader.styles';
+import { useHasMargin } from '../../store/useHasMargin';
 
 export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, right }) => {
   const { movePage } = useMovePage();
+  const { hasMargin } = useHasMargin();
 
   return (
-    <S.Wrapper>
+    <S.Wrapper hasMargin={hasMargin}>
       {left && (
         <S.Button onPress={movePage()}>
           <Image source={backArrow} style={{ width: 24, height: 24 }} />
@@ -20,9 +22,11 @@ export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, righ
           {title}
         </CustomText>
       </S.CenterWrapper>
-      <S.Button onPress={right?.onPress}>
-        <S.IconImage source={right?.image} />
-      </S.Button>
+      {right && (
+        <S.Button onPress={right?.onPress}>
+          <S.IconImage source={right?.image} />
+        </S.Button>
+      )}
     </S.Wrapper>
   );
 };

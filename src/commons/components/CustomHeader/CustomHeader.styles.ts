@@ -7,28 +7,29 @@ export const Wrapper = styled.View`
   align-items: center;
   width: 100%;
   height: 48px;
+  background-color: #fff;
+  ${({ hasMargin }: { hasMargin: boolean }) => !hasMargin && `padding: 0px 16px;`}
 `;
 
 export const CenterWrapper = styled.View`
-  width: ${deviceWidth - 80}px;
-  margin-left: ${({ left }: { left: boolean }) => (!left ? 24 : 0)}px;
-  background-color: red;
   display: flex;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
-  flex-direction: row;
+  width: ${deviceWidth - 80}px;
+  ${({ left }: { left: boolean }) => !left && 'margin-left: 24px'}
 `;
 
 export const Button = styled.TouchableOpacity`
-  width: 24px;
-  height: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: blue;
+  width: 24px;
+  height: 100%;
 `;
 
 export const IconImage = styled.Image`
   width: 24px;
   height: 24px;
+  object-fit: cover;
 `;
