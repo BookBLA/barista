@@ -50,6 +50,7 @@ export const ButtonContainer = styled.View`
 //todo 자기가 열람했을때 색 변할 수 도있음. 투명도
 export const styles = StyleSheet.create({
   image: {
+    resizeMode: 'cover',
     borderTopLeftRadius: 8,
     borderTopRightRadius: 8,
     width: '100%',
