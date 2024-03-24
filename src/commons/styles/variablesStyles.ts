@@ -33,6 +33,7 @@ export const colors = {
   textGray: '#858585',
 
   lineDivider: '#D2D6E2',
+  textGray1: '#D9D9D9',
   textGray2: '#A8AAB2',
   textGray3: '#858585',
   textGray4: '#787878',

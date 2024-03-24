@@ -154,7 +154,6 @@ export const BookImage = styled.Image`
   width: 90%;
   height: ${deviceHeight / 4 - 40}px;
   border-radius: 10px;
-  resize-mode: 'auto';
 `;
 
 export const EmptyBookImage = styled.View`
@@ -177,4 +176,20 @@ export const BookMarkIconImage = styled.Image`
   position: absolute;
   left: ${deviceWidth / 3.8}px;
   top: ${deviceHeight / 500 - 5}px;
+`;
+
+export const ProfileImageBottomSheetContainer = styled.View`
+  margin: 4px 20px;
+  padding: 16px;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ProfileImageModificationButton = styled.TouchableOpacity`
+  width: 100%;
+  border: 1px ${colors.textGray1} solid;
+  border-radius: 10px;
+  padding: 16px 0;
+  align-items: center;
+  justify-content: center;
 `;
