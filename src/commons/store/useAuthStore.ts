@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 
 interface IAuth {
-  token: string | null;
-  setToken: (token: string | null) => void;
+  token: string;
+  setToken: (token: string) => void;
 }
 
 const useAuthStore = create<IAuth>((set) => ({
-  token: null,
+  token: '',
   setToken: (token) => set({ token }),
 }));
 
