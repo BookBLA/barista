@@ -46,7 +46,8 @@
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
     "zustand": "^4.5.0",
-    "expo-navigation-bar": "~2.8.1"
+    "expo-navigation-bar": "~2.8.1",
+    "expo-constants": "~15.4.5"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
