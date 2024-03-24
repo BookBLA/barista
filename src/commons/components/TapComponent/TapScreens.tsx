@@ -21,7 +21,10 @@ const TapScreens = () => {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 12,
+          fontFamily: 'fontMedium',
+          color: colors.textGray5,
+          paddingBottom: 2,
         },
         tabBarStyle: {
           height: '8%',
@@ -42,7 +45,7 @@ const TapScreens = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 19, height: 17 }} />
+            <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 21, height: 21 }} />
           ),
         }}
       />
@@ -54,7 +57,7 @@ const TapScreens = () => {
             <Image
               source={focused ? matchingDark : matchingBright}
               resizeMode="contain"
-              style={{ width: 19, height: 17 }}
+              style={{ width: 21, height: 21 }}
             />
           ),
         }}
@@ -67,7 +70,7 @@ const TapScreens = () => {
             <Image
               source={focused ? libraryDark : libraryBright}
               resizeMode="contain"
-              style={{ width: 19, height: 17 }}
+              style={{ width: 21, height: 21 }}
             />
           ),
         }}

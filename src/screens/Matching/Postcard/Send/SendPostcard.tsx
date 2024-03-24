@@ -4,7 +4,7 @@ import * as S from './SendPostcard.styles';
 import postcardImage from '../../../../../assets/images/example-postcard.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { Platform, TouchableWithoutFeedback } from 'react-native';
+import { Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 
@@ -91,28 +91,30 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
       </S.ContainerViewStyled>
       <S.dashLineViewStyled />
       <CustomModal modalConfig={modalConfig}>
-        <S.ModalUserInfoViewStyled>
-          <S.CircularImage source={postcardImage} resizeMode="contain" />
-          <S.UserInfoWrapper>
-            <S.UserInfoNameWrapper>
-              <S.UserNameText style={{ fontSize: 16 }}>{`${userName} | ${age}`}</S.UserNameText>
-              <S.GenderIconStyled source={gender === EGender.MAN ? manIcon : womanIcon} />
-            </S.UserInfoNameWrapper>
-            <S.ModalSchoolNameText>{schoolName}</S.ModalSchoolNameText>
-          </S.UserInfoWrapper>
-        </S.ModalUserInfoViewStyled>
-        <S.ModalBookListContainer>
-          <S.ModalBookWrapper>
-            <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-          </S.ModalBookWrapper>
-          <S.ModalBookWrapper>
-            <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-          </S.ModalBookWrapper>
-          <S.ModalBookWrapper>
-            <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-          </S.ModalBookWrapper>
-        </S.ModalBookListContainer>
-        <S.ModalBookShelves />
+        <View>
+          <S.ModalUserInfoViewStyled>
+            <S.CircularImage source={postcardImage} resizeMode="contain" />
+            <S.UserInfoWrapper>
+              <S.UserInfoNameWrapper>
+                <S.UserNameText style={{ fontSize: 16 }}>{`${userName} | ${age}`}</S.UserNameText>
+                <S.GenderIconStyled source={gender === EGender.MAN ? manIcon : womanIcon} />
+              </S.UserInfoNameWrapper>
+              <S.ModalSchoolNameText>{schoolName}</S.ModalSchoolNameText>
+            </S.UserInfoWrapper>
+          </S.ModalUserInfoViewStyled>
+          <S.ModalBookListContainer>
+            <S.ModalBookWrapper>
+              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
+            </S.ModalBookWrapper>
+            <S.ModalBookWrapper>
+              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
+            </S.ModalBookWrapper>
+            <S.ModalBookWrapper>
+              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
+            </S.ModalBookWrapper>
+          </S.ModalBookListContainer>
+          <S.ModalBookShelves style={S.styles.Shadow} />
+        </View>
       </CustomModal>
     </>
   );

@@ -7,14 +7,15 @@ export const InfoTextStyled = styled.Text`
   font-weight: 500;
   text-align: center;
   color: ${colors.textGray};
+  font-family: fontMedium;
 `;
 
 export const InfoViewStyled = styled.View`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
-  padding-bottom: 16px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 `;
 
 export const ViewStyled = styled.View`
@@ -43,6 +44,7 @@ export const PressableStyled = styled.Pressable`
 
 export const PressableTextStyled = styled.Text`
   font-weight: 500;
+  font-family: fontMedium;
   text-align: center;
   color: #4a4a4a;
   align-items: center;
@@ -56,6 +58,7 @@ export const postcardCountViewStyled = styled.View`
 
 export const postcardCountTextStyled = styled.Text`
   margin-left: 4px;
+  font-family: fontExtraLight;
   font-size: 18px;
 `;
 
@@ -99,14 +102,30 @@ export const styles: any = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 10,
-          height: 10,
+          width: 5,
+          height: 5,
         },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 10,
       },
       android: {
-        elevation: 20,
+        elevation: 4,
+      },
+    }),
+  },
+  PostcardShadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+      },
+      android: {
+        elevation: 4,
       },
     }),
   },
