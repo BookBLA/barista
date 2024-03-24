@@ -1,7 +1,21 @@
 import axios from 'axios';
 import { useErrorMessage } from '../store/useErrorMessage';
+import useAuthStore from '../store/useAuthStore';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
+
+httpApi.interceptors.request.use(
+  (config) => {
+    const token = useAuthStore.getState().token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 const config = {
   headers: {
@@ -72,7 +86,7 @@ export const Delete = async (url: string, showModal: boolean = false) => {
   }
 };
 
-export const PATCH = async <D>(url: string, data?: D, showModal: boolean = false) => {
+export const Patch = async <D>(url: string, data?: D, showModal: boolean = false) => {
   try {
     const response = await httpApi.patch(url, data, config);
     return response.data;

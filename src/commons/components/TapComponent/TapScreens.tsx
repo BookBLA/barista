@@ -11,7 +11,7 @@ import Example02 from '../../../screens/Example02/Example02';
 import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
 
-export const TapScreens = () => {
+const TapScreens = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -75,3 +75,5 @@ export const TapScreens = () => {
     </Tab.Navigator>
   );
 };
+
+export default TapScreens;
