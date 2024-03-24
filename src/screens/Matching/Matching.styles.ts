@@ -102,14 +102,14 @@ export const styles: any = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 10,
-          height: 10,
+          width: 5,
+          height: 5,
         },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 10,
       },
       android: {
-        elevation: 20,
+        elevation: 4,
       },
     }),
   },
