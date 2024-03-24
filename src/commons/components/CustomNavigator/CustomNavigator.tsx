@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { Platform, SafeAreaView, Text, View } from 'react-native';
+import { Platform, SafeAreaView } from 'react-native';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
 import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { TRootStackParamList } from './CustomNavigator.types';
@@ -64,7 +64,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName={'tapScreens'} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="tapScreens" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}
