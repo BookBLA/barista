@@ -8,7 +8,6 @@ import { NavigationContainer, NavigationContainerRef } from '@react-navigation/n
 import { TRootStackParamList } from './CustomNavigator.types';
 import TapScreens from '../TapComponent/TapScreens';
 import Example from '../../../screens/Example/Example';
-import Example02 from '../../../screens/Example02/Example02';
 import Example03 from '../../../screens/Example03/Example03';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
@@ -22,6 +21,7 @@ import SettingStack from '../../../screens/Setting/SettingStack';
 import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import useAuthStore from '../../store/useAuthStore';
 import Example04 from '../../../screens/Example04/Example04';
+import MyLibrary from '../../../screens/MyLibrary/MyLibrary';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -37,7 +37,7 @@ const screens = [
   { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'matching', component: CustomScreen(Matching) },
   { name: 'example', component: CustomScreen(Example) },
-  { name: 'example02', component: CustomScreen(Example02) },
+  { name: 'myLibrary', component: CustomScreen(MyLibrary) },
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'example04', component: CustomScreen(Example04) },
 ];
