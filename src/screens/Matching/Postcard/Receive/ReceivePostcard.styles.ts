@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
-import { colors } from '../../../../commons/styles/variablesStyles';
 import { StyleSheet } from 'react-native';
+import { colors } from '../../../../commons/styles/variablesStyles';
 
 export const ContainerViewStyled = styled.View`
   width: 100%;
@@ -9,7 +9,7 @@ export const ContainerViewStyled = styled.View`
 `;
 
 export const PostcardInfoViewStyled = styled.View`
-  background: #1d2e61;
+  background: white;
   height: 20%;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -17,7 +17,9 @@ export const PostcardInfoViewStyled = styled.View`
 `;
 
 export const PostcardTextViewStyled = styled.Text`
-  color: ${colors.textYellow};
+  color: ${colors.textGray5};
+  font-size: 14px;
+  font-family: fontMedium;
 `;
 
 export const PostcardInfoFirstViewStyled = styled.View`

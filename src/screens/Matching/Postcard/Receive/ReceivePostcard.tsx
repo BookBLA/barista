@@ -38,7 +38,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
     mode: 'round',
     buttons: [
       { label: '아니요', action: toggleModal, color: colors.textBlack, bgColor: colors.buttonMain },
-      { label: '충전하러 가기', action: toggleModal, color: colors.textYellow, bgColor: colors.buttonPrimary },
+      { label: '충전시간 확인하기', action: toggleModal, color: colors.textYellow, bgColor: colors.buttonPrimary },
     ],
   };
 
@@ -53,13 +53,15 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
               {`(독서퀴즈: ${quizScore}점)`}{' '}
             </S.PostcardTextViewStyled>
           </S.PostcardInfoFirstViewStyled>
-          <S.PostcardTextViewStyled style={{ fontSize: 12 }}>{schoolName}</S.PostcardTextViewStyled>
+          <S.PostcardTextViewStyled style={{ fontSize: 12, fontFamily: 'fontLight' }}>
+            {schoolName}
+          </S.PostcardTextViewStyled>
         </S.PostcardInfoViewStyled>
       </TouchableOpacity>
       <CustomModal modalConfig={modalConfig}>
         <View>
           <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>엽서가 부족합니다.</Text>
-          <Text style={{ marginBottom: 24 }}>엽서가 부족합니다. 충전하러 가시겠어요?</Text>
+          <Text style={{ marginBottom: 24 }}>엽서가 부족합니다. 다음 충전시간을 확인해 보세요.</Text>
         </View>
       </CustomModal>
     </S.ContainerViewStyled>
