@@ -7,9 +7,9 @@ import matchingDark from '../../../../assets/images/icons/MatchingDark.png';
 import matchingBright from '../../../../assets/images/icons/MatchingBright.png';
 import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
-import Example02 from '../../../screens/Example02/Example02';
 import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
+import MyLibrary from '../../../screens/MyLibrary/MyLibrary';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -29,9 +29,7 @@ const TapScreens = () => {
         tabBarStyle: {
           height: '8%',
           ...Platform.select({
-            ios: {
-              paddingTop: 8,
-            },
+            ios: {},
             android: {
               paddingTop: 8,
               paddingBottom: 10,
@@ -64,7 +62,7 @@ const TapScreens = () => {
       />
       <Tab.Screen
         name="내 서재"
-        component={Example02}
+        component={MyLibrary}
         options={{
           tabBarIcon: ({ focused }) => (
             <Image
