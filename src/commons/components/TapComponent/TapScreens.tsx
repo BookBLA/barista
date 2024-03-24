@@ -21,7 +21,10 @@ const TapScreens = () => {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 12,
+          fontFamily: 'fontMedium',
+          color: colors.textGray5,
+          paddingBottom: 2,
         },
         tabBarStyle: {
           height: '8%',
