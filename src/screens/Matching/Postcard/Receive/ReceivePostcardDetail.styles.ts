@@ -128,7 +128,6 @@ export const QuizCircleText = styled.Text`
   color: ${colors.textYellow};
 `;
 export const QuizBookTitleWrapper = styled.View`
-  margin: 0 12px;
   align-items: center;
   justify-content: center;
 `;
@@ -136,6 +135,8 @@ export const QuizBookTitleText = styled.Text`
   font-size: 14px;
   font-family: fontLight;
   color: black;
+  margin-left: 12px;
+  width: ${deviceWidth - 100}px;
 `;
 
 export const DashLineView = styled.View`

@@ -67,7 +67,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
                 </S.QuizCircle>
                 <S.QuizBookTitleWrapper>
                   <S.QuizBookTitleText>
-                    첫 번째 등록 책의 제목이 들어갈 자리입니다.첫 번째 등록 책의 제목이 들어갈 자리입니다.
+                    첫 번째 등록 책의 제목이 들어갈 자리입니다.첫 번째 등록책의 제목이 들어갈 자리입니다.
                   </S.QuizBookTitleText>
                 </S.QuizBookTitleWrapper>
               </S.QuizInfoView>
