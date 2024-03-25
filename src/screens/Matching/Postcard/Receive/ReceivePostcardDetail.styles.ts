@@ -6,7 +6,7 @@ export const HeaderView = styled.View`
   flex-direction: row;
   width: 100%;
   color: white;
-  margin: 20px 0;
+  margin: 16px 0;
 `;
 
 export const HeaderImage = styled.Image`
@@ -16,7 +16,6 @@ export const HeaderImage = styled.Image`
 
 export const HeaderTextWrapper = styled.View`
   flex: 1;
-  margin-right: 20px;
   align-items: center;
   justify-content: center;
   text-align: center;
