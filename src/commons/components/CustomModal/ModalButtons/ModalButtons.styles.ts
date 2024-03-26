@@ -7,6 +7,7 @@ export const BottomWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  padding: 20px;
 `;
 
 export const ArrowButton = styled.TouchableOpacity`

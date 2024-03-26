@@ -59,8 +59,8 @@ const Matching = () => {
       bookAuthor: '베르베르 베르베뉘뉘',
     }));
 
-    // setReceivedPostcards(receivedFakeData);
-    // setSendPostcards(sendFakeData);
+    setReceivedPostcards(receivedFakeData);
+    setSendPostcards(sendFakeData);
   }, []);
 
   return (
@@ -117,7 +117,7 @@ const Matching = () => {
                 onScroll={handleScroll}
                 data={receivedPostcards}
                 renderItem={({ item, index }) => (
-                  <S.receivedPostcardViewStyled index={index}>
+                  <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
                     <ReceivePostcard key={index} {...item} />
                   </S.receivedPostcardViewStyled>
                 )}
@@ -125,6 +125,7 @@ const Matching = () => {
                 numColumns={2}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
+                overScrollMode="never"
               />
             )}
           </>
@@ -146,6 +147,7 @@ const Matching = () => {
                 keyExtractor={(item, index) => index.toString()}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
+                overScrollMode="never"
               />
             )}
           </>

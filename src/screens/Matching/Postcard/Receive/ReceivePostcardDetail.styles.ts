@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { Platform, StyleSheet } from 'react-native';
+import { deviceWidth } from '../../../../commons/utils/dimensions';
 
 export const HeaderView = styled.View`
   flex-direction: row;
   width: 100%;
   color: white;
-  margin: 20px 0;
+  margin: 16px 0;
 `;
 
 export const HeaderImage = styled.Image`
@@ -16,7 +16,6 @@ export const HeaderImage = styled.Image`
 
 export const HeaderTextWrapper = styled.View`
   flex: 1;
-  margin-right: 20px;
   align-items: center;
   justify-content: center;
   text-align: center;
@@ -86,6 +85,11 @@ export const UserLibraryButtonText = styled.Text`
   font-family: fontMedium;
 `;
 
+export const DividerLine = styled.View`
+  width: ${deviceWidth}px;
+  border: 3px solid #fafafa;
+`;
+
 export const BodyView = styled.View`
   padding: 14px 0;
   margin-bottom: 20px;
@@ -123,7 +127,6 @@ export const QuizCircleText = styled.Text`
   color: ${colors.textYellow};
 `;
 export const QuizBookTitleWrapper = styled.View`
-  margin: 0 12px;
   align-items: center;
   justify-content: center;
 `;
@@ -131,6 +134,8 @@ export const QuizBookTitleText = styled.Text`
   font-size: 14px;
   font-family: fontLight;
   color: black;
+  margin-left: 12px;
+  width: ${deviceWidth - 100}px;
 `;
 
 export const DashLineView = styled.View`
@@ -138,7 +143,9 @@ export const DashLineView = styled.View`
   border: 1px dashed #d2d6e2;
 `;
 
-export const UserStyleView = styled.View``;
+export const UserStyleView = styled.View`
+  margin-bottom: 20px;
+`;
 
 export const UserStyleBoxContainer = styled.View`
   flex-direction: row;
@@ -165,7 +172,7 @@ export const ButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 50px;
 `;
 
 export const Button = styled.TouchableOpacity`
@@ -175,36 +182,4 @@ export const Button = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   border-radius: 20px;
-`;
-
-export const styles = StyleSheet.create({
-  GoToTopButton: {
-    position: 'absolute',
-    bottom: 60,
-    right: 7,
-    borderRadius: 20,
-    padding: 12,
-    backgroundColor: '#fff',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 10,
-          height: 10,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-  },
-});
-
-export const GoToTopImage = styled.Image`
-  width: 14px;
-  height: 14px;
-  align-content: center;
-  justify-content: center;
 `;
