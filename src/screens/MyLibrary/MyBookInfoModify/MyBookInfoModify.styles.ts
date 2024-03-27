@@ -106,8 +106,8 @@ export const BookQuizAnswerWrapper = styled.View`
   justify-content: center;
   border-radius: 10px;
   background-color: #fff5d6;
-  margin-left: 6px;
-  width: 85%;
+  margin-left: 12px;
+  width: 90%;
 `;
 
 export const BookQuizAnswerInputBox = styled.TextInput`
