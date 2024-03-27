@@ -157,3 +157,21 @@ export const OpenChatContentStyled = styled.Text`
   text-align: center;
   color: ${colors.primary};
 `;
+
+export const DividerLine = styled.View`
+  width: 100%;
+  border: 1px solid ${colors.textGray1};
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
+
+export const RoundRectStyled = styled.View`
+  width: 100%;
+  height: auto;
+  margin-top: 20px;
+  border-radius: 10px;
+  background-color: ${colors.buttonMain};
+  justify-content: 'center';
+  align-items: 'center';
+  flex-direction: 'column';
+`;

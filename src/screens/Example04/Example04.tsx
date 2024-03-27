@@ -10,7 +10,7 @@ import { CustomButton } from '../../commons/components/CustomButton/CustomButton
 
 const Example04 = ({ navigation }: { navigation: any }) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['30%', '50%'], []);
+  const snapPoints = useMemo(() => ['30%', '80%'], []);
   const handlePresentModalPress = useCallback(() => {
     bottomSheetModalRef.current?.present();
   }, []);
