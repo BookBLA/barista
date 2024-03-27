@@ -43,13 +43,18 @@ const Login = () => {
       </CustomText>
 
       {Platform.OS === 'ios' ? (
-        <AppleAuthentication.AppleAuthenticationButton
-          buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-          buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-          cornerRadius={6}
-          style={{ width: 300, height: 45 }}
-          onPress={handleAppleSignIn}
-        />
+        <>
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={6}
+            style={{ width: 300, height: 45 }}
+            onPress={handleAppleSignIn}
+          />
+          <S.LoginButton onPress={movePage('kakao')}>
+            <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
+          </S.LoginButton>
+        </>
       ) : (
         <S.LoginButton onPrssed={movePage('kakao')}>
           <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
