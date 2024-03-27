@@ -7,6 +7,7 @@ export const TopWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: ${({ title }: Pick<IModalConfig, 'title'>) => (title ? 'space-between' : 'flex-end')};
+  padding: 20px;
 `;
 
 export const CloseButton = styled.Image`

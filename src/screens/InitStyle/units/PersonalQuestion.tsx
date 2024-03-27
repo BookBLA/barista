@@ -59,7 +59,7 @@ const PersonalQuestion = () => {
             defaultValue={styleInfo.memberAsk}
             onChangeText={(text: string) => setQuestion(text)}
             //onFocus={handleFocus}
-            onBlur={() => updateStyleInfo('memberAsk', question)}
+            // onBlur={() => updateStyleInfo('memberAsk', question)}
             style={{
               color: colors.primary,
             }}

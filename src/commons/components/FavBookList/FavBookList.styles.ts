@@ -38,5 +38,5 @@ export const DeleteTextStyled = styled.Text`
   /* text-align: right; */
   font-size: 10px;
   font-family: fontMedium;
-  color: '#2A2A2A';
+  color: ${colors.textGray5};
 `;

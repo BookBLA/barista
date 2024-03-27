@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
+import { Platform, StyleSheet } from 'react-native';
 
 export const ContainerViewStyled = styled.View`
   color: white;
@@ -18,6 +19,7 @@ export const ModalUserInfoViewStyled = styled.View`
   justify-content: center;
   align-items: center;
   margin-bottom: 20px;
+  padding: 6px 16px;
 `;
 
 export const UserInfoWrapper = styled.View`
@@ -101,12 +103,12 @@ export const ButtonText = styled.Text`
 export const ModalBookListContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
+  gap: 14px;
+  padding: 0 16px;
 `;
 
 export const ModalBookWrapper = styled.View`
   flex: 1;
-  margin-bottom: -8px;
 `;
 
 export const ModalBookShelves = styled.View`
@@ -116,9 +118,26 @@ export const ModalBookShelves = styled.View`
 
 export const ModalBookImage = styled.Image`
   width: 100%;
-  height: 130px;
-  object-fit: contain;
-  border-top-left-radius: 10px;
-  border-top-right-radius: 10px;
-  overflow: hidden;
+  height: 150px;
+  border-radius: 10px;
+  resize-mode: 'auto';
 `;
+
+export const styles: any = StyleSheet.create({
+  Shadow: {
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 2,
+          height: 3,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+});

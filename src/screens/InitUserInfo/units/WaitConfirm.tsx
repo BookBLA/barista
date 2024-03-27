@@ -26,17 +26,8 @@ const WaitConfirm = () => {
         <View style={{ width: '100%', alignItems: 'center' }}>
           <Spinner />
           <S.ContentStyled>프로필을 확인하고 있어요!{'\n'}1시간 이내로 처리 됩니다!</S.ContentStyled>
-          <View
-            style={{
-              width: '80%',
-              height: 189,
-              marginTop: 20,
-              borderRadius: 10,
-              backgroundColor: colors.buttonMain,
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'column',
-            }}
+          <S.RoundRectStyled
+            style={{ width: '80%', height: 'auto', paddingTop: 20, paddingLeft: 26, paddingBottom: 20 }}
           >
             <View style={{ alignItems: 'flex-start' }}>
               <LightText size="16" color="black">
@@ -49,7 +40,7 @@ const WaitConfirm = () => {
                   Linking.openURL('https://www.instagram.com/book_dating?igsh=MXY3dnpzMGZ2Mm8zYQ%3D%3D&utm_source=qr')
                 }
               >
-                <S.RowStyled style={{ alignItems: 'center', justifyContent: 'flex-start' }}>
+                <S.RowStyled style={{ alignItems: 'center', justifyContent: 'flex-start', width: 'auto' }}>
                   <Image source={optionA} style={{ width: 30, height: 30 }} />
                   <S.TextStyled style={{ color: colors.textLinkBlue, marginLeft: 14 }}>
                     인스타그램 팔로우하기
@@ -61,7 +52,7 @@ const WaitConfirm = () => {
                 style={{ marginTop: 15 }}
                 onPress={() => Linking.openURL('http://pf.kakao.com/_NrxbnG')}
               >
-                <S.RowStyled style={{ alignItems: 'center', justifyContent: 'flex-start' }}>
+                <S.RowStyled style={{ alignItems: 'center', justifyContent: 'flex-start', width: 'auto' }}>
                   <Image source={optionB} style={{ width: 30, height: 30 }} />
                   <S.TextStyled style={{ color: colors.textLinkBlue, marginLeft: 14 }}>
                     카카오톡 채널 친구 추가하기
@@ -72,7 +63,7 @@ const WaitConfirm = () => {
                 <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
               </S.NextButtonStyled>
             </View>
-          </View>
+          </S.RoundRectStyled>
         </View>
       </S.ColumnStyled>
     </S.Wrapper>

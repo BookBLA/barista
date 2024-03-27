@@ -7,11 +7,11 @@ import matchingDark from '../../../../assets/images/icons/MatchingDark.png';
 import matchingBright from '../../../../assets/images/icons/MatchingBright.png';
 import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
-import Example02 from '../../../screens/Example02/Example02';
 import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
+import MyLibrary from '../../../screens/MyLibrary/MyLibrary';
 
-export const TapScreens = () => {
+const TapScreens = () => {
   const Tab = createBottomTabNavigator();
 
   return (
@@ -21,14 +21,15 @@ export const TapScreens = () => {
         headerShown: false,
         tabBarActiveTintColor: colors.primary,
         tabBarLabelStyle: {
-          fontSize: 14,
+          fontSize: 12,
+          fontFamily: 'fontMedium',
+          color: colors.textGray5,
+          paddingBottom: 2,
         },
         tabBarStyle: {
           height: '8%',
           ...Platform.select({
-            ios: {
-              paddingTop: 8,
-            },
+            ios: {},
             android: {
               paddingTop: 8,
               paddingBottom: 10,
@@ -42,7 +43,7 @@ export const TapScreens = () => {
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (
-            <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 19, height: 17 }} />
+            <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 21, height: 21 }} />
           ),
         }}
       />
@@ -54,20 +55,20 @@ export const TapScreens = () => {
             <Image
               source={focused ? matchingDark : matchingBright}
               resizeMode="contain"
-              style={{ width: 19, height: 17 }}
+              style={{ width: 21, height: 21 }}
             />
           ),
         }}
       />
       <Tab.Screen
         name="내 서재"
-        component={Example02}
+        component={MyLibrary}
         options={{
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? libraryDark : libraryBright}
               resizeMode="contain"
-              style={{ width: 19, height: 17 }}
+              style={{ width: 21, height: 21 }}
             />
           ),
         }}
@@ -75,3 +76,5 @@ export const TapScreens = () => {
     </Tab.Navigator>
   );
 };
+
+export default TapScreens;

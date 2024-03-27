@@ -11,7 +11,7 @@ import { useStyleStore } from '../../../commons/store/useStyle';
 
 const OppositeSex = () => {
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
-  const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관없음'];
+  const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const { movePage } = useMovePage();
 
