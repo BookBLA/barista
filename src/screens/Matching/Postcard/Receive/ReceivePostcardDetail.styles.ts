@@ -102,7 +102,7 @@ export const QuizStatusView = styled.View`
   justify-content: center;
 `;
 
-export const QuizStatusTile = styled.Text`
+export const QuizStatusTitle = styled.Text`
   font-size: 16px;
   font-family: fontMedium;
   margin-bottom: 15px;

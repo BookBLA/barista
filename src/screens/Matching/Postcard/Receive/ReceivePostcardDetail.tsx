@@ -59,7 +59,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
           <S.BodyView>
             <S.QuizStatusView>
-              <S.QuizStatusTile>퀴즈 맞춤 여부</S.QuizStatusTile>
+              <S.QuizStatusTitle>퀴즈 맞춤 여부</S.QuizStatusTitle>
               {/*todo 나중에 반복저으로 보이게 변경*/}
               <S.QuizInfoView>
                 <S.QuizCircle isCorrect>
