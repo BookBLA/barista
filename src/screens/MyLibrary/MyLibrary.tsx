@@ -11,13 +11,18 @@ import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetMo
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
+import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 
 const MyLibrary = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const addBookModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%', '30%', '50%'], []);
+  const snapPoints = useMemo(() => ['15%', '30%', '50%', '88%'], []);
+
+  const handleModifyBookModalRef = useCallback(() => {
+    modifyBookModalRef.current?.present();
+  }, []);
 
   const handleModifyProfileImageModalRef = useCallback(() => {
     modifyProfileImageModalRef.current?.present();
@@ -79,11 +84,11 @@ const MyLibrary = () => {
       <S.BookListContainerView>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity>
+            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
               <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
             </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity>
+            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
           </S.ModalBookListContainer>
@@ -91,7 +96,7 @@ const MyLibrary = () => {
         </S.BookContainer>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity>
+            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
             <S.BookTouchableOpacity>
@@ -103,6 +108,11 @@ const MyLibrary = () => {
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
       </S.BookListContainerView>
+      <CustomBottomSheetModal ref={modifyBookModalRef} index={3} snapPoints={snapPoints}>
+        <S.BookModificationBottomSheetContainer>
+          <MyBookInfoModify bookId={123} />
+        </S.BookModificationBottomSheetContainer>
+      </CustomBottomSheetModal>
       <CustomBottomSheetModal ref={modifyProfileImageModalRef} index={0} snapPoints={snapPoints}>
         <S.ProfileImageBottomSheetContainer>
           <S.ProfileImageModificationButton onPress={openImagePickerAsync}>

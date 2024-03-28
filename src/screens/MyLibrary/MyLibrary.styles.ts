@@ -193,3 +193,8 @@ export const ProfileImageModificationButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 `;
+
+export const BookModificationBottomSheetContainer = styled.View`
+  margin: 4px 8px;
+  padding: 16px;
+`;
