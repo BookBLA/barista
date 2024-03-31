@@ -1,4 +1,4 @@
-import { SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import * as S from './MyLibrary.styles';
@@ -12,6 +12,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
+import useHeaderControl from '../../commons/hooks/useHeaderControl';
 
 const MyLibrary = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -19,6 +20,18 @@ const MyLibrary = () => {
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const addBookModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '88%'], []);
+
+  useHeaderControl({
+    title: '마이페이지',
+    left: false,
+    right: {
+      image: settingIcon,
+      onPress: () => {
+        //todo 설정여기다가 추가하시믄 됩니다.
+        console.log('세팅 버튼');
+      },
+    },
+  });
 
   const handleModifyBookModalRef = useCallback(() => {
     modifyBookModalRef.current?.present();
@@ -52,15 +65,6 @@ const MyLibrary = () => {
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
-      <S.HeaderView>
-        <S.HeaderTextWrapper>
-          <S.HeaderText>마이페이지</S.HeaderText>
-        </S.HeaderTextWrapper>
-        <TouchableOpacity onPress={() => console.log('여기에 설정 추가')}>
-          <S.HeaderImage source={settingIcon} />
-        </TouchableOpacity>
-      </S.HeaderView>
-
       <S.UserInfoContainerView>
         <S.UserInfoView>
           <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} resizeMode="contain" />
