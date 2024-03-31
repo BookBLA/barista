@@ -39,7 +39,7 @@ export const Get = async (url: string, showModal: boolean = false) => {
       if (showModal) {
         useErrorMessage.getState().setErrorMessage(error.message);
       }
-      return Promise.reject(error.message);
+      return Promise.reject(error);
     }
   }
 };
@@ -53,7 +53,7 @@ export const Post = async <D>(url: string, data?: D, showModal: boolean = false)
       if (showModal) {
         useErrorMessage.getState().setErrorMessage(error.message);
       }
-      return Promise.reject(error.message);
+      return Promise.reject(error);
     }
   }
 };
@@ -67,7 +67,7 @@ export const Put = async <D>(url: string, data?: D, showModal: boolean = false) 
       if (showModal) {
         useErrorMessage.getState().setErrorMessage(error.message);
       }
-      return Promise.reject(error.message);
+      return Promise.reject(error);
     }
   }
 };
@@ -81,7 +81,7 @@ export const Delete = async (url: string, showModal: boolean = false) => {
       if (showModal) {
         useErrorMessage.getState().setErrorMessage(error.message);
       }
-      return Promise.reject(error.message);
+      return Promise.reject(error);
     }
   }
 };
@@ -95,7 +95,7 @@ export const Patch = async <D>(url: string, data?: D, showModal: boolean = false
       if (showModal) {
         useErrorMessage.getState().setErrorMessage(error.message);
       }
-      return Promise.reject(error.message);
+      return Promise.reject(error);
     }
   }
 };
