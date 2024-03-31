@@ -36,7 +36,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
-  const isYourLibrary = route.params.isYourLibrary;
+  const isYourLibrary = route.params?.isYourLibrary;
 
   useHeaderControl(
     isYourLibrary

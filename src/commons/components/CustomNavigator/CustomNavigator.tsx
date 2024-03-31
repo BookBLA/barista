@@ -21,7 +21,6 @@ import SettingStack from '../../../screens/Setting/SettingStack';
 import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import useAuthStore from '../../store/useAuthStore';
 import Example04 from '../../../screens/Example04/Example04';
-import MyLibrary from '../../../screens/MyLibrary/MyLibrary';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -37,7 +36,6 @@ const screens = [
   { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'matching', component: CustomScreen(Matching) },
   { name: 'example', component: CustomScreen(Example) },
-  { name: 'myLibrary', component: CustomScreen(MyLibrary) },
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'example04', component: CustomScreen(Example04) },
 ];
