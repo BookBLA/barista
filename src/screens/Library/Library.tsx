@@ -14,9 +14,10 @@ import { CustomText } from '../../commons/components/TextComponents/CustomText/C
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import { RouteProp } from '@react-navigation/native';
+import { colors } from '../../commons/styles/variablesStyles';
 
 type RootStackParamList = {
-  Library: { isMy: boolean };
+  Library: { isYourLibrary: boolean };
 };
 
 type LibraryRouteProp = RouteProp<RootStackParamList, 'Library'>;
@@ -30,19 +31,29 @@ const Library: React.FC<Props> = ({ route }) => {
   const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const addBookModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%', '30%', '50%', '88%'], []);
+  const viewStyleModalRef = useRef<BottomSheetModal>(null);
+  const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
+  const isYourLibrary = route.params.isYourLibrary;
 
-  useHeaderControl({
-    title: '마이페이지',
-    left: false,
-    right: {
-      image: settingIcon,
-      onPress: () => {
-        //todo 설정여기다가 추가하시믄 됩니다.
-        console.log('세팅 버튼');
-      },
-    },
-  });
+  useHeaderControl(
+    isYourLibrary
+      ? {
+          title: '상대페이지',
+          left: true,
+        }
+      : {
+          title: '마이페이지',
+          left: false,
+          right: {
+            image: settingIcon,
+            onPress: () => {
+              //todo 설정여기다가 추가하시믄 됩니다.
+              console.log('세팅 버튼');
+            },
+          },
+        },
+  );
 
   const handleModifyBookModalRef = useCallback(() => {
     modifyBookModalRef.current?.present();
@@ -50,6 +61,14 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const handleModifyProfileImageModalRef = useCallback(() => {
     modifyProfileImageModalRef.current?.present();
+  }, []);
+
+  const handleViewStyleModalRef = useCallback(() => {
+    viewStyleModalRef.current?.present();
+  }, []);
+
+  const handleViewBookInfoModalRef = useCallback(() => {
+    viewBookInfoModalRef.current?.present();
   }, []);
 
   const openImagePickerAsync = async () => {
@@ -79,9 +98,14 @@ const Library: React.FC<Props> = ({ route }) => {
       <S.UserInfoContainerView>
         <S.UserInfoView>
           <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} resizeMode="contain" />
-          <TouchableWithoutFeedback onPress={handleModifyProfileImageModalRef}>
-            <S.ProfileImageModificationImage source={require('../../../assets/images/icons/ProfileImageSetting.png')} />
-          </TouchableWithoutFeedback>
+          {!isYourLibrary && (
+            <TouchableWithoutFeedback onPress={handleModifyProfileImageModalRef}>
+              <S.ProfileImageModificationImage
+                source={require('../../../assets/images/icons/ProfileImageSetting.png')}
+              />
+            </TouchableWithoutFeedback>
+          )}
+
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText>방근호 | 21</S.UserNameText>
@@ -91,9 +115,25 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.UserInfoWrapper>
         </S.UserInfoView>
 
-        <S.ProfileModifyButtonContainer>
-          <S.ProfileModifyButtonText>프로필 수정</S.ProfileModifyButtonText>
-        </S.ProfileModifyButtonContainer>
+        <S.ProfileHeaderButtonContainer>
+          {isYourLibrary ? (
+            <>
+              <S.ProfileModifyButtonWrapper onPress={handleViewStyleModalRef}>
+                <S.ProfileModifyButtonText>스타일 보기</S.ProfileModifyButtonText>
+              </S.ProfileModifyButtonWrapper>
+              <S.ProfileModifyButtonWrapper
+                onPress={handleViewBookInfoModalRef}
+                style={{ backgroundColor: colors.buttonPrimary }}
+              >
+                <S.ProfileModifyButtonText style={{ color: colors.textYellow }}>엽서 보내기</S.ProfileModifyButtonText>
+              </S.ProfileModifyButtonWrapper>
+            </>
+          ) : (
+            <S.ProfileModifyButtonWrapper>
+              <S.ProfileModifyButtonText>프로필 수정</S.ProfileModifyButtonText>
+            </S.ProfileModifyButtonWrapper>
+          )}
+        </S.ProfileHeaderButtonContainer>
       </S.UserInfoContainerView>
 
       <S.BookListContainerView>
@@ -123,7 +163,7 @@ const Library: React.FC<Props> = ({ route }) => {
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
       </S.BookListContainerView>
-      <CustomBottomSheetModal ref={modifyBookModalRef} index={3} snapPoints={snapPoints}>
+      <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <MyBookInfoModify bookId={123} />
         </S.BookModificationBottomSheetContainer>
@@ -136,6 +176,16 @@ const Library: React.FC<Props> = ({ route }) => {
             </CustomText>
           </S.ProfileImageModificationButton>
         </S.ProfileImageBottomSheetContainer>
+      </CustomBottomSheetModal>
+      <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
+        <S.BookModificationBottomSheetContainer>
+          <MyBookInfoModify bookId={123} />
+        </S.BookModificationBottomSheetContainer>
+      </CustomBottomSheetModal>
+      <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
+        <S.BookModificationBottomSheetContainer>
+          <MyBookInfoModify bookId={123} />
+        </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
     </SafeAreaView>
   );

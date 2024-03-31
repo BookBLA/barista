@@ -72,7 +72,7 @@ const Home: React.FC<IProps> = ({ navigation }) => {
                   return (
                     <>
                       <S.RowStyled key={index}>
-                        <S.ProfileWrapper onPress={() => navigation.navigate('OtherLibrary', { isMy: false })}>
+                        <S.ProfileWrapper onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}>
                           <S.BookImage source={Book} />
                           <CustomText size="12px">나미야 잡화점의 상점</CustomText>
                           <CustomText size="10px">고O현 (21살)</CustomText>
@@ -81,7 +81,9 @@ const Home: React.FC<IProps> = ({ navigation }) => {
                           </CustomText>
                         </S.ProfileWrapper>
                         {index + 1 < tempData.length && (
-                          <S.ProfileWrapper onPress={() => navigation.navigate('OtherLibrary', { isMy: false })}>
+                          <S.ProfileWrapper
+                            onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}
+                          >
                             <S.BookImage source={Book} />
                             <CustomText size="12px">나미야 잡화점의 상점</CustomText>
                             <CustomText size="10px">0O현 (21살)</CustomText>
