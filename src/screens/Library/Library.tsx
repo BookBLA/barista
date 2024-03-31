@@ -16,6 +16,7 @@ import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import { RouteProp } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
+import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 
 type RootStackParamList = {
   Library: { isYourLibrary: boolean };
@@ -140,11 +141,11 @@ const Library: React.FC<Props> = ({ route }) => {
       <S.BookListContainerView>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
+            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
               <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
             </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
+            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
           </S.ModalBookListContainer>
@@ -152,7 +153,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.BookContainer>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity onPress={handleModifyBookModalRef}>
+            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
             <S.BookTouchableOpacity>
@@ -189,7 +190,12 @@ const Library: React.FC<Props> = ({ route }) => {
       </CustomBottomSheetModal>
       <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify bookId={123} />
+          <ViewBookInfo
+            bookName="카와카츠 맛있겠다."
+            bookAuthors={['샤브샤브']}
+            bookImageUrl="https://source.unsplash.com/random/300×300"
+            bookReview="한 줄로 감상문이 들어갈 자리입니다."
+          />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
     </SafeAreaView>

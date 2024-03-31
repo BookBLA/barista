@@ -17,7 +17,6 @@ const ViewStyle: React.FC<IViewStyleProps> = ({ styles, friendPreferenceType, pe
         </S.HeaderView>
         <S.BodyView>
           <S.UserStyleView>
-            {/*todo data foreach로 구현하기*/}
             <CustomText size="16px" font="fontMedium">
               스타일
             </CustomText>
