@@ -54,7 +54,7 @@ const Matching = () => {
       gender: Math.floor(Math.random() * 2),
       schoolName: `가천대학교`,
       age: Math.floor(Math.random() * 10) + 20,
-      postcardStatus: Math.floor(Math.random() * 4),
+      postcardStatus: Math.floor(Math.random() * 5),
       bookName: '나미야 잡화점의 이야기',
       bookAuthor: '베르베르 베르베뉘뉘',
     }));
