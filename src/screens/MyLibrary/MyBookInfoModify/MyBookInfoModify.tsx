@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IMyBookInfoModifyProps } from './MyBookInfoModify.types';
 import * as S from './MyBookInfoModify.styles';
-import { BookQuizQuestionInputBox } from './MyBookInfoModify.styles';
+import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -9,11 +9,22 @@ import { ScrollView } from 'react-native';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) => {
   //todo props 정의하기
-  const [bookReviewText, onChangeBookReviewText] = React.useState('');
-  const [bookQuizText, onChangeBookQuizText] = React.useState('');
-  const [bookQuizFirstAnswerText, onChangeBookQuizFirstAnswerText] = React.useState('');
-  const [bookQuizSecondAnswerText, onChangeBookQuizSecondAnswerText] = React.useState('');
-  const [bookQuizThirdAnswerText, onChangeBookQuizThirdAnswerText] = React.useState('');
+  const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
+  const [bookQuizText, onChangeBookQuizText] = useState('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
+  const [bookQuizFirstAnswerText, onChangeBookQuizFirstAnswerText] = useState('첫 번째 답이 들어갈 자리입니다.');
+  const [bookQuizSecondAnswerText, onChangeBookQuizSecondAnswerText] = useState('두 번째 답이 들어갈 자리입니다.');
+  const [bookQuizThirdAnswerText, onChangeBookQuizThirdAnswerText] = useState('세 번째 답이 들어갈 자리입니다.');
+  const [isModifiableBookReview, setIsModifiableBookReview] = useState(false);
+  const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
+
+  const handleOnModifyBookReview = () => {
+    setIsModifiableBookReview(!isModifiableBookReview);
+  };
+
+  const handleOnModifyBookQuestion = () => {
+    setIsModifiableBookQuestion(!isModifiableBookQuestion);
+    //todo isModifiable이 false가 되면 저장하는 api 호출
+  };
 
   return (
     <>
@@ -43,27 +54,44 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
                 한 줄 감상문
               </CustomText>
-              <S.ModifyButton>
-                <CustomText font="fontMedium" size="12px" color="black">
-                  수정
-                </CustomText>
-              </S.ModifyButton>
+              {isModifiableBookReview ? (
+                <S.ModifyButton onPress={handleOnModifyBookReview}>
+                  <CustomText font="fontMedium" size="12px" color="black">
+                    수정완료
+                  </CustomText>
+                </S.ModifyButton>
+              ) : (
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookReview}>
+                  <CustomText font="fontMedium" size="12px" color="black">
+                    수정
+                  </CustomText>
+                </S.ModifyButton>
+              )}
             </S.BookReviewHeaderWrapper>
-            <S.BookReviewInputBox
-              editable
-              multiline
-              numberOfLines={4}
-              maxLength={100}
-              inputMode="text"
-              placeholder="감상문을 적어주세요!"
-              placeholderTextColor={colors.textGray2}
-              textAlignVertical="top"
-              onChangeText={(text: React.SetStateAction<string>) => onChangeBookReviewText(text)}
-              value={bookReviewText}
-            />
+            {isModifiableBookReview ? (
+              <S.BookReviewInputBox
+                editable
+                multiline
+                numberOfLines={4}
+                maxLength={100}
+                inputMode="text"
+                placeholder="감상문을 적어주세요!"
+                placeholderTextColor={colors.textGray2}
+                textAlignVertical="top"
+                onChangeText={(text: React.SetStateAction<string>) => onChangeBookReviewText(text)}
+                style={{ backgroundColor: '#F5F0E2' }}
+                value={bookReviewText}
+              />
+            ) : (
+              <S.BookReviewWrapper>
+                <CustomText font="fontMedium" size="14px" color="black">
+                  {bookReviewText}
+                </CustomText>
+              </S.BookReviewWrapper>
+            )}
             <S.BookReviewLengthView>
               <CustomText font="fontMedium" size="10px" color={colors.textGray3}>
-                {bookReviewText.length}/100
+                {bookReviewText.length}/100자
               </CustomText>
             </S.BookReviewLengthView>
           </S.BookReviewContainer>
@@ -73,42 +101,66 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
                 독서 퀴즈
               </CustomText>
-              <S.ModifyButton>
-                <CustomText font="fontMedium" size="12px" color="black">
-                  수정
-                </CustomText>
-              </S.ModifyButton>
+              {isModifiableBookQuestion ? (
+                <S.ModifyButton onPress={handleOnModifyBookQuestion}>
+                  <CustomText font="fontMedium" size="12px" color="black">
+                    수정완료
+                  </CustomText>
+                </S.ModifyButton>
+              ) : (
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookQuestion}>
+                  <CustomText font="fontMedium" size="12px" color="black">
+                    수정
+                  </CustomText>
+                </S.ModifyButton>
+              )}
             </S.BookQuizHeaderWrapper>
-            <BookQuizQuestionInputBox
-              editable
-              multiline
-              numberOfLines={2}
-              maxLength={50}
-              inputMode="text"
-              placeholder="독서 퀴즈 문제를 적어 주세요!"
-              placeholderTextColor={colors.textGray2}
-              onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizText(text)}
-              textAlignVertical="top"
-              value={bookQuizText}
-            />
+            {isModifiableBookQuestion ? (
+              <BookQuizQuestionInputBox
+                editable
+                multiline
+                numberOfLines={2}
+                maxLength={50}
+                inputMode="text"
+                placeholder="독서 퀴즈가 들어갈 자리입니다."
+                placeholderTextColor={colors.textGray2}
+                onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizText(text)}
+                textAlignVertical="top"
+                value={bookQuizText}
+              />
+            ) : (
+              <BookQuizQuestionWrapper>
+                <CustomText font="fontMedium" size="14px" color="black" weight="bold">
+                  {bookQuizText}
+                </CustomText>
+              </BookQuizQuestionWrapper>
+            )}
             <S.BookQuizAnswerContainer>
               <S.BookQuizInfoView>
                 <S.QuizCircle isCorrect>
                   <S.QuizCircleText>A</S.QuizCircleText>
                 </S.QuizCircle>
                 <S.BookQuizAnswerWrapper>
-                  <S.BookQuizAnswerInputBox
-                    editable
-                    multiline
-                    numberOfLines={1}
-                    maxLength={25}
-                    inputMode="text"
-                    placeholder="첫 번째 답이 들어갈 자리입니다."
-                    placeholderTextColor={colors.textGray2}
-                    onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizFirstAnswerText(text)}
-                    textAlignVertical="center"
-                    value={bookQuizFirstAnswerText}
-                  />
+                  {isModifiableBookQuestion ? (
+                    <S.BookQuizAnswerInputBox
+                      editable
+                      multiline
+                      numberOfLines={1}
+                      maxLength={25}
+                      inputMode="text"
+                      placeholder="첫 번째 답이 들어갈 자리입니다."
+                      placeholderTextColor={colors.textGray2}
+                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizFirstAnswerText(text)}
+                      textAlignVertical="center"
+                      value={bookQuizFirstAnswerText}
+                    />
+                  ) : (
+                    <S.BookQuizAnswerView>
+                      <CustomText font="fontLight" size="14px" color="black">
+                        {bookQuizFirstAnswerText}
+                      </CustomText>
+                    </S.BookQuizAnswerView>
+                  )}
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
               <S.BookQuizInfoView>
@@ -116,18 +168,26 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
                   <S.QuizCircleText>B</S.QuizCircleText>
                 </S.QuizCircle>
                 <S.BookQuizAnswerWrapper>
-                  <S.BookQuizAnswerInputBox
-                    editable
-                    multiline
-                    numberOfLines={1}
-                    maxLength={25}
-                    inputMode="text"
-                    placeholder="두 번째 답이 들어갈 자리입니다."
-                    placeholderTextColor={colors.textGray2}
-                    onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizSecondAnswerText(text)}
-                    textAlignVertical="center"
-                    value={bookQuizSecondAnswerText}
-                  />
+                  {isModifiableBookQuestion ? (
+                    <S.BookQuizAnswerInputBox
+                      editable
+                      multiline
+                      numberOfLines={1}
+                      maxLength={25}
+                      inputMode="text"
+                      placeholder="두 번째 답이 들어갈 자리입니다."
+                      placeholderTextColor={colors.textGray2}
+                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizSecondAnswerText(text)}
+                      textAlignVertical="center"
+                      value={bookQuizSecondAnswerText}
+                    />
+                  ) : (
+                    <S.BookQuizAnswerView>
+                      <CustomText font="fontLight" size="14px" color="black">
+                        {bookQuizSecondAnswerText}
+                      </CustomText>
+                    </S.BookQuizAnswerView>
+                  )}
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
               <S.BookQuizInfoView>
@@ -135,18 +195,26 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
                   <S.QuizCircleText>C</S.QuizCircleText>
                 </S.QuizCircle>
                 <S.BookQuizAnswerWrapper>
-                  <S.BookQuizAnswerInputBox
-                    editable
-                    multiline
-                    numberOfLines={1}
-                    maxLength={25}
-                    inputMode="text"
-                    placeholder="세 번째 답이 들어갈 자리입니다."
-                    placeholderTextColor={colors.textGray2}
-                    onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizThirdAnswerText(text)}
-                    textAlignVertical="center"
-                    value={bookQuizThirdAnswerText}
-                  />
+                  {isModifiableBookQuestion ? (
+                    <S.BookQuizAnswerInputBox
+                      editable
+                      multiline
+                      numberOfLines={1}
+                      maxLength={25}
+                      inputMode="text"
+                      placeholder="세 번째 답이 들어갈 자리입니다."
+                      placeholderTextColor={colors.textGray2}
+                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizThirdAnswerText(text)}
+                      textAlignVertical="center"
+                      value={bookQuizThirdAnswerText}
+                    />
+                  ) : (
+                    <S.BookQuizAnswerView>
+                      <CustomText font="fontLight" size="14px" color="black">
+                        {bookQuizThirdAnswerText}
+                      </CustomText>
+                    </S.BookQuizAnswerView>
+                  )}
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
             </S.BookQuizAnswerContainer>
