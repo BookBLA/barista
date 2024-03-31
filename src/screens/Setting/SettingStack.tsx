@@ -1,13 +1,15 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Setting from './units/Setting/Setting';
-import Account from './units/Account/Account';
 import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import Setting from './screens/Setting/Setting';
+import Account from './screens/Account/Account';
+import Delete from './screens/Delete/Delete';
 
 const Stack = createStackNavigator();
 const screens = [
   { name: 'setting', component: Setting },
   { name: 'account', component: Account },
+  { name: 'delete', component: Delete },
 ];
 
 const SettingStack = () => {

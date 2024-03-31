@@ -5,9 +5,9 @@ import { IProps } from './CustomButton.types';
 
 export const CustomButton: React.FC<IProps> = ({ contents, onPress, ...rest }) => {
   return (
-    <ButtonStyled props={rest}>
+    <ButtonStyled {...rest}>
       <TouchableOpacity onPress={onPress}>
-        <ButtonTextStyled props={rest}>
+        <ButtonTextStyled {...rest}>
           <Text>{contents}</Text>
         </ButtonTextStyled>
       </TouchableOpacity>

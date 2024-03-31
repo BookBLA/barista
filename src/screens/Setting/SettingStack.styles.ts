@@ -51,7 +51,7 @@ export const MenuImage = styled.Image`
   width: 36px;
   height: 30px;
   margin-bottom: 10px;
-  object-fit: contain;
+  object-fit: fill;
 `;
 
 export const Line = styled.View`
@@ -76,4 +76,27 @@ export const BetweenWrapper = styled.View`
 export const RowWrapper = styled.View`
   display: flex;
   flex-direction: row;
+`;
+
+export const ModalWrapper = styled.View`
+  display: flex;
+  flex-direction: column;
+  padding: 26px 20px 20px;
+`;
+
+export const DeleteWrapper = styled.View`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
+export const CheckBoxImage = styled.Image`
+  width: 20px;
+  height: 20px;
+  object-fit: fill;
+`;
+
+export const TextWrapper = styled.View`
+  margin-left: 4px;
 `;
