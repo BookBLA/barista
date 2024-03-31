@@ -1,7 +1,7 @@
 import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import useManageMargin from '../../commons/hooks/useManageMargin';
-import * as S from './MyLibrary.styles';
+import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
 import postcardImage from '../../../assets/images/example-postcard.png';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
@@ -13,8 +13,19 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
+import { RouteProp } from '@react-navigation/native';
 
-const MyLibrary = () => {
+type RootStackParamList = {
+  Library: { isMy: boolean };
+};
+
+type LibraryRouteProp = RouteProp<RootStackParamList, 'Library'>;
+
+type Props = {
+  route: LibraryRouteProp;
+};
+
+const Library: React.FC<Props> = ({ route }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
@@ -130,4 +141,4 @@ const MyLibrary = () => {
   );
 };
 
-export default MyLibrary;
+export default Library;
