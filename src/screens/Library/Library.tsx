@@ -15,6 +15,7 @@ import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import { RouteProp } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
+import ViewStyle from './ViewStyle/ViewStyle';
 
 type RootStackParamList = {
   Library: { isYourLibrary: boolean };
@@ -179,7 +180,11 @@ const Library: React.FC<Props> = ({ route }) => {
       </CustomBottomSheetModal>
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify bookId={123} />
+          <ViewStyle
+            styles={['테스트1', '테스트2', '테스트3']}
+            friendPreferenceType="남사친여사친"
+            personalQuestion="테스트 개인 질문"
+          />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
       <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
