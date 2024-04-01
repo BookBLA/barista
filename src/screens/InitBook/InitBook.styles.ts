@@ -78,3 +78,39 @@ export const QuizTextInput = styled.TextInput.attrs({
   text-align: start;
   padding-left: 5px;
 `;
+
+export const SearchContainer = styled.View`
+  width: 95%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  height: 44px;
+  border-radius: 30px;
+  border: 1px solid ${colors.textGray1};
+  padding-left: 16px;
+  padding-right: 15px;
+
+  margin-bottom: 10px;
+`;
+
+export const SearchBarStyled = styled.TextInput`
+  width: 90%;
+  height: 44px;
+  font-size: 14px;
+  font-family: fontMedium;
+`;
+
+export const ColumnStyled = styled.View`
+  /* display: flex; */
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  background-color: pink;
+`;
+
+export const TextButtonStyled = styled.TouchableOpacity`
+  width: auto;
+  /* height: 38px; */
+`;
