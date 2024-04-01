@@ -21,6 +21,7 @@ import SettingStack from '../../../screens/Setting/SettingStack';
 import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import useAuthStore from '../../store/useAuthStore';
 import Example04 from '../../../screens/Example04/Example04';
+import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -38,6 +39,7 @@ const screens = [
   { name: 'example', component: CustomScreen(Example) },
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'example04', component: CustomScreen(Example04) },
+  { name: 'modifyUserinfo', component: ModifyUserinfo },
 ];
 
 export const CustomNavigator = () => {
@@ -62,7 +64,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="initBookStack" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="modifyUserinfo" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}
