@@ -2,15 +2,15 @@ import styled from 'styled-components/native';
 import { colors } from '../../styles/variablesStyles';
 
 export const BookListStyled = styled.View`
-  width: 86%;
+  width: 100%;
   height: 88px;
-  background-color: ${colors.buttonMain};
   border-radius: 10px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 0 13px;
+  /* padding: 0 13px; */
   margin: 7px 0;
+  margin-top: 20px;
 `;
 
 export const BookTitleStyled = styled.Text`
@@ -21,27 +21,18 @@ export const BookTitleStyled = styled.Text`
 
 export const BookAuthorStyled = styled.Text`
   font-size: 12px;
-  font-family: fontMedium;
-  margin-top: 2px;
-  color: ${colors.textGray};
+  font-family: fontRegular;
+  margin-top: 6px;
+  color: ${colors.textAuthorName};
 `;
 
 export const ColumnStyled = styled.View`
   display: flex;
   height: 62px;
-  width: 65%;
+  width: 75%;
   flex-direction: column;
   align-items: flex-start;
   /* justify-content: ; */
-`;
-
-export const ColumnStyled2 = styled.View`
-  display: flex;
-  /* height: 62px; */
-  /* width: 65%; */
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
 `;
 
 export const DeleteTextStyled = styled.Text`

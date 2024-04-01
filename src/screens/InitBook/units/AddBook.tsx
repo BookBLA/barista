@@ -8,25 +8,35 @@ import { useState } from 'react';
 import { FavBookList } from '../../../commons/components/FavBookList/FavBookList';
 import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
 import Dash from 'react-native-dash';
+import { ModifyTitleBar } from '../ModifyTitleBar';
 
 const AddBook = () => {
   const { movePage } = useMovePage();
   const [isActivate, setIsActivate] = useState<boolean>(false);
+  const [isModify, setIsModify] = useState<boolean>(false);
 
   return (
     <S.Wrapper>
-      <S.SafeAreaViewStyled>
-        <S.TitleStyled>내 서재</S.TitleStyled>
-      </S.SafeAreaViewStyled>
+      {isModify ? (
+        <ModifyTitleBar step={2} />
+      ) : (
+        <S.SafeAreaViewStyled>
+          <S.TitleStyled>내 서재</S.TitleStyled>
+        </S.SafeAreaViewStyled>
+      )}
+      {/* <ModifyTitleBar /> */}
       <S.ColumnStyled style={{ justifyContent: 'flex-start', height: '80%', width: deviceWidth }}>
         <View style={{ height: '13%', alignItems: 'center', margin: '10%' }}>
           <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16, marginBottom: 14 }}>
             내가 좋아하는 책
           </Text>
-          <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 7 }}>
-            첫 번째 책이 나의 대표책으로 등록됩니다.
-          </Text>
-          <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
+          <S.RowStyled style={{ width: 'auto', marginBottom: 7 }}>
+            <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>첫 번째 책</Text>
+            <Text style={{ color: colors.textGray3, fontFamily: 'fontLight', fontSize: 14 }}>이 나의</Text>
+            <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>대표 책</Text>
+            <Text style={{ color: colors.textGray3, fontFamily: 'fontLight', fontSize: 14 }}>으로 등록됩니다.</Text>
+          </S.RowStyled>
+          <Text style={{ color: colors.textGray, fontFamily: 'fontLight', fontSize: 14 }}>
             책은 최대 3권까지 추가할 수 있습니다.
           </Text>
         </View>
@@ -52,15 +62,18 @@ const AddBook = () => {
           </T.ButtonStyled>
         </>
       </S.ColumnStyled>
-      {isActivate === false ? (
+      {/* {isActivate === false ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
       ) : (
-        <S.NextButtonStyled onPress={movePage('initQuiz')}>
+        <S.NextButtonStyled onPress={movePage('tapScreens')}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
         </S.NextButtonStyled>
-      )}
+      )} */}
+      <S.NextButtonStyled onPress={movePage('tapScreens')}>
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };
