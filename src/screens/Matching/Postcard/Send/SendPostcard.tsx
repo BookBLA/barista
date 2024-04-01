@@ -50,7 +50,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#F5F0E2">
-                  <S.ButtonText fontColor="#999999">답변 수정</S.ButtonText>
+                  <S.ButtonText fontColor={colors.textGray2}>답변 수정</S.ButtonText>
                 </S.ButtonContainer>
               </TouchableWithoutFeedback>
               <TouchableWithoutFeedback>
@@ -60,21 +60,45 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
               </TouchableWithoutFeedback>
             </>
           )}
+          {postcardStatus === EPostcardStatus.READ && (
+            <>
+              <TouchableWithoutFeedback>
+                <S.ButtonContainer left backgroundColor="#ECEDEF">
+                  <S.ButtonText fontColor="#D2D6E2">답변 수정</S.ButtonText>
+                </S.ButtonContainer>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <S.ButtonContainer right backgroundColor="#BBBFCF">
+                  <S.ButtonText fontColor="#ffffff">읽음</S.ButtonText>
+                </S.ButtonContainer>
+              </TouchableWithoutFeedback>
+            </>
+          )}
           {postcardStatus === EPostcardStatus.REJECT && (
             <>
               <TouchableWithoutFeedback>
-                <S.SingleButtonContainer right backgroundColor="#8D96B0">
+                <S.ButtonContainer left backgroundColor="#ECEDEF">
+                  <S.ButtonText fontColor="#D2D6E2">답변 수정</S.ButtonText>
+                </S.ButtonContainer>
+              </TouchableWithoutFeedback>
+              <TouchableWithoutFeedback>
+                <S.ButtonContainer right backgroundColor="#8D96B0">
                   <S.ButtonText fontColor="#FFFFFF">거절</S.ButtonText>
-                </S.SingleButtonContainer>
+                </S.ButtonContainer>
               </TouchableWithoutFeedback>
             </>
           )}
           {postcardStatus === EPostcardStatus.APPROVE && (
             <>
+              <TouchableWithoutFeedback>
+                <S.ButtonContainer left backgroundColor="#ECEDEF">
+                  <S.ButtonText fontColor="#D2D6E2">답변 수정</S.ButtonText>
+                </S.ButtonContainer>
+              </TouchableWithoutFeedback>
               <TouchableWithoutFeedback onPress={toggleModal}>
-                <S.SingleButtonContainer right backgroundColor="#1D2E61">
+                <S.ButtonContainer right backgroundColor="#1D2E61">
                   <S.ButtonText fontColor={colors.textYellow}>연락하기</S.ButtonText>
-                </S.SingleButtonContainer>
+                </S.ButtonContainer>
               </TouchableWithoutFeedback>
             </>
           )}

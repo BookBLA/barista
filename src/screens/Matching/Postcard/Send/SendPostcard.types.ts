@@ -3,6 +3,7 @@ export enum EPostcardStatus {
   REJECT,
   APPROVE,
   FAIL,
+  READ,
 }
 
 export enum EGender {

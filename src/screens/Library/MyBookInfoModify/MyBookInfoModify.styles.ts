@@ -13,7 +13,7 @@ export const BookWrapper = styled.View`
 
 export const BookImage = styled.Image`
   width: 100%;
-  height: ${deviceHeight / 5 - 40}px;
+  height: ${deviceHeight / 5 - 50}px;
   border-radius: 10px;
   object-fit: fill;
 `;
@@ -45,14 +45,22 @@ export const ModifyButton = styled.TouchableOpacity`
   border-radius: 14px;
 `;
 
+export const BookReviewWrapper = styled.View`
+  width: 100%;
+  height: 120px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff5d6;
+`;
+
 export const BookReviewInputBox = styled.TextInput`
   width: 100%;
-  height: 100px;
+  height: 120px;
   padding: 20px;
   border-radius: 10px;
   background-color: #fff5d6;
   font-size: 14px;
-  font-family: fontLight;
+  font-family: fontMedium;
 `;
 
 export const BookReviewLengthView = styled.View`
@@ -60,7 +68,7 @@ export const BookReviewLengthView = styled.View`
 `;
 
 export const BookQuizContainer = styled.View`
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 `;
 
 export const BookQuizHeaderWrapper = styled.View`
@@ -70,6 +78,13 @@ export const BookQuizHeaderWrapper = styled.View`
   margin-bottom: 12px;
 `;
 
+export const BookQuizQuestionWrapper = styled.View`
+  width: 100%;
+  height: 50px;
+  margin-bottom: 12px;
+  padding: 10px;
+`;
+
 export const BookQuizQuestionInputBox = styled.TextInput`
   width: 100%;
   height: 50px;
@@ -77,6 +92,9 @@ export const BookQuizQuestionInputBox = styled.TextInput`
   font-family: fontMedium;
   font-weight: bold;
   margin-bottom: 12px;
+  background-color: #fafafa;
+  border-radius: 10px;
+  padding: 10px;
 `;
 
 export const BookQuizAnswerContainer = styled.View``;
@@ -104,20 +122,30 @@ export const QuizCircleText = styled.Text`
 `;
 export const BookQuizAnswerWrapper = styled.View`
   justify-content: center;
-  border-radius: 10px;
+  border-radius: 20px;
   background-color: #fff5d6;
   margin-left: 12px;
-  width: 90%;
+  flex: 1;
+`;
+
+export const BookQuizAnswerView = styled.View`
+  flex: 1;
+  width: 100%;
+  padding: 14px;
+  color: black;
+  justify-content: center;
 `;
 
 export const BookQuizAnswerInputBox = styled.TextInput`
-  width: 100%;
+  flex: 1;
   font-size: 14px;
   font-family: fontLight;
-  padding: 10px;
+  padding: 14px;
   color: black;
   justify-content: center;
   align-items: center;
+  background-color: #f5f0e2;
+  border-radius: 20px;
 `;
 
 export const BookRemoveButton = styled.TouchableOpacity`

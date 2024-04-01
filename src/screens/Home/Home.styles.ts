@@ -109,7 +109,7 @@ export const ContentWrapper = styled.ScrollView`
   background-color: ${colors.background};
 `;
 
-export const ProfileWrapper = styled.View`
+export const ProfileWrapper = styled.TouchableOpacity`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

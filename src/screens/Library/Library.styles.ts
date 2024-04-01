@@ -3,41 +3,6 @@ import { Platform, StyleSheet } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
 
-export const HeaderView = styled.View`
-  flex-direction: row;
-  width: 100%;
-  color: white;
-  justify-content: center;
-  padding: 16px 0;
-  ${Platform.select({
-    ios: `
-      margin: 8px 0;
-    `,
-    android: `
-      margin: 26px 0;
-    `,
-  })}
-`;
-
-export const HeaderImage = styled.Image`
-  width: 20px;
-  height: 20px;
-  position: absolute;
-  top: -3px;
-  right: 14px;
-`;
-
-export const HeaderTextWrapper = styled.View`
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-`;
-
-export const HeaderText = styled.Text`
-  font-family: fontMedium;
-`;
-
 export const UserInfoContainerView = styled.View`
   margin: 16px 16px;
 `;
@@ -91,7 +56,13 @@ export const ProfileImageModificationImage = styled.Image`
   top: 40px;
 `;
 
-export const ProfileModifyButtonContainer = styled.TouchableOpacity`
+export const ProfileHeaderButtonContainer = styled.View`
+  flex-direction: row;
+  gap: 12px;
+`;
+
+export const ProfileModifyButtonWrapper = styled.TouchableOpacity`
+  flex: 1;
   padding: 12px;
   border-radius: 20px;
   background-color: #f0e7cf;

@@ -4,7 +4,6 @@ import { colors } from '../../commons/styles/variablesStyles';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import Error from './units/Error/Error';
-import Lock from './units/Lock/Lock';
 import Header from './units/Header/Header';
 import BottomArrow from '../../../assets/images/icons/BottomArrow.png';
 import Reset from '../../../assets/images/icons/Reset.png';
@@ -13,6 +12,8 @@ import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetMo
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import Bottom from './units/Bottom/Bottom';
 import { TFilterKeys, TFilterState } from './units/Bottom/Bottom.types';
+import useMovePage from '../../commons/hooks/useMovePage';
+import { IProps } from './Home.types';
 
 const initStates: TFilterState = {
   sex: '성별',
@@ -22,11 +23,12 @@ const initStates: TFilterState = {
   dating: '데이트 스타일',
 };
 
-const Home = () => {
+const Home: React.FC<IProps> = ({ navigation }) => {
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('sex');
   const [filter, setFilter] = useState<TFilterState>(initStates);
   const bottomRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
+  const { movePage } = useMovePage();
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
     bottomRef.current?.present();
@@ -63,14 +65,14 @@ const Home = () => {
 
         {tempData.length ? (
           <S.PositionedOverlay>
-            <Lock />
+            {/*<Lock />*/}
             <S.ContentWrapper>
               {tempData.map((_, index) => {
                 if (index % 2 === 0) {
                   return (
                     <>
                       <S.RowStyled key={index}>
-                        <S.ProfileWrapper>
+                        <S.ProfileWrapper onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}>
                           <S.BookImage source={Book} />
                           <CustomText size="12px">나미야 잡화점의 상점</CustomText>
                           <CustomText size="10px">고O현 (21살)</CustomText>
@@ -79,10 +81,12 @@ const Home = () => {
                           </CustomText>
                         </S.ProfileWrapper>
                         {index + 1 < tempData.length && (
-                          <S.ProfileWrapper>
+                          <S.ProfileWrapper
+                            onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}
+                          >
                             <S.BookImage source={Book} />
                             <CustomText size="12px">나미야 잡화점의 상점</CustomText>
-                            <CustomText size="10px">고O현 (21살)</CustomText>
+                            <CustomText size="10px">0O현 (21살)</CustomText>
                             <CustomText size="10px" color={colors.textGray}>
                               가천대학교
                             </CustomText>

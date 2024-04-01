@@ -9,7 +9,7 @@ import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
 import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
-import MyLibrary from '../../../screens/MyLibrary/MyLibrary';
+import Library from '../../../screens/Library/Library';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -39,18 +39,20 @@ const TapScreens = () => {
       }}
     >
       <Tab.Screen
-        name="홈"
+        name="Home"
         component={Home}
         options={{
+          tabBarLabel: '홈',
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 21, height: 21 }} />
           ),
         }}
       />
       <Tab.Screen
-        name="매칭"
+        name="Matching"
         component={Matching}
         options={{
+          tabBarLabel: '매칭',
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? matchingDark : matchingBright}
@@ -61,9 +63,10 @@ const TapScreens = () => {
         }}
       />
       <Tab.Screen
-        name="내 서재"
-        component={MyLibrary}
+        name="Library"
+        component={Library}
         options={{
+          tabBarLabel: '내 서재',
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? libraryDark : libraryBright}
@@ -71,6 +74,13 @@ const TapScreens = () => {
               style={{ width: 21, height: 21 }}
             />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="OtherLibrary"
+        component={Library}
+        options={{
+          tabBarButton: () => null,
         }}
       />
     </Tab.Navigator>
