@@ -5,8 +5,7 @@ export const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   height: 9%;
-  /* margin-bottom: 32px; */
-  padding: 0px 20px;
+  padding: 0px 16px;
 `;
 
 export const LogoWrapper = styled.View`
@@ -32,6 +31,8 @@ export const IconWrapper = styled.View`
   flex-direction: row;
   align-items: center;
 `;
+
+export const IconButton = styled.TouchableOpacity``;
 
 export const IconImage = styled.Image`
   width: 21px;
