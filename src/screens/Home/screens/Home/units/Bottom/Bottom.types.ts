@@ -1,4 +1,4 @@
-export type TFilterKeys = 'sex' | 'smoking' | 'drinking' | 'contact' | 'dating';
+export type TFilterKeys = 'gender' | 'smoking' | 'drinking' | 'contact' | 'dating';
 type TFilterValues =
   | '성별'
   | '남성'

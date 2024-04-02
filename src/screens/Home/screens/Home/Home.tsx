@@ -1,31 +1,34 @@
-import React, { useMemo, useRef, useState } from 'react';
-import * as S from './Home.styles';
-import { colors } from '../../commons/styles/variablesStyles';
-import useManageMargin from '../../commons/hooks/useManageMargin';
-import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import * as S from '../../HomeStack.styles';
+import { colors } from '../../../../commons/styles/variablesStyles';
+import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import Book from '../../../../../assets/images/example-book.png';
+import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { getMembersSameBook } from '../../../../commons/api/member.api';
+import { useLogout } from '../../../../commons/hooks/useLogout';
+import useMovePage from '../../../../commons/hooks/useMovePage';
+import { icons } from '../../../../commons/utils/variablesImages';
+import { TFilterKeys, TFilterState } from './units/Bottom/Bottom.types';
+import Bottom from './units/Bottom/Bottom';
 import Error from './units/Error/Error';
 import Header from './units/Header/Header';
-import BottomArrow from '../../../assets/images/icons/BottomArrow.png';
-import Reset from '../../../assets/images/icons/Reset.png';
-import Book from '../../../assets/images/example-book.png';
-import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import Bottom from './units/Bottom/Bottom';
-import { TFilterKeys, TFilterState } from './units/Bottom/Bottom.types';
-import useMovePage from '../../commons/hooks/useMovePage';
-import { IProps } from './Home.types';
 
 const initStates: TFilterState = {
-  sex: '성별',
+  gender: '성별',
   smoking: '흡연 여부',
   drinking: '음주 여부',
   contact: '연락 스타일',
   dating: '데이트 스타일',
 };
 
-const Home: React.FC<IProps> = ({ navigation }) => {
-  const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('sex');
+const Home = () => {
+  useManageMargin();
+  const [data, setData] = useState([]);
+  const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const [filter, setFilter] = useState<TFilterState>(initStates);
+  const { onClickLogout } = useLogout();
   const bottomRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
   const { movePage } = useMovePage();
@@ -34,45 +37,65 @@ const Home: React.FC<IProps> = ({ navigation }) => {
     bottomRef.current?.present();
   };
   const tempData = new Array(11).fill(0);
-  useManageMargin();
+
+  const fetchMembersWithSameBook = async () => {
+    try {
+      const result = await getMembersSameBook({});
+      setData(result.response);
+      console.log('result: {}', result.response);
+    } catch (error) {
+      console.log('errors', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchMembersWithSameBook();
+  }, []);
 
   return (
     <>
       <S.Wrapper>
         <Header />
         <S.MenuWrapper>
-          <S.MenuTitle>서재 구경하기</S.MenuTitle>
+          <CustomText margin="0 0 8px" onPress={onClickLogout}>
+            서재 구경하기
+          </CustomText>
           <S.FilterWrapper horizontal={true}>
-            <S.FilterBox onPress={() => setFilter({ ...initStates })}>
-              <S.FilterImage source={Reset} />
+            <S.FilterBox onPress={() => setFilter({ ...initStates })} isSelect={true}>
+              <S.FilterImage source={icons.reset} />
               <CustomText size="12px" font="fontRegular">
                 초기화
               </CustomText>
             </S.FilterBox>
+
             {Object.keys(filter).map((key) => {
               const filterKey = key as keyof TFilterState;
               return (
-                <S.FilterBox key={key} onPress={handlePresentModalPress(filterKey)}>
+                <S.FilterBox
+                  key={key}
+                  onPress={handlePresentModalPress(filterKey)}
+                  isSelect={filter[filterKey] === initStates[filterKey]}
+                >
                   <CustomText size="12px" font="fontRegular">
                     {filter[filterKey]}
                   </CustomText>
-                  <S.FilterImage source={BottomArrow} />
+                  <S.FilterImage source={icons.bottomArrow} />
                 </S.FilterBox>
               );
             })}
           </S.FilterWrapper>
         </S.MenuWrapper>
 
-        {tempData.length ? (
+        {!data.length ? (
           <S.PositionedOverlay>
-            {/*<Lock />*/}
+            {/* <Lock /> */}
             <S.ContentWrapper>
               {tempData.map((_, index) => {
                 if (index % 2 === 0) {
                   return (
-                    <>
-                      <S.RowStyled key={index}>
-                        <S.ProfileWrapper onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}>
+                    <React.Fragment key={index}>
+                      <S.RowStyled>
+                        <S.ProfileWrapper>
                           <S.BookImage source={Book} />
                           <CustomText size="12px">나미야 잡화점의 상점</CustomText>
                           <CustomText size="10px">고O현 (21살)</CustomText>
@@ -81,9 +104,7 @@ const Home: React.FC<IProps> = ({ navigation }) => {
                           </CustomText>
                         </S.ProfileWrapper>
                         {index + 1 < tempData.length && (
-                          <S.ProfileWrapper
-                            onPress={() => navigation.navigate('OtherLibrary', { isYourLibrary: true })}
-                          >
+                          <S.ProfileWrapper onPress={movePage('OtherLibrary', { isYourLibrary: true })}>
                             <S.BookImage source={Book} />
                             <CustomText size="12px">나미야 잡화점의 상점</CustomText>
                             <CustomText size="10px">0O현 (21살)</CustomText>
@@ -94,10 +115,9 @@ const Home: React.FC<IProps> = ({ navigation }) => {
                         )}
                       </S.RowStyled>
                       <S.Line></S.Line>
-                    </>
+                    </React.Fragment>
                   );
                 }
-                return null;
               })}
             </S.ContentWrapper>
           </S.PositionedOverlay>

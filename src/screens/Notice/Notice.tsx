@@ -5,14 +5,9 @@ import { colors } from '../../commons/styles/variablesStyles';
 import Close from '../../../assets/images/icons/close.png';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 
-export const Notice = () => {
+const Notice = () => {
   useHeaderControl({
     title: '설정',
-    // left: false, // 뒤로가기 버튼: 초기값 true 필요 없을 시에만 false 입력
-    // right: {
-    //   image: Close, // 이미지 등록
-    //   onPress: () => alert('작동'), // 함수 등록
-    // }, // 필요한 경우에만 입력
   });
 
   return (
@@ -41,3 +36,5 @@ export const Notice = () => {
     </S.Wrapper>
   );
 };
+
+export default Notice;
