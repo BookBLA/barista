@@ -20,6 +20,7 @@ export const colors = {
   buttonNavStroke: '#ECEDEF',
   buttonEditReply: '#F5F0E2',
   buttonDeleteBook: '#E65D5D',
+  buttonMoveSytle: '#FAFAFA',
 
   // 텍스트 색상
   textQaGray: '#BBBFCF',

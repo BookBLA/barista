@@ -22,6 +22,7 @@ import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import useAuthStore from '../../store/useAuthStore';
 import Example04 from '../../../screens/Example04/Example04';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
+import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -40,6 +41,7 @@ const screens = [
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'example04', component: CustomScreen(Example04) },
   { name: 'modifyUserinfo', component: ModifyUserinfo },
+  { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
 ];
 
 export const CustomNavigator = () => {
@@ -47,12 +49,12 @@ export const CustomNavigator = () => {
   const { token } = useAuthStore();
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
 
-  useEffect(() => {
-    // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
-    if (!token && navigationRef.current) {
-      navigationRef.current.navigate('login');
-    }
-  }, [token]);
+  // useEffect(() => {
+  //   // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
+  //   if (!token && navigationRef.current) {
+  //     navigationRef.current.navigate('login');
+  //   }
+  // }, [token]);
 
   return (
     <NavigationContainer ref={navigationRef}>
@@ -64,7 +66,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="modifyUserinfo" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="modifyStyle" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}

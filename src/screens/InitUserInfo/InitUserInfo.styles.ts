@@ -178,6 +178,8 @@ export const RoundRectStyled = styled.View`
 
 export const ViewStyled = styled.View`
   width: 100%;
+  height: ${({ height }: { height?: number }) => (height ? `${height}px` : 'auto')};
   align-items: center;
-  background-color: pink;
+  justify-content: center;
+  /* background-color: pink; */
 `;

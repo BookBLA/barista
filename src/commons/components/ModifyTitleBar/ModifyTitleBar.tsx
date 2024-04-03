@@ -10,9 +10,18 @@ export const ModifyTitleBar = ({ step }: { step: number }) => {
   const titleList = ['회원정보 수정', '스타일 수정', '내 서재'];
   const { movePage } = useMovePage();
   return (
-    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', height: '9%' }}>
+    <View
+      style={{
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: '9%',
+        backgroundColor: 'yellow',
+        justifyContent: 'space-between',
+      }}
+    >
       <TouchableOpacity onPress={movePage()}>
-        <Image source={backArrow} style={{ width: 24, height: 24, marginLeft: 14 }} />
+        <Image source={backArrow} style={{ width: 24, height: 24 }} />
       </TouchableOpacity>
       <View
         style={{
