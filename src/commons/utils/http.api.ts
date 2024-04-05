@@ -30,9 +30,12 @@ export interface ResponseData<T> {
   result: T;
 }
 
-export const Get = async (url: string, showModal: boolean = false) => {
+export const Get = async (url: string, params = {}, showModal: boolean = false) => {
   try {
-    const response = await httpApi.get(url, config);
+    const response = await httpApi.get(url, {
+      ...config,
+      ...params,
+    });
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -4,25 +4,16 @@ import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
+import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
 
 const Product = () => {
-  const [timeLeft, setTimeLeft] = useState('');
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   useManageMargin();
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const now = new Date();
-      const tomorrow = new Date(now);
-      tomorrow.setDate(tomorrow.getDate() + (now.getHours() >= 6 ? 1 : 0));
-      tomorrow.setHours(6, 0, 0, 0);
-
-      const diff = Number(tomorrow) - Number(now);
-
-      const hours = String(Math.floor((diff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
-      const minutes = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, '0');
-
-      setTimeLeft(`${hours}:${minutes}`);
-    }, 1000); // 타이머 시간 어떻게 조정할지 고민하기
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
 
     return () => clearInterval(timer);
   }, []);

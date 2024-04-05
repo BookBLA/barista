@@ -3,7 +3,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { IFontLoaderProps } from './FontLoader.types';
 import useAuthStore from '../../store/useAuthStore';
-import { getToken } from '../../utils/tokenStore';
+import { getToken } from '../../store/tokenStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
