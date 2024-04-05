@@ -8,7 +8,8 @@ import { postTestSignUp } from '../../commons/api/example.api';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import useAuthStore from '../../commons/store/useAuthStore';
 import { useHasMargin } from '../../commons/store/useHasMargin';
-import { saveToken } from '../../commons/utils/tokenStore';
+import { saveToken } from '../../commons/store/tokenStore';
+import { saveMemberId } from '../../commons/store/memberIdStore';
 // import {LoginScreen} from "./Login.service"
 
 const Login = () => {
@@ -22,6 +23,7 @@ const Login = () => {
         email: 'test',
       });
       await saveToken(response.result.accessToken);
+      await saveMemberId(String(response.result.memberId));
       setToken(response.result.accessToken);
       movePage('tapScreens')();
     } catch (error) {
