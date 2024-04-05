@@ -1,7 +1,8 @@
 import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText';
 import { icons } from '../../../../../../commons/utils/variablesImages';
+import { TFilterKeys } from '../../../../HomeStack.types';
 import * as S from './Bottom.styles';
-import { IProps, TFilterKeys } from './Bottom.types';
+import { IProps } from './Bottom.types';
 
 const filterData: Record<TFilterKeys, string[]> = {
   gender: ['성별', '남성', '여성'],
