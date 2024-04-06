@@ -11,6 +11,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const ModifyUserinfo = () => {
   const { updateUserInfo, userInfo } = useUserStore();
@@ -41,6 +42,7 @@ const ModifyUserinfo = () => {
     }
   };
 
+  useManageMargin();
   return (
     <S.Wrapper>
       <ModifyTitleBar step={0} />

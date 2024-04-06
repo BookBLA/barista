@@ -9,12 +9,13 @@ export const ColumnStyled = styled.View`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  /* width: 75%; */
+  width: 23%;
+  height: 160px;
 `;
 
 export const ButtonStyled = styled.TouchableOpacity`
-  width: 76px;
-  height: 72px;
+  width: 100%;
+  height: 45%;
   border-radius: 22px;
   display: flex;
   justify-content: center;

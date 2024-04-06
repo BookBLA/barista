@@ -52,10 +52,7 @@ const Library: React.FC<Props> = ({ route }) => {
           left: false,
           right: {
             image: settingIcon,
-            onPress: () => {
-              //todo 설정여기다가 추가하시믄 됩니다.
-              console.log('세팅 버튼');
-            },
+            onPress: movePage('settingStack'),
           },
         },
   );
@@ -159,7 +156,7 @@ const Library: React.FC<Props> = ({ route }) => {
             <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity>
+            <S.BookTouchableOpacity onPress={movePage('modifyUserinfo')}>
               <S.EmptyBookImage>
                 <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
               </S.EmptyBookImage>

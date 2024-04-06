@@ -14,6 +14,7 @@ import { useStyleStore } from '../../commons/store/useStyle';
 import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const ModifyStyle = () => {
   const buttonList = [
@@ -79,6 +80,7 @@ const ModifyStyle = () => {
     }
   };
 
+  useManageMargin();
   return (
     <S.Wrapper>
       <ModifyTitleBar step={1} />
@@ -100,7 +102,7 @@ const ModifyStyle = () => {
             alignItems: 'center',
           }}
         >
-          <S.ColumnStyled>
+          <S.ColumnStyled style={{ backgroundColor: 'pink', padding: '0 16' }}>
             <S.ViewStyled height={200}>
               <S.RowStyled style={{ width: '95%' }}>
                 <CustomText font="fontRegular" size="12" style={{ marginBottom: 14 }}>
@@ -137,7 +139,7 @@ const ModifyStyle = () => {
             <DashDividerLine />
             <S.ViewStyled height={480}>
               <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '95%', marginBottom: 80 }}>
+              <S.RowStyled style={{ width: '90%', marginBottom: 80 }}>
                 <T.ButtonStyled
                   isSelect={styleInfo.smokeTypes === '흡연'}
                   onPress={() => updateStyleInfo('smokeTypes', '흡연')}
@@ -158,7 +160,7 @@ const ModifyStyle = () => {
                 </T.ButtonStyled>
               </S.RowStyled>
               <S.ContentStyled>음주 여부를 알려주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '95%', marginBottom: 10 }}>
+              <S.RowStyled style={{ width: '90%', marginBottom: 10 }}>
                 {drinkOptions.slice(0, 3).map((title, index) => (
                   <T.ButtonStyled
                     key={index}
@@ -184,7 +186,7 @@ const ModifyStyle = () => {
             <DashDividerLine />
             <S.ViewStyled height={460}>
               <S.ContentStyled>연락 스타일을 알려주세요.</S.ContentStyled>
-              <S.RowStyled style={{ marginBottom: 80 }}>
+              <S.RowStyled style={{ marginBottom: 80, width: '60%' }}>
                 <S.BooleanButtonStyled
                   isSelect={styleInfo.contactTypes === '느긋이'}
                   onPress={() => updateStyleInfo('contactTypes', '느긋이')}
@@ -199,7 +201,7 @@ const ModifyStyle = () => {
                 </S.BooleanButtonStyled>
               </S.RowStyled>
               <S.ContentStyled>데이트 스타일을 알려주세요.</S.ContentStyled>
-              <S.RowStyled>
+              <S.RowStyled style={{ width: '60%' }}>
                 <S.BooleanButtonStyled
                   isSelect={styleInfo.dateStyleTypes === '집 데이트'}
                   onPress={() => updateStyleInfo('dateStyleTypes', '집 데이트')}

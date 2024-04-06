@@ -49,7 +49,9 @@ const Account = () => {
         <CustomText margin="16px 0" onPress={modalToggle}>
           로그아웃
         </CustomText>
-        <CustomText margin="16px 0">회원정보 수정</CustomText>
+        <CustomText onPress={movePage('modifyUserinfo')} margin="16px 0">
+          회원정보 수정
+        </CustomText>
         <S.BetweenWrapper>
           <CustomText margin="16px 0">매칭 활성화</CustomText>
           <Switch

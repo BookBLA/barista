@@ -24,6 +24,7 @@ import Example04 from '../../../screens/Example04/Example04';
 import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
+import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -44,6 +45,7 @@ const screens = [
   { name: 'example04', component: CustomScreen(Example04) },
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
+  { name: 'infoOpenChat', component: InfoOpenChat },
 ];
 
 export const CustomNavigator = () => {

@@ -20,12 +20,14 @@ export const ModifyTitleBar = ({ step }: { step: number }) => {
         justifyContent: 'space-between',
       }}
     >
-      <TouchableOpacity onPress={movePage()}>
+      <TouchableOpacity onPress={movePage()} style={{ width: 35 }}>
         <Image source={backArrow} style={{ width: 24, height: 24 }} />
       </TouchableOpacity>
       <View
         style={{
-          width: '80%',
+          display: 'flex',
+          flex: 1,
+          // width: '80%',
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',
@@ -34,7 +36,7 @@ export const ModifyTitleBar = ({ step }: { step: number }) => {
       >
         <S.TitleStyled>{titleList[step]}</S.TitleStyled>
       </View>
-      <T.TextButtonStyled>
+      <T.TextButtonStyled style={{ width: 35 }}>
         <CustomText color={colors.textLinkBlue} font="fontSemiBold" size="14px">
           저장
         </CustomText>

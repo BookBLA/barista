@@ -15,7 +15,7 @@ const ModifyMBTI = ({ setMbti }: { setMbti: Dispatch<SetStateAction<string[]>> }
   ];
 
   return (
-    <View style={{ width: '95%', height: 154, justifyContent: 'space-between', flexDirection: 'row' }}>
+    <View style={{ width: '93%', height: 154, justifyContent: 'space-between', flexDirection: 'row' }}>
       {mbtiNames.map((name: string[], index: number) => (
         <ModifyMbtiItem key={index} name={name} setMbti={setMbti} index={index} />
       ))}

@@ -44,7 +44,7 @@ export const TextFiledStyled = styled.TextInput.attrs({
 `;
 
 export const MoveButtonStyled = styled.TouchableOpacity`
-  width: 80px;
+  width: 22%;
   height: 60px;
   border-radius: 20px;
   background-color: ${colors.buttonMoveSytle};
