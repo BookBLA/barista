@@ -25,28 +25,10 @@ export const ContentWrapper = styled.ScrollView`
   background-color: ${colors.background};
 `;
 
-export const ProfileWrapper = styled.TouchableOpacity`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  /* align-items: center; */
-  width: 46%;
-  height: 236px;
-  padding: 5px 6px 0px 6px;
-  background-color: #fff;
-  margin: 0 4px;
-`;
-
 export const Line = styled.View`
   width: ${deviceWidth}px;
   border-width: 12px;
   border-color: #f1ead5;
-`;
-
-export const BookImage = styled.Image`
-  width: 100%;
-  height: 175px;
-  object-fit: fill;
 `;
 
 export const PositionedOverlay = styled.View`

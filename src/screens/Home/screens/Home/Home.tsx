@@ -1,6 +1,4 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { getMemberSameBookApi } from '../../../../commons/api/member.api';
 import { getMemberId } from '../../../../commons/store/memberIdStore';
@@ -8,13 +6,12 @@ import { filterOptions, initStates } from '../../HomeStack.service';
 import { IDdata, TFilterKeys } from '../../HomeStack.types';
 import * as S from '../../HomeStack.styles';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
-import Book from '../../../../../assets/images/example-book.png';
-import useMovePage from '../../../../commons/hooks/useMovePage';
 import Bottom from './units/Bottom/Bottom';
 import Error from './units/Error/Error';
 import Header from './units/Header/Header';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import Menu from './units/Menu/Menu';
+import Profile from './units/Profile/Profile';
 
 const Home = () => {
   useManageMargin();
@@ -23,7 +20,6 @@ const Home = () => {
   const [filter, setFilter] = useState(initStates);
   const bottomRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
-  const { movePage } = useMovePage();
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
     bottomRef.current?.present();
@@ -61,33 +57,17 @@ const Home = () => {
       <S.Wrapper>
         <Header />
         <Menu handlePresentModalPress={handlePresentModalPress} filter={filter} setFilter={setFilter} />
-        {data.length ? (
+        {!data.length ? (
           <S.PositionedOverlay>
             {/* <Lock /> */}
             <S.ContentWrapper>
-              {data.map((el: IDdata, index) => {
+              {tempData.map((item: IDdata, index) => {
                 if (index % 2 === 0) {
                   return (
                     <React.Fragment key={index}>
                       <S.RowStyled>
-                        <S.ProfileWrapper>
-                          <S.BookImage source={Book} />
-                          <CustomText size="12px">{el.bookName}</CustomText>
-                          <CustomText size="10px">{el.memberAge}</CustomText>
-                          <CustomText size="10px" color={colors.textGray}>
-                            {el.memberSchoolName}
-                          </CustomText>
-                        </S.ProfileWrapper>
-                        {index + 1 < tempData.length && (
-                          <S.ProfileWrapper onPress={movePage('OtherLibrary', { isYourLibrary: true })}>
-                            <S.BookImage source={Book} />
-                            <CustomText size="12px">{el.bookName}</CustomText>
-                            <CustomText size="10px">{`${el.memberName} (${el.memberAge}살)`}</CustomText>
-                            <CustomText size="10px" color={colors.textGray}>
-                              {el.memberSchoolName}
-                            </CustomText>
-                          </S.ProfileWrapper>
-                        )}
+                        <Profile item={item} />
+                        {index + 1 < tempData.length && <Profile item={item} />}
                       </S.RowStyled>
                       <S.Line></S.Line>
                     </React.Fragment>

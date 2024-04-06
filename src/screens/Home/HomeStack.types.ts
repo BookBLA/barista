@@ -1,5 +1,6 @@
 export interface IDdata {
   bookName: string;
+  bookImageUrl: string;
   memberAge: number;
   memberName: string;
   memberSchoolName: string;
