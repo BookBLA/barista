@@ -8,7 +8,7 @@ import { useState } from 'react';
 import { FavBookList } from '../../../commons/components/FavBookList/FavBookList';
 import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
 import Dash from 'react-native-dash';
-import { ModifyTitleBar } from '../ModifyTitleBar';
+import { ModifyTitleBar } from '../../../commons/components/ModifyTitleBar/ModifyTitleBar';
 
 const AddBook = () => {
   const { movePage } = useMovePage();

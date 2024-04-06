@@ -13,22 +13,22 @@ import { useStyleStore } from '../../../commons/store/useStyle';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+  // const [isFocused, setIsFocused] = useState(false);
   const { updateStyleInfo, styleInfo } = useStyleStore();
 
-  const handleFocus = () => {
-    if (!isFocused) {
-      setQuestion(''); // Clear the text when the TextInput is focused for the first time
-      setIsFocused(true);
-    }
-  };
+  // const handleFocus = () => {
+  //   if (!isFocused) {
+  //     setQuestion(''); // Clear the text when the TextInput is focused for the first time
+  //     setIsFocused(true);
+  //   }
+  // };
 
-  const handleBlur = () => {
-    if (question === '') {
-      setQuestion('');
-      setIsFocused(false);
-    }
-  };
+  // const handleBlur = () => {
+  //   if (question === '') {
+  //     setQuestion('');
+  //     setIsFocused(false);
+  //   }
+  // };
   const { movePage } = useMovePage();
   const nextPage = () => {
     updateStyleInfo('memberAsk', question);

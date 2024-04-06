@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import * as S from './MbtiItem.styles';
-import { IProps } from './MbtiItem.types';
+import * as S from './ModifyMBTI.styles';
+import { IProps } from './ModifyMbtiItem.types';
 // import { useStyleStore } from '../../store/useStyle';
 
-const MbtiItem = ({ name, setMbti, index }: IProps) => {
+const ModifyMbtiItem = ({ name, setMbti, index }: IProps) => {
   const [isSelect, setSelect] = useState<boolean>(true);
 
   const handleSelect = (selectedName: string) => () => {
@@ -17,7 +17,7 @@ const MbtiItem = ({ name, setMbti, index }: IProps) => {
 
   return (
     <>
-      <S.RowStyled>
+      <S.ColumnStyled>
         <S.ButtonStyled isSelect={isSelect}>
           <S.TextStyled isSelect={isSelect} onPress={handleSelect(name[0][0])}>
             {name[0]}
@@ -26,9 +26,9 @@ const MbtiItem = ({ name, setMbti, index }: IProps) => {
         <S.ButtonStyled isSelect={isSelect === false} onPress={handleSelect(name[1][0])}>
           <S.TextStyled isSelect={isSelect === false}>{name[1]}</S.TextStyled>
         </S.ButtonStyled>
-      </S.RowStyled>
+      </S.ColumnStyled>
     </>
   );
 };
 
-export default MbtiItem;
+export default ModifyMbtiItem;

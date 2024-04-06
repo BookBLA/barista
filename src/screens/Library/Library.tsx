@@ -17,6 +17,7 @@ import { RouteProp } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
+import useMovePage from '../../commons/hooks/useMovePage';
 
 type RootStackParamList = {
   Library: { isYourLibrary: boolean };
@@ -38,6 +39,8 @@ const Library: React.FC<Props> = ({ route }) => {
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   const isYourLibrary = route.params?.isYourLibrary;
 
+  const { movePage } = useMovePage();
+
   useHeaderControl(
     isYourLibrary
       ? {
@@ -49,10 +52,7 @@ const Library: React.FC<Props> = ({ route }) => {
           left: false,
           right: {
             image: settingIcon,
-            onPress: () => {
-              //todo 설정여기다가 추가하시믄 됩니다.
-              console.log('세팅 버튼');
-            },
+            onPress: movePage('settingStack'),
           },
         },
   );
@@ -131,7 +131,7 @@ const Library: React.FC<Props> = ({ route }) => {
               </S.ProfileModifyButtonWrapper>
             </>
           ) : (
-            <S.ProfileModifyButtonWrapper>
+            <S.ProfileModifyButtonWrapper onPress={movePage('modifyStyle')}>
               <S.ProfileModifyButtonText>프로필 수정</S.ProfileModifyButtonText>
             </S.ProfileModifyButtonWrapper>
           )}
@@ -156,7 +156,7 @@ const Library: React.FC<Props> = ({ route }) => {
             <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity>
+            <S.BookTouchableOpacity onPress={movePage('modifyUserinfo')}>
               <S.EmptyBookImage>
                 <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
               </S.EmptyBookImage>

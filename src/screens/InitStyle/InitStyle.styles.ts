@@ -36,9 +36,18 @@ export const TextFiledStyled = styled.TextInput.attrs({
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
   justify-content: center;
-  text-align: start;
+  text-align: left;
   padding: 12px 12px 12px 12px;
   /* padding-top: 12px; */
 
   flex-shrink: 1;
+`;
+
+export const MoveButtonStyled = styled.TouchableOpacity`
+  width: 22%;
+  height: 60px;
+  border-radius: 20px;
+  background-color: ${colors.buttonMoveSytle};
+  align-items: center;
+  justify-content: center;
 `;

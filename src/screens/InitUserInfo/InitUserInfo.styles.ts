@@ -175,3 +175,11 @@ export const RoundRectStyled = styled.View`
   align-items: 'center';
   flex-direction: 'column';
 `;
+
+export const ViewStyled = styled.View`
+  width: 100%;
+  height: ${({ height }: { height?: number }) => (height ? `${height}px` : 'auto')};
+  align-items: center;
+  justify-content: center;
+  /* background-color: pink; */
+`;
