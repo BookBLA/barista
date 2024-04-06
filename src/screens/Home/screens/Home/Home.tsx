@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { getMemberSameBookApi } from '../../../../commons/api/member.api';
-import { getMemberId } from '../../../../commons/store/memberIdStore';
-import { filterOptions, initStates } from '../../HomeStack.service';
+import React, { useMemo, useState } from 'react';
+import { initStates } from '../../HomeStack.constants';
 import { IDdata, TFilterKeys } from '../../HomeStack.types';
+import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
+import { useFetchMembersSameBook } from './hooks/useFetchMembersSameBook ';
 import * as S from '../../HomeStack.styles';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import Bottom from './units/Bottom/Bottom';
@@ -15,42 +14,16 @@ import Profile from './units/Profile/Profile';
 
 const Home = () => {
   useManageMargin();
-  const [data, setData] = useState([]);
-  const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const [filter, setFilter] = useState(initStates);
-  const bottomRef = useRef<BottomSheetModal>(null);
+  const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
+  const { bottomRef, handleOpenBottomSheet } = useBottomSheet();
+  const { data } = useFetchMembersSameBook(filter);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
+  const tempData = new Array(11).fill(0);
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
-    bottomRef.current?.present();
+    handleOpenBottomSheet();
   };
-  const tempData = new Array(11).fill(0);
-
-  const fetchMembersWithSameBook = async () => {
-    const params = Object.keys(filter).reduce(
-      (acc, key) => {
-        const filterKey = key as TFilterKeys;
-        const option = filterOptions[filterKey].find((option) => option.label === filter[filterKey]);
-        if (option) {
-          acc[key] = option.value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
-
-    try {
-      const memberId = (await getMemberId()) ?? '';
-      const response = await getMemberSameBookApi(memberId, { params });
-      setData(response.result.content);
-    } catch (error) {
-      console.log('errors', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchMembersWithSameBook();
-  }, [filter]);
 
   return (
     <>
@@ -80,11 +53,10 @@ const Home = () => {
           <Error />
         )}
       </S.Wrapper>
-      {selectedFilter && (
-        <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
-          <Bottom setFilter={setFilter} selectedFilter={selectedFilter} filter={filter} />
-        </CustomBottomSheetModal>
-      )}
+
+      <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
+        <Bottom setFilter={setFilter} selectedFilter={selectedFilter} filter={filter} />
+      </CustomBottomSheetModal>
     </>
   );
 };

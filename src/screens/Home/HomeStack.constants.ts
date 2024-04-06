@@ -1,6 +1,5 @@
 import { TFilterOptionsType, TFilterState } from './HomeStack.types';
 
-// todo: 상수 파일 정리 예정
 export const filterOptions: TFilterOptionsType = {
   gender: [
     { label: '성별', value: '' },

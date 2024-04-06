@@ -1,8 +1,8 @@
 import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { useLogout } from '../../../../../../commons/hooks/useLogout';
 import { icons } from '../../../../../../commons/utils/variablesImages';
+import { initStates } from '../../../../HomeStack.constants';
 import { TFilterState } from '../../../../HomeStack.types';
-import { initStates } from '../../../../HomeStack.service';
 import * as S from './Menu.styles';
 import { IProps } from './Menu.types';
 
@@ -12,7 +12,7 @@ const Menu = ({ handlePresentModalPress, filter, setFilter }: IProps) => {
   return (
     <S.MenuWrapper>
       <CustomText margin="0 0 8px" onPress={onClickLogout}>
-        서재 구경하기(임시 로그아웃 버튼)
+        서재 구경하기
       </CustomText>
       <S.FilterWrapper horizontal={true}>
         <S.FilterBox onPress={() => setFilter({ ...initStates })} isSelect={true}>
