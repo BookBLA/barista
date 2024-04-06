@@ -21,6 +21,7 @@ import SettingStack from '../../../screens/Setting/SettingStack';
 import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import useAuthStore from '../../store/useAuthStore';
 import Example04 from '../../../screens/Example04/Example04';
+import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 
@@ -37,6 +38,7 @@ const screens = [
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
   { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'matching', component: CustomScreen(Matching) },
+  { name: 'notice', component: CustomScreen(Notice) },
   { name: 'example', component: CustomScreen(Example) },
   { name: 'example03', component: CustomScreen(Example03) },
   { name: 'example04', component: CustomScreen(Example04) },

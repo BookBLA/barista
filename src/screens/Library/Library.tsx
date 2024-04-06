@@ -17,6 +17,7 @@ import { RouteProp } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
+import useMovePage from '../../commons/hooks/useMovePage';
 
 type RootStackParamList = {
   Library: { isYourLibrary: boolean };
@@ -37,6 +38,8 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   const isYourLibrary = route.params?.isYourLibrary;
+
+  const { movePage } = useMovePage();
 
   useHeaderControl(
     isYourLibrary
@@ -131,7 +134,7 @@ const Library: React.FC<Props> = ({ route }) => {
               </S.ProfileModifyButtonWrapper>
             </>
           ) : (
-            <S.ProfileModifyButtonWrapper>
+            <S.ProfileModifyButtonWrapper onPress={movePage('modifyStyle')}>
               <S.ProfileModifyButtonText>프로필 수정</S.ProfileModifyButtonText>
             </S.ProfileModifyButtonWrapper>
           )}

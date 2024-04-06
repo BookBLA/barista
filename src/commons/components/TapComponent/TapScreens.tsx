@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../../../screens/Home/Home';
 import { Image, Platform } from 'react-native';
 import homeBright from '../../../../assets/images/icons/HomeBright.png';
 import homeDark from '../../../../assets/images/icons/HomeDark.png';
@@ -10,6 +9,7 @@ import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
 import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
 import Library from '../../../screens/Library/Library';
+import HomeStack from '../../../screens/Home/HomeStack';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -39,8 +39,8 @@ const TapScreens = () => {
       }}
     >
       <Tab.Screen
-        name="Home"
-        component={Home}
+        name="HomeStack"
+        component={HomeStack}
         options={{
           tabBarLabel: '홈',
           tabBarIcon: ({ focused }) => (

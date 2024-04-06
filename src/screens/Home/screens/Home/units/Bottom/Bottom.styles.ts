@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '../../../../../../commons/styles/variablesStyles';
 
 export const Wrapper = styled.View`
   padding: 20px;

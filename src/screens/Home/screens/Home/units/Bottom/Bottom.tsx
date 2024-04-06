@@ -1,10 +1,11 @@
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText';
+import { icons } from '../../../../../../commons/utils/variablesImages';
+import { TFilterKeys } from '../../../../HomeStack.types';
 import * as S from './Bottom.styles';
-import Check from '../../../../../assets/images/icons/Check.png';
-import { IProps, TFilterKeys } from './Bottom.types';
+import { IProps } from './Bottom.types';
 
 const filterData: Record<TFilterKeys, string[]> = {
-  sex: ['성별', '남성', '여성'],
+  gender: ['성별', '남성', '여성'],
   smoking: ['흡연 여부', '비흡연', '흡연'],
   drinking: ['음주 여부', '음주 X', '월 1~2회', '주 1회', '주 2회 이상', '매일'],
   contact: ['연락 스타일', '느긋이', '칼답'],
@@ -12,7 +13,6 @@ const filterData: Record<TFilterKeys, string[]> = {
 };
 
 const Bottom = ({ filter, setFilter, selectedFilter }: IProps) => {
-  const data = filterData[selectedFilter] || [];
   const defaultOption = filterData[selectedFilter][0];
   const isSelectedDefault = filter[selectedFilter] === defaultOption;
   const options = filterData[selectedFilter].slice(1);
@@ -33,12 +33,12 @@ const Bottom = ({ filter, setFilter, selectedFilter }: IProps) => {
       </S.TopWrapper>
       <S.SelectWrapper onPress={handleSelectDefault}>
         <CustomText font={isSelectedDefault ? 'fontBold' : 'fontRegular'}>전체</CustomText>
-        {isSelectedDefault && <S.CheckImage source={Check} />}
+        {isSelectedDefault && <S.CheckImage source={icons.check} />}
       </S.SelectWrapper>
       {options.map((option, index) => (
         <S.SelectWrapper key={index} onPress={() => handleSelectOption(option)}>
           <CustomText font={filter[selectedFilter] === option ? 'fontBold' : 'fontRegular'}>{option}</CustomText>
-          {filter[selectedFilter] === option && <S.CheckImage source={Check} />}
+          {filter[selectedFilter] === option && <S.CheckImage source={icons.check} />}
         </S.SelectWrapper>
       ))}
     </S.Wrapper>
