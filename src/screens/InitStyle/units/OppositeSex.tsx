@@ -20,7 +20,7 @@ const OppositeSex = () => {
       <TitleProgress gauge={50} />
       <S.ColumnStyled style={{ height: '80%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
-          <S.ContentStyled style={{ marginBottom: 38 }}>이성친구 허용범위를 알려주세요.</S.ContentStyled>
+          <S.ContentStyled style={{ marginBottom: 38 }}>이성 친구 허용범위를 알려주세요.</S.ContentStyled>
           {buttonTitles.map((title, index) => (
             <T.LongButtonStyled
               key={index}

@@ -1,6 +1,6 @@
 import { Text, View } from 'react-native';
 
-import * as S from './Example02.styles';
+//import * as S from './Example02.styles';
 import MbtiItem from '../../commons/components/MbtiItem/MbtiItem';
 import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
 import { Dispatch, SetStateAction } from 'react';
