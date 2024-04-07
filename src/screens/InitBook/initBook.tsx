@@ -13,11 +13,14 @@ const screens = [
   { name: 'initQuiz', component: CustomScreen(InitQuiz) },
 ];
 
-const InitBookStack = () => {
+const InitBookStack = ({ route }) => {
+  // console.log('route1', route);
   return (
     <Stack.Navigator initialRouteName="addBook" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
+        <Stack.Screen key={name} name={name}>
+          {(props) => React.createElement(component, { ...props, route })}
+        </Stack.Screen>
       ))}
     </Stack.Navigator>
   );

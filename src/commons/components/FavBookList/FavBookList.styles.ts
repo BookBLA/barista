@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../styles/variablesStyles';
+import { deviceHeight, deviceWidth } from '../../utils/dimensions';
 
 export const BookListStyled = styled.View`
   width: 86%;
@@ -28,6 +29,7 @@ export const BookAuthorStyled = styled.Text`
 
 export const ColumnStyled = styled.View`
   display: flex;
+  flex: 1;
   height: 62px;
   width: 65%;
   flex-direction: column;
@@ -35,18 +37,17 @@ export const ColumnStyled = styled.View`
   /* justify-content: ; */
 `;
 
-export const ColumnStyled2 = styled.View`
-  display: flex;
-  /* height: 62px; */
-  /* width: 65%; */
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-`;
-
 export const DeleteTextStyled = styled.Text`
   /* text-align: right; */
   font-size: 10px;
   font-family: fontMedium;
   color: ${colors.textGray5};
+`;
+
+export const BookMarkIconImage = styled.Image`
+  width: 15px;
+  height: 30px;
+  position: absolute;
+  right: ${deviceWidth / 10}px;
+  top: ${deviceHeight / 500 - 5}px;
 `;

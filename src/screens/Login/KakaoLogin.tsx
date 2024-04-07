@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, ActivityIndicator, Image } from 'react-native';
 import WebView from 'react-native-webview';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 // import { proxyUrl } from '../constant/common';
 import axios from 'axios';
+import { icons } from '../../commons/utils/variablesImages';
+import useMovePage from '../../commons/hooks/useMovePage';
 
 const REST_API_KEY = '68f6f971eae2c6a3dcf201934d369f23';
-const REDIRECT_URI = 'http://localhost:8081';
+const REDIRECT_URI = 'http://ec2-43-201-67-26.ap-northeast-2.compute.amazonaws.com:8080/api/';
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const Kakao = () => {
@@ -31,6 +33,7 @@ const Kakao = () => {
       // fetchData();
     }
   }
+  const { movePage } = useMovePage();
 
   // const fetchData = async () => {
   //   console.log('카카오 fetch 실행');
@@ -60,6 +63,9 @@ const Kakao = () => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={movePage()}>
+        <Image source={icons.backArrow} style={{ width: 24, height: 24 }} />
+      </TouchableOpacity>
       <WebView
         style={{ flex: 1 }}
         originWhitelist={['*']}

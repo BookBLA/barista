@@ -100,7 +100,8 @@ export const CodeFiledStyled = styled.View`
 
 export const NextButtonStyled = styled.TouchableOpacity`
   width: 95%;
-  height: 6%;
+  height: 50px;
+  /* height: 6%, */
   border-radius: 60px;
   background-color: ${colors.primary};
   align-items: center;
