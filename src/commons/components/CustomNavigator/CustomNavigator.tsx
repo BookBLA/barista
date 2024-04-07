@@ -53,12 +53,12 @@ export const CustomNavigator = () => {
   const { token } = useAuthStore();
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
 
-  // useEffect(() => {
-  //   // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
-  //   if (!token && navigationRef.current) {
-  //     navigationRef.current.navigate('login');
-  //   }
-  // }, [token]);
+  useEffect(() => {
+    // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
+    if (!token && navigationRef.current) {
+      navigationRef.current.navigate('login');
+    }
+  }, [token]);
 
   return (
     <NavigationContainer ref={navigationRef}>
@@ -70,7 +70,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="modifyStyle" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="tapScreen" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}

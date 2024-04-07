@@ -8,7 +8,7 @@ interface IProps {
 export const ButtonStyled = styled.TouchableOpacity`
   width: 105px;
   height: 44px;
-  border-radius: 10px;
+  border-radius: 14px;
   display: flex;
   justify-content: center;
   background-color: ${(props: IProps) => (props.isSelect ? colors.primary : colors.buttonMain)};

@@ -80,7 +80,7 @@ export const QuizTextInput = styled.TextInput.attrs({
 `;
 
 export const SearchContainer = styled.View`
-  width: 95%;
+  width: 93%;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
@@ -94,7 +94,7 @@ export const SearchContainer = styled.View`
 `;
 
 export const SearchBarStyled = styled.TextInput`
-  width: 90%;
+  width: 85%;
   height: 44px;
   font-size: 14px;
   font-family: fontMedium;
@@ -103,7 +103,7 @@ export const SearchBarStyled = styled.TextInput`
 export const ColumnStyled = styled.View`
   /* display: flex; */
   flex: 1;
-  width: 100%;
+  width: 93%;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;

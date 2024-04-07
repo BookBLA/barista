@@ -156,7 +156,7 @@ const Library: React.FC<Props> = ({ route }) => {
             <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
               <S.BookImage source={require('../../../assets/images/example-book.png')} />
             </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity onPress={movePage('modifyUserinfo')}>
+            <S.BookTouchableOpacity onPress={movePage('initBookStack', { screen: 'addBook', isModify: true })}>
               <S.EmptyBookImage>
                 <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
               </S.EmptyBookImage>
