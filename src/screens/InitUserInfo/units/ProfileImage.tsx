@@ -18,6 +18,7 @@ import profileEx5 from '../../../../assets/images/img/profile_ex5.png';
 import profileEx6 from '../../../../assets/images/img/profile_ex6.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
+import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
 
 const ProfileImage = () => {
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
@@ -30,11 +31,14 @@ const ProfileImage = () => {
     [profileEx6, '본인이 드러나지 않는 사진'],
   ];
 
+  const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
+
   //'앨범에서 선택' 바텀시트 모달
   const handleModifyProfileImageModalRef = useCallback(() => {
-    modifyProfileImageModalRef.current?.present();
+    // bottomRef.current?.present();
+    handleOpenBottomSheet();
   }, []);
-  const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
+  // const bottomRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%'], []);
 
   //'사진 가드' 바텀시트 모달
@@ -53,6 +57,7 @@ const ProfileImage = () => {
   }, []);
 
   const { movePage } = useMovePage();
+
   const { updateUserInfo, userInfo } = useUserStore();
   //   const [imageUrl, setImageUrl] = useState('');
 
@@ -78,6 +83,7 @@ const ProfileImage = () => {
 
     // setImageUrl(result.assets[0].uri);
     updateUserInfo('profileImageUrl', result.assets[0].uri);
+    handleCloseBottomSheet();
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (
@@ -98,7 +104,7 @@ const ProfileImage = () => {
             본인 얼굴이 나온 사진으로 등록하면 매칭률이 80% 높아져요!{'\n'}프로필 사진은 모두 흐릿하게 보여지며{'\n'}
             매칭이 성사된 상대에게만 원본 사진으로 보입니다
           </Text>
-          <TouchableOpacity onPress={handleModifyProfileImageModalRef}>
+          <TouchableOpacity onPress={handleOpenBottomSheet}>
             <Image
               source={
                 userInfo.profileImageUrl === ''
@@ -120,7 +126,7 @@ const ProfileImage = () => {
           </S.ButtonStyled>
         </View>
       </S.ColumnStyled>
-      <CustomBottomSheetModal ref={modifyProfileImageModalRef} index={0} snapPoints={snapPoints}>
+      <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
         <P.ProfileImageBottomSheetContainer>
           <P.ProfileImageModificationButton onPress={uploadImage}>
             <CustomText size="16px" font="fontRegular">
@@ -149,7 +155,7 @@ const ProfileImage = () => {
             </S.RoundRectStyled>
             <S.RowStyled style={{ width: '100%' }}>
               {profileExList.slice(0, 2).map((profileEx, index) => (
-                <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', margin: 12 }}>
+                <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', marginTop: 12 }}>
                   <Image source={profileEx[0]} style={{ width: 162, height: 162 }} />
                   <CustomText size="16px" style={{ marginTop: 8 }}>
                     {profileEx[1]}
@@ -185,7 +191,7 @@ const ProfileImage = () => {
               </S.RoundRectStyled>
               <S.RowStyled style={{ width: '100%' }}>
                 {profileExList.slice(2, 4).map((profileEx, index) => (
-                  <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', margin: 12 }}>
+                  <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', marginTop: 12 }}>
                     <Image source={profileEx[0]} style={{ width: 162, height: 162 }} />
                     <CustomText size="14px" style={{ marginTop: 8 }}>
                       {profileEx[1]}
@@ -195,7 +201,7 @@ const ProfileImage = () => {
               </S.RowStyled>
               <S.RowStyled style={{ width: '100%' }}>
                 {profileExList.slice(4, 6).map((profileEx, index) => (
-                  <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', margin: 12 }}>
+                  <S.ColumnStyled key={index} style={{ width: 'auto', height: 'auto', marginTop: 12 }}>
                     <Image source={profileEx[0]} style={{ width: 162, height: 162 }} />
                     <CustomText size="14px" style={{ marginTop: 8 }}>
                       {profileEx[1]}

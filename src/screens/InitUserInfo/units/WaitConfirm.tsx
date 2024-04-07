@@ -27,11 +27,18 @@ const WaitConfirm = () => {
           <Spinner />
           <S.ContentStyled>프로필을 확인하고 있어요!{'\n'}1시간 이내로 처리 됩니다!</S.ContentStyled>
           <S.RoundRectStyled
-            style={{ width: '80%', height: 'auto', paddingTop: 20, paddingLeft: 26, paddingBottom: 20 }}
+            style={{
+              width: '80%',
+              height: 'auto',
+              paddingTop: 20,
+              paddingLeft: 26,
+              paddingBottom: 20,
+              paddingRight: 26,
+            }}
           >
             <View style={{ alignItems: 'flex-start' }}>
               <LightText size="16" color="black">
-                기다리시는 동안 인스타그램과 카카오채널{'\n'}팔로우 부탁드려요!
+                기다리시는 동안 인스타그램과 카카오 채널 팔로우 부탁드려요!
               </LightText>
 
               <TouchableOpacity
