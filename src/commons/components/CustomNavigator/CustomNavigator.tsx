@@ -45,14 +45,6 @@ export const CustomNavigator = () => {
   const { token } = useAuthStore();
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
 
-  const marginStyle = useMemo(
-    () => ({
-      marginHorizontal: hasMargin ? 16 : 0,
-      marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
-    }),
-    [hasMargin],
-  );
-
   useEffect(() => {
     // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
     if (!token && navigationRef.current) {
@@ -62,7 +54,14 @@ export const CustomNavigator = () => {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'white', ...marginStyle }}>
+      <SafeAreaView
+        style={{
+          flex: 1,
+          backgroundColor: 'white',
+          marginHorizontal: hasMargin ? 16 : 0,
+          marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+        }}
+      >
         <Stack.Navigator initialRouteName="modifyStyle" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
