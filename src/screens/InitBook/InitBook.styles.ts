@@ -5,7 +5,7 @@ export const ButtonStyled = styled.TouchableOpacity`
   width: 86%;
   height: 88px;
   border-radius: 10px;
-  background-color: ${colors.primary};
+  background-color: ${colors.buttonAddBook};
   align-items: center;
   justify-content: center;
   margin: 7px 0;
@@ -107,10 +107,33 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-  background-color: pink;
+  /* background-color: pink; */
 `;
 
 export const TextButtonStyled = styled.TouchableOpacity`
   width: auto;
   /* height: 38px; */
+`;
+
+export const PageIndexRow = styled.View`
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: auto;
+  margin-top: 20px;
+  margin-bottom: 70px;
+  /* background-color: pink; */
+`;
+
+export const MovePageImageStyled = styled.Image`
+  width: 30px;
+  height: 20px;
+`;
+
+export const PageIndexTextStyled = styled.Text`
+  font-size: 12px;
+  font-family: ${(props: { selected: boolean }) => (props.selected ? 'fontBold' : 'fontMedium')};
+  margin: 0 10px;
+  color: ${(props: { selected: boolean }) => (props.selected ? 'black' : colors.textGray1)};
 `;

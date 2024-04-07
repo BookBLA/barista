@@ -41,3 +41,11 @@ export const DeleteTextStyled = styled.Text`
   font-family: fontMedium;
   color: ${colors.textGray5};
 `;
+
+export const BookImageStyled = styled.TouchableOpacity`
+  align-items: center;
+  justify-content: center;
+  height: 100;
+  width: 72;
+  margin-right: 14;
+`;

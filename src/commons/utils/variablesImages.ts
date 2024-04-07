@@ -25,6 +25,8 @@ export const icons = {
   homeBright: require('../../../assets/images/icons/HomeBright.png'),
   homeDark: require('../../../assets/images/icons/HomeDark.png'),
 
+  leftEndPage: require('../../../assets/images/buttons/LeftEndPage.png'),
+  leftPage: require('../../../assets/images/buttons/LeftPage.png'),
   libraryBright: require('../../../assets/images/icons/LibraryBright.png'),
   libraryDark: require('../../../assets/images/icons/LibraryDark.png'),
   libraryTransparent: require('../../../assets/images/icons/LibraryTransparent.png'),
@@ -48,7 +50,10 @@ export const icons = {
   profileImageSetting: require('../../../assets/images/icons/ProfileImageSetting.png'),
 
   reset: require('../../../assets/images/icons/Reset.png'),
+  rightEndPage: require('../../../assets/images/buttons/RightEndPage.png'),
+  rightPage: require('../../../assets/images/buttons/RightPage.png'),
 
+  selected: require('../../../assets/images/icons/Selected.png'),
   setting: require('../../../assets/images/icons/Setting.png'),
   supportTransparent: require('../../../assets/images/icons/SupportTransparent.png'),
 

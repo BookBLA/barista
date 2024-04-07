@@ -14,7 +14,7 @@ const screens = [
 ];
 
 const InitBookStack = ({ route }) => {
-  console.log('route1', route);
+  // console.log('route1', route);
   return (
     <Stack.Navigator initialRouteName="addBook" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
