@@ -10,8 +10,10 @@ import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
 import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
+import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcar';
 
 const Matching = () => {
+  const { memberPostcard } = useFetchMemberPostcard();
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
   const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
   const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
@@ -107,7 +109,7 @@ const Matching = () => {
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
                 <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
-                <S.postcardCountTextStyled>{postcardCounter}</S.postcardCountTextStyled>
+                <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
             {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}
