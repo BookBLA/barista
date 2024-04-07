@@ -18,6 +18,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import useMovePage from '../../commons/hooks/useMovePage';
+import { useBottomSheet } from '../../commons/hooks/useBottomSheet';
 
 type RootStackParamList = {
   Library: { isYourLibrary: boolean };
@@ -31,7 +32,8 @@ type Props = {
 
 const Library: React.FC<Props> = ({ route }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
+  const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
+  // const modifyProfileImageModalRef = useRef<BottomSheetModal>(null);
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const addBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
@@ -61,9 +63,9 @@ const Library: React.FC<Props> = ({ route }) => {
     modifyBookModalRef.current?.present();
   }, []);
 
-  const handleModifyProfileImageModalRef = useCallback(() => {
-    modifyProfileImageModalRef.current?.present();
-  }, []);
+  // const handleModifyProfileImageModalRef = useCallback(() => {
+  //   modifyProfileImageModalRef.current?.present();
+  // }, []);
 
   const handleViewStyleModalRef = useCallback(() => {
     viewStyleModalRef.current?.present();
@@ -90,6 +92,7 @@ const Library: React.FC<Props> = ({ route }) => {
     if (!result.canceled) {
       setSelectedImage(result.assets[0].uri);
     }
+    handleCloseBottomSheet(); //바텀시트 닫음
     //todo 업로드 로직 추가
   };
 
@@ -101,7 +104,7 @@ const Library: React.FC<Props> = ({ route }) => {
         <S.UserInfoView>
           <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} resizeMode="contain" />
           {!isYourLibrary && (
-            <TouchableWithoutFeedback onPress={handleModifyProfileImageModalRef}>
+            <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
               <S.ProfileImageModificationImage
                 source={require('../../../assets/images/icons/ProfileImageSetting.png')}
               />
@@ -170,7 +173,7 @@ const Library: React.FC<Props> = ({ route }) => {
           <MyBookInfoModify bookId={123} />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={modifyProfileImageModalRef} index={0} snapPoints={snapPoints}>
+      <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
         <S.ProfileImageBottomSheetContainer>
           <S.ProfileImageModificationButton onPress={openImagePickerAsync}>
             <CustomText size="16px" font="fontRegular">
