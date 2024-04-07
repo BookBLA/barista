@@ -1,15 +1,19 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useHasMargin } from '../store/useHasMargin';
+import { useFocusEffect } from '@react-navigation/native';
 
+// todo: 개선예정
 const useManageMargin = () => {
-  const { setHasMargin } = useHasMargin();
+  const { setHasMargin, hasMargin } = useHasMargin();
 
-  useEffect(() => {
-    setHasMargin(false);
-    return () => {
-      setHasMargin(true);
-    };
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      setHasMargin(false);
+      return () => {
+        setHasMargin(true);
+      };
+    }, [hasMargin]),
+  );
 };
 
 export default useManageMargin;
