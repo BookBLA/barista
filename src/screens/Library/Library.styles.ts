@@ -171,5 +171,27 @@ export const BookModificationBottomSheetContainer = styled.View`
 `;
 
 export const EmptyPostcardModalWrapper = styled.View`
-  padding: 20px;
+  padding: 16px 14px;
+`;
+
+export const EmptyPostcardModalHeader = styled.View`
+  margin-bottom: 20px;
+`;
+
+export const ModalBottomWrapper = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 10px;
+`;
+
+export const RoundButton = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 60px;
+  background-color: ${({ bgColor }: any) => bgColor || colors.primary};
 `;

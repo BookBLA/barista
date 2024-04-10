@@ -6,14 +6,14 @@ import { ICustomHeader } from './CustomHeader.types';
 import * as S from './CustomHeader.styles';
 import { useHasMargin } from '../../store/useHasMargin';
 
-export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, right }) => {
+export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPressLeft, right }) => {
   const { movePage } = useMovePage();
   const { hasMargin } = useHasMargin();
 
   return (
     <S.Wrapper hasMargin={hasMargin}>
       {left && (
-        <S.Button onPress={movePage()}>
+        <S.Button onPress={onPressLeft ? onPressLeft : movePage}>
           <Image source={backArrow} style={{ width: 24, height: 24 }} />
         </S.Button>
       )}

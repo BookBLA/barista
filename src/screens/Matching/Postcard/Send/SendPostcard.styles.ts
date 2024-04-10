@@ -120,7 +120,6 @@ export const ModalBookImage = styled.Image`
   width: 100%;
   height: 150px;
   border-radius: 10px;
-  resize-mode: 'auto';
 `;
 
 export const styles: any = StyleSheet.create({

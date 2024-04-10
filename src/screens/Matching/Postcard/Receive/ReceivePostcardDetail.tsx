@@ -30,7 +30,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     <>
       <View style={{ backgroundColor: 'white' }}>
         <S.HeaderView>
-          <TouchableOpacity onPress={movePage()}>
+          <TouchableOpacity onPress={movePage('Matching')}>
             <S.HeaderImage source={prevButtonBlack} />
           </TouchableOpacity>
           <S.HeaderTextWrapper>
@@ -50,7 +50,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               </S.UserInfoWrapper>
             </S.UserInfoView>
 
-            <S.UserLibraryButtonContainer>
+            <S.UserLibraryButtonContainer onPress={movePage('OtherLibrary', { userId: 123, isYourLibrary: true })}>
               <S.UserLibraryButtonText>상대방 서재 보러가기</S.UserLibraryButtonText>
             </S.UserLibraryButtonContainer>
           </S.UserInfoContainerView>
