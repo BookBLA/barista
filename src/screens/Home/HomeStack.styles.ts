@@ -23,11 +23,12 @@ export const ContentWrapper = styled.ScrollView`
   flex-wrap: wrap;
   width: ${deviceWidth}px;
   background-color: ${colors.background};
+  border-radius: 20px 20px 0px 0px;
 `;
 
 export const Line = styled.View`
   width: ${deviceWidth}px;
-  border-width: 12px;
+  border-width: 5px;
   border-color: #f1ead5;
 `;
 

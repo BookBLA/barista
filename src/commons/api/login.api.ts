@@ -1,8 +1,3 @@
 import { Post } from '../utils/http.api';
 
-export const postAppleLogin = (authCode: string) => {
-  const data = {
-    authCode: authCode,
-  };
-  Post('auth/login/apple', data);
-};
+export const postLogin = (authCode: string, type: string) => Post(`auth/login/${type}`, { authCode });

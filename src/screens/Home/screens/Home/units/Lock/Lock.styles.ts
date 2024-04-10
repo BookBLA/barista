@@ -12,6 +12,7 @@ export const LockWrapper = styled.View`
   bottom: 0;
   background-color: rgba(247, 244, 237, 0.8);
   z-index: 10;
+  border-radius: 15px 15px 0px 0px;
 `;
 
 export const LockImage = styled.Image`

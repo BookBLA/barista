@@ -11,6 +11,7 @@ import Header from './units/Header/Header';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import Menu from './units/Menu/Menu';
 import Profile from './units/Profile/Profile';
+import Lock from './units/Lock/Lock';
 
 const Home = () => {
   useManageMargin();

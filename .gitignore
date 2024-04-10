@@ -39,3 +39,5 @@ yarn-error.*
 /.env.production
 /.env.development
 env
+/google-services.json
+/eas.json
