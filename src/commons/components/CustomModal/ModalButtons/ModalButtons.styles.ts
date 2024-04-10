@@ -8,6 +8,7 @@ export const BottomWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   padding: 20px;
+  gap: 10px;
 `;
 
 export const ArrowButton = styled.TouchableOpacity`
@@ -16,13 +17,10 @@ export const ArrowButton = styled.TouchableOpacity`
 `;
 
 export const RoundButton = styled.TouchableOpacity`
+  flex: 1;
   justify-content: center;
   align-items: center;
-  width: ${({ width }: IStyledProps) => width};
-  height: 36px;
-  padding: 9px 40px;
+  padding: 14px 20px;
   border-radius: 60px;
-  font-family: 'fontMedium';
-  font-size: 16px;
   background-color: ${({ bgColor }: IStyledProps) => bgColor || colors.primary};
 `;
