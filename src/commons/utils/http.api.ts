@@ -17,6 +17,30 @@ httpApi.interceptors.request.use(
   },
 );
 
+httpApi.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        // todo: 필요 시 사용 예정
+        // 1. 토큰 재발급 함수
+        // 2.httpApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // 3. useAuthStore.getState().saveToken();
+        // 4. return httpApi(originalRequest); // api 재요청
+        useErrorMessage.getState().setErrorMessage('토큰이 만료되었습니다.');
+        return useAuthStore.getState().removeToken();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 const config = {
   headers: {
     'Content-Type': 'application/json',

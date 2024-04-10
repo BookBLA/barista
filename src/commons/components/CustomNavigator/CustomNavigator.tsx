@@ -42,7 +42,7 @@ const screens = [
 
 export const CustomNavigator = () => {
   const { hasMargin } = useHasMargin();
-  const { token } = useAuthStore();
+  const token = useAuthStore((state) => state.token);
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
 
   useEffect(() => {
