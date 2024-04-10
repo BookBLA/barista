@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';

@@ -169,3 +169,7 @@ export const BookModificationBottomSheetContainer = styled.View`
   margin: 4px 8px;
   padding: 16px;
 `;
+
+export const EmptyPostcardModalWrapper = styled.View`
+  padding: 20px;
+`;

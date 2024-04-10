@@ -60,6 +60,11 @@ export const icons = {
 
   woman: require('../../../assets/images/icons/Woman.png'),
   womanSmall: require('../../../assets/images/icons/WomanSmall.png'),
+
+  leftArrow: require('../../../assets/images/icons/LeftArrow.png'),
+  rightArrow: require('../../../assets/images/icons/RightArrow.png'),
+  disableRightArrow: require('../../../assets/images/icons/DisableRightArrow.png'),
+  checkPostcard: require('../../../assets/images/icons/PostcardCheck.png'),
 };
 
 export const img = {
