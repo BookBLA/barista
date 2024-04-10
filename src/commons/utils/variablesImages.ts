@@ -64,6 +64,7 @@ export const icons = {
   leftArrow: require('../../../assets/images/icons/LeftArrow.png'),
   rightArrow: require('../../../assets/images/icons/RightArrow.png'),
   disableRightArrow: require('../../../assets/images/icons/DisableRightArrow.png'),
+  checkPostcard: require('../../../assets/images/icons/PostcardCheck.png'),
 };
 
 export const img = {

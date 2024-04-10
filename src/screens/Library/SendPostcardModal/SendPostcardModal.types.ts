@@ -1,5 +1,12 @@
 export interface ISendPostcardModalProps {
-  props: IBookInfo[];
+  personalQuiz: string;
+  postcardInfos: postcardInfo[];
+  bookInfos: IBookInfo[];
+}
+
+export interface postcardInfo {
+  id: number;
+  imageUrl: string;
 }
 
 export interface IBookInfo {
@@ -19,4 +26,9 @@ export interface IBookQuiz {
 export interface IBookQuestion {
   id: number;
   text: string;
+}
+
+export interface checkedQuizAnswer {
+  quizId: number;
+  checkedAnswerId: number;
 }

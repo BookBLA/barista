@@ -297,7 +297,22 @@ const Library: React.FC<Props> = ({ route }) => {
       </CustomBottomSheetModal>
       {sendPostcardProps && (
         <CustomModal modalConfig={sendPostcardModalConfig}>
-          <SendPostcardModal props={sendPostcardProps} />
+          <SendPostcardModal
+            postcardInfos={[
+              {
+                id: 1,
+                imageUrl:
+                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Kon85L5WZLubsh6MZ-9XjDcci-19OYmxHOa2HM6mMA&s',
+              },
+              {
+                id: 2,
+                imageUrl:
+                  'https://youthpress.net/xe/files/attach/images/9794/110/374/3df640717098f1dfdf5110ca29a64536.jpg',
+              },
+            ]}
+            personalQuiz="금사빠세요?"
+            bookInfos={sendPostcardProps}
+          />
         </CustomModal>
       )}
       <CustomModal modalConfig={emptyPostcardModalConfig}>
