@@ -25,7 +25,7 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 
 type RootStackParamList = {
-  Library: { isYourLibrary: boolean };
+  Library: { postcardId?: number; userId: number; isYourLibrary: boolean };
 };
 
 type LibraryRouteProp = RouteProp<RootStackParamList, 'Library'>;
@@ -41,7 +41,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
-  const isYourLibrary = route.params?.isYourLibrary;
+  const { isYourLibrary, userId, postcardId } = route.params;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const postcardCounter = usePostcardCounter((state) => state.count);
@@ -128,6 +128,7 @@ const Library: React.FC<Props> = ({ route }) => {
       ? {
           title: '상대페이지',
           left: true,
+          onPressLeft: movePage('receivePostcardDetail', { postcardId }),
         }
       : {
           title: '마이페이지',
