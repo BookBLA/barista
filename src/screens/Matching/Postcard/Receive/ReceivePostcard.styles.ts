@@ -28,25 +28,6 @@ export const PostcardInfoFirstViewStyled = styled.View`
   margin-bottom: 4px;
 `;
 
-export const ButtonContainerViewStyled = styled.View`
-  flex-direction: row;
-`;
-
-export const ButtonText = styled.Text`
-  color: ${(props: any) => props.fontColor ?? 'white'};
-  text-align: center;
-  font-size: 14px;
-`;
-
-export const ButtonContainer = styled.View`
-  flex: 1;
-  padding: 10px;
-  border-radius: 10px;
-  margin-right: ${(props: any) => (props.left ? '4px' : 0)};
-  margin-left: ${(props: any) => (props.right ? '4px' : 0)};
-  background-color: ${(props: any) => props.backgroundColor ?? 'black'};
-`;
-
 //todo 자기가 열람했을때 색 변할 수 도있음. 투명도
 export const styles = StyleSheet.create({
   image: {
@@ -57,3 +38,26 @@ export const styles = StyleSheet.create({
     height: '80%',
   },
 });
+
+export const EmptyPostcardModalWrapper = styled.View`
+  padding: 20px;
+`;
+
+export const ModalBottomWrapper = styled.View`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 10px 0;
+  gap: 10px;
+`;
+
+export const RoundButton = styled.TouchableOpacity`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 14px 20px;
+  border-radius: 60px;
+  background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+`;

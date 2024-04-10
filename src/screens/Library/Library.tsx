@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
@@ -41,11 +41,14 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
-  const { isYourLibrary, userId, postcardId } = route.params;
+  const isYourLibrary = route.params?.isYourLibrary;
+  const userId = route.params?.userId;
+  const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const postcardCounter = usePostcardCounter((state) => state.count);
   const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
+  const navigation = useNavigation();
 
   const { movePage } = useMovePage();
 
@@ -78,6 +81,12 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   };
 
+  const moveProductScreen = () => {
+    toggleEmptyPostcardModal();
+    //@ts-ignore
+    navigation.navigate('product');
+  };
+
   const sendPostcardModalConfig = {
     visible: isSendPostcardModalVisible,
     onClose: toggleSendPostcardModal,
@@ -88,16 +97,6 @@ const Library: React.FC<Props> = ({ route }) => {
   const emptyPostcardModalConfig = {
     visible: isEmptyPostcardModalVisible,
     onClose: toggleEmptyPostcardModal,
-    mode: 'round',
-    buttons: [
-      { label: '아니요', action: toggleEmptyPostcardModal, color: colors.textBlack, bgColor: colors.buttonMain },
-      {
-        label: '충전시간 확인하기',
-        action: toggleEmptyPostcardModal,
-        color: colors.textYellow,
-        bgColor: colors.buttonPrimary,
-      },
-    ],
   };
 
   const openImagePickerAsync = async () => {
@@ -318,12 +317,26 @@ const Library: React.FC<Props> = ({ route }) => {
       )}
       <CustomModal modalConfig={emptyPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
-          <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-            엽서가 부족합니다.
-          </CustomText>
-          <CustomText font="fontRegular" size="12px">
-            엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
-          </CustomText>
+          <S.EmptyPostcardModalHeader>
+            <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+              엽서가 부족합니다.
+            </CustomText>
+            <CustomText font="fontRegular" size="12px">
+              엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+            </CustomText>
+          </S.EmptyPostcardModalHeader>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleEmptyPostcardModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                충전시간 확인하기
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
     </SafeAreaView>

@@ -7,7 +7,8 @@ export const BottomWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 20px;
+  margin-top: 12px;
+  padding: 8px 12px;
   gap: 10px;
 `;
 

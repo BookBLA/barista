@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
@@ -7,6 +7,8 @@ import { CustomModal } from '../../../../commons/components/CustomModal/CustomMo
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
 import { useNavigation } from '@react-navigation/native';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import useMovePage from '../../../../commons/hooks/useMovePage';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postcardId, ...rest }) => {
   const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
@@ -14,6 +16,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
   const postcardCounter = usePostcardCounter((state) => state.count);
   const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
   const navigation = useNavigation();
+  const { movePage } = useMovePage();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -32,14 +35,15 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
     }
   };
 
+  const moveProductScreen = () => {
+    toggleModal();
+    //@ts-ignore
+    navigation.navigate('product');
+  };
+
   const modalConfig = {
     visible: isModalVisible,
     onClose: toggleModal,
-    mode: 'round',
-    buttons: [
-      { label: '아니요', action: toggleModal, color: colors.textBlack, bgColor: colors.buttonMain },
-      { label: '충전시간 확인하기', action: toggleModal, color: colors.textYellow, bgColor: colors.buttonPrimary },
-    ],
   };
 
   return (
@@ -59,10 +63,26 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
         </S.PostcardInfoViewStyled>
       </TouchableOpacity>
       <CustomModal modalConfig={modalConfig}>
-        <View>
-          <Text style={{ fontSize: 16, fontWeight: 'bold', marginBottom: 12 }}>엽서가 부족합니다.</Text>
-          <Text style={{ marginBottom: 24 }}>엽서가 부족합니다. 다음 충전시간을 확인해 보세요.</Text>
-        </View>
+        <S.EmptyPostcardModalWrapper>
+          <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+            엽서가 부족합니다.
+          </CustomText>
+          <CustomText font="fontRegular" size="12px">
+            엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+          </CustomText>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                충전시간 확인하기
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
+        </S.EmptyPostcardModalWrapper>
       </CustomModal>
     </S.ContainerViewStyled>
   );
