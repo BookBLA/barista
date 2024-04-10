@@ -9,6 +9,7 @@ export const icons = {
   bellOff: require('../../../assets/images/icons/BellOff.png'),
   bellOn: require('../../../assets/images/icons/BellOn.png'),
   bookmark: require('../../../assets/images/icons/Bookmark.png'),
+  bookCover: require('../../../assets/images/icons/BookCover.png'),
   bottomArrow: require('../../../assets/images/icons/BottomArrow.png'),
 
   check: require('../../../assets/images/icons/Check.png'),
@@ -77,4 +78,8 @@ export const img = {
   profileEx4: require('../../../assets/images/img/profile_ex4.png'),
   profileEx5: require('../../../assets/images/img/profile_ex5.png'),
   profileEx6: require('../../../assets/images/img/profile_ex6.png'),
+};
+
+export const logos = {
+  mainLogo: require('../../../assets/images/logos/MainLogo.png'),
 };

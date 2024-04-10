@@ -18,6 +18,13 @@ export const LogoImage = styled.Image`
   width: 25px;
   height: 25px;
   margin-right: 4px;
+  object-fit: fill;
+`;
+
+export const LogoTitleImage = styled.Image`
+  width: 120px;
+  height: 23px;
+  object-fit: fill;
 `;
 
 export const LogoTitle = styled.Text`
