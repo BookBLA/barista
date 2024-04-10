@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { IFontLoaderProps } from './FontLoader.types';
-import useAuthStore from '../../store/useAuthStore';
-import { getToken } from '../../store/tokenStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
-  const { setToken } = useAuthStore();
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -21,8 +18,6 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
           fontSemiBold: require('../../../../assets/fonts/pretendardSemiBold.ttf'),
         });
 
-        const storedToken = await getToken();
-        setToken(storedToken ?? '');
         await SplashScreen.preventAutoHideAsync();
         setFontsLoaded(true);
         await SplashScreen.hideAsync();

@@ -1,12 +1,10 @@
 import useAuthStore from '../store/useAuthStore';
-import { saveToken } from '../store/tokenStore';
 
 export const useLogout = () => {
-  const setToken = useAuthStore((state) => state.setToken);
+  const removeToken = useAuthStore((state) => state.removeToken);
 
   const onClickLogout = () => {
-    setToken('');
-    saveToken('');
+    removeToken();
   };
 
   return {
