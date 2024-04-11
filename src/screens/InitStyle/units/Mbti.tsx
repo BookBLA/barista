@@ -17,11 +17,15 @@ const Mbti = () => {
 
   useEffect(() => {
     console.log('mbti', mbti);
+    const mbtiString = mbti.join('');
+    console.log('mbtiString', mbtiString);
+    updateStyleInfo('mbti', mbtiString);
   }, [mbti]);
 
   const nextPage = () => {
-    const mbtiString = mbti.join('');
-    updateStyleInfo('mbti', mbtiString);
+    // const mbtiString = mbti.join('');
+    // console.log('mbtiString', mbtiString);
+    // updateStyleInfo('mbti', mbtiString);
     console.log('styleInfo', styleInfo);
     movePage('smokeDrink')();
   };

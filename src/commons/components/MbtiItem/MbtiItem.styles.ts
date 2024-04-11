@@ -22,7 +22,8 @@ export const ButtonStyled = styled.TouchableOpacity`
 `;
 
 export const TextStyled = styled.Text`
-  font-size: 20px;
+  /* font-size: 20px; */
+  font-size: ${({ isSmall }) => (isSmall ? '14px' : '20px')};
   font-family: fontMedium;
   text-align: center;
   color: ${(props: IProps) => (props.isSelect ? colors.secondary : colors.textGray2)};
