@@ -87,4 +87,6 @@ export const img = {
 
 export const logos = {
   mainLogo: require('../../../assets/images/logos/MainLogo.png'),
+  mainLogoLight: require('../../../assets/images/logos/mainLogoLight.png'),
+  mainLogoDark: require('../../../assets/images/logos/mainLogoDark.png'),
 };

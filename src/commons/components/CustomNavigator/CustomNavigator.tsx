@@ -21,6 +21,7 @@ import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
+import Splash from '../../../screens/Splash/Splash';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -38,6 +39,7 @@ const screens = [
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
   { name: 'infoOpenChat', component: InfoOpenChat },
+  { name: 'splash', component: Splash },
 ];
 
 export const CustomNavigator = () => {
@@ -62,7 +64,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="login" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="splash" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}
