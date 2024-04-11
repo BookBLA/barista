@@ -15,6 +15,7 @@ import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
 import useManageMargin from '../../commons/hooks/useManageMargin';
+import { getMemberStyleApi } from '../../commons/api/memberStyle.api';
 
 const ModifyStyle = () => {
   const buttonList = [
@@ -81,6 +82,19 @@ const ModifyStyle = () => {
   };
 
   useManageMargin();
+
+  const callGetStyleApi = async () => {
+    try {
+      const response = await getMemberStyleApi(1);
+      console.log('getMemberStyleApi', response);
+    } catch (error) {
+      console.log('ERROR) getMemberStyleApi', error);
+    }
+  };
+  useState(() => {
+    callGetStyleApi();
+  });
+
   return (
     <S.Wrapper>
       <ModifyTitleBar step={1} />
@@ -141,22 +155,22 @@ const ModifyStyle = () => {
               <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
               <S.RowStyled style={{ width: '90%', marginBottom: 80 }}>
                 <T.ButtonStyled
-                  isSelect={styleInfo.smokeTypes === '흡연'}
-                  onPress={() => updateStyleInfo('smokeTypes', '흡연')}
+                  isSelect={styleInfo.smokeType === '흡연'}
+                  onPress={() => updateStyleInfo('smokeType', '흡연')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '흡연'}>흡연</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.smokeType === '흡연'}>흡연</S.ButtonTextStyled>
                 </T.ButtonStyled>
                 <T.ButtonStyled
-                  isSelect={styleInfo.smokeTypes === '비흡연'}
-                  onPress={() => updateStyleInfo('smokeTypes', '비흡연')}
+                  isSelect={styleInfo.smokeType === '비흡연'}
+                  onPress={() => updateStyleInfo('smokeType', '비흡연')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '비흡연'}>비흡연</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.smokeType === '비흡연'}>비흡연</S.ButtonTextStyled>
                 </T.ButtonStyled>
                 <T.ButtonStyled
-                  isSelect={styleInfo.smokeTypes === '가끔'}
-                  onPress={() => updateStyleInfo('smokeTypes', '가끔')}
+                  isSelect={styleInfo.smokeType === '가끔'}
+                  onPress={() => updateStyleInfo('smokeType', '가끔')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '가끔'}>가끔</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.smokeType === '가끔'}>가끔</S.ButtonTextStyled>
                 </T.ButtonStyled>
               </S.RowStyled>
               <S.ContentStyled>음주 여부를 알려주세요.</S.ContentStyled>
@@ -164,10 +178,10 @@ const ModifyStyle = () => {
                 {drinkOptions.slice(0, 3).map((title, index) => (
                   <T.ButtonStyled
                     key={index}
-                    isSelect={styleInfo.drinkTypes === title}
-                    onPress={() => updateStyleInfo('drinkTypes', title)}
+                    isSelect={styleInfo.drinkType === title}
+                    onPress={() => updateStyleInfo('drinkType', title)}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title}>{title}</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo.drinkType === title}>{title}</S.ButtonTextStyled>
                   </T.ButtonStyled>
                 ))}
               </S.RowStyled>
@@ -175,10 +189,10 @@ const ModifyStyle = () => {
                 {drinkOptions.slice(3).map((title, index) => (
                   <T.ButtonStyled
                     key={index + 3}
-                    isSelect={styleInfo.drinkTypes === title + 3}
-                    onPress={() => updateStyleInfo('drinkTypes', title + 3)}
+                    isSelect={styleInfo.drinkType === title + 3}
+                    onPress={() => updateStyleInfo('drinkType', title + 3)}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title + 3}>{title}</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo.drinkType === title + 3}>{title}</S.ButtonTextStyled>
                   </T.ButtonStyled>
                 ))}
               </S.RowStyled>
@@ -188,31 +202,31 @@ const ModifyStyle = () => {
               <S.ContentStyled>연락 스타일을 알려주세요.</S.ContentStyled>
               <S.RowStyled style={{ marginBottom: 80, width: '60%' }}>
                 <S.BooleanButtonStyled
-                  isSelect={styleInfo.contactTypes === '느긋이'}
-                  onPress={() => updateStyleInfo('contactTypes', '느긋이')}
+                  isSelect={styleInfo.contactType === '느긋이'}
+                  onPress={() => updateStyleInfo('contactType', '느긋이')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.contactTypes === '느긋이'}>느긋이</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.contactType === '느긋이'}>느긋이</S.ButtonTextStyled>
                 </S.BooleanButtonStyled>
                 <S.BooleanButtonStyled
-                  isSelect={styleInfo.contactTypes === '칼답'}
-                  onPress={() => updateStyleInfo('contactTypes', '칼답')}
+                  isSelect={styleInfo.contactType === '칼답'}
+                  onPress={() => updateStyleInfo('contactType', '칼답')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.contactTypes === '칼답'}>칼답</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.contactType === '칼답'}>칼답</S.ButtonTextStyled>
                 </S.BooleanButtonStyled>
               </S.RowStyled>
               <S.ContentStyled>데이트 스타일을 알려주세요.</S.ContentStyled>
               <S.RowStyled style={{ width: '60%' }}>
                 <S.BooleanButtonStyled
-                  isSelect={styleInfo.dateStyleTypes === '집 데이트'}
-                  onPress={() => updateStyleInfo('dateStyleTypes', '집 데이트')}
+                  isSelect={styleInfo.dateStyleType === '집 데이트'}
+                  onPress={() => updateStyleInfo('dateStyleType', '집 데이트')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.dateStyleTypes === '집 데이트'}>집 데이트</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.dateStyleType === '집 데이트'}>집 데이트</S.ButtonTextStyled>
                 </S.BooleanButtonStyled>
                 <S.BooleanButtonStyled
-                  isSelect={styleInfo.dateStyleTypes === '야외 데이트'}
-                  onPress={() => updateStyleInfo('dateStyleTypes', '야외 데이트')}
+                  isSelect={styleInfo.dateStyleType === '야외 데이트'}
+                  onPress={() => updateStyleInfo('dateStyleType', '야외 데이트')}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.dateStyleTypes === '야외 데이트'}>
+                  <S.ButtonTextStyled isSelect={styleInfo.dateStyleType === '야외 데이트'}>
                     야외 데이트
                   </S.ButtonTextStyled>
                 </S.BooleanButtonStyled>
@@ -225,10 +239,10 @@ const ModifyStyle = () => {
                 {costOptions.map((title, index) => (
                   <T.LongButtonStyled
                     key={index}
-                    isSelect={styleInfo.dateCostTypes === title}
-                    onPress={() => updateStyleInfo('dateCostTypes', title)}
+                    isSelect={styleInfo.dateCostType === title}
+                    onPress={() => updateStyleInfo('dateCostType', title)}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.dateCostTypes === title}>{title}</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo.dateCostType === title}>{title}</S.ButtonTextStyled>
                   </T.LongButtonStyled>
                 ))}
               </View>
@@ -239,10 +253,10 @@ const ModifyStyle = () => {
               {sexOptions.map((title, index) => (
                 <T.LongButtonStyled
                   key={index}
-                  isSelect={styleInfo.justFriendTypes === title}
-                  onPress={() => updateStyleInfo('justFriendTypes', title)}
+                  isSelect={styleInfo.justFriendType === title}
+                  onPress={() => updateStyleInfo('justFriendType', title)}
                 >
-                  <S.ButtonTextStyled isSelect={styleInfo.justFriendTypes === title}>{title}</S.ButtonTextStyled>
+                  <S.ButtonTextStyled isSelect={styleInfo.justFriendType === title}>{title}</S.ButtonTextStyled>
                 </T.LongButtonStyled>
               ))}
             </S.ViewStyled>

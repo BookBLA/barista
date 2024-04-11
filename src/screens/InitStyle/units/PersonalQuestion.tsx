@@ -10,11 +10,12 @@ import { deviceHeight } from '../../../commons/utils/dimensions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TouchableHighlight } from '@gorhom/bottom-sheet';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
   // const [isFocused, setIsFocused] = useState(false);
-  const { updateStyleInfo, styleInfo } = useStyleStore();
+  const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
 
   // const handleFocus = () => {
   //   if (!isFocused) {
@@ -29,11 +30,24 @@ const PersonalQuestion = () => {
   //     setIsFocused(false);
   //   }
   // };
+
+  const callPostStyleApi = async () => {
+    try {
+      console.log('styleInfo', styleInfo);
+      const response = await postMemberStyleApi({ styleInfo }, 1);
+      console.log('postMemberStyleApi', response);
+    } catch (error) {
+      console.log('ERROR) postMemberStyleApi', error);
+    }
+  };
+
   const { movePage } = useMovePage();
   const nextPage = () => {
     updateStyleInfo('memberAsk', question);
+    callPostStyleApi();
+    resetStyleInfo();
     movePage('initBookStack')();
-    console.log('styleInfo', styleInfo);
+    // console.log('styleInfo', styleInfo);
   };
 
   return (

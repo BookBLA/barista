@@ -27,22 +27,22 @@ const SmokeDrink = () => {
           <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%' }}>
             <T.ButtonStyled
-              isSelect={styleInfo.smokeTypes === '흡연'}
-              onPress={() => updateStyleInfo('smokeTypes', '흡연')}
+              isSelect={styleInfo.smokeType === '흡연'}
+              onPress={() => updateStyleInfo('smokeType', '흡연')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '흡연'}>흡연</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.smokeType === '흡연'}>흡연</S.ButtonTextStyled>
             </T.ButtonStyled>
             <T.ButtonStyled
-              isSelect={styleInfo.smokeTypes === '비흡연'}
-              onPress={() => updateStyleInfo('smokeTypes', '비흡연')}
+              isSelect={styleInfo.smokeType === '비흡연'}
+              onPress={() => updateStyleInfo('smokeType', '비흡연')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '비흡연'}>비흡연</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.smokeType === '비흡연'}>비흡연</S.ButtonTextStyled>
             </T.ButtonStyled>
             <T.ButtonStyled
-              isSelect={styleInfo.smokeTypes === '가끔'}
-              onPress={() => updateStyleInfo('smokeTypes', '가끔')}
+              isSelect={styleInfo.smokeType === '가끔'}
+              onPress={() => updateStyleInfo('smokeType', '가끔')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.smokeTypes === '가끔'}>가끔</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.smokeType === '가끔'}>가끔</S.ButtonTextStyled>
             </T.ButtonStyled>
           </S.RowStyled>
         </View>
@@ -52,10 +52,10 @@ const SmokeDrink = () => {
             {buttonTitles.slice(0, 3).map((title, index) => (
               <T.ButtonStyled
                 key={index}
-                isSelect={styleInfo.drinkTypes === title}
-                onPress={() => updateStyleInfo('drinkTypes', title)}
+                isSelect={styleInfo.drinkType === title}
+                onPress={() => updateStyleInfo('drinkType', title)}
               >
-                <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title}>{title}</S.ButtonTextStyled>
+                <S.ButtonTextStyled isSelect={styleInfo.drinkType === title}>{title}</S.ButtonTextStyled>
               </T.ButtonStyled>
             ))}
           </S.RowStyled>
@@ -63,10 +63,10 @@ const SmokeDrink = () => {
             {buttonTitles.slice(3).map((title, index) => (
               <T.ButtonStyled
                 key={index + 3}
-                isSelect={styleInfo.drinkTypes === title + 3}
-                onPress={() => updateStyleInfo('drinkTypes', title + 3)}
+                isSelect={styleInfo.drinkType === title}
+                onPress={() => updateStyleInfo('drinkType', title)}
               >
-                <S.ButtonTextStyled isSelect={styleInfo.drinkTypes === title + 3}>{title}</S.ButtonTextStyled>
+                <S.ButtonTextStyled isSelect={styleInfo.drinkType === title}>{title}</S.ButtonTextStyled>
               </T.ButtonStyled>
             ))}
           </S.RowStyled>

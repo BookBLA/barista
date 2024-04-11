@@ -25,10 +25,10 @@ const DateCost = () => {
           {buttonTitles.map((title, index) => (
             <T.LongButtonStyled
               key={index}
-              isSelect={styleInfo.dateCostTypes === title}
-              onPress={() => updateStyleInfo('dateCostTypes', title)}
+              isSelect={styleInfo.dateCostType === title}
+              onPress={() => updateStyleInfo('dateCostType', title)}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.dateCostTypes === title}>{title}</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.dateCostType === title}>{title}</S.ButtonTextStyled>
             </T.LongButtonStyled>
           ))}
         </View>

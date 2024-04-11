@@ -23,16 +23,16 @@ const CommStyle = () => {
           <S.ContentStyled>연락 스타일을 알려주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
-              isSelect={styleInfo.contactTypes === '느긋이'}
-              onPress={() => updateStyleInfo('contactTypes', '느긋이')}
+              isSelect={styleInfo.contactType === '느긋이'}
+              onPress={() => updateStyleInfo('contactType', '느긋이')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.contactTypes === '느긋이'}>느긋이</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.contactType === '느긋이'}>느긋이</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
-              isSelect={styleInfo.contactTypes === '칼답'}
-              onPress={() => updateStyleInfo('contactTypes', '칼답')}
+              isSelect={styleInfo.contactType === '칼답'}
+              onPress={() => updateStyleInfo('contactType', '칼답')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.contactTypes === '칼답'}>칼답</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.contactType === '칼답'}>칼답</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>
@@ -40,16 +40,16 @@ const CommStyle = () => {
           <S.ContentStyled>데이트 스타일을 알려주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
-              isSelect={styleInfo.dateStyleTypes === '집 데이트'}
-              onPress={() => updateStyleInfo('dateStyleTypes', '집 데이트')}
+              isSelect={styleInfo.dateStyleType === '집 데이트'}
+              onPress={() => updateStyleInfo('dateStyleType', '집 데이트')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.dateStyleTypes === '집 데이트'}>집 데이트</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.dateStyleType === '집 데이트'}>집 데이트</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
-              isSelect={styleInfo.dateStyleTypes === '야외 데이트'}
-              onPress={() => updateStyleInfo('dateStyleTypes', '야외 데이트')}
+              isSelect={styleInfo.dateStyleType === '야외 데이트'}
+              onPress={() => updateStyleInfo('dateStyleType', '야외 데이트')}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.dateStyleTypes === '야외 데이트'}>야외 데이트</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.dateStyleType === '야외 데이트'}>야외 데이트</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>

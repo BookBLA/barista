@@ -24,10 +24,10 @@ const OppositeSex = () => {
           {buttonTitles.map((title, index) => (
             <T.LongButtonStyled
               key={index}
-              isSelect={styleInfo.justFriendTypes === title}
-              onPress={() => updateStyleInfo('justFriendTypes', title)}
+              isSelect={styleInfo.justFriendType === title}
+              onPress={() => updateStyleInfo('justFriendType', title)}
             >
-              <S.ButtonTextStyled isSelect={styleInfo.justFriendTypes === title}>{title}</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={styleInfo.justFriendType === title}>{title}</S.ButtonTextStyled>
             </T.LongButtonStyled>
           ))}
         </View>
