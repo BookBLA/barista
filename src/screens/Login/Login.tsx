@@ -22,9 +22,8 @@ const Login = () => {
       const response = await postTestSignUp({
         email: 'test',
       });
-      await saveToken(response.result.accessToken);
-      await saveMemberId(String(response.result.memberId));
       setToken(response.result.accessToken);
+      await saveMemberId(String(response.result.memberSignUpInformationId));
       movePage('tapScreens')();
     } catch (error) {
       console.error(error);

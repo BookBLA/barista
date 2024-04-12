@@ -1,6 +1,7 @@
-import { Text, View } from 'react-native';
+import { Text } from 'react-native';
 import { CustomModal } from '../CustomModal/CustomModal';
 import { useErrorMessage } from '../../store/useErrorMessage';
+import { Wrapper } from './GlobalErrorModal.styles';
 
 const GlobalErrorModal = () => {
   const { errorMessage, clearErrorMessage } = useErrorMessage();
@@ -15,9 +16,9 @@ const GlobalErrorModal = () => {
 
   return (
     <CustomModal modalConfig={modalConfig}>
-      <View>
+      <Wrapper>
         <Text>{errorMessage}</Text>
-      </View>
+      </Wrapper>
     </CustomModal>
   );
 };
