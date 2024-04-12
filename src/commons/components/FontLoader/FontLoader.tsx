@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { IFontLoaderProps } from './FontLoader.types';
+import useAuthStore from '../../store/useAuthStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
+  const initializeToken = useAuthStore((state) => state.initializeToken);
 
   useEffect(() => {
     const loadFonts = async () => {
       try {
+        await initializeToken();
         await Font.loadAsync({
           fontBold: require('../../../../assets/fonts/pretendardBold.ttf'),
           fontExtraLight: require('../../../../assets/fonts/pretendardExtraLight.ttf'),

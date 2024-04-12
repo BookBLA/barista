@@ -22,6 +22,7 @@ import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
 import Splash from '../../../screens/Splash/Splash';
+import useMemberStore from '../../store/useMemberStore';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -46,11 +47,14 @@ export const CustomNavigator = () => {
   const { hasMargin } = useHasMargin();
   const token = useAuthStore((state) => state.token);
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
+  const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
 
   useEffect(() => {
     // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
     if (!token && navigationRef.current) {
       navigationRef.current.navigate('login');
+    } else {
+      saveMemberInfo();
     }
   }, [token]);
 

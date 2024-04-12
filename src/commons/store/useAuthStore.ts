@@ -5,7 +5,7 @@ interface IAuth {
   token: string;
   setToken: (token: string) => void;
   removeToken: () => void;
-  initializeToken: () => void;
+  initializeToken: () => Promise<void>;
 }
 
 const useAuthStore = create<IAuth>((set) => ({
