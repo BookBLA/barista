@@ -40,7 +40,6 @@ const screens = [
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
   { name: 'infoOpenChat', component: InfoOpenChat },
-  { name: 'splash', component: Splash },
 ];
 
 export const CustomNavigator = () => {

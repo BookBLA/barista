@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { colors } from '../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle/InitStyle.styles';
@@ -15,7 +15,8 @@ import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
 import useManageMargin from '../../commons/hooks/useManageMargin';
-import { getMemberStyleApi } from '../../commons/api/memberStyle.api';
+import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberStyle.api';
+import useMemberStore from '../../commons/store/useMemberStore';
 
 const ModifyStyle = () => {
   const buttonList = [
@@ -33,6 +34,15 @@ const ModifyStyle = () => {
   const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
   const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
   const [question, setQuestion] = useState('');
+
+  const handleTextChange = (text: string) => {
+    if (question.trim() === '') {
+      setQuestion(styleInfo.memberAsk); // 텍스트가 비어있으면 styleInfo.memberAsk로 설정합니다.
+    } else {
+      setQuestion(question);
+      updateStyleInfo('memberAsk', question);
+    }
+  };
 
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const scrollViewRef = useRef(null); // Create a ref for KeyboardAwareScrollView
@@ -83,21 +93,65 @@ const ModifyStyle = () => {
 
   useManageMargin();
 
+  const memberId = useMemberStore((state) => state.memberInfo.id);
+
   const callGetStyleApi = async () => {
     try {
-      const response = await getMemberStyleApi(1);
+      const response = await getMemberStyleApi(memberId);
       console.log('getMemberStyleApi', response);
+      await updateStyleInfo('mbti', response.result.mbti);
+      await updateStyleInfo('smokeType', response.result.smokeType);
+      await updateStyleInfo('drinkType', response.result.drinkType);
+      await updateStyleInfo('contactType', response.result.contactType);
+      await updateStyleInfo('dateStyleType', response.result.dateStyleType);
+      await updateStyleInfo('dateCostType', response.result.dateCostType);
+      await updateStyleInfo('justFriendType', response.result.justFriendType);
+      await updateStyleInfo('memberAsk', response.result.memberAsk);
+      console.log('styleInfo', styleInfo);
+      const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
+      setMbti(newMbti); // Update the mbti array with the newMbti array
+      console.log('newMbti', newMbti);
     } catch (error) {
       console.log('ERROR) getMemberStyleApi', error);
     }
   };
-  useState(() => {
+
+  useEffect(() => {
     callGetStyleApi();
-  });
+  }, []);
+  useEffect(() => {
+    // callGetStyleApi();
+    const mbtiString = mbti.join('');
+    console.log('mbti', mbti);
+    console.log('mbtiString', mbtiString);
+    updateStyleInfo('mbti', mbtiString);
+  }, [mbti]);
+
+  const callPutStyleApi = async () => {
+    try {
+      console.log('styleInfo', styleInfo);
+      const response = await putMemberStyleApi(
+        {
+          mbti: styleInfo.mbti,
+          smokeType: styleInfo.smokeType,
+          drinkType: styleInfo.drinkType,
+          contactType: styleInfo.contactType,
+          dateStyleType: styleInfo.dateStyleType,
+          dateCostType: styleInfo.dateCostType,
+          justFriendType: styleInfo.justFriendType,
+          memberAsk: styleInfo.memberAsk,
+        },
+        memberId,
+      );
+      console.log('putMemberStyleApi Success', response);
+    } catch (error) {
+      console.log('ERROR) putMemberStyleApi', error);
+    }
+  };
 
   return (
     <S.Wrapper>
-      <ModifyTitleBar step={1} />
+      <ModifyTitleBar step={1} callPutApi={callPutStyleApi} />
       <View style={{ position: 'absolute', bottom: 30, right: 10, zIndex: 2 }}>
         <TouchableOpacity onPress={handleMoveTop}>
           <Image source={MoveTop} style={{ width: 45, height: 45 }} />
@@ -148,7 +202,7 @@ const ModifyStyle = () => {
               <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 40 }}>
                 4가지 모두 골라주세요.
               </Text>
-              <ModifyMBTI setMbti={setMbti} />
+              <ModifyMBTI setMbti={setMbti} mbti={styleInfo.mbti} />
             </S.ViewStyled>
             <DashDividerLine />
             <S.ViewStyled height={480}>
@@ -189,10 +243,10 @@ const ModifyStyle = () => {
                 {drinkOptions.slice(3).map((title, index) => (
                   <T.ButtonStyled
                     key={index + 3}
-                    isSelect={styleInfo.drinkType === title + 3}
-                    onPress={() => updateStyleInfo('drinkType', title + 3)}
+                    isSelect={styleInfo.drinkType === title}
+                    onPress={() => updateStyleInfo('drinkType', title)}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.drinkType === title + 3}>{title}</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo.drinkType === title}>{title}</S.ButtonTextStyled>
                   </T.ButtonStyled>
                 ))}
               </S.RowStyled>
@@ -268,7 +322,7 @@ const ModifyStyle = () => {
               </Text>
               <T.TextFiledStyled
                 defaultValue={styleInfo.memberAsk}
-                onChangeText={(text: string) => setQuestion(text)}
+                onChangeText={handleTextChange}
                 //onFocus={handleFocus}
                 // onBlur={() => updateStyleInfo('memberAsk', question)}
                 style={{
