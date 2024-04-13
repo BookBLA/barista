@@ -6,7 +6,7 @@ import backArrow from '../../../../assets/images/buttons/prevButtonBlack.png';
 import { CustomText } from '../TextComponents/CustomText/CustomText';
 import { colors } from '../../styles/variablesStyles';
 
-export const ModifyTitleBar = ({ step }: { step: number }) => {
+export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?: () => Promise<void> }) => {
   const titleList = ['회원정보 수정', '스타일 수정', '내 서재'];
   const { movePage } = useMovePage();
   return (
@@ -36,7 +36,7 @@ export const ModifyTitleBar = ({ step }: { step: number }) => {
       >
         <S.TitleStyled>{titleList[step]}</S.TitleStyled>
       </View>
-      <T.TextButtonStyled style={{ width: 35 }}>
+      <T.TextButtonStyled style={{ width: 35 }} onPress={callPutApi}>
         <CustomText color={colors.textLinkBlue} font="fontSemiBold" size="14px">
           저장
         </CustomText>

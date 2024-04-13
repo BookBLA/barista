@@ -55,7 +55,7 @@ const ChevronBtn = styled.TouchableOpacity`
   height: 80%;
 `;
 
-const InfoOpenChat = () => {
+const InfoOpenChat = ({ again }: { again: boolean }) => {
   useManageMargin();
   const { movePage } = useMovePage();
   const images = [openChat1, openChat2, openChat3, openChat4, openChat5, openChat6, openChat7, openChat8];
@@ -130,7 +130,11 @@ const InfoOpenChat = () => {
         </DotContainer>
       </>
       <S.NextButtonStyled onPress={movePage()}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
+        {again ? (
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>홈으로 가기</Text>
+        ) : (
+          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
+        )}
       </S.NextButtonStyled>
     </S.Wrapper>
   );

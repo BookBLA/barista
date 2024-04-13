@@ -13,8 +13,9 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { postPolicyApi } from '../../../commons/api/memberPolicy';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postAuthApi } from '../../../commons/api/memberAuth';
+import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 
-const EmailAuth = () => {
+const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
   const [email, setEamil] = useState('');
   const [code, setCode] = useState('000000');
   const { updateUserInfo, userInfo } = useUserStore();
@@ -87,7 +88,7 @@ const EmailAuth = () => {
         },
         1,
       );
-      console.log('callPostPolicyApi', response);
+      // console.log('callPostPolicyApi', response);
     } catch (error) {
       console.log('callPostPolicyApi error', error);
     }
@@ -106,7 +107,7 @@ const EmailAuth = () => {
         },
         1,
       );
-      console.log('callPostAuthApi', response);
+      // console.log('callPostAuthApi', response);
     } catch (error) {
       console.log('callPostAuthApi error', error);
     }
@@ -202,20 +203,30 @@ const EmailAuth = () => {
         </TouchableWithoutFeedback>
       </S.ColumnStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-        <TouchableOpacity onPress={movePage()}>
-          <Image source={prevButton} />
-        </TouchableOpacity>
-        {/* { ? (
+        {isRefused ? (
+          <S.NextButtonStyled>
+            <CustomText font="fontMedium" size="14" color={colors.secondary}>
+              수정 완료
+            </CustomText>
+          </S.NextButtonStyled>
+        ) : (
+          <>
+            <TouchableOpacity onPress={movePage()}>
+              <Image source={prevButton} />
+            </TouchableOpacity>
+            {/* { ? (
             <Image source={notYetNextButton} />
           ) : (
             <TouchableOpacity onPress={movePage('completePage')}>
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-        <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
-          {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
-          <Image source={nextButton} />
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
+              {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
+              <Image source={nextButton} />
+            </TouchableOpacity>
+          </>
+        )}
       </View>
     </S.Wrapper>
   );
