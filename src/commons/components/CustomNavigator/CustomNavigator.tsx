@@ -40,7 +40,6 @@ const screens = [
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
   { name: 'infoOpenChat', component: InfoOpenChat },
-  { name: 'splash', component: Splash },
 ];
 
 export const CustomNavigator = () => {
@@ -68,7 +67,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="initStyleStack" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="tapScreen" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}

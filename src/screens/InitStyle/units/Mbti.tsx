@@ -16,7 +16,7 @@ const Mbti = () => {
   const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
 
   useEffect(() => {
-    console.log('mbti', mbti);
+    console.log('mbti11', mbti);
     const mbtiString = mbti.join('');
     console.log('mbtiString', mbtiString);
     updateStyleInfo('mbti', mbtiString);

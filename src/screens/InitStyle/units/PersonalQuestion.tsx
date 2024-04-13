@@ -11,11 +11,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { TouchableHighlight } from '@gorhom/bottom-sheet';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
+import useMemberStore from '../../../commons/store/useMemberStore';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
   // const [isFocused, setIsFocused] = useState(false);
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
+  const memberId = useMemberStore((state) => state.memberInfo.id);
 
   // const handleFocus = () => {
   //   if (!isFocused) {
@@ -34,7 +36,19 @@ const PersonalQuestion = () => {
   const callPostStyleApi = async () => {
     try {
       console.log('styleInfo', styleInfo);
-      const response = await postMemberStyleApi({ styleInfo }, 1);
+      const response = await postMemberStyleApi(
+        {
+          mbti: styleInfo.mbti,
+          smokeType: styleInfo.smokeType,
+          drinkType: styleInfo.drinkType,
+          contactType: styleInfo.contactType,
+          dateStyleType: styleInfo.dateStyleType,
+          dateCostType: styleInfo.dateCostType,
+          justFriendType: styleInfo.justFriendType,
+          memberAsk: styleInfo.memberAsk,
+        },
+        memberId,
+      );
       console.log('postMemberStyleApi', response);
     } catch (error) {
       console.log('ERROR) postMemberStyleApi', error);
@@ -42,12 +56,12 @@ const PersonalQuestion = () => {
   };
 
   const { movePage } = useMovePage();
-  const nextPage = () => {
+  const nextPage = async () => {
     updateStyleInfo('memberAsk', question);
-    callPostStyleApi();
+    await callPostStyleApi();
     resetStyleInfo();
     movePage('initBookStack')();
-    // console.log('styleInfo', styleInfo);
+    console.log('styleInfo', styleInfo);
   };
 
   return (
