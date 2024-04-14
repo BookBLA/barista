@@ -57,9 +57,11 @@ export const icons = {
   selected: require('../../../assets/images/icons/Selected.png'),
   setting: require('../../../assets/images/icons/Setting.png'),
   supportTransparent: require('../../../assets/images/icons/SupportTransparent.png'),
+  search: require('../../../assets/images/icons/search.png'),
 
   woman: require('../../../assets/images/icons/Woman.png'),
   womanSmall: require('../../../assets/images/icons/WomanSmall.png'),
+  warning: require('../../../assets/images/icons/Warning.png'),
 
   leftArrow: require('../../../assets/images/icons/LeftArrow.png'),
   rightArrow: require('../../../assets/images/icons/RightArrow.png'),
@@ -89,4 +91,8 @@ export const logos = {
   mainLogo: require('../../../assets/images/logos/MainLogo.png'),
   mainLogoLight: require('../../../assets/images/logos/mainLogoLight.png'),
   mainLogoDark: require('../../../assets/images/logos/mainLogoDark.png'),
+};
+
+export const buttons = {
+  moveTop: require('../../../assets/images/buttons/MoveTop.png'),
 };
