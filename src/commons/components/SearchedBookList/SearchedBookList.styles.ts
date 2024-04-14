@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { colors } from '../../styles/variablesStyles';
 
-export const BookListStyled = styled.View`
+export const BookListStyled = styled.TouchableOpacity`
   width: 100%;
   height: 88px;
   border-radius: 10px;
@@ -42,7 +42,7 @@ export const DeleteTextStyled = styled.Text`
   color: ${colors.textGray5};
 `;
 
-export const BookImageStyled = styled.TouchableOpacity`
+export const BookImageStyled = styled.View`
   align-items: center;
   justify-content: center;
   height: 100;

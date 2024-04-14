@@ -21,7 +21,6 @@ import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
-import Splash from '../../../screens/Splash/Splash';
 import useMemberStore from '../../store/useMemberStore';
 
 const Stack = createNativeStackNavigator();
@@ -67,7 +66,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="initStyleStack" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="initBookStack" screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}
