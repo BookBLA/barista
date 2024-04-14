@@ -5,6 +5,7 @@ import ProfileImage from './units/ProfileImage';
 import OpenChatLink from './units/OpenChatLink';
 import WaitConfirm from './units/WaitConfirm';
 import InfoOpenChat from './units/InfoOpenChat';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const Stack = createStackNavigator();
 
@@ -17,6 +18,7 @@ const screens = [
 ];
 
 const InitProfileStack = () => {
+  useManageMargin();
   return (
     <Stack.Navigator initialRouteName="profileImage" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (

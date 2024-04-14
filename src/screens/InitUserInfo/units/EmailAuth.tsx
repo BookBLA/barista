@@ -10,23 +10,28 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { postPolicyApi } from '../../../commons/api/memberPolicy';
-import { useAgreementStore } from '../../../commons/store/useAgreement';
-import { postAuthApi } from '../../../commons/api/memberAuth';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 
-const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
-  const [email, setEamil] = useState('');
-  const [code, setCode] = useState('000000');
+import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberAuth';
+import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { Props } from '../InitUserinfo.types';
+import useMemberStore from '../../../commons/store/useMemberStore';
+
+const EmailAuth: React.FC<Props> = ({ route }) => {
+  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
+  const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
+  // const [isSuccess, setIsSuccess] = useState('true');
+
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
   const [isFocused1, setIsFocused1] = useState(false);
   const [isFocused2, setIsFocused2] = useState(false);
-  const { agreementInfo } = useAgreementStore();
 
   const [time, setTime] = useState(300); // 5분을 초 단위로 표현
 
   const [isActive, setIsActive] = useState(false);
+
+  const isRefused = route.params?.isRefused;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -41,9 +46,7 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
   }, [isActive, time]);
 
   const startTimer = () => {
-    callPostPolicyApi();
-    callPostAuthApi();
-    setIsActive(true);
+    callPostAuthEmailApi();
   };
   const resetTimer = () => {
     setTime(300);
@@ -54,62 +57,81 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
     const seconds = time % 60;
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
-  const handleFocus = () => {
-    if (!isFocused1) {
-      setEamil(''); // Clear the text when the TextInput is focused for the first time
-      setIsFocused1(true);
-    }
-  };
-  const handleFocus2 = () => {
-    if (!isFocused2) {
-      setCode(''); // Clear the text when the TextInput is focused for the first time
-      setIsFocused2(true);
-    }
-  };
+  // const handleFocus = () => {
+  //   if (!isFocused1) {
+  //     setEamil(''); // Clear the text when the TextInput is focused for the first time
+  //     setIsFocused1(true);
+  //   }
+  // };
+  // const handleFocus2 = () => {
+  //   if (!isFocused2) {
+  //     setCode(''); // Clear the text when the TextInput is focused for the first time
+  //     setIsFocused2(true);
+  //   }
+  // };
   const handleBlur = () => {
-    if (email === '') {
-      setEamil('example@gachon.ac.kr'); // Restore the initial text if the TextInput is left empty
-      setIsFocused1(false);
-    }
-    if (code === '') {
-      setCode('000000');
-      setIsFocused2(false);
-    }
-    updateUserInfo('schoolEmail', email);
+    // if (email === '') {
+    //   setEamil('example@gachon.ac.kr'); // Restore the initial text if the TextInput is left empty
+    //   setIsFocused1(false);
+    // }
+    // if (code === '') {
+    //   setCode('');
+    //   // setIsFocused2(false);
+    // }
+    // updateUserInfo('schoolEmail', email);
   };
+  useEffect(() => {
+    console.log('email', email);
+  }, [email]);
 
-  const callPostPolicyApi = async () => {
-    try {
-      const response = await postPolicyApi(
-        {
-          agreedStatuses: {
-            adAgreementPolicy: agreementInfo.adAgreementPolicy,
-          },
-        },
-        1,
-      );
-      // console.log('callPostPolicyApi', response);
-    } catch (error) {
-      console.log('callPostPolicyApi error', error);
-    }
-  };
+  // const memberId = useMemberStore((state) => state.memberInfo.id);
 
-  const callPostAuthApi = async () => {
+  const callPostAuthEmailApi = async () => {
     try {
-      const response = await postAuthApi(
-        {
-          // phoneNumber: userInfo.phoneNumber,
-          // studentIdImageUrl: userInfo.studentIdImageUrl,
-          schoolEmail: userInfo.schoolEmail,
-          // phoneNumber: '010-1234-5678',
-          // studentIdImageUrl: 'https://www.google.com',
-          // schoolEmail: 'althcjstk08@gachon.ac.kr',
-        },
-        1,
-      );
-      // console.log('callPostAuthApi', response);
+      const response = await postAuthEmailApi({
+        // schoolEmail: userInfo.schoolEmail,
+        schoolEmail: email,
+      });
+      //타이머 시작
+      resetTimer();
+      setIsActive(true);
+
+      updateUserInfo('schoolEmail', email);
+      setIsSuccess('done'); // 이메일 전송 성공
+      console.log('callPostEmailAuthApi', response);
     } catch (error) {
       console.log('callPostAuthApi error', error);
+    }
+  };
+  const callPostAuthVerifyApi = async () => {
+    try {
+      const response = await postAuthVerifyApi({
+        schoolEmail: email,
+        verifyCode: code,
+      });
+      setIsSuccess('true');
+
+      console.log('callPostAuthVerifyApi', response);
+      console.log('isSuccess 성공', isSuccess);
+    } catch (error) {
+      setIsSuccess('error');
+      console.log('callPostAuthVerifyApi error', error);
+      console.log('isSuccess 에러', isSuccess);
+    }
+  };
+  const callPutAuthEmailApi = async () => {
+    try {
+      const response = await putAuthEmailApi({
+        // schoolEmail: userInfo.schoolEmail,
+        schoolEmail: email,
+      });
+      //타이머 시작
+      resetTimer();
+      setIsActive(true);
+      updateUserInfo('schoolEmail', email);
+      console.log('callPutAuthEmailApi', response);
+    } catch (error) {
+      console.log('callPutAuthEmailApi error', error);
     }
   };
 
@@ -130,13 +152,12 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
               <S.ContentStyled>학교 이메일을 입력해 주세요.</S.ContentStyled>
               <S.RowStyled style={{ width: '100%' }}>
                 <S.TextFiledStyled
-                  // value={userInfo.schoolEmail === '' ? email : userInfo.schoolEmail}
                   defaultValue={userInfo.schoolEmail}
-                  onChangeText={(text: string) => setEamil(text)}
+                  onChangeText={(text: string) => setEmail(text)}
                   placeholder="example@gachon.ac.kr"
                   placeholderTextColor={colors.textGray2}
                   // onFocus={handleFocus}
-                  onBlur={() => updateUserInfo('schoolEmail', email)}
+                  // onBlur={handleBlur}
                   style={{
                     color: colors.primary,
                     width: '78%',
@@ -144,11 +165,16 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
                     paddingLeft: 20,
                   }}
                 />
+                {/* 인증 전송 버튼 */}
                 <S.ButtonStyled
-                  onPress={userInfo.schoolEmail !== '' ? startTimer : undefined}
-                  style={{ width: 70, marginBottom: 6, backgroundColor: colors.primary }}
+                  onPress={isSuccess === 'false' && email !== '' ? startTimer : undefined}
+                  style={{
+                    width: 70,
+                    marginBottom: 6,
+                    backgroundColor: isSuccess === 'false' ? colors.primary : colors.buttonAuthToggle,
+                  }}
                 >
-                  <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}>인증</Text>
+                  <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>전송</Text>
                 </S.ButtonStyled>
               </S.RowStyled>
 
@@ -162,11 +188,13 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
                 <S.CodeFiledStyled>
                   <S.InputStyled
                     value={code}
+                    placeholder="000000"
+                    placeholderTextColor={colors.textGray2}
                     onChangeText={setCode}
-                    onFocus={handleFocus2}
-                    onBlur={handleBlur}
+                    // onFocus={handleFocus2}
+                    // onBlur={handleBlur}
                     style={{
-                      color: code === '000000' ? colors.textGray2 : colors.primary,
+                      color: colors.primary,
                       width: '78%',
                       textAlign: 'start',
                     }}
@@ -175,29 +203,46 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
                     {isActive === false ? '' : formatTime()}
                   </Text>
                 </S.CodeFiledStyled>
-                <S.ButtonStyled style={{ width: 70, marginBottom: 6, backgroundColor: colors.primary }}>
-                  <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 18 }}>확인</Text>
+                {/* 코드 확인 버튼 */}
+                <S.ButtonStyled
+                  onPress={time !== 0 && code !== '' && callPostAuthVerifyApi}
+                  style={{
+                    width: 70,
+                    marginBottom: 6,
+                    backgroundColor: time !== 0 ? colors.primary : colors.buttonAuthToggle,
+                  }}
+                >
+                  <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>확인</Text>
                 </S.ButtonStyled>
               </S.RowStyled>
-              <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
-                <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                  인증 코드가 올바르지 않습니다.
-                </Text>
-                <TouchableOpacity>
-                  <Text
-                    style={{
-                      color: colors.textGray,
-                      textDecorationLine: 'underline',
-                      fontFamily: 'fontMedium',
-                      fontSize: 12,
-                      textAlign: 'right',
-                      marginLeft: 2,
-                    }}
-                  >
-                    인증 코드 다시보내기
+              {isSuccess === 'error' && (
+                <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
+                  <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                    인증 코드가 올바르지 않습니다.
                   </Text>
-                </TouchableOpacity>
-              </S.RowStyled>
+                  <TouchableOpacity onPress={email !== '' ? callPutAuthEmailApi : undefined}>
+                    <Text
+                      style={{
+                        color: colors.textGray,
+                        textDecorationLine: 'underline',
+                        fontFamily: 'fontMedium',
+                        fontSize: 12,
+                        textAlign: 'right',
+                        marginLeft: 2,
+                      }}
+                    >
+                      인증 코드 다시보내기
+                    </Text>
+                  </TouchableOpacity>
+                </S.RowStyled>
+              )}
+              {isSuccess === 'true' && (
+                <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
+                  <Text style={{ color: colors.primary, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                    인증 코드가 확인되었습니다.
+                  </Text>
+                </S.RowStyled>
+              )}
             </View>
           </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
@@ -214,17 +259,14 @@ const EmailAuth = ({ isRefused }: { isRefused?: boolean }) => {
             <TouchableOpacity onPress={movePage()}>
               <Image source={prevButton} />
             </TouchableOpacity>
-            {/* { ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <TouchableOpacity onPress={movePage('completePage')}>
-              <Image source={nextButton} />
-            </TouchableOpacity>
-          )} */}
-            <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
-              {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
-              <Image source={nextButton} />
-            </TouchableOpacity>
+            {isSuccess !== 'true' ? (
+              <Image source={notYetNextButton} />
+            ) : (
+              <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
+                {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
+                <Image source={nextButton} />
+              </TouchableOpacity>
+            )}
           </>
         )}
       </View>

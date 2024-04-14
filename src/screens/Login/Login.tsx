@@ -10,17 +10,19 @@ import useAuthStore from '../../commons/store/useAuthStore';
 import { useHasMargin } from '../../commons/store/useHasMargin';
 import { saveToken } from '../../commons/store/tokenStore';
 import { saveMemberId } from '../../commons/store/memberIdStore';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 // import {LoginScreen} from "./Login.service"
 
 const Login = () => {
   const { movePage } = useMovePage();
-  useHasMargin();
+  // useHasMargin();
+  useManageMargin();
   const setToken = useAuthStore((state) => state.setToken);
 
   const onClickSignUp = async () => {
     try {
       const response = await postTestSignUp({
-        email: 'test',
+        email: 'althcjstk081@gachon.ac.kr',
       });
       setToken(response.result.accessToken);
       await saveMemberId(String(response.result.memberSignUpInformationId));

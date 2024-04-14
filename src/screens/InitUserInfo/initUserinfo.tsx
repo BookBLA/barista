@@ -5,11 +5,6 @@ import GenderBirth from './units/GenderBirth';
 import NamePhone from './units/NamePhone';
 import SchoolStudentID from './units/SchoolStudentID';
 import EmailAuth from './units/EmailAuth';
-import CompletePage from './units/CompletePage';
-import ProfileImage from './units/ProfileImage';
-import OpenChatLink from './units/OpenChatLink';
-import WaitConfirm from './units/WaitConfirm';
-import InfoOpenChat from './units/InfoOpenChat';
 
 const Stack = createStackNavigator();
 

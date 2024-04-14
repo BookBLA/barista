@@ -1,3 +1,7 @@
-import { Post, Get } from '../utils/http.api';
+import { Post, Get, Put } from '../utils/http.api';
 
-export const postMemberProfileApi = (memberId: any) => Post('members-profile', member);
+export const postMemberProfileApi = (contents) => Post(`member-profiles`, contents);
+
+export const getMemberProfileApi = (memberId: number) => Get(`member-profiles?memberId=${memberId}`);
+
+export const putMemberProfileApi = (memberId: number) => Put(`member-profiles?memberId=${memberId}`, contents);
