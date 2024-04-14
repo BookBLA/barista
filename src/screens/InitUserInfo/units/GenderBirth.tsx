@@ -48,16 +48,16 @@ const GenderBirth = () => {
           <S.ContentStyled>성별을 선택해 주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
-              isSelect={userInfo.gender === '여성'}
-              onPress={() => updateUserInfo('gender', '여성')}
+              isSelect={userInfo.gender === 'FEMALE'}
+              onPress={() => updateUserInfo('gender', 'FEMALE')}
             >
-              <S.ButtonTextStyled isSelect={userInfo.gender === '여성'}>여성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === 'FEMALE'}>여성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
-              isSelect={userInfo.gender === '남성'}
-              onPress={() => updateUserInfo('gender', '남성')}
+              isSelect={userInfo.gender === 'MALE'}
+              onPress={() => updateUserInfo('gender', 'MALE')}
             >
-              <S.ButtonTextStyled isSelect={userInfo.gender === '남성'}>남성</S.ButtonTextStyled>
+              <S.ButtonTextStyled isSelect={userInfo.gender === 'MALE'}>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>

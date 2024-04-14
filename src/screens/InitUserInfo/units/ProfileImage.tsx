@@ -10,25 +10,20 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import CustomBottomSheetModal from '../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import profileEx1 from '../../../../assets/images/img/profile_ex1.png';
-import profileEx2 from '../../../../assets/images/img/profile_ex2.png';
-import profileEx3 from '../../../../assets/images/img/profile_ex3.png';
-import profileEx4 from '../../../../assets/images/img/profile_ex4.png';
-import profileEx5 from '../../../../assets/images/img/profile_ex5.png';
-import profileEx6 from '../../../../assets/images/img/profile_ex6.png';
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
 import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
+import { img } from '../../../commons/utils/variablesImages';
 
 const ProfileImage = () => {
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
   const profileExList = [
-    [profileEx1, '얼굴이 잘 보이는 사진'],
-    [profileEx2, '취미 생활이 담긴 사진'],
-    [profileEx3, '선정적인 사진'],
-    [profileEx4, '개인 정보를 노출하는 사진'],
-    [profileEx5, '과도한 필터를 사용한 사진'],
-    [profileEx6, '본인이 드러나지 않는 사진'],
+    [img.profileEx1, '얼굴이 잘 보이는 사진'],
+    [img.profileEx2, '취미 생활이 담긴 사진'],
+    [img.profileEx3, '선정적인 사진'],
+    [img.profileEx4, '개인 정보를 노출하는 사진'],
+    [img.profileEx5, '과도한 필터를 사용한 사진'],
+    [img.profileEx6, '본인이 드러나지 않는 사진'],
   ];
 
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();

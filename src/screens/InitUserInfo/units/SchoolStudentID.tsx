@@ -123,7 +123,7 @@ const SchoolStudentID = () => {
               <Image source={nextButton} />
             </TouchableOpacity>
           )} */}
-          <TouchableOpacity onPress={movePage('emailAuth')}>
+          <TouchableOpacity onPress={movePage('emailAuth', { isRefused: false })}>
             <Image source={nextButton} />
           </TouchableOpacity>
         </View>
