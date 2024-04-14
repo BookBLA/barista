@@ -1,25 +1,32 @@
-import InitQuiz from '../../../screens/InitBook/units/InitQuiz';
-import useMovePage from '../../hooks/useMovePage';
 import { icons } from '../../utils/variablesImages';
 import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
+import { deleteMemberBookApi } from '../../api/memberBook.api';
+import useMemberStore from '../../store/useMemberStore';
 
-export const FavBookList: React.FC<FavBookListProps> = ({ representative }) => {
-  const { movePage } = useMovePage();
-  // const representative = {
-  //   representative: false,
-  // };
+export const FavBookList: React.FC<FavBookListProps> = ({
+  representative = false,
+  memberBookId,
+  imageUrl,
+  fetchGetMemberBook,
+}) => {
+  console.log('qqqmemberBookId', imageUrl);
+  const memberId = useMemberStore((state) => state.memberInfo.id);
+  const callDeleteMemberBook = async () => {
+    console.log('memberId', memberId);
+    try {
+      const response = await deleteMemberBookApi(memberBookId);
+      await fetchGetMemberBook();
+      console.log('북이 삭제되었습니다.', response);
+    } catch (err) {
+      console.log('errCallDeleteMemberBook', err);
+    }
+  };
 
-  // const props = {
-  //   representative: false
-  // };
   return (
     <S.BookListStyled>
-      <Image
-        style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }}
-        source={require('../../../../assets/images/example-book.png')}
-      />
+      <Image style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }} source={imageUrl} />
       <S.ColumnStyled>
         <S.BookTitleStyled>나미야 잡화점의 기적</S.BookTitleStyled>
         <S.BookAuthorStyled>히가시노 게이고</S.BookAuthorStyled>
@@ -32,7 +39,7 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative }) => {
             flexDirection: 'column',
           }}
         >
-          <TouchableOpacity onPress={movePage('initQuiz')}>
+          <TouchableOpacity onPress={callDeleteMemberBook}>
             <S.DeleteTextStyled>삭제하기</S.DeleteTextStyled>
           </TouchableOpacity>
         </View>

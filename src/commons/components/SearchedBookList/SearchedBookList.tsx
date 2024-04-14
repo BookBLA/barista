@@ -1,18 +1,13 @@
-import { useState } from 'react';
 import { icons } from '../../utils/variablesImages';
 import * as S from './SearchedBookList.styles';
 import { Image, View } from 'react-native';
+import { IProps } from './SearchedBookList.types';
 
-export const SearchedBookList = ({ item }) => {
-  const [selected, setSelected] = useState(false);
-  const Selected = () => {
-    setSelected(!selected);
-  };
-
+export const SearchedBookList = ({ item, isSelected = false, onSelectBook }: IProps) => {
   return (
-    <S.BookListStyled>
-      <S.BookImageStyled onPress={Selected}>
-        {selected === true && (
+    <S.BookListStyled onPress={() => onSelectBook(item)}>
+      <S.BookImageStyled>
+        {isSelected && (
           <View
             style={{
               position: 'absolute',
