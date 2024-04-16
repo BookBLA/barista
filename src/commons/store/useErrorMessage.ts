@@ -6,6 +6,7 @@ interface IErrorMessageState {
   clearErrorMessage: () => void;
 }
 
+// TODO: 성진 - 토스트 스토어로 대체할 예정
 export const useErrorMessage = create<IErrorMessageState>((set) => ({
   errorMessage: '',
   setErrorMessage: (message: string) => set(() => ({ errorMessage: message })),
