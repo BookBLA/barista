@@ -5,8 +5,13 @@ import { FontLoader } from './src/commons/components/FontLoader/FontLoader';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import GlobalErrorModal from './src/commons/components/GlobalErrorModal/GlobalErrorModal';
+import Toast from 'react-native-toast-message';
+import useToast from './src/commons/hooks/useToast';
+import toastConfig from './src/commons/configs/toastConfig';
 
 export default function App() {
+  useToast();
+
   return (
     <>
       <FontLoader>
@@ -16,6 +21,7 @@ export default function App() {
             <CustomNavigator />
             <GlobalErrorModal />
           </BottomSheetModalProvider>
+          <Toast config={toastConfig} />
         </GestureHandlerRootView>
       </FontLoader>
     </>
