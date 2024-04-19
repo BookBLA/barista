@@ -1,37 +1,28 @@
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { postMemberQuizzesApi } from '../../../../commons/api/memberQuizzes.api';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { defaultValues } from '../../initBook.contents';
-import { initBookSchema } from '../../initBook.schema';
+import { defaultValues } from '../../initBookStack.contents';
+import { initBookSchema } from '../../initBookStack.schema';
 import { icons } from '../../../../commons/utils/variablesImages';
-import { IRequestQuizzes } from '../../InitBook.types';
 import { Text, Image, TouchableHighlight, Keyboard, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { usePostMemberQuizzes } from './hooks/usePostMemberQuizzes';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../../../InitStyle/InitStyle.styles';
-import * as U from '../../InitBook.styles';
+import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
+import { IProps } from './initQuiz.types';
 
-const InitQuiz = ({ route }: { route: { params: { memberBookId: string } } }) => {
-  const { memberBookId } = route.params;
+const InitQuiz = ({ route }: IProps) => {
+  const { memberBookId } = route?.params ?? '';
   const { movePage } = useMovePage();
   const { control, handleSubmit, watch } = useForm({
     defaultValues,
     resolver: yupResolver(initBookSchema),
   });
-
+  const { callPostMemberQuizzes } = usePostMemberQuizzes(memberBookId);
   const reviewValue = watch('review');
-
-  const callPostMemberQuizzes = async (data: IRequestQuizzes) => {
-    try {
-      await postMemberQuizzesApi(data, memberBookId);
-      movePage('initBookStack');
-    } catch (err) {
-      console.log('err', err);
-    }
-  };
 
   return (
     <S.Wrapper>
@@ -113,19 +104,10 @@ const InitQuiz = ({ route }: { route: { params: { memberBookId: string } } }) =>
               dashThickness={1.5}
               dashColor={colors.lineDivider}
             />
-
             <View style={{ height: 'auto', width: '100%', alignItems: 'center' }}>
               <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>독서퀴즈</S.ContentStyled>
-              {/* <U.QuizTextFiledStyled
-                style={{ height: 'auto', marginBottom: 32 }}
-                placeholder="책을 읽었는지 확일할 질문을 적어주세요."
-                
-              >
-                <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
-              </U.QuizTextFiledStyled> */}
               <U.QuizStyled style={{ height: 'auto', marginBottom: 32 }}>
                 <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
-
                 <Controller
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -133,14 +115,12 @@ const InitQuiz = ({ route }: { route: { params: { memberBookId: string } } }) =>
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      style={{ height: 'auto' }} // Adjust margin as needed
+                      style={{ height: 'auto' }}
                       placeholder="책을 읽었는지 확인할 질문을 적어주세요."
-                      placeholderTextColor={colors.textGray2} // Assuming colors.placeholder is defined
+                      placeholderTextColor={colors.textGray2}
                     />
                   )}
                   name="quiz"
-
-                  // defaultValue={defaultValues.content}
                 />
               </U.QuizStyled>
               <U.RowStyled>
@@ -156,8 +136,6 @@ const InitQuiz = ({ route }: { route: { params: { memberBookId: string } } }) =>
                     />
                   )}
                   name="quizAnswer"
-
-                  // defaultValue={defaultValues.content}
                 />
               </U.RowStyled>
               <U.RowStyled>
@@ -194,17 +172,8 @@ const InitQuiz = ({ route }: { route: { params: { memberBookId: string } } }) =>
           </View>
         </TouchableHighlight>
       </S.ColumnStyled>
-      {/* {isActivate === false ? (
-        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
-        </S.NextButtonStyled>
-      ) : (
-        <S.NextButtonStyled onPress={movePage('initQuiz')}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
-        </S.NextButtonStyled>
-      )} */}
       <S.NextButtonStyled onPress={handleSubmit(callPostMemberQuizzes)}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
+        <CustomText color={colors.secondary}>등록하기</CustomText>
       </S.NextButtonStyled>
     </S.Wrapper>
   );

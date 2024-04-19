@@ -10,27 +10,11 @@ export type AddBookRouteProp = RouteProp<RootStackParamList, 'AddBook'>;
 export type Props = {
   route: AddBookRouteProp;
 };
-
-export interface ISearchBooksData {
-  totalCount: number;
-  page: number;
-  isEnd: boolean;
-  bookSearchResponses: IBookData[];
-}
-
 export interface IBookData {
   title: string;
-  authors: string[];
+  authors: string;
   isbn: string;
   imageUrl: string;
-}
-
-export interface IRequestMemberBook {
-  thumbnail: string | undefined;
-  authors?: string[] | undefined;
-  isbn?: string | undefined;
-  imageUrl?: string | undefined;
-  isRepresentative: boolean;
 }
 
 export interface IRequestQuizzes {
@@ -39,15 +23,6 @@ export interface IRequestQuizzes {
   quizAnswer: string;
   firstWrongChoice: string;
   secondWrongChoice: string;
-}
-
-export interface IContents {
-  isRepresentative?: true;
-  title?: string;
-  authors?: string[];
-  isbn?: string;
-  thumbnail?: string;
-  imageUrl?: string;
 }
 
 export interface IResponseMemberBook {

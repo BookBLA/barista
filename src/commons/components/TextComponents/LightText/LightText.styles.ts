@@ -8,5 +8,6 @@ export const LightText = styled.Text(
   color: ${props.color || colors.textGray3};
   ${props.weight ? `font-weight: ${props.weight};` : ''}
   margin: ${props.margin || 0};
+  font-family: 'fontLight';
 `,
 );

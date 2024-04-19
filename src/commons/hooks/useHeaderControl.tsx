@@ -11,7 +11,6 @@ const useHeaderControl = ({ title, left, right, onPressLeft }: ICustomHeader) =>
       headerShown: true,
       header: () => <CustomHeader left={left} onPressLeft={onPressLeft} title={title} right={right} />,
     });
-    // JSON.stringify({ title, left, right })
   }, []);
 };
 
