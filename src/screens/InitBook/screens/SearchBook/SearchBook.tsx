@@ -1,109 +1,47 @@
-import { useEffect, useRef, useState } from 'react';
-import { getSearchBookApi } from '../../../../commons/api/searchBook';
+import { useEffect, useState } from 'react';
 import { buttons, icons } from '../../../../commons/utils/variablesImages';
-import { postMemberBookApi } from '../../../../commons/api/memberBook.api';
-import { IBookData, IContents } from '../../InitBook.types';
+import { IBookData } from '../../InitBookStack.types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SearchedBookList } from '../../../../commons/components/SearchedBookList/SearchedBookList';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { NoSearch } from './units/NoSearch';
 import { Text, TouchableOpacity, View, Image } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
+import { useHandleMoveTop } from '../../../../commons/hooks/useHandleMoveTop';
+import { useSearchBooks } from './hooks/useSearchBooks';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../../InitBook.styles';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import * as T from '../../InitBookStack.styles';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import Pagination from '../../../../commons/components/Pagination/Pagination';
+import usePagination from '../../../../commons/hooks/usePagination';
+import { IProps } from './SearchBook.types';
+import { usePostMemberBook } from './hooks/usePostMemberBook';
 
-const SearchBook = () => {
+const SearchBook = ({ route }: IProps) => {
   useManageMargin();
   useHeaderControl({
     title: '내 서재',
     left: true,
   });
-  const { movePage } = useMovePage();
+  const { isRepresentative } = route.params;
   const [search, setSearch] = useState('');
-  const [pageIndex, setPageIndex] = useState(1);
-  const [totalPage, setTotalPage] = useState(0);
-  const [startPage, setStartPage] = useState(1);
-  const [bookList, setBookList] = useState([]);
   const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
-  const scrollViewRef = useRef<ScrollView>(null);
-
-  const handleMoveTop = () => {
-    if (scrollViewRef.current) {
-      if (scrollViewRef.current) {
-        scrollViewRef.current.scrollTo({ x: 0, y: 0, animated: true });
-      }
-    }
-  };
+  const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
+  const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
+    usePagination();
+  const { bookList, callGetSearchBookApi } = useSearchBooks(setTotalPage);
+  const { callPostMemberBook } = usePostMemberBook();
 
   const SearchBook = () => {
     if (search === '') return;
     if (pageIndex !== 1) prevEndPage();
-    callGetSearchBookApi(true);
-  };
-
-  const callGetSearchBookApi = async (updateTotalPages = false) => {
-    try {
-      const response = await getSearchBookApi(search, pageIndex);
-      if (updateTotalPages) {
-        setTotalPage(response.result.totalCount);
-      }
-      setBookList(response.result.bookSearchResponses);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const movePageIndex = (pageIndex: number) => () => {
-    setPageIndex(pageIndex);
-    callGetSearchBookApi();
-  };
-
-  const changePageGroup = (direction: string) => () => {
-    const newStartPage = direction === 'next' ? startPage + 5 : startPage - 5;
-    if (newStartPage > 0 && newStartPage <= Math.ceil(totalPage / 10)) {
-      setStartPage(newStartPage);
-      setPageIndex(newStartPage);
-    }
-  };
-
-  const nextEndPage = () => {
-    const total = Math.ceil(totalPage / 10);
-    const resultPage = total - (total % 5) + 1;
-    setStartPage(resultPage);
-    setPageIndex(resultPage);
-  };
-
-  const prevEndPage = () => {
-    setPageIndex(1);
-    setStartPage(1);
+    callGetSearchBookApi(search, pageIndex, true);
   };
 
   useEffect(() => {
-    if (search) {
-      callGetSearchBookApi();
-    }
+    callGetSearchBookApi(search, pageIndex);
   }, [pageIndex]);
-
-  const callPostMemberBook = async () => {
-    try {
-      const newData: IContents = {
-        isRepresentative: true, // TODO: 성진 - bookData가 빈배열일 경우에만 트루로 변경 예정
-        ...selectedBook,
-        thumbnail: String(selectedBook.imageUrl),
-      };
-      delete newData.imageUrl;
-      const response = await postMemberBookApi(newData);
-      const memberBookId = response.result.memberBookId;
-      if (memberBookId) {
-        movePage('initBookStack', { screen: 'initQuiz', memberBookId })();
-      }
-    } catch (err) {
-      console.log('err', err);
-    }
-  };
 
   return (
     <S.Wrapper style={{ position: 'relative' }}>
@@ -137,41 +75,25 @@ const SearchBook = () => {
                   onSelectBook={setSelectedBook}
                 />
               ))}
-
-              <T.PageIndexRow>
-                <TouchableOpacity onPress={prevEndPage}>
-                  <T.MovePageImageStyled source={icons.leftEndPage} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={changePageGroup('prev')}>
-                  <T.MovePageImageStyled source={icons.leftPage} />
-                </TouchableOpacity>
-                {new Array(5).fill('').map(
-                  (_, index) =>
-                    index + startPage <= Math.ceil(totalPage / 10) && (
-                      <TouchableOpacity key={index} onPress={movePageIndex(index + startPage)}>
-                        <T.PageIndexTextStyled selected={index + startPage === pageIndex}>
-                          {index + startPage}
-                        </T.PageIndexTextStyled>
-                      </TouchableOpacity>
-                    ),
-                )}
-                <TouchableOpacity onPress={changePageGroup('next')}>
-                  <T.MovePageImageStyled source={icons.rightPage} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={nextEndPage}>
-                  <T.MovePageImageStyled source={icons.rightEndPage} />
-                </TouchableOpacity>
-              </T.PageIndexRow>
+              <Pagination
+                pageIndex={pageIndex}
+                startPage={startPage}
+                totalPage={totalPage}
+                movePageIndex={movePageIndex}
+                changePageGroup={changePageGroup}
+                prevEndPage={prevEndPage}
+                nextEndPage={nextEndPage}
+              />
             </ScrollView>
 
             <View style={{ position: 'absolute', bottom: 80, right: 10, zIndex: 2 }}>
-              <TouchableOpacity onPress={handleMoveTop}>
+              <TouchableOpacity onPress={() => handleMoveTop()}>
                 <Image source={buttons.moveTop} style={{ width: 45, height: 45 }} />
               </TouchableOpacity>
             </View>
             <S.NextButtonStyled
               style={{ height: 50, position: 'absolute', bottom: 10, zIndex: 1 }}
-              onPress={callPostMemberBook}
+              onPress={callPostMemberBook(isRepresentative, selectedBook)}
             >
               <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
             </S.NextButtonStyled>

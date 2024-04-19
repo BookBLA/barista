@@ -1,7 +1,7 @@
 import useMovePage from '../../hooks/useMovePage';
-import * as T from '../../../screens/InitBook/InitBook.styles';
+import * as T from '../../../screens/InitBook/InitBookStack.styles';
 import * as S from '../../../screens/InitUserInfo/InitUserInfo.styles';
-import { Text, Image, TouchableOpacity, View } from 'react-native';
+import { Image, TouchableOpacity, View } from 'react-native';
 import backArrow from '../../../../assets/images/buttons/prevButtonBlack.png';
 import { CustomText } from '../TextComponents/CustomText/CustomText';
 import { colors } from '../../styles/variablesStyles';
@@ -27,7 +27,6 @@ export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?
         style={{
           display: 'flex',
           flex: 1,
-          // width: '80%',
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'row',

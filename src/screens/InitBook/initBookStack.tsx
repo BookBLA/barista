@@ -9,18 +9,15 @@ const Stack = createStackNavigator();
 
 const screens = [
   { name: 'addBook', component: AddBook },
-  { name: 'searchBook', component: CustomScreen(SearchBook) },
-  { name: 'initQuiz', component: CustomScreen(InitQuiz) },
+  { name: 'searchBook', component: SearchBook },
+  { name: 'initQuiz', component: InitQuiz },
 ];
 
 const InitBookStack = ({ route }: { route: unknown }) => {
-  // console.log('route1', route);
   return (
     <Stack.Navigator initialRouteName="addBook" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name}>
-          {(props) => React.createElement(component, { ...props, route })}
-        </Stack.Screen>
+        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
       ))}
     </Stack.Navigator>
   );

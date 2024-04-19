@@ -3,7 +3,7 @@ import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
-import useMemberStore from '../../store/useMemberStore';
+import { useErrorMessage } from '../../store/useErrorMessage';
 
 export const FavBookList: React.FC<FavBookListProps> = ({
   representative = false,
@@ -11,16 +11,14 @@ export const FavBookList: React.FC<FavBookListProps> = ({
   imageUrl,
   fetchGetMemberBook,
 }) => {
-  console.log('qqqmemberBookId', imageUrl);
-  const memberId = useMemberStore((state) => state.memberInfo.id);
   const callDeleteMemberBook = async () => {
-    console.log('memberId', memberId);
     try {
-      const response = await deleteMemberBookApi(memberBookId);
+      await deleteMemberBookApi(memberBookId);
       await fetchGetMemberBook();
-      console.log('북이 삭제되었습니다.', response);
-    } catch (err) {
-      console.log('errCallDeleteMemberBook', err);
+    } catch (error) {
+      if (error instanceof Error) {
+        useErrorMessage.getState().setErrorMessage(error.message);
+      }
     }
   };
 
