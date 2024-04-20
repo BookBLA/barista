@@ -1,14 +1,15 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, KeyboardAvoidingView, Platform, ScrollView, Text } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import uuid from 'react-native-uuid';
+import { uploadStudentIdImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 
 const SchoolStudentID = () => {
   // const [school, setSchool] = useState('학교');
@@ -42,22 +43,23 @@ const SchoolStudentID = () => {
         return null;
       }
     }
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
+
     if (result.canceled) {
       return null; //이미지 업로드 취소시
     }
 
-    // setImageUrl(result.assets[0].uri);
-    updateUserInfo('studentIdImageUrl', result.assets[0].uri);
+    const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
+
+    if (uploadedFileUrl) updateUserInfo('studentIdImageUrl', uploadedFileUrl);
   };
-  // console.log('학교', userInfo.schoolName);
-  // console.log('imageUrl', imageUrl);
-  // console.log('userInfo.studentIdImageUrl', userInfo.studentIdImageUrl);
+
   return (
     <S.Wrapper>
       <TitleProgress gauge={75} />

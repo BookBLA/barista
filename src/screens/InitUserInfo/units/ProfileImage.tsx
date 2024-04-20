@@ -14,7 +14,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
 import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
 import { img } from '../../../commons/utils/variablesImages';
-import { EUploadImageType, uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
+import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 
 const ProfileImage = () => {
@@ -79,11 +79,9 @@ const ProfileImage = () => {
     }
 
     const randomId = uuid.v4();
-    await uploadImageToS3(result?.assets[0].uri, randomId);
-    updateUserInfo(
-      'profileImageUrl',
-      `${process.env.EXPO_PUBLIC_IMAGE_BASE_URL}/${EUploadImageType.UPDATE_PROFILE}/${randomId}.jpg`,
-    );
+    const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
+
+    if (uploadedFileUrl) updateUserInfo('profileImageUrl', uploadedFileUrl);
     handleCloseBottomSheet();
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);

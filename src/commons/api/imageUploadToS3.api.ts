@@ -23,11 +23,7 @@ const extractFileExtension = (fileName: string) => {
 };
 
 export const getPresignedUrl = (uploadType: EUploadImageType, memberId: number | string | number[], uri: string) => {
-  return Get(
-    `aws/s3/presigned-url/${uploadType}`,
-    { params: { fileName: `${memberId.toString()}.${extractFileExtension(uri)}` } },
-    true,
-  );
+  return Get(`aws/s3/presigned-url/${uploadType}`, { params: { fileName: `${memberId.toString()}.jpg}` } }, true);
 };
 
 const compressImage = async (imageUri: string) => {
@@ -64,6 +60,32 @@ export const uploadImageToS3 = async (imageUri: string, memberId: number | strin
     await axios.put(presignedUrl, imageBuffer, {
       headers: { 'Content-Type': fileType ?? 'image/jpeg' },
     });
+
+    return `${process.env.EXPO_PUBLIC_IMAGE_BASE_URL}/${EUploadImageType.UPDATE_PROFILE}/${memberId}.jpg`;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      useErrorMessage.getState().setErrorMessage(error.message);
+    } else {
+      console.error(error);
+    }
+  }
+};
+
+export const uploadStudentIdImageToS3 = async (imageUri: string, memberId: number | string | number[]) => {
+  try {
+    const {
+      result: { presignedUrl },
+    } = await getPresignedUrl(EUploadImageType.CERTIFICATION, memberId, imageUri);
+
+    const fileBody = await uriToBlob(imageUri);
+    const fileType = fileBody.type;
+    const imageBuffer = await uriToBuffer(imageUri);
+
+    await axios.put(presignedUrl, imageBuffer, {
+      headers: { 'Content-Type': fileType ?? 'image/jpeg' },
+    });
+
+    return `${process.env.EXPO_PUBLIC_IMAGE_BASE_URL}/${EUploadImageType.CERTIFICATION}/${memberId}.jpg`;
   } catch (error) {
     if (axios.isAxiosError(error)) {
       useErrorMessage.getState().setErrorMessage(error.message);
