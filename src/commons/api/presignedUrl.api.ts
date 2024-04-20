@@ -1,0 +1,65 @@
+import { Get } from '../utils/http.api';
+import axios from 'axios';
+import * as FileSystem from 'expo-file-system';
+import { Buffer } from 'buffer';
+import * as ImageManipulator from 'expo-image-manipulator';
+import { SaveFormat } from 'expo-image-manipulator';
+
+export const enum EUploadImageType {
+  IMAGE = 'image',
+  CERTIFICATION = 'certification',
+  PROFILE = 'profile',
+  UPDATE_CERTIFICATION = 'update/certification',
+  UPDATE_PROFILE = 'update/profile',
+}
+
+const extractFileExtension = (fileName: string) => {
+  const lastDotIndex = fileName.lastIndexOf('.');
+  if (lastDotIndex === -1 || lastDotIndex === 0 || lastDotIndex === fileName.length - 1) {
+    return ''; // 확장자가 없거나 파일명이 ".filename" 또는 "filename."인 경우 처리
+  }
+  return fileName.slice(lastDotIndex + 1);
+};
+
+export const getPresignedUrl = (uploadType: EUploadImageType, memberId: number, uri: string) => {
+  return Get(
+    `aws/s3/presigned-url/${uploadType}`,
+    { params: { fileName: `${memberId.toString()}.${extractFileExtension(uri)}` } },
+    true,
+  );
+};
+
+const compressImage = async (imageUri: string) => {
+  const manipulateResult = await ImageManipulator.manipulateAsync(imageUri, [{ resize: { width: 600 } }], {
+    compress: 0.5,
+    format: SaveFormat.JPEG,
+  });
+  return manipulateResult.uri;
+};
+
+const uriToBlob = async (fileUri: string) => {
+  const resp = await fetch(fileUri);
+  return await resp.blob();
+};
+
+const uriToBuffer = async (uri: string): Promise<Buffer> => {
+  const base64 = await FileSystem.readAsStringAsync(uri, {
+    encoding: FileSystem.EncodingType.Base64,
+  });
+  return Buffer.from(base64, 'base64');
+};
+
+export const uploadImage = async (imageUri: string, memberId: number) => {
+  const compressedImageUri = await compressImage(imageUri);
+  const {
+    result: { presignedUrl },
+  } = await getPresignedUrl(EUploadImageType.PROFILE, memberId, compressedImageUri);
+
+  const fileBody = await uriToBlob(compressedImageUri);
+  const fileType = fileBody.type;
+  const imageBuffer = await uriToBuffer(compressedImageUri);
+
+  await axios.put(presignedUrl, imageBuffer, {
+    headers: { 'Content-Type': fileType ?? 'image/jpeg' },
+  });
+};

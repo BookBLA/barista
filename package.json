@@ -50,8 +50,10 @@
     "react-responsive-carousel": "^3.2.23",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
-    "yup": "^1.4.0",
     "zustand": "^4.5.0",
+    "expo-file-system": "~16.0.8",
+    "expo-image-manipulator": "~11.8.0",
+    "yup": "^1.4.0",
     "expo-notifications": "~0.27.7"
   },
   "devDependencies": {
