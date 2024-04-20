@@ -4,13 +4,14 @@ import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { SaveFormat } from 'expo-image-manipulator';
+import { useErrorMessage } from '../store/useErrorMessage';
 
 export const enum EUploadImageType {
   IMAGE = 'image',
   CERTIFICATION = 'certification',
   PROFILE = 'profile',
-  UPDATE_CERTIFICATION = 'update/certification',
-  UPDATE_PROFILE = 'update/profile',
+  UPDATE_CERTIFICATION = 'update-certification',
+  UPDATE_PROFILE = 'update-profile',
 }
 
 const extractFileExtension = (fileName: string) => {
@@ -21,7 +22,7 @@ const extractFileExtension = (fileName: string) => {
   return fileName.slice(lastDotIndex + 1);
 };
 
-export const getPresignedUrl = (uploadType: EUploadImageType, memberId: number, uri: string) => {
+export const getPresignedUrl = (uploadType: EUploadImageType, memberId: number | string | number[], uri: string) => {
   return Get(
     `aws/s3/presigned-url/${uploadType}`,
     { params: { fileName: `${memberId.toString()}.${extractFileExtension(uri)}` } },
@@ -49,17 +50,25 @@ const uriToBuffer = async (uri: string): Promise<Buffer> => {
   return Buffer.from(base64, 'base64');
 };
 
-export const uploadImage = async (imageUri: string, memberId: number) => {
-  const compressedImageUri = await compressImage(imageUri);
-  const {
-    result: { presignedUrl },
-  } = await getPresignedUrl(EUploadImageType.UPDATE_PROFILE, memberId, compressedImageUri);
+export const uploadImageToS3 = async (imageUri: string, memberId: number | string | number[]) => {
+  try {
+    const compressedImageUri = await compressImage(imageUri);
+    const {
+      result: { presignedUrl },
+    } = await getPresignedUrl(EUploadImageType.UPDATE_PROFILE, memberId, compressedImageUri);
 
-  const fileBody = await uriToBlob(compressedImageUri);
-  const fileType = fileBody.type;
-  const imageBuffer = await uriToBuffer(compressedImageUri);
+    const fileBody = await uriToBlob(compressedImageUri);
+    const fileType = fileBody.type;
+    const imageBuffer = await uriToBuffer(compressedImageUri);
 
-  await axios.put(presignedUrl, imageBuffer, {
-    headers: { 'Content-Type': fileType ?? 'image/jpeg' },
-  });
+    await axios.put(presignedUrl, imageBuffer, {
+      headers: { 'Content-Type': fileType ?? 'image/jpeg' },
+    });
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      useErrorMessage.getState().setErrorMessage(error.message);
+    } else {
+      console.error(error);
+    }
+  }
 };

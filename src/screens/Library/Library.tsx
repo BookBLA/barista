@@ -23,7 +23,7 @@ import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
-import { uploadImage } from '../../commons/api/presignedUrl.api';
+import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 
 type RootStackParamList = {
@@ -117,7 +117,7 @@ const Library: React.FC<Props> = ({ route }) => {
     });
 
     if (!result.canceled) {
-      uploadImage(result?.assets[0].uri, memberId);
+      await uploadImageToS3(result?.assets[0].uri, memberId);
       setSelectedImage(result?.assets[0].uri);
     }
     handleCloseBottomSheet(); //바텀시트 닫음
