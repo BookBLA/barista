@@ -53,7 +53,7 @@ export const uploadImage = async (imageUri: string, memberId: number) => {
   const compressedImageUri = await compressImage(imageUri);
   const {
     result: { presignedUrl },
-  } = await getPresignedUrl(EUploadImageType.PROFILE, memberId, compressedImageUri);
+  } = await getPresignedUrl(EUploadImageType.UPDATE_PROFILE, memberId, compressedImageUri);
 
   const fileBody = await uriToBlob(compressedImageUri);
   const fileType = fileBody.type;
