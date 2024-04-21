@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { colors } from '../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
@@ -12,13 +12,14 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
 import useManageMargin from '../../commons/hooks/useManageMargin';
+import { getMemberProfileApi, putMemberProfileApi } from '../../commons/api/memberProfille.api';
 
 const ModifyUserinfo = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
-  const [phNum, setPhNum] = useState(userInfo.phoneNumber);
+  const [phNum, setPhNum] = useState('');
 
   const handlePhoneNumberChange = (phNum: string) => {
     const onlyNums = phNum.replace(/[^0-9]/g, '');
@@ -32,7 +33,7 @@ const ModifyUserinfo = () => {
     }
     setPhNum(formattedNumber);
   };
-  const scrollViewRef = useRef(null); // Create a ref for KeyboardAwareScrollView
+  const scrollViewRef = useRef<ScrollView>(null); // Create a ref for KeyboardAwareScrollView
 
   const handleMoveTop = () => {
     if (scrollViewRef.current) {
@@ -43,9 +44,67 @@ const ModifyUserinfo = () => {
   };
 
   useManageMargin();
+
+  const callGetMemberProfileApi = async () => {
+    try {
+      const response = await getMemberProfileApi();
+      console.log('callGetMemberProfileApi', response);
+      updateUserInfo({
+        name: response.result.name,
+        phoneNumber: response.result.phoneNumber,
+        schoolName: response.result.schoolName,
+        schoolEmail: response.result.schoolEmail,
+        openKakaoRoomUrl: response.result.openKakaoRoomUrl,
+        studentIdImageUrl: response.result.studentIdImageUrl,
+        profileImageUrl: response.result.profileImageUrl,
+        birthDate: response.result,
+      });
+      setName(response.result.name);
+      setPhNum(response.result.phoneNumber);
+      setLink(response.result.openKakaoRoomUrl);
+    } catch (error) {
+      console.log('callGetMemberProfileApi error', error);
+    }
+  };
+
+  const callPutMemberProfileApi = async () => {
+    try {
+      const response = await putMemberProfileApi({
+        name: userInfo.name,
+        birthDate: userInfo.birthDate,
+        gender: userInfo.gender,
+        schoolName: userInfo.schoolName,
+        schoolEmail: userInfo.schoolEmail,
+        phoneNumber: userInfo.phoneNumber,
+        studentIdImageUrl: userInfo.studentIdImageUrl,
+        profileImageUrl: userInfo.profileImageUrl,
+        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
+      });
+      console.log('callPutMemberProfileApi', response);
+    } catch (error) {
+      console.log('callPutMemberProfileApi error', error);
+    }
+  };
+
+  const modifyInfo = async () => {
+    if (name !== '' && phNum !== '' && link !== '') {
+      console.log('modifyInfo', name, phNum, link);
+
+      updateUserInfo({
+        name: name,
+        phoneNumber: phNum,
+        openKakaoRoomUrl: link,
+      });
+      callPutMemberProfileApi();
+    }
+  };
+  useEffect(() => {
+    callGetMemberProfileApi();
+  }, []);
+
   return (
     <S.Wrapper>
-      <ModifyTitleBar step={0} />
+      <ModifyTitleBar step={0} callPutApi={modifyInfo} />
       <View style={{ position: 'absolute', bottom: 30, right: 10, zIndex: 2 }}>
         <TouchableOpacity onPress={handleMoveTop}>
           <Image source={MoveTop} style={{ width: 45, height: 45 }} />
@@ -68,7 +127,7 @@ const ModifyUserinfo = () => {
           <S.ViewStyled height={330}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
             <TextFiledStyled
-              value={link}
+              defaultValue={link}
               onChangeText={setLink}
               // onFocus={handleFocus}
               // onBlur={handleBlur}
@@ -87,7 +146,7 @@ const ModifyUserinfo = () => {
           <S.ViewStyled height={320}>
             <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
-              defaultValue={userInfo.name}
+              defaultValue={name}
               onChangeText={(text: string) => setName(text)}
               // onBlur={() => updateUserInfo('name', name)}
               placeholder="이름"
@@ -96,6 +155,7 @@ const ModifyUserinfo = () => {
 
             <S.ContentStyled style={{ marginTop: 50 }}>전화번호를 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
+              defaultValue={phNum}
               value={phNum}
               onChangeText={handlePhoneNumberChange}
               // onBlur={() => updateUserInfo('phoneNumber', phNum)}
@@ -121,8 +181,8 @@ const ModifyUserinfo = () => {
           />
           <S.ViewStyled height={200}>
             <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
-            <S.ButtonStyled>
-              <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
+            <S.ButtonStyled disabled>
+              <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>{userInfo.schoolName}</Text>
             </S.ButtonStyled>
           </S.ViewStyled>
         </KeyboardAwareScrollView>

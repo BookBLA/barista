@@ -22,7 +22,8 @@ const Login = () => {
   const onClickSignUp = async () => {
     try {
       const response = await postTestSignUp({
-        email: 'althcjstk081@gachon.ac.kr',
+        email: 'althcjstk08@gachon.ac.kr',
+        // email: 'althcjstk08@gmail.com',
       });
       setToken(response.result.accessToken);
       await saveMemberId(String(response.result.memberSignUpInformationId));

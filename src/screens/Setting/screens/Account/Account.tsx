@@ -11,6 +11,8 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import Home from '../../../../../assets/images/icons/HomeBlack.png';
 import LogOutContent from './units/LogOutContent/LogOutContent';
 import MatchingContent from './units/MatchingContent/MatchingContent';
+import { getMemberProfileApi } from '../../../../commons/api/memberProfille.api';
+import { useUserStore } from '../../../../commons/store/useUserinfo';
 
 const Account = () => {
   const { movePage } = useMovePage();
@@ -42,6 +44,7 @@ const Account = () => {
           { label: '취소', action: modalToggle },
         ],
   };
+  const { updateUserInfo, userInfo } = useUserStore();
 
   return (
     <>

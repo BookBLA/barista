@@ -1,7 +1,11 @@
-import { Post, Get, Put } from '../utils/http.api';
+import { Post, Get, Put, Patch } from '../utils/http.api';
 
 export const postMemberProfileApi = (contents) => Post(`member-profiles`, contents);
 
-export const getMemberProfileApi = (memberId: number) => Get(`member-profiles?memberId=${memberId}`);
+export const getMemberProfileApi = () => Get(`member-profiles`);
 
-export const putMemberProfileApi = (memberId: number) => Put(`member-profiles?memberId=${memberId}`, contents);
+export const putMemberProfileApi = (contents) => Put(`member-profiles`, contents);
+
+export const getMemberProfileStatusesApi = () => Get(`member-profiles/statuses`);
+
+export const patchMemberProfileStatusesApi = (contents) => Patch(`member-profiles/statuses`, contents);

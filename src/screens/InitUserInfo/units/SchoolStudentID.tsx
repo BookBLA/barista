@@ -64,7 +64,7 @@ const SchoolStudentID = () => {
       <S.ColumnStyled>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
-          <S.ButtonStyled>
+          <S.ButtonStyled disabled>
             <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
           </S.ButtonStyled>
           {/* <S.TextFiledStyled

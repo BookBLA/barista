@@ -120,7 +120,7 @@ const ModifyStyle = () => {
     callGetStyleApi();
   }, []);
   useEffect(() => {
-    // callGetStyleApi();
+    callGetStyleApi();
     const mbtiString = mbti.join('');
     console.log('mbti', mbti);
     console.log('mbtiString', mbtiString);
