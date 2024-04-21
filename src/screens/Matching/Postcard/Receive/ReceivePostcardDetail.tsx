@@ -5,7 +5,7 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
 import { RouteProp } from '@react-navigation/native';
-import postcardImage from '../../../../../assets/images/example-postcard.png';
+import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender } from '../Send/SendPostcard.types';

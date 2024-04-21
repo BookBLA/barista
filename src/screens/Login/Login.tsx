@@ -7,15 +7,12 @@ import useMovePage from '../../commons/hooks/useMovePage';
 import { postTestSignUp } from '../../commons/api/example.api';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import useAuthStore from '../../commons/store/useAuthStore';
-import { useHasMargin } from '../../commons/store/useHasMargin';
-import { saveToken } from '../../commons/store/tokenStore';
-import { saveMemberId } from '../../commons/store/memberIdStore';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 // import {LoginScreen} from "./Login.service"
 
 const Login = () => {
   const { movePage } = useMovePage();
-  // useHasMargin();
+
   useManageMargin();
   const setToken = useAuthStore((state) => state.setToken);
 
@@ -55,9 +52,6 @@ const Login = () => {
             style={{ width: 300, height: 45 }}
             onPress={handleAppleSignIn}
           />
-          <S.LoginButton onPress={movePage('kakao')}>
-            <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
-          </S.LoginButton>
         </>
       ) : (
         <S.LoginButton onPrssed={movePage('kakao')}>

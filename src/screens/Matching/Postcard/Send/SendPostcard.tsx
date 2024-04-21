@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EGender, EPostcardStatus, ISendPostcardProps } from './SendPostcard.types';
 import * as S from './SendPostcard.styles';
-import postcardImage from '../../../../../assets/images/example-postcard.png';
+import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { Platform, TouchableWithoutFeedback, View } from 'react-native';
