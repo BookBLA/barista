@@ -23,13 +23,13 @@ const Login = () => {
     try {
       const response = await postTestSignUp({
         email: 'althcjstk08@gachon.ac.kr',
-        // email: 'althcjstk08@gmail.com',
+        // email: 'string',
       });
+      console.log('success', response);
       setToken(response.result.accessToken);
-      await saveMemberId(String(response.result.memberSignUpInformationId));
       movePage('tapScreens')();
     } catch (error) {
-      console.error(error);
+      console.error('error', error);
     }
   };
 

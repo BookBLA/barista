@@ -52,6 +52,7 @@ const ModifyUserinfo = () => {
       updateUserInfo({
         name: response.result.name,
         phoneNumber: response.result.phoneNumber,
+        gender: response.result.gender,
         schoolName: response.result.schoolName,
         schoolEmail: response.result.schoolEmail,
         openKakaoRoomUrl: response.result.openKakaoRoomUrl,
@@ -90,14 +91,15 @@ const ModifyUserinfo = () => {
     if (name !== '' && phNum !== '' && link !== '') {
       console.log('modifyInfo', name, phNum, link);
 
-      updateUserInfo({
+      await updateUserInfo({
         name: name,
         phoneNumber: phNum,
         openKakaoRoomUrl: link,
       });
-      callPutMemberProfileApi();
+      await callPutMemberProfileApi();
     }
   };
+
   useEffect(() => {
     callGetMemberProfileApi();
   }, []);
@@ -155,7 +157,7 @@ const ModifyUserinfo = () => {
 
             <S.ContentStyled style={{ marginTop: 50 }}>전화번호를 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
-              defaultValue={phNum}
+              defaultValue={userInfo.phoneNumber}
               value={phNum}
               onChangeText={handlePhoneNumberChange}
               // onBlur={() => updateUserInfo('phoneNumber', phNum)}
