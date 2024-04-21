@@ -1,10 +1,11 @@
 import { Delete, Get, Post, Put } from '../utils/http.api';
 
 export interface IContents {
-  isRepresentative: true;
-  title: string;
-  authors: string[];
-  isbn: string;
+  isRepresentative: boolean;
+  title?: string | undefined;
+  authors?: string | undefined;
+  isbn?: string | undefined;
+  imageUrl?: string | undefined;
   thumbnail: string;
 }
 

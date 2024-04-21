@@ -23,6 +23,8 @@ import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
+import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
+import useMemberStore from '../../commons/store/useMemberStore';
 
 type RootStackParamList = {
   Library: { postcardId?: number; userId: number; isYourLibrary: boolean };
@@ -35,7 +37,7 @@ type Props = {
 };
 
 const Library: React.FC<Props> = ({ route }) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
@@ -49,6 +51,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const postcardCounter = usePostcardCounter((state) => state.count);
   const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
   const navigation = useNavigation();
+  const memberId = useMemberStore((state) => state.memberInfo.id);
 
   const { movePage } = useMovePage();
 
@@ -106,7 +109,7 @@ const Library: React.FC<Props> = ({ route }) => {
       return;
     }
 
-    let result = await ImagePicker.launchImageLibraryAsync({
+    const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
@@ -114,10 +117,10 @@ const Library: React.FC<Props> = ({ route }) => {
     });
 
     if (!result.canceled) {
-      setSelectedImage(result.assets[0].uri);
+      await uploadImageToS3(result?.assets[0].uri, memberId);
+      setSelectedImage(result?.assets[0].uri);
     }
     handleCloseBottomSheet(); //바텀시트 닫음
-    //todo 업로드 로직 추가
   };
 
   useManageMargin();
@@ -196,7 +199,7 @@ const Library: React.FC<Props> = ({ route }) => {
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
       <S.UserInfoContainerView>
         <S.UserInfoView>
-          <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} resizeMode="contain" />
+          <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} />
           {!isYourLibrary && (
             <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
               <S.ProfileImageModificationImage

@@ -14,6 +14,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
 import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
 import { img } from '../../../commons/utils/variablesImages';
+import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
+import uuid from 'react-native-uuid';
 
 const ProfileImage = () => {
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
@@ -76,8 +78,10 @@ const ProfileImage = () => {
       return null; //이미지 업로드 취소시
     }
 
-    // setImageUrl(result.assets[0].uri);
-    updateUserInfo('profileImageUrl', result.assets[0].uri);
+    const randomId = uuid.v4();
+    const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
+
+    if (uploadedFileUrl) updateUserInfo('profileImageUrl', uploadedFileUrl);
     handleCloseBottomSheet();
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
@@ -138,7 +142,7 @@ const ProfileImage = () => {
             </CustomText>
             <S.DividerLine />
             <S.ColumnStyled style={{ alignItems: 'start', height: 'auto', width: '100%' }}>
-              <CustomText style={{ textAlign: 'start' }}>👏이런 사진을 추천해요</CustomText>
+              <CustomText style={{ textAlign: 'left' }}>👏이런 사진을 추천해요</CustomText>
             </S.ColumnStyled>
             <S.RoundRectStyled style={{ padding: 12 }}>
               <CustomText size="12px" font="fontRegular">

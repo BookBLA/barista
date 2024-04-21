@@ -9,7 +9,7 @@ import { TRootStackParamList } from './CustomNavigator.types';
 import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
-import InitBookStack from '../../../screens/InitBook/initBook';
+import InitBookStack from '../../../screens/InitBook/initBookStack';
 import Kakao from '../../../screens/Login/KakaoLogin';
 import Login from '../../../screens/Login/Login';
 import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
@@ -51,6 +51,7 @@ export const CustomNavigator = () => {
     // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
     if (!token && navigationRef.current) {
       navigationRef.current.navigate('login');
+      // TODO: 성진 - 로그인 페이지로 이동할 때 스택 초기화가 필요함
     } else {
       saveMemberInfo();
     }

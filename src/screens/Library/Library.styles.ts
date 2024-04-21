@@ -78,6 +78,8 @@ export const ProfileModifyButtonText = styled.Text`
 export const BookListContainerView = styled.View`
   height: 100%;
   background-color: #f7f4ed;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
 `;
 
 export const BookContainer = styled.View``;
