@@ -45,20 +45,11 @@ const AddBook = () => {
               <React.Fragment key={index}>
                 {index === 0 ? (
                   <>
-                    <FavBookList
-                      representative
-                      memberBookId={item?.memberBookId}
-                      imageUrl={item.thumbnail}
-                      fetchGetMemberBook={fetchGetMemberBook}
-                    />
+                    <FavBookList representative fetchGetMemberBook={fetchGetMemberBook} item={item} />
                     <DashDividerLine />
                   </>
                 ) : (
-                  <FavBookList
-                    memberBookId={item?.memberBookId}
-                    imageUrl={item.thumbnail}
-                    fetchGetMemberBook={fetchGetMemberBook}
-                  />
+                  <FavBookList fetchGetMemberBook={fetchGetMemberBook} item={item} />
                 )}
               </React.Fragment>
             ))}

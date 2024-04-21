@@ -16,7 +16,7 @@ import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import Pagination from '../../../../commons/components/Pagination/Pagination';
 import usePagination from '../../../../commons/hooks/usePagination';
 import { IProps } from './SearchBook.types';
-import { usePostMemberBook } from './hooks/usePostMemberBook';
+import useMovePage from '../../../../commons/hooks/useMovePage';
 
 const SearchBook = ({ route }: IProps) => {
   useManageMargin();
@@ -24,6 +24,7 @@ const SearchBook = ({ route }: IProps) => {
     title: '내 서재',
     left: true,
   });
+  const { movePage } = useMovePage();
   const { isRepresentative } = route.params;
   const [search, setSearch] = useState('');
   const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
@@ -31,7 +32,6 @@ const SearchBook = ({ route }: IProps) => {
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
   const { bookList, callGetSearchBookApi } = useSearchBooks(setTotalPage);
-  const { callPostMemberBook } = usePostMemberBook();
 
   const SearchBook = () => {
     if (search === '') return;
@@ -93,7 +93,7 @@ const SearchBook = ({ route }: IProps) => {
             </View>
             <S.NextButtonStyled
               style={{ height: 50, position: 'absolute', bottom: 10, zIndex: 1 }}
-              onPress={callPostMemberBook(isRepresentative, selectedBook)}
+              onPress={movePage('initQuiz', { isRepresentative, selectedBook })}
             >
               <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
             </S.NextButtonStyled>

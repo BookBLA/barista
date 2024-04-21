@@ -1,5 +1,3 @@
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { defaultValues } from '../../initBookStack.contents';
@@ -8,41 +6,28 @@ import { icons } from '../../../../commons/utils/variablesImages';
 import { Text, Image, TouchableHighlight, Keyboard, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { usePostMemberQuizzes } from './hooks/usePostMemberQuizzes';
+import { usePostMemberBook } from './hooks/usePostMemberBook';
+import { IProps } from './initQuiz.types';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
-import { IProps } from './initQuiz.types';
+import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 
 const InitQuiz = ({ route }: IProps) => {
-  const { memberBookId } = route?.params ?? '';
-  const { movePage } = useMovePage();
+  const { isRepresentative, selectedBook } = route?.params ?? '';
+  useHeaderControl({
+    title: selectedBook.title ?? '',
+  });
   const { control, handleSubmit, watch } = useForm({
     defaultValues,
     resolver: yupResolver(initBookSchema),
   });
-  const { callPostMemberQuizzes } = usePostMemberQuizzes(memberBookId);
+  const { callPostMemberBook } = usePostMemberBook(isRepresentative, selectedBook);
   const reviewValue = watch('review');
 
   return (
     <S.Wrapper>
-      <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', height: '9%' }}>
-        <TouchableOpacity onPress={movePage()}>
-          <Image source={icons.backArrow} style={{ width: 24, height: 24, marginLeft: 14 }} />
-        </TouchableOpacity>
-        <View
-          style={{
-            width: '80%',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'row',
-            height: 'auto',
-          }}
-        >
-          <S.TitleStyled>나미야 잡화점의 기적</S.TitleStyled>
-        </View>
-      </View>
-      <S.ColumnStyled style={{ height: '70%' }}>
+      <S.ColumnStyled style={{ height: '75%' }}>
         <TouchableHighlight
           style={{
             height: '100%',
@@ -172,7 +157,7 @@ const InitQuiz = ({ route }: IProps) => {
           </View>
         </TouchableHighlight>
       </S.ColumnStyled>
-      <S.NextButtonStyled onPress={handleSubmit(callPostMemberQuizzes)}>
+      <S.NextButtonStyled onPress={handleSubmit(callPostMemberBook)}>
         <CustomText color={colors.secondary}>등록하기</CustomText>
       </S.NextButtonStyled>
     </S.Wrapper>

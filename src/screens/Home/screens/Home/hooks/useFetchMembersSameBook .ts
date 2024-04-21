@@ -6,6 +6,7 @@ import { filterOptions } from '../../../HomeStack.constants';
 export const useFetchMembersSameBook = (filter: TFilterState) => {
   const [data, setData] = useState([]);
 
+  // TODO: 성진 - 불필요한 쿼리 파라미터는 보내지 않도록 변경 예정
   const fetchMembersSameBook = useCallback(async () => {
     const params = Object.keys(filter).reduce(
       (acc, key) => {
@@ -18,7 +19,6 @@ export const useFetchMembersSameBook = (filter: TFilterState) => {
       },
       {} as Record<string, string>,
     );
-
     try {
       const response = await getMemberSameBookApi({ params });
       setData(response?.result.content ?? []);
