@@ -1,8 +1,7 @@
-import { ImageSourcePropType } from 'react-native';
+import { IResponseMemberBook } from '../../../screens/InitBook/InitBookStack.types';
 
 export interface FavBookListProps {
   representative?: boolean;
-  memberBookId: string;
-  imageUrl: ImageSourcePropType | undefined;
   fetchGetMemberBook: () => Promise<void>;
+  item: IResponseMemberBook;
 }

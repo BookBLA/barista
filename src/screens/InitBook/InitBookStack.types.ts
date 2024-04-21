@@ -26,6 +26,9 @@ export interface IRequestQuizzes {
 }
 
 export interface IResponseMemberBook {
-  thumbnail: ImageSourcePropType | undefined;
+  thumbnail: string;
   memberBookId: string;
+  imageUrl: string;
+  title: string;
+  authors: string[];
 }
