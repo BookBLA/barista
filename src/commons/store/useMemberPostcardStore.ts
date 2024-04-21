@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { getMemberId } from './memberIdStore';
 import { getMemberPostcardsApi } from '../api/member.api';
 
 interface IMemberPostcardState {
@@ -17,8 +16,7 @@ export const useMemberPostcardStore = create<IMemberPostcardState>((set) => ({
   fetchMemberPostcard: async () => {
     set({ isLoading: true });
     try {
-      const memberId = await getMemberId();
-      const response = await getMemberPostcardsApi(memberId ?? '');
+      const response = await getMemberPostcardsApi();
       set({ memberPostcard: response.result, isLoading: false });
     } catch (error) {
       set({ error, isLoading: false });

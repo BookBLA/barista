@@ -2,7 +2,7 @@ import { Image, TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
-import postcardImage from '../../../../../assets/images/example-postcard.png';
+import postcardImage from '../../../../../assets/images/example-book.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';

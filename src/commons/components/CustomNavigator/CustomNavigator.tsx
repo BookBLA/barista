@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useHasMargin } from '../../store/useHasMargin';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Platform, SafeAreaView } from 'react-native';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
-import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
-import { TRootStackParamList } from './CustomNavigator.types';
+import { NavigationContainer } from '@react-navigation/native';
+import { useAuthNavigation } from '../../hooks/useAuthNavigation';
 import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
@@ -16,12 +16,10 @@ import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/Re
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 import SettingStack from '../../../screens/Setting/SettingStack';
 import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
-import useAuthStore from '../../store/useAuthStore';
 import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
-import useMemberStore from '../../store/useMemberStore';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -43,19 +41,7 @@ const screens = [
 
 export const CustomNavigator = () => {
   const { hasMargin } = useHasMargin();
-  const token = useAuthStore((state) => state.token);
-  const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);
-  const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
-
-  useEffect(() => {
-    // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
-    if (!token && navigationRef.current) {
-      navigationRef.current.navigate('login');
-      // TODO: 성진 - 로그인 페이지로 이동할 때 스택 초기화가 필요함
-    } else {
-      saveMemberInfo();
-    }
-  }, [token]);
+  const { navigationRef } = useAuthNavigation();
 
   return (
     <NavigationContainer ref={navigationRef}>

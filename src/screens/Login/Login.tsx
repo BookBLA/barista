@@ -7,25 +7,21 @@ import useMovePage from '../../commons/hooks/useMovePage';
 import { postTestSignUp } from '../../commons/api/example.api';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import useAuthStore from '../../commons/store/useAuthStore';
-import { useHasMargin } from '../../commons/store/useHasMargin';
-import { saveToken } from '../../commons/store/tokenStore';
-import { saveMemberId } from '../../commons/store/memberIdStore';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 // import {LoginScreen} from "./Login.service"
 
 const Login = () => {
   const { movePage } = useMovePage();
-  // useHasMargin();
+
   useManageMargin();
   const setToken = useAuthStore((state) => state.setToken);
 
   const onClickSignUp = async () => {
     try {
       const response = await postTestSignUp({
-        email: 'althcjstk081@gachon.ac.kr',
+        email: 'string',
       });
       setToken(response.result.accessToken);
-      await saveMemberId(String(response.result.memberSignUpInformationId));
       movePage('tapScreens')();
     } catch (error) {
       console.error(error);
@@ -54,9 +50,6 @@ const Login = () => {
             style={{ width: 300, height: 45 }}
             onPress={handleAppleSignIn}
           />
-          <S.LoginButton onPress={movePage('kakao')}>
-            <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
-          </S.LoginButton>
         </>
       ) : (
         <S.LoginButton onPrssed={movePage('kakao')}>
