@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { getMemberSameBookApi } from '../../../../../commons/api/member.api';
-import { getMemberId } from '../../../../../commons/store/memberIdStore';
 import { TFilterKeys, TFilterState } from '../../../HomeStack.types';
 import { filterOptions } from '../../../HomeStack.constants';
 
@@ -21,9 +20,8 @@ export const useFetchMembersSameBook = (filter: TFilterState) => {
     );
 
     try {
-      const memberId = (await getMemberId()) ?? '';
-      const response = await getMemberSameBookApi(memberId, { params });
-      setData(response.result.content);
+      const response = await getMemberSameBookApi({ params });
+      setData(response?.result.content ?? []);
     } catch (error) {
       console.error('error', error);
     }
