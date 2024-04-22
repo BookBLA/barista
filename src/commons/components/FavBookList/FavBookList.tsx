@@ -1,19 +1,14 @@
-import { icons } from '../../utils/variablesImages';
 import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
 import { useErrorMessage } from '../../store/useErrorMessage';
+import { icons } from '../../utils/variablesImages';
 
-export const FavBookList: React.FC<FavBookListProps> = ({
-  representative = false,
-  memberBookId,
-  imageUrl,
-  fetchGetMemberBook,
-}) => {
+export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
   const callDeleteMemberBook = async () => {
     try {
-      await deleteMemberBookApi(memberBookId);
+      await deleteMemberBookApi(item.memberBookId);
       await fetchGetMemberBook();
     } catch (error) {
       if (error instanceof Error) {
@@ -24,10 +19,10 @@ export const FavBookList: React.FC<FavBookListProps> = ({
 
   return (
     <S.BookListStyled>
-      <Image style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }} source={imageUrl} />
+      <Image style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }} source={{ uri: item.thumbnail }} />
       <S.ColumnStyled>
-        <S.BookTitleStyled>나미야 잡화점의 기적</S.BookTitleStyled>
-        <S.BookAuthorStyled>히가시노 게이고</S.BookAuthorStyled>
+        <S.BookTitleStyled>{item.title}</S.BookTitleStyled>
+        <S.BookAuthorStyled>{item.authors.join(', ')}</S.BookAuthorStyled>
         <View
           style={{
             width: '100%',

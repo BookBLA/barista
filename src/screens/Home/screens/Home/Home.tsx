@@ -11,7 +11,6 @@ import Header from './units/Header/Header';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import Menu from './units/Menu/Menu';
 import Profile from './units/Profile/Profile';
-import Lock from './units/Lock/Lock';
 
 const Home = () => {
   useManageMargin();
@@ -31,17 +30,17 @@ const Home = () => {
       <S.Wrapper>
         <Header />
         <Menu handlePresentModalPress={handlePresentModalPress} filter={filter} setFilter={setFilter} />
-        {!data.length ? (
+        {data.length ? (
           <S.PositionedOverlay>
             {/* <Lock /> */}
             <S.ContentWrapper>
-              {tempData.map((item: IDdata, index) => {
+              {data.map((item: IDdata, index) => {
                 if (index % 2 === 0) {
                   return (
                     <React.Fragment key={index}>
                       <S.RowStyled>
                         <Profile item={item} />
-                        {index + 1 < tempData.length && <Profile item={item} />}
+                        {index + 1 < data.length && <Profile item={data[index + 1]} />}
                       </S.RowStyled>
                       <S.Line></S.Line>
                     </React.Fragment>
