@@ -58,7 +58,7 @@ const ModifyUserinfo = () => {
         openKakaoRoomUrl: response.result.openKakaoRoomUrl,
         studentIdImageUrl: response.result.studentIdImageUrl,
         profileImageUrl: response.result.profileImageUrl,
-        birthDate: response.result,
+        birthDate: response.result.birthDate,
       });
       setName(response.result.name);
       setPhNum(response.result.phoneNumber);
@@ -71,15 +71,15 @@ const ModifyUserinfo = () => {
   const callPutMemberProfileApi = async () => {
     try {
       const response = await putMemberProfileApi({
-        name: userInfo.name,
+        name: name,
         birthDate: userInfo.birthDate,
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
+        phoneNumber: phNum,
         studentIdImageUrl: userInfo.studentIdImageUrl,
         profileImageUrl: userInfo.profileImageUrl,
-        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
+        openKakaoRoomUrl: link,
       });
       console.log('callPutMemberProfileApi', response);
     } catch (error) {

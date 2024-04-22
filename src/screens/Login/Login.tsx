@@ -43,7 +43,7 @@ const Login = () => {
         SNS 간편 로그인
       </CustomText>
 
-      {Platform.OS === 'ios' ? (
+      {Platform.OS === 'ios' && (
         <>
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
@@ -53,11 +53,10 @@ const Login = () => {
             onPress={handleAppleSignIn}
           />
         </>
-      ) : (
-        <S.LoginButton onPrssed={movePage('kakao')}>
-          <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
-        </S.LoginButton>
       )}
+      <S.LoginButton onPress={movePage('kakao')}>
+        <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
+      </S.LoginButton>
     </S.Wrapper>
   );
 };
