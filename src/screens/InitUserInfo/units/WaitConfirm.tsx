@@ -8,17 +8,61 @@ import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
 import useMovePage from '../../../commons/hooks/useMovePage';
+import { getMemberProfileStatusesApi } from '../../../commons/api/memberProfille.api';
+
 const WaitConfirm = () => {
   const [loading, setLoading] = useState(true);
+  const [studentIdImage, setStudentIdImage] = useState('' as string);
+  const [openChat, setOpenChat] = useState('' as string);
+  const [profileImage, setProfileImage] = useState('' as string);
+
+  const [rejectList, setRejectList] = useState([0]);
+
+  const addValueToList = (NewValue: number) => {
+    // Adding a new value to the list using setRejectList
+    setRejectList((prevList) => [...prevList, NewValue]);
+  };
+
   const { movePage } = useMovePage();
   // Simulating loading with useEffect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
+    callGetMemberProfileStatusApi(); // Call the function
+    // ifRejected();
+    addValueToList(3);
   }, []);
+  useEffect(() => {
+    if (rejectList.length > 0) {
+      movePage('failedSign', { rejectCase: rejectList })();
+      console.log('failedSign', rejectList);
+    } else {
+      movePage('completePage')();
+      console.log('completePage');
+    }
+  }, [loading]);
+
+  const callGetMemberProfileStatusApi = async () => {
+    try {
+      const response = await getMemberProfileStatusesApi();
+      console.log('callGetMemberProfileStatusApi', response);
+      setStudentIdImage(response.result.studentIdImageStatus);
+      setOpenChat(response.result.openKakaoRoomUrlStatus);
+      setProfileImage(response.result.profileImageUrlStatus);
+      ifRejected();
+    } catch (error) {
+      console.log('callGetMemberProfileStatusApin error', error);
+    }
+  };
+  const ifRejected = () => {
+    // if (studentIdImage === 'DONE' && openChat === 'DONE' && profileImage === 'DONE')
+    if (studentIdImage === 'DENIAL') addValueToList(0);
+    else if (openChat === 'INACCESSIBLE') addValueToList(1);
+    else if (openChat === 'NOT_DEFAULT') addValueToList(2);
+    else if (profileImage === 'INAPPROPRIATE') addValueToList(3);
+    console.log('status', studentIdImage, openChat, profileImage);
+    console.log('list:', rejectList);
+    setLoading(false);
+  };
+
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={75} />

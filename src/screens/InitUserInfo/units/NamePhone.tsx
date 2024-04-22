@@ -32,8 +32,7 @@ const NamePhone = () => {
   };
 
   const nextPage = () => {
-    updateUserInfo('name', name);
-    updateUserInfo('phoneNumber', phNum);
+    updateUserInfo({ name: name, phoneNumber: phNum });
     movePage('schoolStudentID')();
   };
 

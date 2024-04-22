@@ -23,7 +23,7 @@ const GenderBirth = () => {
 
   const dateSelect = () => {
     const dateString = date.toISOString().slice(0, 10);
-    updateUserInfo('birthDate', dateString);
+    updateUserInfo({ birthDate: dateString });
     toggle();
   };
 
@@ -49,13 +49,13 @@ const GenderBirth = () => {
           <S.RowStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === 'FEMALE'}
-              onPress={() => updateUserInfo('gender', 'FEMALE')}
+              onPress={() => updateUserInfo({ gender: 'FEMALE' })}
             >
               <S.ButtonTextStyled isSelect={userInfo.gender === 'FEMALE'}>여성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === 'MALE'}
-              onPress={() => updateUserInfo('gender', 'MALE')}
+              onPress={() => updateUserInfo({ gender: 'MALE' })}
             >
               <S.ButtonTextStyled isSelect={userInfo.gender === 'MALE'}>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>

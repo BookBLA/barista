@@ -30,7 +30,7 @@ const SchoolStudentID = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   useEffect(() => {
-    updateUserInfo('schoolName', '가천대학교');
+    updateUserInfo({ schoolName: '가천대학교' });
   }, []);
 
   //이미지 업로드 함수
@@ -57,7 +57,7 @@ const SchoolStudentID = () => {
 
     const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
 
-    if (uploadedFileUrl) updateUserInfo('studentIdImageUrl', uploadedFileUrl);
+    if (uploadedFileUrl) updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
   };
 
   return (

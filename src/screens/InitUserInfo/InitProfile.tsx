@@ -6,6 +6,7 @@ import OpenChatLink from './units/OpenChatLink';
 import WaitConfirm from './units/WaitConfirm';
 import InfoOpenChat from './units/InfoOpenChat';
 import useManageMargin from '../../commons/hooks/useManageMargin';
+import FailedSign from './units/FailedSign';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ const screens = [
   { name: 'waitConfirm', component: WaitConfirm },
   { name: 'completePage', component: CompletePage },
   { name: 'infoOpenChat', component: InfoOpenChat },
+  { name: 'failedSign', component: FailedSign },
 ];
 
 const InitProfileStack = () => {

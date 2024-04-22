@@ -56,7 +56,7 @@ const ProfileImage = () => {
   const { movePage } = useMovePage();
 
   const { updateUserInfo, userInfo } = useUserStore();
-  //   const [imageUrl, setImageUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   //이미지 업로드 함수
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
@@ -79,9 +79,10 @@ const ProfileImage = () => {
     }
 
     const randomId = uuid.v4();
+    setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
 
-    if (uploadedFileUrl) updateUserInfo('profileImageUrl', uploadedFileUrl);
+    if (uploadedFileUrl) updateUserInfo({ profileImageUrl: uploadedFileUrl });
     handleCloseBottomSheet();
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
@@ -111,9 +112,7 @@ const ProfileImage = () => {
                   : { uri: userInfo.profileImageUrl }
               }
               style={
-                userInfo.profileImageUrl === ''
-                  ? { height: 190, aspectRatio: 1 }
-                  : { height: 190, aspectRatio: 1, borderRadius: 100 }
+                imageUrl === '' ? { height: 190, aspectRatio: 1 } : { height: 190, aspectRatio: 1, borderRadius: 100 }
               }
             />
           </TouchableOpacity>
