@@ -19,6 +19,8 @@ httpApi.interceptors.request.use(
 
 httpApi.interceptors.response.use(
   (response) => {
+    console.debug(response.status);
+    console.debug(response.data);
     return response;
   },
   async (error) => {

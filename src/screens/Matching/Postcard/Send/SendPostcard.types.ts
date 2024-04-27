@@ -7,8 +7,8 @@ export enum EPostcardStatus {
 }
 
 export enum EGender {
-  MAN,
-  WOMAN,
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
 }
 
 export interface ISendPostcardProps {

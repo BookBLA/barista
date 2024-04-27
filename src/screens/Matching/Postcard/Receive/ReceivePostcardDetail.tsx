@@ -44,7 +44,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               <S.UserInfoWrapper>
                 <S.UserInfoNameWrapper>
                   <S.UserNameText>방근호 | 21</S.UserNameText>
-                  <S.GenderIconStyled source={EGender.MAN ? manIcon : womanIcon} />
+                  <S.GenderIconStyled source={EGender.MALE ? manIcon : womanIcon} />
                 </S.UserInfoNameWrapper>
                 <S.SchoolNameText>가천대</S.SchoolNameText>
               </S.UserInfoWrapper>
