@@ -39,7 +39,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText>{`${userName} | ${age}`}</S.UserNameText>
-              <S.GenderIconStyled source={gender === EGender.MAN ? manIcon : womanIcon} />
+              <S.GenderIconStyled source={gender === EGender.MALE ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
             <S.SchoolNameText>{schoolName}</S.SchoolNameText>
             <S.BookInfoText>{`${bookName} · ${bookAuthor}`}</S.BookInfoText>
@@ -121,7 +121,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
             <S.UserInfoWrapper>
               <S.UserInfoNameWrapper>
                 <S.UserNameText style={{ fontSize: 16 }}>{`${userName} | ${age}`}</S.UserNameText>
-                <S.GenderIconStyled source={gender === EGender.MAN ? manIcon : womanIcon} />
+                <S.GenderIconStyled source={gender === EGender.MALE ? manIcon : womanIcon} />
               </S.UserInfoNameWrapper>
               <S.ModalSchoolNameText>{schoolName}</S.ModalSchoolNameText>
             </S.UserInfoWrapper>
