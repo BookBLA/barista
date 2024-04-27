@@ -41,7 +41,7 @@ const screens = [
 ];
 
 export const CustomNavigator = () => {
-  const { hasMargin } = useHasMargin();
+  const hasMargin = useHasMargin((state) => state.hasMargin);
   const navigationRef = useAuthNavigation();
   const getInitialRouteName = useInitialRouteName();
 
