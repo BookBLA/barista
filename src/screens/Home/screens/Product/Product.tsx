@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
-import Header from '../Home/units/Header/Header';
 import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
 
 const Product = () => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  useManageMargin();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -20,7 +17,6 @@ const Product = () => {
 
   return (
     <S.Wrapper>
-      <Header />
       <S.BodyWrapper>
         <CustomText> 다음 무료 엽서 충전까지</CustomText>
         <CustomText size="80px" color={colors.primary}>

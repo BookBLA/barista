@@ -4,22 +4,18 @@ import { IDdata, TFilterKeys } from '../../HomeStack.types';
 import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
 import { useFetchMembersSameBook } from './hooks/useFetchMembersSameBook ';
 import * as S from '../../HomeStack.styles';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import Bottom from './units/Bottom/Bottom';
 import Error from './units/Error/Error';
-import Header from './units/Header/Header';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import Menu from './units/Menu/Menu';
 import Profile from './units/Profile/Profile';
 
 const Home = () => {
-  useManageMargin();
   const [filter, setFilter] = useState(initStates);
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const { bottomRef, handleOpenBottomSheet } = useBottomSheet();
   const { data } = useFetchMembersSameBook(filter);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
-  const tempData = new Array(11).fill(0);
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
     handleOpenBottomSheet();
@@ -28,35 +24,37 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        <Header />
         <Menu handlePresentModalPress={handlePresentModalPress} filter={filter} setFilter={setFilter} />
         {data.length ? (
-          <S.PositionedOverlay>
+          <S.PositionedWrapper>
             {/* <Lock /> */}
             <S.ContentWrapper>
               {data.map((item: IDdata, index) => {
                 if (index % 2 === 0) {
                   return (
                     <React.Fragment key={index}>
-                      <S.RowStyled>
+                      <S.RowWrapper>
                         <Profile item={item} />
                         {index + 1 < data.length && <Profile item={data[index + 1]} />}
-                      </S.RowStyled>
-                      <S.Line></S.Line>
+                      </S.RowWrapper>
+                      <S.Line />
                     </React.Fragment>
                   );
                 }
               })}
             </S.ContentWrapper>
-          </S.PositionedOverlay>
+          </S.PositionedWrapper>
         ) : (
           <Error />
         )}
       </S.Wrapper>
 
-      <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
-        <Bottom setFilter={setFilter} selectedFilter={selectedFilter} filter={filter} />
-      </CustomBottomSheetModal>
+      <CustomBottomSheetModal
+        ref={bottomRef}
+        index={0}
+        snapPoints={snapPoints}
+        children={<Bottom setFilter={setFilter} selectedFilter={selectedFilter} filter={filter} />}
+      />
     </>
   );
 };
