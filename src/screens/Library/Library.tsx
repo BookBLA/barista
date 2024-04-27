@@ -25,7 +25,7 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
-import { getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
+import { deleteBook, getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 
 type RootStackParamList = {
@@ -127,6 +127,12 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   };
 
+  const deleteBookInBookList = async () => {
+    await deleteBook(selectedBookId);
+    await fetchMyLibraryInfo();
+    modifyBookModalRef.current?.close();
+  };
+
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
     //@ts-ignore
@@ -163,7 +169,7 @@ const Library: React.FC<Props> = ({ route }) => {
       await uploadImageToS3(result?.assets[0].uri, memberId);
       setSelectedImage(result?.assets[0].uri);
     }
-    handleCloseBottomSheet(); //바텀시트 닫음
+    handleCloseBottomSheet();
   };
 
   useManageMargin();
@@ -348,15 +354,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify
-            memberId={memberId}
-            memberBookId={selectedBookId}
-            bookImageUrl={
-              //@ts-ignore
-              libraryInfo?.bookResponses.find((bookResponse) => bookResponse.memberBookId === selectedBookId)
-                .bookImageUrl
-            }
-          />
+          <MyBookInfoModify memberId={memberId} memberBookId={selectedBookId} deleteBookFunc={deleteBookInBookList} />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
 

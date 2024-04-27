@@ -1,13 +1,13 @@
 export interface IMyBookInfoModifyProps {
   memberId: number;
   memberBookId: number;
-  bookImageUrl: string | undefined;
+  deleteBookFunc: () => void;
 }
 
 export type TBookInfo = {
   memberBookId: number;
   title: string;
-  thumbnail: string;
+  imageUrl: string;
   authors: string[];
   representative: boolean;
 };
@@ -18,4 +18,5 @@ export type TBookQuizInfo = {
   firstChoice: string;
   secondChoice: string;
   thirdChoice: string;
+  review: string;
 };
