@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
-import { IMyBookInfoModifyProps } from './MyBookInfoModify.types';
+import React, { useEffect, useState } from 'react';
+import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
+import { getBookInfo, getBookQuizInfo } from '../../../commons/api/library.api';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, bookImageUrl }) => {
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
-  const [bookQuizText, onChangeBookQuizText] = useState('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
+  const [bookQuizText, onChangeBookQuizText] = useState<string>('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
   const [bookQuizFirstAnswerText, onChangeBookQuizFirstAnswerText] = useState('첫 번째 답이 들어갈 자리입니다.');
   const [bookQuizSecondAnswerText, onChangeBookQuizSecondAnswerText] = useState('두 번째 답이 들어갈 자리입니다.');
   const [bookQuizThirdAnswerText, onChangeBookQuizThirdAnswerText] = useState('세 번째 답이 들어갈 자리입니다.');
   const [isModifiableBookReview, setIsModifiableBookReview] = useState(false);
   const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
+  const [bookInfo, setBookInfo] = useState<TBookInfo>();
 
   const handleOnModifyBookReview = () => {
     setIsModifiableBookReview(!isModifiableBookReview);
@@ -25,6 +27,24 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
     setIsModifiableBookQuestion(!isModifiableBookQuestion);
     //todo isModifiable이 false가 되면 저장하는 api 호출
   };
+
+  const fetchBookQuiz = async (memberBookId: number) => {
+    const response = await getBookQuizInfo(memberBookId);
+    onChangeBookQuizText(response.quiz);
+    onChangeBookQuizFirstAnswerText(response.firstChoice);
+    onChangeBookQuizSecondAnswerText(response.secondChoice);
+    onChangeBookQuizThirdAnswerText(response.thirdChoice);
+  };
+
+  const fetchBookInfo = async (memberBookId: number) => {
+    const response = await getBookInfo(memberBookId);
+    setBookInfo(response);
+  };
+
+  useEffect(() => {
+    fetchBookInfo(memberBookId);
+    fetchBookQuiz(memberBookId);
+  }, []);
 
   return (
     <>
@@ -37,14 +57,14 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
         <ScrollView>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={require('../../../../assets/images/example-book.png')} />
+              <S.BookImage source={{ uri: bookImageUrl }} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
-                한줄로 책 이름 들어갈 자리 한줄로 책 이름 들어갈 자리
+                {bookInfo?.title}
               </CustomText>
               <CustomText font="fontLight" size="14px" color="#616C90">
-                한줄로 책 이름 들어갈 자리 한줄로
+                {bookInfo?.authors.join(', ')}
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>

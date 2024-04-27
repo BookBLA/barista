@@ -26,7 +26,6 @@ import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import { getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
-import useAuthStore from '../../commons/store/useAuthStore';
 import { TBookResponses, TLibrary } from './Library.types';
 
 type RootStackParamList = {
@@ -55,10 +54,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
   const navigation = useNavigation();
   const memberId = useMemberStore((state) => state.memberInfo.id);
-  const setToken = useAuthStore((state) => state.setToken);
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
+  const [selectedBookId, setSelectedBookId] = useState(0);
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -98,7 +97,8 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const { movePage } = useMovePage();
 
-  const handleModifyBookModalRef = useCallback(() => {
+  const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
+    setSelectedBookId(bookMemberId);
     modifyBookModalRef.current?.present();
   }, []);
 
@@ -289,7 +289,13 @@ const Library: React.FC<Props> = ({ route }) => {
             {topFloorBookList.map((book) => (
               <S.BookTouchableOpacity
                 key={book.memberBookId}
-                onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}
+                onPress={() => {
+                  if (isYourLibrary) {
+                    handleViewBookInfoModalRef();
+                  } else {
+                    handleModifyBookModalRef(book.memberBookId);
+                  }
+                }}
               >
                 <S.BookImage source={{ uri: book.bookImageUrl }} />
                 {book.representative && (
@@ -312,7 +318,13 @@ const Library: React.FC<Props> = ({ route }) => {
             {secondFloorBookList.map((book) => (
               <S.BookTouchableOpacity
                 key={book.memberBookId}
-                onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}
+                onPress={() => {
+                  if (isYourLibrary) {
+                    handleViewBookInfoModalRef();
+                  } else {
+                    handleModifyBookModalRef(book.memberBookId);
+                  }
+                }}
               >
                 <S.BookImage source={{ uri: book.bookImageUrl }} />
               </S.BookTouchableOpacity>
@@ -333,11 +345,21 @@ const Library: React.FC<Props> = ({ route }) => {
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
       </S.BookListContainerView>
+
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify bookId={123} />
+          <MyBookInfoModify
+            memberId={memberId}
+            memberBookId={selectedBookId}
+            bookImageUrl={
+              //@ts-ignore
+              libraryInfo?.bookResponses.find((bookResponse) => bookResponse.memberBookId === selectedBookId)
+                .bookImageUrl
+            }
+          />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
         <S.ProfileImageBottomSheetContainer>
           <S.ProfileImageModificationButton onPress={openImagePickerAsync}>
@@ -347,6 +369,7 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.ProfileImageModificationButton>
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewStyle
@@ -356,6 +379,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewBookInfo
@@ -366,6 +390,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       {sendPostcardProps && (
         <CustomModal modalConfig={sendPostcardModalConfig}>
           <SendPostcardModal
