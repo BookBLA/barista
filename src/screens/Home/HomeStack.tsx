@@ -3,6 +3,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
 import Product from './screens/Product/Product';
 import Home from './screens/Home/Home';
+import useHeaderControl from '../../commons/hooks/useHeaderControl';
+import Header from './screens/Home/units/Header/Header';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -11,6 +14,11 @@ const screens = [
 ];
 
 const HomeStack = () => {
+  useManageMargin();
+  useHeaderControl({
+    free: <Header />,
+  });
+
   return (
     <Stack.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (

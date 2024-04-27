@@ -10,7 +10,7 @@ export const Wrapper = styled.SafeAreaView`
   background-color: #fff;
 `;
 
-export const RowStyled = styled.View`
+export const RowWrapper = styled.View`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -18,6 +18,7 @@ export const RowStyled = styled.View`
   justify-content: space-between;
 `;
 
+// TODO: 성진 - FlatList로 변경 예정
 export const ContentWrapper = styled.ScrollView`
   display: flex;
   flex-wrap: wrap;
@@ -32,9 +33,9 @@ export const Line = styled.View`
   border-color: #f1ead5;
 `;
 
-export const PositionedOverlay = styled.View`
+export const PositionedWrapper = styled.View`
   position: relative;
-  height: 77%;
+  height: 85%;
 `;
 
 export const BodyWrapper = styled.View`
@@ -43,6 +44,7 @@ export const BodyWrapper = styled.View`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 91%;
+  height: 100%;
   background-color: ${colors.background};
+  border-radius: 20px 20px 0px 0px;
 `;

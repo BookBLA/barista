@@ -5,13 +5,12 @@ export const MenuWrapper = styled.View`
   display: flex;
   flex-direction: column;
   padding: 20px 0px 0px 20px;
-  height: 14%;
+  height: 15%;
 `;
 
 export const FilterWrapper = styled.ScrollView`
   display: flex;
   flex-direction: row;
-  margin-bottom: 19px;
 `;
 
 export const FilterBox = styled.TouchableOpacity`
@@ -21,6 +20,7 @@ export const FilterBox = styled.TouchableOpacity`
   border-radius: 30px;
   margin-right: 6px;
   padding: 4px 10px;
+  height: 30px;
   background-color: ${({ isSelect }: { isSelect: boolean }) => (isSelect ? colors.buttonMain : '#D6EFFB')};
 `;
 //
