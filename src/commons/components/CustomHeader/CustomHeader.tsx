@@ -8,7 +8,7 @@ import { useHasMargin } from '../../store/useHasMargin';
 
 export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPressLeft, right }) => {
   const { movePage } = useMovePage();
-  const { hasMargin } = useHasMargin();
+  const hasMargin = useHasMargin((state) => state.hasMargin);
 
   return (
     <S.Wrapper hasMargin={hasMargin}>
