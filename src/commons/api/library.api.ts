@@ -1,4 +1,4 @@
-import { Get, Put } from '../utils/http.api';
+import { Delete, Get, Put } from '../utils/http.api';
 import { TBookInfo, TBookQuizInfo } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
@@ -29,4 +29,9 @@ type updateBookInfo = {
 
 export const updateBookInfo = async ({ memberBookId, ...data }: updateBookInfo) => {
   await Put(`quizzes/${memberBookId}`, data);
+};
+
+export const deleteBook = async (memberBookId: number) => {
+  console.log('삭제');
+  await Delete(`member-books/${memberBookId}`);
 };

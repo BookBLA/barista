@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ScrollView } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookInfo } from '../../../commons/api/library.api';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
   const [bookQuizText, onChangeBookQuizText] = useState<string>('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
@@ -258,8 +258,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               </S.BookQuizInfoView>
             </S.BookQuizAnswerContainer>
           </S.BookQuizContainer>
-          {/*todo 책 삭세 시 모달 종료되면서, 내 서재에서는 한 칸씩 밀려야 할듯*/}
-          <S.BookRemoveButton>
+          <S.BookRemoveButton onPress={deleteBookFunc}>
             <CustomText font="fontMedium" size="14px" color="white">
               서재에서 책 삭제하기
             </CustomText>
