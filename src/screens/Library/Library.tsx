@@ -348,15 +348,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify
-            memberId={memberId}
-            memberBookId={selectedBookId}
-            bookImageUrl={
-              //@ts-ignore
-              libraryInfo?.bookResponses.find((bookResponse) => bookResponse.memberBookId === selectedBookId)
-                .bookImageUrl
-            }
-          />
+          <MyBookInfoModify memberId={memberId} memberBookId={selectedBookId} />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
 

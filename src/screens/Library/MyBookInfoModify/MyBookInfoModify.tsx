@@ -6,9 +6,9 @@ import { CustomText } from '../../../commons/components/TextComponents/CustomTex
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
-import { getBookInfo, getBookQuizInfo } from '../../../commons/api/library.api';
+import { getBookInfo, getBookQuizInfo, updateBookInfo } from '../../../commons/api/library.api';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, bookImageUrl }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId }) => {
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
   const [bookQuizText, onChangeBookQuizText] = useState<string>('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
@@ -18,14 +18,31 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [isModifiableBookReview, setIsModifiableBookReview] = useState(false);
   const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
+  const [bookImageUrl, setBookImageUrl] = useState<string>();
 
-  const handleOnModifyBookReview = () => {
-    setIsModifiableBookReview(!isModifiableBookReview);
+  const putUpdateBookInfo = async () => {
+    try {
+      await updateBookInfo({
+        memberBookId,
+        quiz: bookQuizText,
+        review: bookReviewText,
+        quizAnswer: bookQuizFirstAnswerText,
+        firstWrongChoice: bookQuizSecondAnswerText,
+        secondWrongChoice: bookQuizThirdAnswerText,
+      });
+    } catch (err) {
+      console.error('업데이트에 실패하였습니다.', err);
+    }
   };
 
-  const handleOnModifyBookQuestion = () => {
-    setIsModifiableBookQuestion(!isModifiableBookQuestion);
-    //todo isModifiable이 false가 되면 저장하는 api 호출
+  const handleOnModifyBookReview = (status: boolean) => {
+    setIsModifiableBookReview(status);
+    if (!status) putUpdateBookInfo();
+  };
+
+  const handleOnModifyBookQuestion = (status: boolean) => {
+    setIsModifiableBookQuestion(status);
+    if (!status) putUpdateBookInfo();
   };
 
   const fetchBookQuiz = async (memberBookId: number) => {
@@ -34,11 +51,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
     onChangeBookQuizFirstAnswerText(response.firstChoice);
     onChangeBookQuizSecondAnswerText(response.secondChoice);
     onChangeBookQuizThirdAnswerText(response.thirdChoice);
+    onChangeBookReviewText(response.review);
   };
 
   const fetchBookInfo = async (memberBookId: number) => {
     const response = await getBookInfo(memberBookId);
     setBookInfo(response);
+    setBookImageUrl(response.imageUrl);
   };
 
   useEffect(() => {
@@ -50,7 +69,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
     <>
       <KeyboardAwareScrollView
         extraScrollHeight={120}
-        enableOnAndroid={true}
+        enableOnAndroid
         keyboardShouldPersistTaps="handled"
         overScrollMode="never"
       >
@@ -75,13 +94,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 한 줄 감상문
               </CustomText>
               {isModifiableBookReview ? (
-                <S.ModifyButton onPress={handleOnModifyBookReview}>
+                <S.ModifyButton onPress={() => handleOnModifyBookReview(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookReview}>
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookReview(true)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
@@ -111,7 +130,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
             )}
             <S.BookReviewLengthView>
               <CustomText font="fontMedium" size="10px" color={colors.textGray3}>
-                {bookReviewText.length}/100자
+                {bookReviewText?.length ?? 0}/100자
               </CustomText>
             </S.BookReviewLengthView>
           </S.BookReviewContainer>
@@ -122,13 +141,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 독서 퀴즈
               </CustomText>
               {isModifiableBookQuestion ? (
-                <S.ModifyButton onPress={handleOnModifyBookQuestion}>
+                <S.ModifyButton onPress={() => handleOnModifyBookQuestion(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookQuestion}>
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookQuestion(true)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
