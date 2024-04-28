@@ -29,7 +29,7 @@ export const ColumnStyled = styled.View`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  /* background-color: mistyrose; */
+  background-color: mistyrose;
 `;
 export const TouchableStyled = styled.TouchableHighlight`
   height: 80%;

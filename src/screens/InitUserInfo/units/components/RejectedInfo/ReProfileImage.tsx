@@ -1,21 +1,22 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import * as P from '../../Library/Library.styles';
-import { TitleProgress2 } from './TitleProgress2';
-import useMovePage from '../../../commons/hooks/useMovePage';
-import { useUserStore } from '../../../commons/store/useUserinfo';
+import { colors } from '../../..//../../commons/styles/variablesStyles';
+import * as S from '../../../InitUserInfo.styles';
+import * as P from '../../../../Library/Library.styles';
+import { TitleProgress2 } from '../..//TitleProgress2';
+import useMovePage from '../../../../../commons/hooks/useMovePage';
+import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import CustomBottomSheetModal from '../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
+import CustomBottomSheetModal from '../../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
-import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
-import { img } from '../../../commons/utils/variablesImages';
-import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
+import { useBottomSheet } from '../../../../../commons/hooks/useBottomSheet';
+import { img } from '../../../../../commons/utils/variablesImages';
+import { uploadImageToS3 } from '../../../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
+import { useCounter } from '../../../../../commons/store/useCounter';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -26,9 +27,10 @@ const profileExList = [
   [img.profileEx6, '본인이 드러나지 않는 사진'],
 ];
 
-const ProfileImage = () => {
+const ReProfileImage = () => {
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
 
+  const { increment } = useCounter();
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
 
   //'앨범에서 선택' 바텀시트 모달
@@ -109,7 +111,7 @@ const ProfileImage = () => {
             <Image
               source={
                 userInfo.profileImageUrl === ''
-                  ? require('../../../../assets/images/icons/Circle.png')
+                  ? require('../../../../../../assets/images/icons/Circle.png')
                   : { uri: imageUrl }
               }
               style={
@@ -213,8 +215,11 @@ const ProfileImage = () => {
         </ScrollView>
       </CustomBottomSheetModal>
       <S.NextButtonStyled
-        onPress={userInfo.profileImageUrl === '' ? undefined : movePage('openChatLink')}
-        style={{ backgroundColor: userInfo.profileImageUrl === '' ? colors.buttonAuthToggle : colors.primary }}
+        onPress={userInfo.profileImageUrl === '' && imageUrl === '' ? undefined : () => increment()}
+        style={{
+          backgroundColor:
+            userInfo.profileImageUrl === '' && imageUrl === '' ? colors.buttonAuthToggle : colors.primary,
+        }}
       >
         <Text
           style={{
@@ -230,4 +235,4 @@ const ProfileImage = () => {
   );
 };
 
-export default ProfileImage;
+export default ReProfileImage;

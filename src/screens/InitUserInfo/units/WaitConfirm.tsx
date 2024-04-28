@@ -8,17 +8,96 @@ import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
 import useMovePage from '../../../commons/hooks/useMovePage';
+import { getMemberProfileStatusesApi, postMemberProfileApi } from '../../../commons/api/memberProfile.api';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
+import { useUserStore } from '../../../commons/store/useUserinfo';
+
 const WaitConfirm = () => {
   const [loading, setLoading] = useState(true);
+  const [rejectList, setRejectList] = useState([]);
+
+  const { updateUserInfo, userInfo } = useUserStore();
+  useManageMargin();
+
+  const addValueToList = (NewValue: number) => {
+    // Adding a new value to the list using setRejectList
+    setRejectList((prevList) => [...prevList, NewValue]);
+  };
+
   const { movePage } = useMovePage();
+
+  useEffect(() => {
+    callPostMemberProfileAPi();
+  }, []);
+
   // Simulating loading with useEffect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
+    if (loading) {
+      memberStatus();
+    } else {
+      if (rejectList.length > 0) {
+        //거절 된 것이 있으면 failedSign으로 이동
+        movePage('failedSign', { rejectCase: rejectList })();
+        console.log('failedSign', rejectList);
+      } else {
+        movePage('completePage')();
+      }
+    }
+  }, [loading]);
 
-    return () => clearTimeout(timer);
-  }, []);
+  const memberStatus = async () => {
+    await callGetMemberProfileStatusApi();
+  };
+
+  const callPostMemberProfileAPi = async () => {
+    try {
+      // await updateUserInfo('openKakaoRoomUrl', link);
+      console.log('userInfo', userInfo);
+      const response = await postMemberProfileApi({
+        name: userInfo.name,
+        birthDate: userInfo.birthDate,
+        gender: userInfo.gender,
+        schoolName: userInfo.schoolName,
+        schoolEmail: userInfo.schoolEmail,
+        phoneNumber: userInfo.phoneNumber,
+        studentIdImageUrl: userInfo.studentIdImageUrl,
+        profileImageUrl: userInfo.profileImageUrl,
+        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
+      });
+      console.log('callPostMemberProfileApi', response);
+    } catch (error) {
+      console.log('callPostMemberProfileApi error', error);
+    }
+  };
+
+  const callGetMemberProfileStatusApi = async () => {
+    try {
+      const response = await getMemberProfileStatusesApi();
+      console.log('callGetMemberProfileStatusApi', response.result);
+      const { studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus } = response.result;
+      console.log('status', studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus);
+
+      if (
+        studentIdImageStatus === 'PENDING' &&
+        openKakaoRoomUrlStatus === 'PENDING' &&
+        profileImageUrlStatus === 'PENDING'
+      ) {
+        console.log('모두 대기중');
+        return;
+      }
+
+      if (studentIdImageStatus === 'DENIAL') addValueToList(0);
+      if (openKakaoRoomUrlStatus === 'INACCESSIBLE') addValueToList(1);
+      if (openKakaoRoomUrlStatus === 'NOT_DEFAULT') addValueToList(2);
+      if (profileImageUrlStatus === 'DENIAL') addValueToList(3);
+      // console.log('list:', rejectList);
+
+      setLoading(false); //로딩 끝
+    } catch (error) {
+      console.log('callGetMemberProfileStatusApi error', error);
+    }
+  };
+
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={75} />
@@ -66,9 +145,9 @@ const WaitConfirm = () => {
                   </S.TextStyled>
                 </S.RowStyled>
               </TouchableOpacity>
-              <S.NextButtonStyled onPress={movePage('completePage')}>
+              {/* <S.NextButtonStyled onPress={movePage('completePage')}>
                 <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
-              </S.NextButtonStyled>
+              </S.NextButtonStyled> */}
             </View>
           </S.RoundRectStyled>
         </View>

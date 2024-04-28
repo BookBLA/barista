@@ -11,12 +11,14 @@ import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberAuth';
+import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberEmail';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { Props } from '../InitUserinfo.types';
 import useMemberStore from '../../../commons/store/useMemberStore';
+import useToastStore from '../../../commons/store/useToastStore';
 
-const EmailAuth: React.FC<Props> = ({ route }) => {
+const EmailAuth = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
@@ -30,8 +32,6 @@ const EmailAuth: React.FC<Props> = ({ route }) => {
   const [time, setTime] = useState(300); // 5분을 초 단위로 표현
 
   const [isActive, setIsActive] = useState(false);
-
-  const isRefused = route.params?.isRefused;
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -96,11 +96,16 @@ const EmailAuth: React.FC<Props> = ({ route }) => {
       resetTimer();
       setIsActive(true);
 
-      updateUserInfo('schoolEmail', email);
+      updateUserInfo({ schoolEmail: email });
       setIsSuccess('done'); // 이메일 전송 성공
       console.log('callPostEmailAuthApi', response);
     } catch (error) {
       console.log('callPostAuthApi error', error);
+      if (error.response.data.message === '이메일이 이미 존재합니다.') {
+        showToast({
+          content: '이메일이 이미 존재합니다.',
+        });
+      }
     }
   };
   const callPostAuthVerifyApi = async () => {
@@ -128,7 +133,7 @@ const EmailAuth: React.FC<Props> = ({ route }) => {
       //타이머 시작
       resetTimer();
       setIsActive(true);
-      updateUserInfo('schoolEmail', email);
+      updateUserInfo({ schoolEmail: email });
       console.log('callPutAuthEmailApi', response);
     } catch (error) {
       console.log('callPutAuthEmailApi error', error);
@@ -248,27 +253,27 @@ const EmailAuth: React.FC<Props> = ({ route }) => {
         </TouchableWithoutFeedback>
       </S.ColumnStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-        {isRefused ? (
+        {/* {isRefused ? (
           <S.NextButtonStyled>
             <CustomText font="fontMedium" size="14" color={colors.secondary}>
               수정 완료
             </CustomText>
           </S.NextButtonStyled>
         ) : (
-          <>
-            <TouchableOpacity onPress={movePage()}>
-              <Image source={prevButton} />
-            </TouchableOpacity>
-            {isSuccess !== 'true' ? (
-              <Image source={notYetNextButton} />
-            ) : (
-              <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
-                {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
-                <Image source={nextButton} />
-              </TouchableOpacity>
-            )}
-          </>
+          <> */}
+        <TouchableOpacity onPress={movePage()}>
+          <Image source={prevButton} />
+        </TouchableOpacity>
+        {isSuccess !== 'true' ? (
+          <Image source={notYetNextButton} /> //코드 인증 미완료
+        ) : (
+          <TouchableOpacity onPress={() => handleReset('profileImage')}>
+            {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
+            <Image source={nextButton} />
+          </TouchableOpacity>
         )}
+        {/* </>
+        )} */}
       </View>
     </S.Wrapper>
   );

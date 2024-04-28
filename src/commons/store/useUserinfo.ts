@@ -14,7 +14,8 @@ interface UserInfo {
 
 interface UserState {
   userInfo: UserInfo;
-  updateUserInfo: (field: keyof UserInfo, value: string) => Promise<void>;
+  updateUserInfo: (newUser: object) => Promise<void>;
+  resetUserInfo: () => void;
 }
 
 export const useUserStore = create<UserState>((set) => ({
@@ -29,5 +30,19 @@ export const useUserStore = create<UserState>((set) => ({
     profileImageUrl: '',
     openKakaoRoomUrl: '',
   },
-  updateUserInfo: (field, value) => set((state) => ({ userInfo: { ...state.userInfo, [field]: value } })),
+  updateUserInfo: async (newUser) => set((state) => ({ userInfo: { ...state.userInfo, ...newUser } })),
+  resetUserInfo: () =>
+    set({
+      userInfo: {
+        gender: '',
+        birthDate: '',
+        name: '',
+        phoneNumber: '',
+        schoolName: '',
+        studentIdImageUrl: '',
+        schoolEmail: '',
+        profileImageUrl: '',
+        openKakaoRoomUrl: '',
+      },
+    }),
 }));

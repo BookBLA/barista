@@ -10,5 +10,4 @@ import { Post } from '../utils/http.api';
 //   adAgreementPolicy: boolean;
 // }
 
-export const postPolicyApi = (adAgreementPolicy: any, memberId: number) =>
-  Post(`members/policies?memberId=${memberId}`, adAgreementPolicy);
+export const postPolicyApi = (adAgreementPolicy: any) => Post(`members/policies`, adAgreementPolicy);

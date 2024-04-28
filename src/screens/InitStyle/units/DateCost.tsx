@@ -9,9 +9,9 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 
+const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
 const DateCost = () => {
   // const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
-  const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
   const { updateStyleInfo, styleInfo } = useStyleStore();
 
   const { movePage } = useMovePage();

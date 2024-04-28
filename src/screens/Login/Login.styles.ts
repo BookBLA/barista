@@ -17,10 +17,12 @@ export const InnerWrapper = styled.View`
 `;
 
 export const LogoImage = styled.Image`
-  width: 159px;
-  height: 159px;
+  width: 150px;
+  height: 108px;
+  /* width: '70%'; */
+  /* height: '50%'; */
   margin-top: 162px;
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 `;
 
 export const TitleWrapper = styled.View`
@@ -45,7 +47,7 @@ export const TitleText = styled.Text`
 export const SubTitleText = styled.Text`
   font-size: 14px;
   font-weight: 200;
-  margin-bottom: 16px;
+  margin-bottom: 195px;
 `;
 
 export const SnsText = styled.Text`
@@ -57,4 +59,6 @@ export const SnsText = styled.Text`
 export const LoginButton = styled.TouchableOpacity`
   width: 300px;
   height: 45px;
+  margin-bottom: 14px;
+  margin-top: 18px;
 `;

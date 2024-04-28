@@ -9,13 +9,11 @@ import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useNativeBase } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
 
 const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  const [name, setName] = useState('');
+  const [name, setName] = useState(userInfo.name);
   const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
   const handlePhoneNumberChange = (phNum: string) => {
@@ -32,8 +30,7 @@ const NamePhone = () => {
   };
 
   const nextPage = () => {
-    updateUserInfo('name', name);
-    updateUserInfo('phoneNumber', phNum);
+    updateUserInfo({ name: name, phoneNumber: phNum });
     movePage('schoolStudentID')();
   };
 
@@ -52,6 +49,7 @@ const NamePhone = () => {
             <View style={{ width: '100%', alignItems: 'center' }}>
               <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
               <S.TextFiledStyled
+                maxLength={10} // 최대 길이 제한
                 defaultValue={userInfo.name}
                 onChangeText={(text: string) => setName(text)}
                 // onBlur={() => updateUserInfo('name', name)}
@@ -79,16 +77,13 @@ const NamePhone = () => {
         <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
-        {/* {userInfo.name === '' || userInfo.phoneNumber === '' ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <TouchableOpacity onPress={movePage('schoolStudentID')}>
-              <Image source={nextButton} />
-            </TouchableOpacity>
-          )} */}
-        <TouchableOpacity onPress={nextPage}>
-          <Image source={nextButton} />
-        </TouchableOpacity>
+        {name === '' || phNum.length !== 13 ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <TouchableOpacity onPress={nextPage}>
+            <Image source={nextButton} />
+          </TouchableOpacity>
+        )}
       </View>
     </S.Wrapper>
   );
