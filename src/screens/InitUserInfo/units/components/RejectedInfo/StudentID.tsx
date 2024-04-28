@@ -1,18 +1,16 @@
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
+import { colors } from '../../../../../commons/styles/variablesStyles';
+import * as S from '../../../InitUserInfo.styles';
+import { Image, Text, View } from 'react-native';
 import { useEffect, useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import useMovePage from '../../../commons/hooks/useMovePage';
-import { TitleProgress } from './TitleProgress';
-import { useUserStore } from '../../../commons/store/useUserinfo';
+import { TitleProgress } from '../../TitleProgress';
+import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
-import { uploadStudentIdImageToS3 } from '../../../commons/api/imageUploadToS3.api';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import { uploadStudentIdImageToS3 } from '../../../../../commons/api/imageUploadToS3.api';
+import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
+import { useCounter } from '../../../../../commons/store/useCounter';
 
-const SchoolStudentID = () => {
+const StudentID = () => {
   // const [school, setSchool] = useState('학교');
   // const [isFocused, setIsFocused] = useState(false);
 
@@ -28,9 +26,11 @@ const SchoolStudentID = () => {
   //     setIsFocused(false);
   //   }
   // };
+  const { increment } = useCounter();
   const { updateUserInfo, userInfo } = useUserStore();
-  const { movePage } = useMovePage();
-  updateUserInfo({ schoolName: '가천대학교' });
+  useEffect(() => {
+    updateUserInfo({ schoolName: '가천대학교' });
+  }, []);
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
@@ -63,7 +63,7 @@ const SchoolStudentID = () => {
     <S.Wrapper>
       <TitleProgress gauge={75} />
       <S.ColumnStyled>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', alignItems: 'center', backgroundColor: 'teal' }}>
           <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
           <S.ButtonStyled disabled>
             <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
@@ -78,7 +78,7 @@ const SchoolStudentID = () => {
             }}
           /> */}
         </View>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '100%', alignItems: 'center', backgroundColor: 'teal', height: 'auto' }}>
           <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
           <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
             실물 학생증 및 모바일 학생증 모두 가능합니다.
@@ -86,16 +86,15 @@ const SchoolStudentID = () => {
           <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
             실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
           </Text>
-          <S.ButtonStyled
-            onPress={() => uploadeImage()}
-            style={{ height: 132 /*borderRadius: 10*/, marginBottom: 6 }}
-            borderRadius={10}
-          >
+          <S.ButtonStyled onPress={() => uploadeImage()} style={{ height: 100, marginBottom: 6 }} borderRadius={10}>
             <Image
               source={
-                userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
+                userInfo.studentIdImageUrl === ''
+                  ? require('../../../../../../assets/images/photo.png')
+                  : { uri: imageUrl }
               }
-              style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
+              style={userInfo.studentIdImageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
+              //   style={{ objectFit: 'cover', width: '60%', height: '80%' }}
             />
           </S.ButtonStyled>
 
@@ -111,21 +110,18 @@ const SchoolStudentID = () => {
             학생증 도용 시 처벌 대상이 될 수 있습니다.
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-          <TouchableOpacity onPress={movePage()}>
-            <Image source={prevButton} />
-          </TouchableOpacity>
-          {userInfo.schoolName === '' || userInfo.studentIdImageUrl === '' ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <TouchableOpacity onPress={movePage('emailAuth', { isRefused: false })}>
-              <Image source={nextButton} />
-            </TouchableOpacity>
-          )}
-        </View>
+
+        <S.NextButtonStyled
+          style={{ backgroundColor: userInfo.studentIdImageUrl === '' ? colors.buttonAuthToggle : colors.primary }}
+          onPress={() => increment()}
+        >
+          <CustomText font="fontMedium" size="14" color={colors.secondary}>
+            수정 완료
+          </CustomText>
+        </S.NextButtonStyled>
       </S.ColumnStyled>
     </S.Wrapper>
   );
 };
 
-export default SchoolStudentID;
+export default StudentID;

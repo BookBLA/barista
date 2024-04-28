@@ -6,9 +6,9 @@ export const useInitialRouteName = () => {
   const getInitialRouteName = () => {
     switch (memberStatus) {
       case 'p':
-        return 'initUserinfoStack';
+        return 'termsOfService';
       case 'a':
-        return 'tapScreens';
+        return 'waitConfirm';
       case 's':
         return 'initStyleStack';
       case 'c':

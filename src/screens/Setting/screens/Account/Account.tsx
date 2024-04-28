@@ -11,7 +11,7 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import Home from '../../../../../assets/images/icons/HomeBlack.png';
 import LogOutContent from './units/LogOutContent/LogOutContent';
 import MatchingContent from './units/MatchingContent/MatchingContent';
-import { getMemberProfileApi } from '../../../../commons/api/memberProfille.api';
+import { getMemberProfileApi } from '../../../../commons/api/memberProfile.api';
 import { useUserStore } from '../../../../commons/store/useUserinfo';
 
 const Account = () => {

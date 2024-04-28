@@ -19,7 +19,7 @@ const Login = () => {
   const onClickSignUp = async () => {
     try {
       const response = await postTestSignUp({
-        email: 'althcjstk08@gachon.ac.kr',
+        email: 'test11108@naver.com',
         // email: 'string',
       });
       console.log('success', response);

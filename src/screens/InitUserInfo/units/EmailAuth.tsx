@@ -14,8 +14,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberEmail';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import useMemberStore from '../../../commons/store/useMemberStore';
+import useToastStore from '../../../commons/store/useToastStore';
 
 const EmailAuth = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
@@ -98,6 +101,11 @@ const EmailAuth = () => {
       console.log('callPostEmailAuthApi', response);
     } catch (error) {
       console.log('callPostAuthApi error', error);
+      if (error.response.data.message === '이메일이 이미 존재합니다.') {
+        showToast({
+          content: '이메일이 이미 존재합니다.',
+        });
+      }
     }
   };
   const callPostAuthVerifyApi = async () => {
@@ -257,9 +265,9 @@ const EmailAuth = () => {
           <Image source={prevButton} />
         </TouchableOpacity>
         {isSuccess !== 'true' ? (
-          <Image source={notYetNextButton} />
+          <Image source={notYetNextButton} /> //코드 인증 미완료
         ) : (
-          <TouchableOpacity onPress={() => handleReset('initProfileStack')}>
+          <TouchableOpacity onPress={() => handleReset('profileImage')}>
             {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
             <Image source={nextButton} />
           </TouchableOpacity>

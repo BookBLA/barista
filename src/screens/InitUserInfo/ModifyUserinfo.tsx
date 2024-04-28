@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
 import useManageMargin from '../../commons/hooks/useManageMargin';
-import { getMemberProfileApi, putMemberProfileApi } from '../../commons/api/memberProfille.api';
+import { getMemberProfileApi, putMemberProfileApi } from '../../commons/api/memberProfile.api';
 
 const ModifyUserinfo = () => {
   const { updateUserInfo, userInfo } = useUserStore();

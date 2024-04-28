@@ -8,15 +8,16 @@ import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
 import useMovePage from '../../../commons/hooks/useMovePage';
-import { getMemberProfileStatusesApi } from '../../../commons/api/memberProfille.api';
+import { getMemberProfileStatusesApi, postMemberProfileApi } from '../../../commons/api/memberProfile.api';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
+import { useUserStore } from '../../../commons/store/useUserinfo';
 
 const WaitConfirm = () => {
   const [loading, setLoading] = useState(true);
-  // const [studentIdImageStatus, setstudentIdImageStatus] = useState('PENDING' as string);
-  // const [openKakaoRoomUrlStatus, setopenKakaoRoomUrlStatus] = useState('PENDING' as string);
-  // const [profileImageUrlStatus, setprofileImageUrlStatus] = useState('PENDING' as string);
-
   const [rejectList, setRejectList] = useState([]);
+
+  const { updateUserInfo, userInfo } = useUserStore();
+  useManageMargin();
 
   const addValueToList = (NewValue: number) => {
     // Adding a new value to the list using setRejectList
@@ -24,11 +25,15 @@ const WaitConfirm = () => {
   };
 
   const { movePage } = useMovePage();
+
+  useEffect(() => {
+    callPostMemberProfileAPi();
+  }, []);
+
   // Simulating loading with useEffect
   useEffect(() => {
     if (loading) {
-      moveNext();
-      console.log('list', rejectList);
+      memberStatus();
     } else {
       if (rejectList.length > 0) {
         //거절 된 것이 있으면 failedSign으로 이동
@@ -40,19 +45,29 @@ const WaitConfirm = () => {
     }
   }, [loading]);
 
-  const moveNext = async () => {
+  const memberStatus = async () => {
     await callGetMemberProfileStatusApi();
-    // console.log('status', studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus);
-    // ifRejected();
-    // if (loading === false) {
-    //   if (rejectList.length > 0) {
-    //     //거절 된 것이 있으면 failedSign으로 이동
-    //     movePage('failedSign', { rejectCase: rejectList })();
-    //     console.log('failedSign', rejectList);
-    //   } else {
-    //     movePage('completePage')();
-    //   }
-    // }
+  };
+
+  const callPostMemberProfileAPi = async () => {
+    try {
+      // await updateUserInfo('openKakaoRoomUrl', link);
+      console.log('userInfo', userInfo);
+      const response = await postMemberProfileApi({
+        name: userInfo.name,
+        birthDate: userInfo.birthDate,
+        gender: userInfo.gender,
+        schoolName: userInfo.schoolName,
+        schoolEmail: userInfo.schoolEmail,
+        phoneNumber: userInfo.phoneNumber,
+        studentIdImageUrl: userInfo.studentIdImageUrl,
+        profileImageUrl: userInfo.profileImageUrl,
+        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
+      });
+      console.log('callPostMemberProfileApi', response);
+    } catch (error) {
+      console.log('callPostMemberProfileApi error', error);
+    }
   };
 
   const callGetMemberProfileStatusApi = async () => {
@@ -70,31 +85,18 @@ const WaitConfirm = () => {
         console.log('모두 대기중');
         return;
       }
+
       if (studentIdImageStatus === 'DENIAL') addValueToList(0);
       if (openKakaoRoomUrlStatus === 'INACCESSIBLE') addValueToList(1);
       if (openKakaoRoomUrlStatus === 'NOT_DEFAULT') addValueToList(2);
       if (profileImageUrlStatus === 'DENIAL') addValueToList(3);
-      console.log('list:', rejectList);
+      // console.log('list:', rejectList);
 
       setLoading(false); //로딩 끝
     } catch (error) {
       console.log('callGetMemberProfileStatusApi error', error);
     }
   };
-  // const ifRejected = () => {
-  //   //거절된 애들만 list에 추가
-  //   if (studentIdImageStatus === 'PENDING' && openKakaoRoomUrlStatus === 'PENDING' && profileImageUrlStatus === 'PENDING') {
-  //     console.log('모두 대기중');
-  //     return;
-  //   }
-  //   if (studentIdImageStatus === 'DENIAL') addValueToList(0);
-  //   else if (openKakaoRoomUrlStatus === 'INACCESSIBLE') addValueToList(1);
-  //   else if (openKakaoRoomUrlStatus === 'NOT_DEFAULT') addValueToList(2);
-  //   else if (profileImageUrlStatus === 'INAPPROPRIATE') addValueToList(3);
-  //   console.log('list:', rejectList);
-
-  //   setLoading(false); //로딩 끝
-  // };
 
   return (
     <S.Wrapper>

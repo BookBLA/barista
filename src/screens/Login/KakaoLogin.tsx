@@ -9,6 +9,10 @@ import { icons } from '../../commons/utils/variablesImages';
 import useMovePage from '../../commons/hooks/useMovePage';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import { postLogin } from '../../commons/api/login.api';
+import useAuthStore from '../../commons/store/useAuthStore';
+import { useInitialRouteName } from '../../commons/hooks/useInitialRouteName';
+import useMemberStore from '../../commons/store/useMemberStore';
+import useToastStore from '../../commons/store/useToastStore';
 
 const REST_API_KEY = '000eb9b8ad69bb5303bdb7e0277a42e7';
 // const REDIRECT_URI = 'custom-scheme://TermsOfService';
@@ -16,10 +20,14 @@ const REDIRECT_URI = 'https://dev.bookbla.shop/api/auth/login/kakao';
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const Kakao = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const [showOverlay, setShowOverlay] = useState(true);
   const [authCode, setAuthCode] = useState('');
 
-  const navigation = useNavigation();
+  const setToken = useAuthStore((state) => state.setToken);
+  const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
+  const getInitialRouteName = useInitialRouteName();
 
   const { movePage } = useMovePage();
   useManageMargin();
@@ -38,7 +46,7 @@ const Kakao = () => {
       var authorize_code = data.substring(condition + exp.length);
       console.log('authorize_code:::', authorize_code);
       setAuthCode(authorize_code);
-      console.log('코드:::', authCode);
+
       // fetchData();
       // CallPostLogin();
     }
@@ -53,9 +61,19 @@ const Kakao = () => {
   const CallPostLogin = async () => {
     try {
       const response = await postLogin(authCode, 'kakao');
-      console.log('success', response);
+      console.log('KAKAO login success', response);
+      setToken(response.result.accessToken);
+      await saveMemberInfo();
+      showToast({
+        content: '회원가입에 성공하였습니다.',
+      });
+      movePage(getInitialRouteName())();
+      // movePage('termsOfService')();
     } catch (error) {
       console.log('error', error);
+      showToast({
+        content: '회원가입에 실패하였습니다.',
+      });
     }
   };
 

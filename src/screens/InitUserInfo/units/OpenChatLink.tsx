@@ -5,28 +5,27 @@ import * as S from '../InitUserInfo.styles';
 import { TitleProgress2 } from './TitleProgress2';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import circle from '../../../../assets/images/icons/Circle.png';
 import { TextFiledStyled } from '../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import { postPolicyApi } from '../../../commons/api/memberPolicy';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
-import { postMemberProfileApi } from '../../../commons/api/memberProfille.api';
+import { postMemberProfileApi } from '../../../commons/api/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const OpenChatLink = () => {
   const { movePage } = useMovePage();
-  const [link, setLink] = useState('');
-  const { updateUserInfo, userInfo, resetUserInfo } = useUserStore();
+  useManageMargin();
+  // const [link, setLink] = useState('');
+  const { updateUserInfo, userInfo } = useUserStore();
 
   const moveNext = async () => {
-    // await updateUserInfo('openKakaoRoomUrl', link);
-    // await callPostPolicyApi();
-    // await callPostMemberProfileAPi();
-    resetUserInfo();
+    await callPostPolicyApi();
+    await callPostMemberProfileAPi();
+
     movePage('waitConfirm')();
   };
   const { agreementInfo } = useAgreementStore();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
+  // const memberId = useMemberStore((state) => state.memberInfo.id);
 
   const callPostPolicyApi = async () => {
     try {
@@ -41,7 +40,6 @@ const OpenChatLink = () => {
     }
   };
   useEffect(() => {
-    console.log('link', link);
     console.log('userInfo', userInfo);
   }, [userInfo]);
 
@@ -91,15 +89,13 @@ const OpenChatLink = () => {
           </View>
         </S.ColumnStyled>
       </TouchableWithoutFeedback>
-      {userInfo.openKakaoRoomUrl === '' ? (
-        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      ) : (
-        <S.NextButtonStyled onPress={moveNext}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      )}
+
+      <S.NextButtonStyled
+        onPress={userInfo.openKakaoRoomUrl === '' ? undefined : moveNext}
+        style={{ backgroundColor: userInfo.openKakaoRoomUrl === '' ? colors.buttonAuthToggle : colors.primary }}
+      >
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };

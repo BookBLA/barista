@@ -16,17 +16,26 @@ import Login from '../../../screens/Login/Login';
 import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 import SettingStack from '../../../screens/Setting/SettingStack';
-import InitProfileStack from '../../../screens/InitUserInfo/InitProfile';
 import Notice from '../../../screens/Notice/Notice';
 import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
+import ProfileImage from '../../../screens/InitUserInfo/units/ProfileImage';
+import WaitConfirm from '../../../screens/InitUserInfo/units/WaitConfirm';
+import CompletePage from '../../../screens/InitUserInfo/units/CompletePage';
+import FailedSign from '../../../screens/InitUserInfo/units/FailedSign';
+import OpenChatLink from '../../../screens/InitUserInfo/units/OpenChatLink';
 
 const Stack = createNativeStackNavigator();
 const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'initUserinfoStack', component: InitUserInfoStack },
-  { name: 'initProfileStack', component: InitProfileStack },
+  { name: 'profileImage', component: ProfileImage },
+  { name: 'openChatLink', component: OpenChatLink },
+  { name: 'waitConfirm', component: WaitConfirm },
+  { name: 'completePage', component: CompletePage },
+  { name: 'infoOpenChat', component: InfoOpenChat },
+  { name: 'failedSign', component: FailedSign },
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
@@ -37,7 +46,6 @@ const screens = [
   { name: 'notice', component: CustomScreen(Notice) },
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
-  { name: 'infoOpenChat', component: InfoOpenChat },
 ];
 
 export const CustomNavigator = () => {
@@ -55,6 +63,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
+        {/* <Stack.Navigator initialRouteName={'login'} screenOptions={{ headerShown: false }}> */}
         <Stack.Navigator initialRouteName={getInitialRouteName()} screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />

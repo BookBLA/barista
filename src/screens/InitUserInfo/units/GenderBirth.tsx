@@ -76,16 +76,13 @@ const GenderBirth = () => {
         </View>
         <CustomModal modalConfig={modalConfig} />
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
-          {/* {userInfo.gender === '' || userInfo.birthDate === '' ? (
+          {userInfo.gender === '' || userInfo.birthDate === '' ? (
             <Image source={notYetNextButton} />
           ) : (
             <TouchableOpacity onPress={movePage('namePhone')}>
               <Image source={nextButton} />
             </TouchableOpacity>
-          )} */}
-          <TouchableOpacity onPress={movePage('namePhone')}>
-            <Image source={nextButton} />
-          </TouchableOpacity>
+          )}
         </View>
       </S.ColumnStyled>
     </S.Wrapper>
