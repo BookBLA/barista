@@ -186,9 +186,12 @@ const Library: React.FC<Props> = ({ route }) => {
           left: false,
           right: {
             image: settingIcon,
-            onPress: movePage('settingStack'),
+            onPress: movePage('settingStack', {
+              libraryInfo,
+            }),
           },
         },
+    isYourLibrary ? [] : [libraryInfo],
   );
 
   useEffect(() => {
