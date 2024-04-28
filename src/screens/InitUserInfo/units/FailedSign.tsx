@@ -7,16 +7,16 @@ import { CustomText } from '../../../commons/components/TextComponents/CustomTex
 import { Props } from '../InitUserinfo.types';
 import useMovePage from '../../../commons/hooks/useMovePage';
 
+const Page = ['SchoolStudentID', 'OpenChatLink', 'ProfileImage'];
+const Case = [
+  ['학생증 확인이 불가능합니다', '학생증을 다시 업로드해 주세요'],
+  ['오픈채팅방이 들어가지지 않습니다', '오픈채팅방 링크를 다시 등록해주세요'],
+  ['오픈채팅방이 기본프로필 전용이 아닙니다', '오픈채팅방 링크를 다시 등록해주세요'],
+  ['프로필 사진이 부적절합니다', '프로필 사진을 다시 등록해주세요'],
+];
 const FailedSign: React.FC<Props> = ({ route }) => {
-  const Page = ['SchoolStudentID', 'OpenChatLink', 'ProfileImage'];
-  const Case = [
-    ['학생증 확인이 불가능합니다', '학생증을 다시 업로드해 주세요'],
-    ['오픈채팅방이 들어가지지 않습니다', '오픈채팅방 링크를 다시 등록해주세요'],
-    ['오픈채팅방이 기본프로필 전용이 아닙니다', '오픈채팅방 링크를 다시 등록해주세요'],
-    ['프로필 사진이 부적절합니다', '프로필 사진을 다시 등록해주세요'],
-  ];
   const rejectCase = route.params?.rejectCase;
-  // console.log('rejectCase', rejectCase[1]);
+  console.log('rejectCase', rejectCase);
   const { movePage } = useMovePage();
   return (
     <S.Wrapper>

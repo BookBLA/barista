@@ -55,20 +55,22 @@ const ChevronBtn = styled.TouchableOpacity`
   height: 80%;
 `;
 
+const images = [openChat1, openChat2, openChat3, openChat4, openChat5, openChat6, openChat7, openChat8];
+const contents = [
+  '1. 카카오톡 하단 메뉴 오픈 채팅방 클릭',
+  '2. 오픈채팅방 생성하기 클릭',
+  '3. 1:1 채팅방 만들기',
+  '4. 북블라 채팅방 이름 정하기',
+  '5. (필수) 기본프로필만 참가 허용하기',
+  '6. 검색허용 반드시 끄기',
+  '7. 링크 복사 후 위 입력칸에 붙여넣기',
+  '8. 이성에게 연락 받을 북블라 채팅방 완성',
+];
+
 const InfoOpenChat = ({ again }: { again: boolean }) => {
   useManageMargin();
   const { movePage } = useMovePage();
-  const images = [openChat1, openChat2, openChat3, openChat4, openChat5, openChat6, openChat7, openChat8];
-  const contents = [
-    '1. 카카오톡 하단 메뉴 오픈 채팅방 클릭',
-    '2. 오픈채팅방 생성하기 클릭',
-    '3. 1:1 채팅방 만들기',
-    '4. 북블라 채팅방 이름 정하기',
-    '5. (필수) 기본프로필만 참가 허용하기',
-    '6. 검색허용 반드시 끄기',
-    '7. 링크 복사 후 위 입력칸에 붙여넣기',
-    '8. 이성에게 연락 받을 북블라 채팅방 완성',
-  ];
+
   const [itemWidth, setItemWidth] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
 

@@ -17,16 +17,17 @@ import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 
+const profileExList = [
+  [img.profileEx1, '얼굴이 잘 보이는 사진'],
+  [img.profileEx2, '취미 생활이 담긴 사진'],
+  [img.profileEx3, '선정적인 사진'],
+  [img.profileEx4, '개인 정보를 노출하는 사진'],
+  [img.profileEx5, '과도한 필터를 사용한 사진'],
+  [img.profileEx6, '본인이 드러나지 않는 사진'],
+];
+
 const ProfileImage = () => {
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
-  const profileExList = [
-    [img.profileEx1, '얼굴이 잘 보이는 사진'],
-    [img.profileEx2, '취미 생활이 담긴 사진'],
-    [img.profileEx3, '선정적인 사진'],
-    [img.profileEx4, '개인 정보를 노출하는 사진'],
-    [img.profileEx5, '과도한 필터를 사용한 사진'],
-    [img.profileEx6, '본인이 드러나지 않는 사진'],
-  ];
 
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
 

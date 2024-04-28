@@ -12,11 +12,11 @@ import { getMemberProfileStatusesApi } from '../../../commons/api/memberProfille
 
 const WaitConfirm = () => {
   const [loading, setLoading] = useState(true);
-  const [studentIdImage, setStudentIdImage] = useState('' as string);
-  const [openChat, setOpenChat] = useState('' as string);
-  const [profileImage, setProfileImage] = useState('' as string);
+  // const [studentIdImageStatus, setstudentIdImageStatus] = useState('PENDING' as string);
+  // const [openKakaoRoomUrlStatus, setopenKakaoRoomUrlStatus] = useState('PENDING' as string);
+  // const [profileImageUrlStatus, setprofileImageUrlStatus] = useState('PENDING' as string);
 
-  const [rejectList, setRejectList] = useState([0]);
+  const [rejectList, setRejectList] = useState([]);
 
   const addValueToList = (NewValue: number) => {
     // Adding a new value to the list using setRejectList
@@ -26,42 +26,75 @@ const WaitConfirm = () => {
   const { movePage } = useMovePage();
   // Simulating loading with useEffect
   useEffect(() => {
-    callGetMemberProfileStatusApi(); // Call the function
-    // ifRejected();
-    addValueToList(3);
-  }, []);
-  useEffect(() => {
-    if (rejectList.length > 0) {
-      movePage('failedSign', { rejectCase: rejectList })();
-      console.log('failedSign', rejectList);
+    if (loading) {
+      moveNext();
+      console.log('list', rejectList);
     } else {
-      movePage('completePage')();
-      console.log('completePage');
+      if (rejectList.length > 0) {
+        //거절 된 것이 있으면 failedSign으로 이동
+        movePage('failedSign', { rejectCase: rejectList })();
+        console.log('failedSign', rejectList);
+      } else {
+        movePage('completePage')();
+      }
     }
   }, [loading]);
+
+  const moveNext = async () => {
+    await callGetMemberProfileStatusApi();
+    // console.log('status', studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus);
+    // ifRejected();
+    // if (loading === false) {
+    //   if (rejectList.length > 0) {
+    //     //거절 된 것이 있으면 failedSign으로 이동
+    //     movePage('failedSign', { rejectCase: rejectList })();
+    //     console.log('failedSign', rejectList);
+    //   } else {
+    //     movePage('completePage')();
+    //   }
+    // }
+  };
 
   const callGetMemberProfileStatusApi = async () => {
     try {
       const response = await getMemberProfileStatusesApi();
-      console.log('callGetMemberProfileStatusApi', response);
-      setStudentIdImage(response.result.studentIdImageStatus);
-      setOpenChat(response.result.openKakaoRoomUrlStatus);
-      setProfileImage(response.result.profileImageUrlStatus);
-      ifRejected();
+      console.log('callGetMemberProfileStatusApi', response.result);
+      const { studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus } = response.result;
+      console.log('status', studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus);
+
+      if (
+        studentIdImageStatus === 'PENDING' &&
+        openKakaoRoomUrlStatus === 'PENDING' &&
+        profileImageUrlStatus === 'PENDING'
+      ) {
+        console.log('모두 대기중');
+        return;
+      }
+      if (studentIdImageStatus === 'DENIAL') addValueToList(0);
+      if (openKakaoRoomUrlStatus === 'INACCESSIBLE') addValueToList(1);
+      if (openKakaoRoomUrlStatus === 'NOT_DEFAULT') addValueToList(2);
+      if (profileImageUrlStatus === 'DENIAL') addValueToList(3);
+      console.log('list:', rejectList);
+
+      setLoading(false); //로딩 끝
     } catch (error) {
-      console.log('callGetMemberProfileStatusApin error', error);
+      console.log('callGetMemberProfileStatusApi error', error);
     }
   };
-  const ifRejected = () => {
-    // if (studentIdImage === 'DONE' && openChat === 'DONE' && profileImage === 'DONE')
-    if (studentIdImage === 'DENIAL') addValueToList(0);
-    else if (openChat === 'INACCESSIBLE') addValueToList(1);
-    else if (openChat === 'NOT_DEFAULT') addValueToList(2);
-    else if (profileImage === 'INAPPROPRIATE') addValueToList(3);
-    console.log('status', studentIdImage, openChat, profileImage);
-    console.log('list:', rejectList);
-    setLoading(false);
-  };
+  // const ifRejected = () => {
+  //   //거절된 애들만 list에 추가
+  //   if (studentIdImageStatus === 'PENDING' && openKakaoRoomUrlStatus === 'PENDING' && profileImageUrlStatus === 'PENDING') {
+  //     console.log('모두 대기중');
+  //     return;
+  //   }
+  //   if (studentIdImageStatus === 'DENIAL') addValueToList(0);
+  //   else if (openKakaoRoomUrlStatus === 'INACCESSIBLE') addValueToList(1);
+  //   else if (openKakaoRoomUrlStatus === 'NOT_DEFAULT') addValueToList(2);
+  //   else if (profileImageUrlStatus === 'INAPPROPRIATE') addValueToList(3);
+  //   console.log('list:', rejectList);
+
+  //   setLoading(false); //로딩 끝
+  // };
 
   return (
     <S.Wrapper>
@@ -110,9 +143,9 @@ const WaitConfirm = () => {
                   </S.TextStyled>
                 </S.RowStyled>
               </TouchableOpacity>
-              <S.NextButtonStyled onPress={movePage('completePage')}>
+              {/* <S.NextButtonStyled onPress={movePage('completePage')}>
                 <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>시작하기</Text>
-              </S.NextButtonStyled>
+              </S.NextButtonStyled> */}
             </View>
           </S.RoundRectStyled>
         </View>

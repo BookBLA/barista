@@ -31,32 +31,32 @@ const Login = () => {
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper style={{ justifyContent: 'flex-end' }}>
       <S.InnerWrapper>
-        <S.LogoImage source={require('../../../assets/images/logos/logoDarkBg.png')} />
+        <S.LogoImage source={require('../../../assets/images/logos/mainLogoDark.png')} />
         <S.SubTitleText>같은 줄을 읽다. 같은 마음을 느끼다.</S.SubTitleText>
-        <S.TitleWrapper>
+        {/* <S.TitleWrapper>
           <S.TitleText>BOOKBLA</S.TitleText>
-        </S.TitleWrapper>
+        </S.TitleWrapper> */}
       </S.InnerWrapper>
       <CustomText size="14px" onPress={onClickSignUp}>
         SNS 간편 로그인
       </CustomText>
 
+      <S.LoginButton onPress={movePage('kakao')}>
+        <Image style={{ width: 300, height: 45 }} source={require('../../../assets/images/buttons/kakaoLogin.png')} />
+      </S.LoginButton>
       {Platform.OS === 'ios' && (
         <>
           <AppleAuthentication.AppleAuthenticationButton
             buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
             buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
             cornerRadius={6}
-            style={{ width: 300, height: 45 }}
+            style={{ width: 300, height: 45, marginBottom: 18 }}
             onPress={handleAppleSignIn}
           />
         </>
       )}
-      <S.LoginButton onPress={movePage('kakao')}>
-        <Image source={require('../../../assets/images/buttons/kakaoLogin.png')} />
-      </S.LoginButton>
     </S.Wrapper>
   );
 };

@@ -7,16 +7,22 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { icons } from '../../commons/utils/variablesImages';
 import useMovePage from '../../commons/hooks/useMovePage';
+import useManageMargin from '../../commons/hooks/useManageMargin';
+import { postLogin } from '../../commons/api/login.api';
 
-const REST_API_KEY = '68f6f971eae2c6a3dcf201934d369f23';
+const REST_API_KEY = '000eb9b8ad69bb5303bdb7e0277a42e7';
 // const REDIRECT_URI = 'custom-scheme://TermsOfService';
-const REDIRECT_URI = 'http://localhost:8080/api';
+const REDIRECT_URI = 'https://dev.bookbla.shop/api/auth/login/kakao';
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const Kakao = () => {
   const [showOverlay, setShowOverlay] = useState(true);
+  const [authCode, setAuthCode] = useState('');
 
   const navigation = useNavigation();
+
+  const { movePage } = useMovePage();
+  useManageMargin();
 
   const kakao_url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
@@ -28,18 +34,35 @@ const Kakao = () => {
     console.log('카카오 로그인 시도:::');
     const exp = 'code=';
     var condition = data.indexOf(exp);
-    if (condition != -1) {
+    if (condition !== -1) {
       var authorize_code = data.substring(condition + exp.length);
-      console.log('코드:::', authorize_code);
+      console.log('authorize_code:::', authorize_code);
+      setAuthCode(authorize_code);
+      console.log('코드:::', authCode);
       // fetchData();
+      // CallPostLogin();
     }
   }
-  const { movePage } = useMovePage();
+  useEffect(() => {
+    if (authCode !== '') {
+      console.log('authCode:::', authCode);
+      CallPostLogin();
+    }
+  }, [authCode]);
+
+  const CallPostLogin = async () => {
+    try {
+      const response = await postLogin(authCode, 'kakao');
+      console.log('success', response);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={movePage()}>
-        <Image source={icons.backArrow} style={{ width: 24, height: 24 }} />
+      <TouchableOpacity onPress={movePage()} style={{ zIndex: 2 }}>
+        <Image source={icons.backArrow} style={{ width: 24, height: 24, marginLeft: 5 }} />
       </TouchableOpacity>
       <WebView
         style={{ flex: 1 }}
@@ -71,12 +94,12 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 24,
     backgroundColor: '#fff',
-    zIndex: 100,
+    // zIndex: 100,
   },
   loadingContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    zIndex: 100,
+    // zIndex: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },

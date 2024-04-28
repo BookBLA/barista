@@ -11,7 +11,7 @@ import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
-import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberAuth';
+import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../commons/api/memberEmail';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import useMemberStore from '../../../commons/store/useMemberStore';
 
