@@ -17,7 +17,7 @@ export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPr
       ) : (
         <S.Wrapper hasMargin={hasMargin}>
           {left && (
-            <S.Button onPress={onPressLeft ? onPressLeft : movePage}>
+            <S.Button onPress={onPressLeft ? onPressLeft : movePage()}>
               <Image source={backArrow} style={{ width: 24, height: 24 }} />
             </S.Button>
           )}
