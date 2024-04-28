@@ -18,6 +18,7 @@ export const RowStyled = styled.View`
   align-items: center;
   width: 95%;
   height: 7%;
+  margin-top: 6px;
 `;
 
 export const DividerStyled = styled.View`
@@ -25,5 +26,5 @@ export const DividerStyled = styled.View`
   height: 1px;
   background-color: ${colors.buttonReauth};
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 `;
