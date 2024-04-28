@@ -4,7 +4,8 @@ export const HeaderWrapper = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  height: 9%;
+  height: 48px;
+  background-color: #fff;
   padding: 0px 16px;
 `;
 

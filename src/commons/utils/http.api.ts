@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useErrorMessage } from '../store/useErrorMessage';
 import useAuthStore from '../store/useAuthStore';
+import useToastStore from '../store/useToastStore';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
@@ -19,6 +20,8 @@ httpApi.interceptors.request.use(
 
 httpApi.interceptors.response.use(
   (response) => {
+    console.debug(response.status);
+    console.debug(response.data);
     return response;
   },
   async (error) => {
@@ -26,9 +29,9 @@ httpApi.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // todo: 필요 시 사용 예정
-        // 1. 토큰 재발급 함수
-        // 2.httpApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        // TODO: 성진 - 필요 시 사용 예정
+        // 1. const token = newToken();
+        // 2. httpApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
         // 3. useAuthStore.getState().saveToken();
         // 4. return httpApi(originalRequest); // api 재요청
         useErrorMessage.getState().setErrorMessage('토큰이 만료되었습니다.');
@@ -54,7 +57,16 @@ export interface ResponseData<T> {
   result: T;
 }
 
-export const Get = async (url: string, params = {}, showModal: boolean = false) => {
+const handleError = (error: unknown, showToast: boolean) => {
+  if (axios.isAxiosError(error)) {
+    if (showToast) {
+      useToastStore.getState().showToast({ content: error.message });
+    }
+    return Promise.reject(error);
+  }
+};
+
+export const Get = async (url: string, params = {}, showToast: boolean = false) => {
   try {
     const response = await httpApi.get(url, {
       ...config,
@@ -62,67 +74,42 @@ export const Get = async (url: string, params = {}, showModal: boolean = false) 
     });
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (showModal) {
-        useErrorMessage.getState().setErrorMessage(error.message);
-      }
-      return Promise.reject(error);
-    }
+    return handleError(error, showToast);
   }
 };
 
-export const Post = async <D>(url: string, data?: D, showModal: boolean = false) => {
+export const Post = async <D>(url: string, data?: D, showToast: boolean = false) => {
   try {
     const response = await httpApi.post(url, data, config);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (showModal) {
-        useErrorMessage.getState().setErrorMessage(error.message);
-      }
-      return Promise.reject(error);
-    }
+    return handleError(error, showToast);
   }
 };
 
-export const Put = async <D>(url: string, data?: D, showModal: boolean = false) => {
+export const Put = async <D>(url: string, data?: D, showToast: boolean = false) => {
   try {
     const response = await httpApi.put(url, data, config);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (showModal) {
-        useErrorMessage.getState().setErrorMessage(error.message);
-      }
-      return Promise.reject(error);
-    }
+    return handleError(error, showToast);
   }
 };
 
-export const Delete = async (url: string, showModal: boolean = false) => {
+export const Delete = async (url: string, showToast: boolean = false) => {
   try {
     const response = await httpApi.delete(url, config);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (showModal) {
-        useErrorMessage.getState().setErrorMessage(error.message);
-      }
-      return Promise.reject(error);
-    }
+    return handleError(error, showToast);
   }
 };
 
-export const Patch = async <D>(url: string, data?: D, showModal: boolean = false) => {
+export const Patch = async <D>(url: string, data?: D, showToast: boolean = false) => {
   try {
     const response = await httpApi.patch(url, data, config);
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      if (showModal) {
-        useErrorMessage.getState().setErrorMessage(error.message);
-      }
-      return Promise.reject(error);
-    }
+    return handleError(error, showToast);
   }
 };

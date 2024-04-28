@@ -9,8 +9,8 @@ import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import CheckboxOff from '../../../../../assets/images/icons/CheckboxOff.png';
 import CheckboxOn from '../../../../../assets/images/icons/CheckboxOn.png';
 
-export const Delete = (props: IProps) => {
-  const { config } = props.route.params;
+export const Delete = ({ route }: IProps) => {
+  const { config } = route.params;
   const { toggle, isOpen } = useToggle();
   useHeaderControl(config);
 

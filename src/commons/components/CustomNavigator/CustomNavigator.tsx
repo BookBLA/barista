@@ -6,6 +6,7 @@ import { Platform, SafeAreaView } from 'react-native';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAuthNavigation } from '../../hooks/useAuthNavigation';
+import { useInitialRouteName } from '../../hooks/useInitialRouteName';
 import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
@@ -40,8 +41,9 @@ const screens = [
 ];
 
 export const CustomNavigator = () => {
-  const { hasMargin } = useHasMargin();
-  const { navigationRef } = useAuthNavigation();
+  const hasMargin = useHasMargin((state) => state.hasMargin);
+  const navigationRef = useAuthNavigation();
+  const getInitialRouteName = useInitialRouteName();
 
   return (
     <NavigationContainer ref={navigationRef}>
@@ -53,7 +55,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName="initProfileStack" screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName={getInitialRouteName()} screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}

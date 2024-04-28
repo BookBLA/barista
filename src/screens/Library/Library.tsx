@@ -25,9 +25,11 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
+import { deleteBook, getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
+import { TBookResponses, TLibrary } from './Library.types';
 
 type RootStackParamList = {
-  Library: { postcardId?: number; userId: number; isYourLibrary: boolean };
+  Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
 };
 
 type LibraryRouteProp = RouteProp<RootStackParamList, 'Library'>;
@@ -44,7 +46,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   const isYourLibrary = route.params?.isYourLibrary;
-  const userId = route.params?.userId;
+  const targetMemberId = route.params?.memberId;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
@@ -52,10 +54,51 @@ const Library: React.FC<Props> = ({ route }) => {
   const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
   const navigation = useNavigation();
   const memberId = useMemberStore((state) => state.memberInfo.id);
+  const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
+  const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
+  const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
+  const [selectedBookId, setSelectedBookId] = useState(0);
+
+  const splitBook = (bookResponseList: TBookResponses[]) => {
+    const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
+    const otherBookList: TBookResponses[] = bookResponseList.filter((bookResponse) => !bookResponse.representative);
+    const newSecondFloorList: TBookResponses[] = [];
+
+    otherBookList.forEach((bookResponse, index) => {
+      if (newTopFloorList.length < 2) newTopFloorList.push(bookResponse);
+      else newSecondFloorList.push(bookResponse);
+    });
+
+    setTopFloorBookList(newTopFloorList);
+    setSecondFloorBookList(newSecondFloorList);
+  };
+  const fetchMyLibraryInfo = async () => {
+    try {
+      const { result } = await getMyLibraryInfo();
+      setLibraryInfo(result);
+      splitBook(result.bookResponses);
+    } catch {
+      console.error('내 서재 정보를 불러오는데 실패하였습니다.');
+    }
+  };
+
+  const fetchYourLibraryInfo = async (targetMemberId: number) => {
+    const { result } = await getYourLibraryInfo(targetMemberId);
+    setLibraryInfo(result);
+  };
+
+  useEffect(() => {
+    if (isYourLibrary) {
+      fetchYourLibraryInfo(targetMemberId);
+    } else {
+      fetchMyLibraryInfo();
+    }
+  }, []);
 
   const { movePage } = useMovePage();
 
-  const handleModifyBookModalRef = useCallback(() => {
+  const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
+    setSelectedBookId(bookMemberId);
     modifyBookModalRef.current?.present();
   }, []);
 
@@ -82,6 +125,12 @@ const Library: React.FC<Props> = ({ route }) => {
       console.debug('엽서 부족');
       toggleEmptyPostcardModal();
     }
+  };
+
+  const deleteBookInBookList = async () => {
+    await deleteBook(selectedBookId);
+    await fetchMyLibraryInfo();
+    modifyBookModalRef.current?.close();
   };
 
   const moveProductScreen = () => {
@@ -120,7 +169,7 @@ const Library: React.FC<Props> = ({ route }) => {
       await uploadImageToS3(result?.assets[0].uri, memberId);
       setSelectedImage(result?.assets[0].uri);
     }
-    handleCloseBottomSheet(); //바텀시트 닫음
+    handleCloseBottomSheet();
   };
 
   useManageMargin();
@@ -210,10 +259,12 @@ const Library: React.FC<Props> = ({ route }) => {
 
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
-              <S.UserNameText>방근호 | 21</S.UserNameText>
-              <S.GenderIconStyled source={EGender.MAN ? manIcon : womanIcon} />
+              <S.UserNameText>
+                {libraryInfo?.name} | {libraryInfo?.age}
+              </S.UserNameText>
+              <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
-            <S.SchoolNameText>가천대</S.SchoolNameText>
+            <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
           </S.UserInfoWrapper>
         </S.UserInfoView>
 
@@ -241,35 +292,72 @@ const Library: React.FC<Props> = ({ route }) => {
       <S.BookListContainerView>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
-              <S.BookImage source={require('../../../assets/images/example-book.png')} />
-              <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
-            </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
-              <S.BookImage source={require('../../../assets/images/example-book.png')} />
-            </S.BookTouchableOpacity>
+            {topFloorBookList.map((book) => (
+              <S.BookTouchableOpacity
+                key={book.memberBookId}
+                onPress={() => {
+                  if (isYourLibrary) {
+                    handleViewBookInfoModalRef();
+                  } else {
+                    handleModifyBookModalRef(book.memberBookId);
+                  }
+                }}
+              >
+                <S.BookImage source={{ uri: book.bookImageUrl }} />
+                {book.representative && (
+                  <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
+                )}
+              </S.BookTouchableOpacity>
+            ))}
+            {topFloorBookList.length === 1 && (
+              <S.BookTouchableOpacity onPress={movePage('initBookStack', { screen: 'addBook', isModify: true })}>
+                <S.EmptyBookImage>
+                  <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                </S.EmptyBookImage>
+              </S.BookTouchableOpacity>
+            )}
           </S.ModalBookListContainer>
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
         <S.BookContainer>
           <S.ModalBookListContainer>
-            <S.BookTouchableOpacity onPress={isYourLibrary ? handleViewBookInfoModalRef : handleModifyBookModalRef}>
-              <S.BookImage source={require('../../../assets/images/example-book.png')} />
-            </S.BookTouchableOpacity>
-            <S.BookTouchableOpacity onPress={movePage('initBookStack', { screen: 'addBook', isModify: true })}>
-              <S.EmptyBookImage>
-                <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
-              </S.EmptyBookImage>
-            </S.BookTouchableOpacity>
+            {secondFloorBookList.map((book) => (
+              <S.BookTouchableOpacity
+                key={book.memberBookId}
+                onPress={() => {
+                  if (isYourLibrary) {
+                    handleViewBookInfoModalRef();
+                  } else {
+                    handleModifyBookModalRef(book.memberBookId);
+                  }
+                }}
+              >
+                <S.BookImage source={{ uri: book.bookImageUrl }} />
+              </S.BookTouchableOpacity>
+            ))}
+            {secondFloorBookList.length === 0 && (
+              <S.BookTouchableOpacity
+                onPress={
+                  secondFloorBookList ? movePage('initBookStack', { screen: 'addBook', isModify: true }) : () => {}
+                }
+              >
+                <S.EmptyBookImage>
+                  <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                </S.EmptyBookImage>
+              </S.BookTouchableOpacity>
+            )}
+            <S.BookTouchableOpacity></S.BookTouchableOpacity>
           </S.ModalBookListContainer>
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
       </S.BookListContainerView>
+
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify bookId={123} />
+          <MyBookInfoModify memberId={memberId} memberBookId={selectedBookId} deleteBookFunc={deleteBookInBookList} />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
         <S.ProfileImageBottomSheetContainer>
           <S.ProfileImageModificationButton onPress={openImagePickerAsync}>
@@ -279,6 +367,7 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.ProfileImageModificationButton>
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewStyle
@@ -288,6 +377,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewBookInfo
@@ -298,6 +388,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
       {sendPostcardProps && (
         <CustomModal modalConfig={sendPostcardModalConfig}>
           <SendPostcardModal

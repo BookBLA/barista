@@ -6,12 +6,13 @@ export const ErrorWrapper = styled.View`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 77%;
+  height: 85%;
   background-color: ${colors.background};
+  border-radius: 20px 20px 0px 0px;
 `;
 
 export const BangImage = styled.Image`
   width: 51px;
   height: 51px;
-  object-fit: contain;
+  object-fit: fill;
 `;

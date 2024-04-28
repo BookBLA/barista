@@ -1,50 +1,89 @@
-import React, { useState } from 'react';
-import { IMyBookInfoModifyProps } from './MyBookInfoModify.types';
+import React, { useEffect, useState } from 'react';
+import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
+import { getBookInfo, getBookQuizInfo, updateBookInfo } from '../../../commons/api/library.api';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
-  const [bookQuizText, onChangeBookQuizText] = useState('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
+  const [bookQuizText, onChangeBookQuizText] = useState<string>('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
   const [bookQuizFirstAnswerText, onChangeBookQuizFirstAnswerText] = useState('첫 번째 답이 들어갈 자리입니다.');
   const [bookQuizSecondAnswerText, onChangeBookQuizSecondAnswerText] = useState('두 번째 답이 들어갈 자리입니다.');
   const [bookQuizThirdAnswerText, onChangeBookQuizThirdAnswerText] = useState('세 번째 답이 들어갈 자리입니다.');
   const [isModifiableBookReview, setIsModifiableBookReview] = useState(false);
   const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
+  const [bookInfo, setBookInfo] = useState<TBookInfo>();
+  const [bookImageUrl, setBookImageUrl] = useState<string>();
 
-  const handleOnModifyBookReview = () => {
-    setIsModifiableBookReview(!isModifiableBookReview);
+  const putUpdateBookInfo = async () => {
+    try {
+      await updateBookInfo({
+        memberBookId,
+        quiz: bookQuizText,
+        review: bookReviewText,
+        quizAnswer: bookQuizFirstAnswerText,
+        firstWrongChoice: bookQuizSecondAnswerText,
+        secondWrongChoice: bookQuizThirdAnswerText,
+      });
+    } catch (err) {
+      console.error('업데이트에 실패하였습니다.', err);
+    }
   };
 
-  const handleOnModifyBookQuestion = () => {
-    setIsModifiableBookQuestion(!isModifiableBookQuestion);
-    //todo isModifiable이 false가 되면 저장하는 api 호출
+  const handleOnModifyBookReview = (status: boolean) => {
+    setIsModifiableBookReview(status);
+    if (!status) putUpdateBookInfo();
   };
+
+  const handleOnModifyBookQuestion = (status: boolean) => {
+    setIsModifiableBookQuestion(status);
+    if (!status) putUpdateBookInfo();
+  };
+
+  const fetchBookQuiz = async (memberBookId: number) => {
+    const response = await getBookQuizInfo(memberBookId);
+    onChangeBookQuizText(response.quiz);
+    onChangeBookQuizFirstAnswerText(response.firstChoice);
+    onChangeBookQuizSecondAnswerText(response.secondChoice);
+    onChangeBookQuizThirdAnswerText(response.thirdChoice);
+    onChangeBookReviewText(response.review);
+  };
+
+  const fetchBookInfo = async (memberBookId: number) => {
+    const response = await getBookInfo(memberBookId);
+    setBookInfo(response);
+    setBookImageUrl(response.imageUrl);
+  };
+
+  useEffect(() => {
+    fetchBookInfo(memberBookId);
+    fetchBookQuiz(memberBookId);
+  }, []);
 
   return (
     <>
       <KeyboardAwareScrollView
         extraScrollHeight={120}
-        enableOnAndroid={true}
+        enableOnAndroid
         keyboardShouldPersistTaps="handled"
         overScrollMode="never"
       >
         <ScrollView>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={require('../../../../assets/images/example-book.png')} />
+              <S.BookImage source={{ uri: bookImageUrl }} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
-                한줄로 책 이름 들어갈 자리 한줄로 책 이름 들어갈 자리
+                {bookInfo?.title}
               </CustomText>
               <CustomText font="fontLight" size="14px" color="#616C90">
-                한줄로 책 이름 들어갈 자리 한줄로
+                {bookInfo?.authors.join(', ')}
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>
@@ -55,13 +94,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
                 한 줄 감상문
               </CustomText>
               {isModifiableBookReview ? (
-                <S.ModifyButton onPress={handleOnModifyBookReview}>
+                <S.ModifyButton onPress={() => handleOnModifyBookReview(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookReview}>
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookReview(true)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
@@ -91,7 +130,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
             )}
             <S.BookReviewLengthView>
               <CustomText font="fontMedium" size="10px" color={colors.textGray3}>
-                {bookReviewText.length}/100자
+                {bookReviewText?.length ?? 0}/100자
               </CustomText>
             </S.BookReviewLengthView>
           </S.BookReviewContainer>
@@ -102,13 +141,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
                 독서 퀴즈
               </CustomText>
               {isModifiableBookQuestion ? (
-                <S.ModifyButton onPress={handleOnModifyBookQuestion}>
+                <S.ModifyButton onPress={() => handleOnModifyBookQuestion(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={handleOnModifyBookQuestion}>
+                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookQuestion(true)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
@@ -219,8 +258,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ bookId }) =
               </S.BookQuizInfoView>
             </S.BookQuizAnswerContainer>
           </S.BookQuizContainer>
-          {/*todo 책 삭세 시 모달 종료되면서, 내 서재에서는 한 칸씩 밀려야 할듯*/}
-          <S.BookRemoveButton>
+          <S.BookRemoveButton onPress={deleteBookFunc}>
             <CustomText font="fontMedium" size="14px" color="white">
               서재에서 책 삭제하기
             </CustomText>

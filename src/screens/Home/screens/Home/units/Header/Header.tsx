@@ -4,7 +4,6 @@ import useMovePage from '../../../../../../commons/hooks/useMovePage';
 import { icons, logos } from '../../../../../../commons/utils/variablesImages';
 import useFetchMemberPostcard from '../../../../../../commons/hooks/useMemberPostcar';
 
-// Todo: 공통헤더로 분리예정
 const Header = () => {
   const { movePage } = useMovePage();
   const { memberPostcard } = useFetchMemberPostcard();
