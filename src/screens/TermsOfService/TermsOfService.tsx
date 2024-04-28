@@ -20,7 +20,6 @@ const TermsOfService = () => {
     const url = agreementUrls[index - 2]; // index는 1부터 시작하므로 1을 빼줘야 해당 인덱스의 주소에 접근 가능
     Linking.openURL(url);
   };
-  const qqq = 10;
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -62,13 +61,14 @@ const TermsOfService = () => {
           {agreementTitles.map((title, index) => (
             <React.Fragment key={index}>
               <T.RowStyled>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Checkbox
                     value={isChecked[index]}
                     onValueChange={() => handleCheckboxChange(index)}
                     color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
+                    style={{ width: 22, height: 22 }}
                   />
-                  <Text style={{ marginLeft: 6 }}>{title}</Text>
+                  <Text style={{ marginLeft: 8 }}>{title}</Text>
                 </View>
 
                 {(index === 2 || index === 3 || index === 4 || index === 5) && (
@@ -87,15 +87,12 @@ const TermsOfService = () => {
           ))}
         </T.ColumnStyled>
       </View>
-      {isActive === false ? (
-        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      ) : (
-        <S.NextButtonStyled onPress={movePage('initUserinfoStack')}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      )}
+      <S.NextButtonStyled
+        onPress={isActive === true ? movePage('initUserinfoStack') : undefined}
+        style={{ backgroundColor: isActive === true ? colors.primary : colors.buttonAuthToggle }}
+      >
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };
