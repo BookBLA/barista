@@ -8,6 +8,7 @@ import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
 const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
 const DateCost = () => {
@@ -37,9 +38,13 @@ const DateCost = () => {
         <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={movePage('personalQeustion')}>
-          <Image source={nextButton} />
-        </TouchableOpacity>
+        {styleInfo.dateCostType === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <TouchableOpacity onPress={movePage('personalQeustion')}>
+            <Image source={nextButton} />
+          </TouchableOpacity>
+        )}
       </View>
     </S.Wrapper>
   );

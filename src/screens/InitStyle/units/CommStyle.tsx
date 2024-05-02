@@ -9,6 +9,7 @@ import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
 const CommStyle = () => {
   const { updateStyleInfo, styleInfo } = useStyleStore();
@@ -57,9 +58,13 @@ const CommStyle = () => {
           <TouchableOpacity onPress={movePage()}>
             <Image source={prevButton} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={movePage('dateCost')}>
-            <Image source={nextButton} />
-          </TouchableOpacity>
+          {styleInfo.contactType === '' || styleInfo.dateStyleType === '' ? (
+            <Image source={notYetNextButton} />
+          ) : (
+            <TouchableOpacity onPress={movePage('dateCost')}>
+              <Image source={nextButton} />
+            </TouchableOpacity>
+          )}
         </View>
       </S.ColumnStyled>
     </S.Wrapper>

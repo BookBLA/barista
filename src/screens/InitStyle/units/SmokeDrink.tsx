@@ -10,6 +10,7 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
 const SmokeDrink = () => {
   // const [selectedButton, setSelectedButton] = useState<null | string>(null);
@@ -76,9 +77,13 @@ const SmokeDrink = () => {
         <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={movePage('oppositeSex')}>
-          <Image source={nextButton} />
-        </TouchableOpacity>
+        {styleInfo.smokeType === '' || styleInfo.drinkType === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <TouchableOpacity onPress={movePage('oppositeSex')}>
+            <Image source={nextButton} />
+          </TouchableOpacity>
+        )}
       </View>
     </S.Wrapper>
   );

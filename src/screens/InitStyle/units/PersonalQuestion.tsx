@@ -45,11 +45,13 @@ const PersonalQuestion = () => {
           dateStyleType: styleInfo.dateStyleType,
           dateCostType: styleInfo.dateCostType,
           justFriendType: styleInfo.justFriendType,
-          memberAsk: styleInfo.memberAsk,
+          memberAsk: question,
         },
         memberId,
       );
+      updateStyleInfo('memberAsk', question);
       console.log('postMemberStyleApi', response);
+      movePage('initBookStack')();
     } catch (error) {
       console.log('ERROR) postMemberStyleApi', error);
     }
@@ -57,10 +59,9 @@ const PersonalQuestion = () => {
 
   const { movePage } = useMovePage();
   const nextPage = async () => {
-    updateStyleInfo('memberAsk', question);
     await callPostStyleApi();
     resetStyleInfo();
-    movePage('initBookStack')();
+
     console.log('styleInfo', styleInfo);
   };
 
