@@ -14,9 +14,11 @@ import { useInitialRouteName } from '../../commons/hooks/useInitialRouteName';
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
 
-const REST_API_KEY = '000eb9b8ad69bb5303bdb7e0277a42e7';
-// const REDIRECT_URI = 'custom-scheme://TermsOfService';
-const REDIRECT_URI = 'https://dev.bookbla.shop/api/auth/login/kakao';
+// const REST_API_KEY = '000eb9b8ad69bb5303bdb7e0277a42e7';
+const REST_API_KEY = `${process.env.REST_API_KEY}`;
+const REDIRECT_URI = `${process.env.EXPO_PUBLIC_BASE_URL}auth/login/kakao`;
+
+// const REDIRECT_URI = 'https://dev.bookbla.shop/api/auth/login/kakao';
 const INJECTED_JAVASCRIPT = `window.ReactNativeWebView.postMessage('message from webView')`;
 
 const Kakao = () => {
@@ -32,7 +34,7 @@ const Kakao = () => {
   const { movePage } = useMovePage();
   useManageMargin();
 
-  const kakao_url = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+  const kakao_url = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.EXPO_PUBLIC_REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   const handleWebViewMessage = (data: any) => {
     KakaoLoginWebView(data);
@@ -68,7 +70,6 @@ const Kakao = () => {
         content: '회원가입에 성공하였습니다.',
       });
       movePage(getInitialRouteName())();
-      // movePage('termsOfService')();
     } catch (error) {
       console.log('error', error);
       showToast({
