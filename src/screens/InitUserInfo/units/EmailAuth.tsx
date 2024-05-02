@@ -22,7 +22,6 @@ const EmailAuth = () => {
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
-  // const [isSuccess, setIsSuccess] = useState('true');
 
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
@@ -69,20 +68,6 @@ const EmailAuth = () => {
   //     setIsFocused2(true);
   //   }
   // };
-  const handleBlur = () => {
-    // if (email === '') {
-    //   setEamil('example@gachon.ac.kr'); // Restore the initial text if the TextInput is left empty
-    //   setIsFocused1(false);
-    // }
-    // if (code === '') {
-    //   setCode('');
-    //   // setIsFocused2(false);
-    // }
-    // updateUserInfo('schoolEmail', email);
-  };
-  useEffect(() => {
-    console.log('email', email);
-  }, [email]);
 
   // const memberId = useMemberStore((state) => state.memberInfo.id);
 
@@ -118,6 +103,7 @@ const EmailAuth = () => {
 
       console.log('callPostAuthVerifyApi', response);
       console.log('isSuccess 성공', isSuccess);
+      setIsActive(false);
     } catch (error) {
       setIsSuccess('error');
       console.log('callPostAuthVerifyApi error', error);
@@ -162,7 +148,7 @@ const EmailAuth = () => {
                   placeholder="example@gachon.ac.kr"
                   placeholderTextColor={colors.textGray2}
                   // onFocus={handleFocus}
-                  // onBlur={handleBlur}
+                  // onBlur={setEmail}
                   style={{
                     color: colors.primary,
                     width: '78%',
@@ -268,7 +254,6 @@ const EmailAuth = () => {
           <Image source={notYetNextButton} /> //코드 인증 미완료
         ) : (
           <TouchableOpacity onPress={() => handleReset('profileImage')}>
-            {/* <TouchableOpacity onPress={movePage('initProfileStack')}> */}
             <Image source={nextButton} />
           </TouchableOpacity>
         )}

@@ -46,7 +46,7 @@ const ReProfileImage = () => {
     modifyProfileGuideModalRef.current?.present();
   }, []);
   const modifyProfileGuideModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints2 = useMemo(() => ['50%', '80%'], []);
+  const snapPoints2 = useMemo(() => ['80%'], []);
 
   useEffect(() => {
     // Call handleProfileGuideModalRef() when component mounts if it hasn't run yet
@@ -55,8 +55,6 @@ const ReProfileImage = () => {
       setHasRunProfileGuide(true); // Set the flag to true to indicate it has run
     }
   }, []);
-
-  const { movePage } = useMovePage();
 
   const { updateUserInfo, userInfo } = useUserStore();
   const [imageUrl, setImageUrl] = useState(userInfo.profileImageUrl);

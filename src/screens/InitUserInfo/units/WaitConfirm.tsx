@@ -26,10 +26,6 @@ const WaitConfirm = () => {
 
   const { movePage } = useMovePage();
 
-  useEffect(() => {
-    callPostMemberProfileAPi();
-  }, []);
-
   // Simulating loading with useEffect
   useEffect(() => {
     if (loading) {
@@ -49,27 +45,6 @@ const WaitConfirm = () => {
     await callGetMemberProfileStatusApi();
   };
 
-  const callPostMemberProfileAPi = async () => {
-    try {
-      // await updateUserInfo('openKakaoRoomUrl', link);
-      console.log('userInfo', userInfo);
-      const response = await postMemberProfileApi({
-        name: userInfo.name,
-        birthDate: userInfo.birthDate,
-        gender: userInfo.gender,
-        schoolName: userInfo.schoolName,
-        schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
-        studentIdImageUrl: userInfo.studentIdImageUrl,
-        profileImageUrl: userInfo.profileImageUrl,
-        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
-      });
-      console.log('callPostMemberProfileApi', response);
-    } catch (error) {
-      console.log('callPostMemberProfileApi error', error);
-    }
-  };
-
   const callGetMemberProfileStatusApi = async () => {
     try {
       const response = await getMemberProfileStatusesApi();
@@ -78,11 +53,11 @@ const WaitConfirm = () => {
       console.log('status', studentIdImageStatus, openKakaoRoomUrlStatus, profileImageUrlStatus);
 
       if (
-        studentIdImageStatus === 'PENDING' &&
-        openKakaoRoomUrlStatus === 'PENDING' &&
+        studentIdImageStatus === 'PENDING' ||
+        openKakaoRoomUrlStatus === 'PENDING' ||
         profileImageUrlStatus === 'PENDING'
       ) {
-        console.log('모두 대기중');
+        console.log('한 개 이상 대기중');
         return;
       }
 

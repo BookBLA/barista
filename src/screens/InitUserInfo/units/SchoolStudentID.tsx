@@ -3,7 +3,7 @@ import * as S from '../InitUserInfo.styles';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
@@ -30,7 +30,6 @@ const SchoolStudentID = () => {
   // };
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  updateUserInfo({ schoolName: '가천대학교' });
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
@@ -57,6 +56,11 @@ const SchoolStudentID = () => {
     setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
     if (uploadedFileUrl) updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+  };
+
+  const moveNext = () => {
+    updateUserInfo({ schoolName: '가천대학교' });
+    movePage('emailAuth')();
   };
 
   return (
@@ -115,10 +119,10 @@ const SchoolStudentID = () => {
           <TouchableOpacity onPress={movePage()}>
             <Image source={prevButton} />
           </TouchableOpacity>
-          {userInfo.schoolName === '' || userInfo.studentIdImageUrl === '' ? (
+          {userInfo.studentIdImageUrl === '' ? (
             <Image source={notYetNextButton} />
           ) : (
-            <TouchableOpacity onPress={movePage('emailAuth', { isRefused: false })}>
+            <TouchableOpacity onPress={moveNext}>
               <Image source={nextButton} />
             </TouchableOpacity>
           )}
