@@ -46,7 +46,6 @@ export const TitleStyled = styled.Text`
 `;
 
 export const ContentStyled = styled.Text`
-  text-align: center;
   font-size: 22px;
   font-family: fontMedium;
   color: black;
