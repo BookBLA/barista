@@ -44,7 +44,7 @@ const ProfileImage = () => {
     modifyProfileGuideModalRef.current?.present();
   }, []);
   const modifyProfileGuideModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints2 = useMemo(() => ['50%', '80%'], []);
+  const snapPoints2 = useMemo(() => ['80%'], []);
 
   useEffect(() => {
     // Call handleProfileGuideModalRef() when component mounts if it hasn't run yet

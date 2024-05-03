@@ -15,23 +15,8 @@ import useMemberStore from '../../../commons/store/useMemberStore';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
-  // const [isFocused, setIsFocused] = useState(false);
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const memberId = useMemberStore((state) => state.memberInfo.id);
-
-  // const handleFocus = () => {
-  //   if (!isFocused) {
-  //     setQuestion(''); // Clear the text when the TextInput is focused for the first time
-  //     setIsFocused(true);
-  //   }
-  // };
-
-  // const handleBlur = () => {
-  //   if (question === '') {
-  //     setQuestion('');
-  //     setIsFocused(false);
-  //   }
-  // };
 
   const callPostStyleApi = async () => {
     try {
@@ -45,11 +30,13 @@ const PersonalQuestion = () => {
           dateStyleType: styleInfo.dateStyleType,
           dateCostType: styleInfo.dateCostType,
           justFriendType: styleInfo.justFriendType,
-          memberAsk: styleInfo.memberAsk,
+          memberAsk: question,
         },
         memberId,
       );
+      updateStyleInfo('memberAsk', question);
       console.log('postMemberStyleApi', response);
+      movePage('initBookStack')();
     } catch (error) {
       console.log('ERROR) postMemberStyleApi', error);
     }
@@ -57,10 +44,9 @@ const PersonalQuestion = () => {
 
   const { movePage } = useMovePage();
   const nextPage = async () => {
-    updateStyleInfo('memberAsk', question);
     await callPostStyleApi();
     resetStyleInfo();
-    movePage('initBookStack')();
+
     console.log('styleInfo', styleInfo);
   };
 

@@ -8,6 +8,7 @@ import { TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useManageMargin from '../../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
+import { useCounter } from '../../../../../commons/store/useCounter';
 
 const OpenChat = () => {
   useManageMargin();
@@ -15,7 +16,12 @@ const OpenChat = () => {
   // const [link, setLink] = useState('');
   const { updateUserInfo, userInfo } = useUserStore();
 
-  const moveNext = async () => {};
+  const { increment } = useCounter();
+  const moveNext = async () => {
+    if (userInfo.openKakaoRoomUrl !== '') {
+      increment();
+    }
+  };
 
   return (
     <S.Wrapper>
@@ -25,7 +31,7 @@ const OpenChat = () => {
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
             <TextFiledStyled
-              value={userInfo.openKakaoRoomUrl}
+              defaultValue={userInfo.openKakaoRoomUrl}
               onChangeText={(text: string) => updateUserInfo({ openKakaoRoomUrl: text })}
               // onFocus={handleFocus}
               // onBlur={handleBlur}

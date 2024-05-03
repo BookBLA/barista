@@ -21,7 +21,6 @@ const OpenChatLink = () => {
   const moveNext = async () => {
     await callPostPolicyApi();
     await callPostMemberProfileAPi();
-
     movePage('waitConfirm')();
   };
   const { agreementInfo } = useAgreementStore();
@@ -39,9 +38,6 @@ const OpenChatLink = () => {
       console.log('callPostPolicyApi error', error);
     }
   };
-  useEffect(() => {
-    console.log('userInfo', userInfo);
-  }, [userInfo]);
 
   const callPostMemberProfileAPi = async () => {
     try {

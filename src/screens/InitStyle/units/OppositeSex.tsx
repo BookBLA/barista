@@ -8,6 +8,7 @@ import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
 const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 const OppositeSex = () => {
@@ -36,9 +37,13 @@ const OppositeSex = () => {
         <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
-        <TouchableOpacity onPress={movePage('commStyle')}>
-          <Image source={nextButton} />
-        </TouchableOpacity>
+        {styleInfo.justFriendType === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <TouchableOpacity onPress={movePage('commStyle')}>
+            <Image source={nextButton} />
+          </TouchableOpacity>
+        )}
       </View>
     </S.Wrapper>
   );

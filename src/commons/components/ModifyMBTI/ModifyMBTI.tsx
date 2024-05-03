@@ -6,8 +6,6 @@ import { Dispatch, SetStateAction } from 'react';
 
 const ModifyMBTI = ({ setMbti, mbti }: { setMbti: Dispatch<SetStateAction<string[]>>; mbti: string }) => {
   const mbtiNames: string[][] = [
-    // ['E\n외향형', 'S\n감각형', 'T\n사고형', 'J\n판단형'],
-    // ['I\n내향형', 'N\n직관형', 'F\n감정형', 'P\n인식형'],
     ['E\n외향형', 'I\n내향형'],
     ['S\n감각형', 'N\n직관형'],
     ['T\n사고형', 'F\n감정형'],
@@ -17,8 +15,8 @@ const ModifyMBTI = ({ setMbti, mbti }: { setMbti: Dispatch<SetStateAction<string
   return (
     <View style={{ width: '93%', height: 154, justifyContent: 'space-between', flexDirection: 'row' }}>
       {mbtiNames.map((name: string[], index: number) => {
-        // console.log('qq11', mbtiNames[index][1][0]);
-        // console.log('qq22', mbti[index]);
+        //console.log('qq11', mbtiNames[index][0][0]);
+        //console.log('mbti', index, mbti[index]);
 
         return (
           <ModifyMbtiItem
@@ -26,7 +24,8 @@ const ModifyMBTI = ({ setMbti, mbti }: { setMbti: Dispatch<SetStateAction<string
             name={name}
             setMbti={setMbti}
             index={index}
-            initSelect={mbtiNames[index][1][0] === mbti[index] && false}
+            initSelect={mbtiNames[index][0][0] === mbti[index] ? true : false}
+            mbti={mbti[index]}
           />
         );
       })}

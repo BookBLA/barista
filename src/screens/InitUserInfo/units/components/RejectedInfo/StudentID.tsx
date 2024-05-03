@@ -28,9 +28,9 @@ const StudentID = () => {
   // };
   const { increment } = useCounter();
   const { updateUserInfo, userInfo } = useUserStore();
-  useEffect(() => {
-    updateUserInfo({ schoolName: '가천대학교' });
-  }, []);
+  // useEffect(() => {
+  //   updateUserInfo({ schoolName: '가천대학교' });
+  // }, []);
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
@@ -113,7 +113,7 @@ const StudentID = () => {
 
         <S.NextButtonStyled
           style={{ backgroundColor: userInfo.studentIdImageUrl === '' ? colors.buttonAuthToggle : colors.primary }}
-          onPress={() => increment()}
+          onPress={userInfo.studentIdImageUrl === '' ? undefined : () => increment()}
         >
           <CustomText font="fontMedium" size="14" color={colors.secondary}>
             수정 완료
