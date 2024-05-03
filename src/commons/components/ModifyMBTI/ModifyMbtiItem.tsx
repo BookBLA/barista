@@ -3,17 +3,19 @@ import * as S from './ModifyMBTI.styles';
 import { IProps } from './ModifyMbtiItem.types';
 // import { useStyleStore } from '../../store/useStyle';
 
-const ModifyMbtiItem = ({ name, setMbti, index, initSelect = true }: IProps) => {
-  const [isSelect, setSelect] = useState<boolean>(initSelect);
+const ModifyMbtiItem = ({ name, setMbti, index, initSelect, mbti }: IProps) => {
+  const [isSelect, setSelect] = useState(initSelect);
 
   const [firstPart, secondPart] = name[0].split('\n');
   const [firstPart2, secondPart2] = name[1].split('\n');
 
   const handleSelect = (selectedName: string) => () => {
+    if (mbti === selectedName) return;
     setSelect((prev) => !prev);
     setMbti((prev) => {
       const newMbti = [...prev];
       newMbti[index] = selectedName;
+      console.log('newMbti', newMbti);
       return newMbti;
     });
   };
@@ -28,26 +30,26 @@ const ModifyMbtiItem = ({ name, setMbti, index, initSelect = true }: IProps) => 
             onPress={handleSelect(name[0][0])}
             style={{ marginBottom: 2 }}
           >
-            {name[0]}
-            {/* {firstPart} */}
+            {/* {name[0]} */}
+            {firstPart}
           </S.TextStyled>
-          {/* <S.TextStyled isSelect={isSelect} isSmall onPress={handleSelect(name[0][0])}>
+          <S.TextStyled isSelect={isSelect} isSmall onPress={handleSelect(name[0][0])}>
             {secondPart}
-          </S.TextStyled> */}
+          </S.TextStyled>
         </S.ButtonStyled>
-        <S.ButtonStyled isSelect={isSelect === false} onPress={handleSelect(name[1][0])}>
-          <S.TextStyled isSelect={isSelect === false}>{name[1]}</S.TextStyled>
-          {/* <S.TextStyled
-            isSelect={isSelect === false}
+        <S.ButtonStyled isSelect={!isSelect} onPress={handleSelect(name[1][0])}>
+          {/* <S.TextStyled isSelect={!isSelect}>{name[1]}</S.TextStyled> */}
+          <S.TextStyled
+            isSelect={!isSelect}
             isSmall={false}
-            onPress={handleSelect(name[0][0])}
+            onPress={handleSelect(name[1][0])}
             style={{ marginBottom: 2 }}
           >
             {firstPart2}
           </S.TextStyled>
-          <S.TextStyled isSelect={isSelect === false} isSmall onPress={handleSelect(name[0][0])}>
+          <S.TextStyled isSelect={!isSelect} isSmall onPress={handleSelect(name[1][0])}>
             {secondPart2}
-          </S.TextStyled> */}
+          </S.TextStyled>
         </S.ButtonStyled>
       </S.ColumnStyled>
     </>

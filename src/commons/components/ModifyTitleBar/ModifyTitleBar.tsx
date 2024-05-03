@@ -16,7 +16,6 @@ export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?
         flexDirection: 'row',
         alignItems: 'center',
         height: '9%',
-        backgroundColor: 'yellow',
         justifyContent: 'space-between',
       }}
     >

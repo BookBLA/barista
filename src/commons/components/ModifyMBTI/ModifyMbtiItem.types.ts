@@ -5,4 +5,5 @@ export interface IProps {
   setMbti: Dispatch<SetStateAction<string[]>>;
   index: number;
   initSelect?: boolean;
+  mbti: string;
 }

@@ -15,23 +15,8 @@ import useMemberStore from '../../../commons/store/useMemberStore';
 
 const PersonalQuestion = () => {
   const [question, setQuestion] = useState('');
-  // const [isFocused, setIsFocused] = useState(false);
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const memberId = useMemberStore((state) => state.memberInfo.id);
-
-  // const handleFocus = () => {
-  //   if (!isFocused) {
-  //     setQuestion(''); // Clear the text when the TextInput is focused for the first time
-  //     setIsFocused(true);
-  //   }
-  // };
-
-  // const handleBlur = () => {
-  //   if (question === '') {
-  //     setQuestion('');
-  //     setIsFocused(false);
-  //   }
-  // };
 
   const callPostStyleApi = async () => {
     try {

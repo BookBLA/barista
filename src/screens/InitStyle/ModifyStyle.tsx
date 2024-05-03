@@ -17,34 +17,38 @@ import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberStyle.api';
 import useMemberStore from '../../commons/store/useMemberStore';
+import useToastStore from '../../commons/store/useToastStore';
+import { set } from 'react-hook-form';
+
+const buttonList = [
+  'MBTI',
+  '흡연 여부',
+  '음주 여부',
+  '연락\n스타일',
+  '데이트\n스타일',
+  '데이트\n비용',
+  '이성친구\n범위',
+  '개인 질문',
+];
+const drinkOptions = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
+const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
+const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 
 const ModifyStyle = () => {
-  const buttonList = [
-    'MBTI',
-    '흡연 여부',
-    '음주 여부',
-    '연락\n스타일',
-    '데이트\n스타일',
-    '데이트\n비용',
-    '이성친구\n범위',
-    '개인 질문',
-  ];
   const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
-  const drinkOptions = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
-  const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
-  const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
+  const { updateStyleInfo, styleInfo } = useStyleStore();
+  const showToast = useToastStore((state) => state.showToast);
+
   const [question, setQuestion] = useState('');
 
   const handleTextChange = (text: string) => {
-    if (question.trim() === '') {
-      setQuestion(styleInfo.memberAsk); // 텍스트가 비어있으면 styleInfo.memberAsk로 설정합니다.
-    } else {
-      setQuestion(question);
-      updateStyleInfo('memberAsk', question);
+    if (text.length !== 0) {
+      //question이 비어있지 않다면
+      setQuestion(text);
+      updateStyleInfo('memberAsk', text);
     }
   };
 
-  const { updateStyleInfo, styleInfo } = useStyleStore();
   const scrollViewRef = useRef(null); // Create a ref for KeyboardAwareScrollView
   const handleMoveTop = () => {
     if (scrollViewRef.current) {
@@ -107,10 +111,10 @@ const ModifyStyle = () => {
       await updateStyleInfo('dateCostType', response.result.dateCostType);
       await updateStyleInfo('justFriendType', response.result.justFriendType);
       await updateStyleInfo('memberAsk', response.result.memberAsk);
-      console.log('styleInfo', styleInfo);
       const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
       setMbti(newMbti); // Update the mbti array with the newMbti array
       console.log('newMbti', newMbti);
+      setQuestion(response.result.memberAsk);
     } catch (error) {
       console.log('ERROR) getMemberStyleApi', error);
     }
@@ -119,8 +123,9 @@ const ModifyStyle = () => {
   useEffect(() => {
     callGetStyleApi();
   }, []);
+
   useEffect(() => {
-    callGetStyleApi();
+    // callGetStyleApi();
     const mbtiString = mbti.join('');
     console.log('mbti', mbti);
     console.log('mbtiString', mbtiString);
@@ -144,6 +149,9 @@ const ModifyStyle = () => {
         memberId,
       );
       console.log('putMemberStyleApi Success', response);
+      showToast({
+        content: '스타일 정보가 수정되었습니다.',
+      });
     } catch (error) {
       console.log('ERROR) putMemberStyleApi', error);
     }
@@ -170,7 +178,7 @@ const ModifyStyle = () => {
             alignItems: 'center',
           }}
         >
-          <S.ColumnStyled style={{ backgroundColor: 'pink', padding: '0 16' }}>
+          <S.ColumnStyled style={{ padding: '0 16' }}>
             <S.ViewStyled height={200}>
               <S.RowStyled style={{ width: '95%' }}>
                 <CustomText font="fontRegular" size="12" style={{ marginBottom: 14 }}>
@@ -321,7 +329,7 @@ const ModifyStyle = () => {
                 ex) 주로 어디서 책을 읽나요?
               </Text>
               <T.TextFiledStyled
-                defaultValue={styleInfo.memberAsk}
+                defaultValue={question}
                 onChangeText={handleTextChange}
                 //onFocus={handleFocus}
                 // onBlur={() => updateStyleInfo('memberAsk', question)}
