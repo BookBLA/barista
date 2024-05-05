@@ -13,7 +13,7 @@ export const useInitialRouteName = () => {
         return 'initStyleStack';
       case 'c':
         return 'tapScreens';
-      default: // NOTE: 성진 - 명시적으로 사용
+      default:
         return 'login';
     }
   };

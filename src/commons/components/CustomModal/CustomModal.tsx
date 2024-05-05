@@ -7,6 +7,7 @@ import { CloseButton } from './CloseButton/CloseButton';
 
 export const CustomModal: React.FC<IProps> = ({ children, modalConfig }) => {
   const { buttons, size, mode, close, onClose, visible, title, contents } = modalConfig;
+  // TODO: - 성진 contents 사용하지 않을 예정
 
   return (
     <Modal animationType="fade" transparent visible={visible} onRequestClose={onClose}>
