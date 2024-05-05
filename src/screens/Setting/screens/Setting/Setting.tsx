@@ -48,7 +48,7 @@ const Setting = ({ route }: IProps) => {
             />
           </S.LeftWrapper>
           <S.RightWrapper>
-            <CustomText>{`${name} | ${age}살`}</CustomText>
+            <CustomText>{`${name ?? '이름'} | ${age ?? 0}살`}</CustomText>
             <LightText>{school}</LightText>
           </S.RightWrapper>
         </S.ProfileWrapper>
@@ -61,7 +61,7 @@ const Setting = ({ route }: IProps) => {
             <S.MenuImage source={Matching} />
             <CustomText color={colors.primary}>매칭</CustomText>
           </S.MenuButton>
-          <S.MenuButton>
+          <S.MenuButton onPress={handleLinkPress('https://pf.kakao.com/_NrxbnG')}>
             <S.MenuImage source={Support} />
             <CustomText color={colors.primary}>고객센터</CustomText>
           </S.MenuButton>
