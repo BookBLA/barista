@@ -95,7 +95,7 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   }, []);
 
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
 
   const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
     setSelectedBookId(bookMemberId);
@@ -313,7 +313,7 @@ const Library: React.FC<Props> = ({ route }) => {
               </S.BookTouchableOpacity>
             ))}
             {topFloorBookList.length === 1 && (
-              <S.BookTouchableOpacity onPress={movePage('initBookStack', { screen: 'addBook', isModify: true })}>
+              <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
                 <S.EmptyBookImage>
                   <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
                 </S.EmptyBookImage>
