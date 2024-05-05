@@ -4,6 +4,7 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { Switch } from 'react-native-switch';
 import { useToggle } from '../../../../commons/hooks/useToggle';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
+import { useLinkingOpen } from '../../../../commons/hooks/useLinkingOpen';
 import * as S from '../../SettingStack.styles';
 import Matching from '../../../../../assets/images/icons/MatchingTransparent.png';
 import Support from '../../../../../assets/images/icons/SupportTransparent.png';
@@ -12,10 +13,13 @@ import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
+import { IProps } from './Setting.types';
 
-const Setting = () => {
+const Setting = ({ route }: IProps) => {
+  const { age, name, school, profileImageUrl } = route.params;
   const { movePage } = useMovePage();
   const { toggle, isOpen } = useToggle();
+  const { handleLinkPress } = useLinkingOpen();
   useManageMargin();
   useHeaderControl({
     title: '설정',
@@ -27,8 +31,8 @@ const Setting = () => {
     mode: 'round',
     contents: <ModalContent />,
     buttons: [
-      { label: '로그아웃', action: toggle, bgColor: colors.buttonMain, color: 'black' },
-      { label: '취소', action: toggle },
+      { label: '취소', action: toggle, bgColor: colors.buttonMain, color: 'black' },
+      { label: '설정', action: toggle },
     ],
   };
 
@@ -36,18 +40,24 @@ const Setting = () => {
     <>
       <S.Wrapper>
         <S.ProfileWrapper>
-          <S.LeftWrapper></S.LeftWrapper>
+          <S.LeftWrapper>
+            <S.ProfileImage
+              source={{
+                uri: profileImageUrl,
+              }}
+            />
+          </S.LeftWrapper>
           <S.RightWrapper>
-            <CustomText>성이름 | 00살</CustomText>
-            <LightText>가천대학교</LightText>
+            <CustomText>{`${name} | ${age}살`}</CustomText>
+            <LightText>{school}</LightText>
           </S.RightWrapper>
         </S.ProfileWrapper>
         <S.MenuWrapper>
-          <S.MenuButton onPress={movePage('tapScreens', { screen: '내 서재' })}>
+          <S.MenuButton onPress={movePage('tapScreens', { screen: 'Library' })}>
             <S.MenuImage source={Library} />
             <CustomText color={colors.primary}>내 서재</CustomText>
           </S.MenuButton>
-          <S.MenuButton onPress={movePage('tapScreens', { screen: '매칭' })}>
+          <S.MenuButton onPress={movePage('tapScreens', { screen: 'Matching' })}>
             <S.MenuImage source={Matching} />
             <CustomText color={colors.primary}>매칭</CustomText>
           </S.MenuButton>
@@ -61,7 +71,12 @@ const Setting = () => {
           <CustomText onPress={movePage('account')} margin="16px 0">
             계정
           </CustomText>
-          <CustomText margin="16px 0">약관 및 정책</CustomText>
+          <CustomText
+            margin="16px 0"
+            onPress={handleLinkPress('https://rust-sprite-73f.notion.site/fead23d9ddda4acf8874bec913e3219e')}
+          >
+            약관 및 정책
+          </CustomText>
           <S.BetweenWrapper>
             <CustomText margin="16px 0">아는 사람 피하기</CustomText>
             <Switch
@@ -81,7 +96,9 @@ const Setting = () => {
               switchWidthMultiplier={2}
             />
           </S.BetweenWrapper>
-          <CustomText margin="16px 0">이벤트 및 공지사항</CustomText>
+          <CustomText margin="16px 0" onPress={handleLinkPress('https://pf.kakao.com/_NrxbnG')}>
+            이벤트 및 공지사항
+          </CustomText>
           <S.BetweenWrapper>
             <S.RowWrapper>
               <CustomText margin="16px 5px 0 0">현재 버전</CustomText>

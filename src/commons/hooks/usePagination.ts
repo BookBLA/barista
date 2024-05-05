@@ -3,14 +3,7 @@ import { useState } from 'react';
 const usePagination = (pageSize = 5, initPage = 1, dataLength = 10) => {
   const [pageIndex, setPageIndex] = useState(initPage);
   const [startPage, setStartPage] = useState(initPage);
-  const [totalPage, setTotalPage] = useState(0);
-
-  // NOTE: 성진 - 필요시 사용
-  // useEffect(() => {
-  //   if (totalPage) {
-  //     prevEndPage();
-  //   }
-  // }, [totalPage]);
+  const [totalPage, setTotalPage] = useState(-1);
 
   const movePageIndex = (pageIndex: number) => () => {
     setPageIndex(pageIndex);

@@ -4,6 +4,7 @@ import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen
 import Setting from './screens/Setting/Setting';
 import Account from './screens/Account/Account';
 import Delete from './screens/Delete/Delete';
+import { IProps } from './SettingStack.types';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -12,12 +13,21 @@ const screens = [
   { name: 'delete', component: Delete },
 ];
 
-const SettingStack = () => {
+const SettingStack = ({ route }: IProps) => {
   return (
     <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false }}>
-      {screens.map(({ name, component }) => (
-        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
-      ))}
+      {screens.map(({ name, component }) =>
+        name === 'setting' ? (
+          <Stack.Screen
+            key={name}
+            name={name}
+            component={CustomScreen(component)}
+            initialParams={{ ...route.params.libraryInfo }}
+          />
+        ) : (
+          <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
+        ),
+      )}
     </Stack.Navigator>
   );
 };

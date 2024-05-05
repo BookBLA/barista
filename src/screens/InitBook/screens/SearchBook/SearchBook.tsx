@@ -17,6 +17,7 @@ import Pagination from '../../../../commons/components/Pagination/Pagination';
 import usePagination from '../../../../commons/hooks/usePagination';
 import { IProps } from './SearchBook.types';
 import useMovePage from '../../../../commons/hooks/useMovePage';
+import useToastStore from '../../../../commons/store/useToastStore';
 
 const SearchBook = ({ route }: IProps) => {
   useManageMargin();
@@ -26,15 +27,19 @@ const SearchBook = ({ route }: IProps) => {
   });
   const { movePage } = useMovePage();
   const { isRepresentative } = route.params;
-  const [search, setSearch] = useState('');
-  const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
-  const { bookList, callGetSearchBookApi } = useSearchBooks(setTotalPage);
+  const { bookList, resultSearch, callGetSearchBookApi } = useSearchBooks(setTotalPage);
+  const [search, setSearch] = useState('');
+  const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
+  const showToast = useToastStore((state) => state.showToast);
 
   const SearchBook = () => {
-    if (search === '') return;
+    if (search === '')
+      return showToast({
+        content: '검색어를 입력하세요',
+      });
     if (pageIndex !== 1) prevEndPage();
     callGetSearchBookApi(search, pageIndex, true);
   };
@@ -49,6 +54,7 @@ const SearchBook = ({ route }: IProps) => {
         <T.SearchBarStyled
           placeholder="원하는 책 제목 혹은 저자를 검색해 보세요."
           onChangeText={(search: string) => setSearch(search)}
+          onSubmitEditing={SearchBook}
         />
         <TouchableOpacity onPress={SearchBook}>
           <Image source={icons.search} style={{ width: 20, height: 20 }} />
@@ -57,7 +63,7 @@ const SearchBook = ({ route }: IProps) => {
 
       <T.ColumnStyled style={{ alignItems: 'center', justifyContent: 'center', flex: 1, width: '100%' }}>
         {totalPage === 0 ? (
-          <NoSearch search={search} />
+          <NoSearch search={resultSearch} />
         ) : totalPage > 0 ? (
           <>
             <ScrollView
@@ -86,7 +92,7 @@ const SearchBook = ({ route }: IProps) => {
               />
             </ScrollView>
 
-            <View style={{ position: 'absolute', bottom: 80, right: 10, zIndex: 2 }}>
+            <View style={{ position: 'absolute', bottom: 95, right: 10, zIndex: 2 }}>
               <TouchableOpacity onPress={() => handleMoveTop()}>
                 <Image source={buttons.moveTop} style={{ width: 45, height: 45 }} />
               </TouchableOpacity>

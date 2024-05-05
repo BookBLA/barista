@@ -1,9 +1,7 @@
 import { MainView } from './CustomScreen.styles';
 
-export const CustomScreen =
-  <P extends object>(Component: React.ComponentType<P>) =>
-  (props: React.ComponentProps<typeof Component>) => (
-    <MainView>
-      <Component {...props} />
-    </MainView>
-  );
+export const CustomScreen = (Component: React.ComponentType<any>) => (props: object) => (
+  <MainView>
+    <Component {...props} />
+  </MainView>
+);

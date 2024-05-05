@@ -1,5 +1,6 @@
 export interface IProps {
   size?: number;
+  itemsPerPage?: number;
   pageIndex: number;
   startPage: number;
   totalPage: number;

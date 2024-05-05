@@ -5,6 +5,7 @@ import { IProps } from './Pagination.types';
 
 const Pagination = ({
   size = 5,
+  itemsPerPage = 10,
   pageIndex,
   startPage,
   totalPage,
@@ -23,7 +24,7 @@ const Pagination = ({
       </TouchableOpacity>
       {new Array(size).fill('').map(
         (_, index) =>
-          index + startPage <= Math.ceil(totalPage / 10) && (
+          index + startPage <= Math.ceil(totalPage / itemsPerPage) && (
             <TouchableOpacity key={index} onPress={movePageIndex(index + startPage)}>
               <S.PageIndexTextStyled selected={index + startPage === pageIndex}>
                 {index + startPage}

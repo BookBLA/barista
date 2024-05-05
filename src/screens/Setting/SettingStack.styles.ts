@@ -21,7 +21,11 @@ export const LeftWrapper = styled.View`
   background-color: #d9d9d9;
 `;
 
-export const ProfileImage = styled.Image``;
+export const ProfileImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+`;
 
 export const RightWrapper = styled.View`
   display: flex;

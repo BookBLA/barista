@@ -6,6 +6,7 @@ import { isAxiosErrorResponse } from '../../../../../commons/utils/isAxiosErrorR
 
 export const usePostMemberBook = (isRepresentative: boolean, selectedBook: Partial<IBookData>) => {
   const { handleReset } = useMovePage();
+  const showToast = useToastStore((state) => state.showToast);
 
   const callPostMemberBook = async (data: IRequestQuizzes) => {
     try {
@@ -22,12 +23,12 @@ export const usePostMemberBook = (isRepresentative: boolean, selectedBook: Parti
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
         if (error.response?.data.message === '해당 회원이 이미 등록한 도서입니다.') {
-          useToastStore.getState().showToast({
+          showToast({
             content: '이미 등록한 책입니다.',
           });
         }
       } else {
-        useToastStore.getState().showToast({
+        showToast({
           content: '책 등록에 실패하였습니다.',
         });
       }
