@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useErrorMessage } from '../store/useErrorMessage';
 import useAuthStore from '../store/useAuthStore';
 import useToastStore from '../store/useToastStore';
+import * as Device from 'expo-device';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
@@ -11,6 +12,10 @@ httpApi.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
+    const systemName = Device.osName;
+    const osVersion = Device.osVersion;
+    config.headers['x-device-type'] = systemName === 'iOS' ? 'ios' : 'android';
+    config.headers['x-os-version'] = osVersion;
     return config;
   },
   (error) => {
