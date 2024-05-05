@@ -13,7 +13,7 @@ import Profile from './units/Profile/Profile';
 const Home = () => {
   const [filter, setFilter] = useState(initStates);
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
-  const { bottomRef, handleOpenBottomSheet } = useBottomSheet();
+  const { bottomRef, handleOpenBottomSheet, useBackHandler } = useBottomSheet();
   const { data } = useFetchMembersSameBook(filter);
   const snapPoints = useMemo(() => ['40%', '60%'], []);
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
@@ -53,7 +53,14 @@ const Home = () => {
         ref={bottomRef}
         index={0}
         snapPoints={snapPoints}
-        children={<Bottom setFilter={setFilter} selectedFilter={selectedFilter} filter={filter} />}
+        children={
+          <Bottom
+            useBackHandler={useBackHandler}
+            setFilter={setFilter}
+            selectedFilter={selectedFilter}
+            filter={filter}
+          />
+        }
       />
     </>
   );
