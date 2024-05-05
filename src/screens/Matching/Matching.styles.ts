@@ -2,6 +2,13 @@ import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import { Platform, StyleSheet } from 'react-native';
 
+export const Wrapper = styled.View`
+  flex: 1;
+  height: 100%;
+  padding: 0 16px;
+  background-color: #fff;
+`;
+
 export const InfoTextStyled = styled.Text`
   font-size: 14px;
   font-weight: 500;

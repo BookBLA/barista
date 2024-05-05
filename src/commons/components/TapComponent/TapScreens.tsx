@@ -10,9 +10,11 @@ import { colors } from '../../styles/variablesStyles';
 import Matching from '../../../screens/Matching/Matching';
 import Library from '../../../screens/Library/Library';
 import HomeStack from '../../../screens/Home/HomeStack';
+import useManageMargin from '../../hooks/useManageMargin';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
+  useManageMargin();
 
   return (
     <Tab.Navigator

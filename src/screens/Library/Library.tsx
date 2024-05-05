@@ -1,6 +1,5 @@
 import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import useManageMargin from '../../commons/hooks/useManageMargin';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
 import postcardImage from '../../../assets/images/example-book.png';
@@ -171,8 +170,6 @@ const Library: React.FC<Props> = ({ route }) => {
     }
     handleCloseBottomSheet();
   };
-
-  useManageMargin();
 
   useHeaderControl(
     isYourLibrary
