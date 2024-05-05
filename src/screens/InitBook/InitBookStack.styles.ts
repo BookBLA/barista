@@ -1,6 +1,14 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
 
+export const Wrapper = styled.View`
+  flex: 1;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+  padding-top: 40px;
+`;
+
 export const ButtonStyled = styled.TouchableOpacity`
   width: 86%;
   height: 88px;
