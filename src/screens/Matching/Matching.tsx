@@ -66,7 +66,7 @@ const Matching = () => {
   }, []);
 
   return (
-    <View style={{ backgroundColor: 'white', flex: 1, height: '100%' }}>
+    <S.Wrapper>
       <S.ViewStyled>
         <View style={{ flex: 1, height: '80%' }}>
           <S.PressableStyled
@@ -160,7 +160,7 @@ const Matching = () => {
           <S.GoToTopImage source={GoToTopButton} />
         </TouchableOpacity>
       )}
-    </View>
+    </S.Wrapper>
   );
 };
 

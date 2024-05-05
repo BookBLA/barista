@@ -4,4 +4,5 @@ export interface IProps {
   filter: TFilterState;
   setFilter: (filter: TFilterState) => void;
   selectedFilter: TFilterKeys;
+  useBackHandler: () => void;
 }
