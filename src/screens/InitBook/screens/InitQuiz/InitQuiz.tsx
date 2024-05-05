@@ -5,9 +5,9 @@ import { initBookSchema } from '../../initBookStack.schema';
 import { icons } from '../../../../commons/utils/variablesImages';
 import { Text, Image, TouchableHighlight, Keyboard, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { usePostMemberBook } from './hooks/usePostMemberBook';
 import { IProps } from './initQuiz.types';
+import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
@@ -18,7 +18,7 @@ const InitQuiz = ({ route }: IProps) => {
   useHeaderControl({
     title: selectedBook.title ?? '',
   });
-  const { control, handleSubmit, watch } = useForm({
+  const { control, handleSubmit, watch, formState } = useForm({
     defaultValues,
     resolver: yupResolver(initBookSchema),
   });
@@ -132,7 +132,7 @@ const InitQuiz = ({ route }: IProps) => {
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      placeholder="정답이 들어갈 영역입니다."
+                      placeholder="오답이 들어갈 영역입니다."
                     />
                   )}
                   name="firstWrongChoice"
@@ -147,7 +147,7 @@ const InitQuiz = ({ route }: IProps) => {
                       value={value}
                       onChangeText={onChange}
                       onBlur={onBlur}
-                      placeholder="정답이 들어갈 영역입니다."
+                      placeholder="오답이 들어갈 영역입니다."
                     />
                   )}
                   name="secondWrongChoice"
@@ -157,9 +157,14 @@ const InitQuiz = ({ route }: IProps) => {
           </View>
         </TouchableHighlight>
       </S.ColumnStyled>
-      <S.NextButtonStyled onPress={handleSubmit(callPostMemberBook)}>
-        <CustomText color={colors.secondary}>등록하기</CustomText>
-      </S.NextButtonStyled>
+      <View style={{ width: '100%' }}>
+        <CustomButton
+          onPress={handleSubmit(callPostMemberBook)}
+          backgroundColor={formState.isValid ? colors.primary : colors.primary02}
+          fontColor={formState.isValid ? colors.primary02 : colors.textGray}
+          contents="등록하기"
+        />
+      </View>
     </S.Wrapper>
   );
 };

@@ -12,10 +12,11 @@ import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import { EBook } from './AddBook.types';
 
 const AddBook = () => {
   useManageMargin();
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
   const { data, fetchGetMemberBook } = useFetchMemberBook();
 
   return (
@@ -43,7 +44,7 @@ const AddBook = () => {
           <>
             {data.map((item: IResponseMemberBook, index) => (
               <React.Fragment key={index}>
-                {index === 0 ? (
+                {index === EBook.FirstBookIndex ? (
                   <>
                     <FavBookList representative fetchGetMemberBook={fetchGetMemberBook} item={item} />
                     <DashDividerLine />
@@ -55,7 +56,7 @@ const AddBook = () => {
             ))}
 
             {!data.length && <DashDividerLine />}
-            {data.length < 3 && (
+            {data.length < EBook.MaxBooks && (
               <T.ButtonStyled onPress={movePage('searchBook', { isRepresentative: !data.length })}>
                 <Image source={icons.plusCircle} style={{ width: 29, height: 28 }} />
               </T.ButtonStyled>
@@ -63,8 +64,8 @@ const AddBook = () => {
           </>
         </S.ColumnStyled>
       </ScrollView>
-      <S.NextButtonStyled onPress={movePage('tapScreens')}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      <S.NextButtonStyled onPress={() => handleReset('tapScreens')}>
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>완료</Text>
       </S.NextButtonStyled>
     </S.Wrapper>
   );

@@ -3,9 +3,11 @@ import { getSearchBookApi } from '../../../../../commons/api/searchBook';
 
 export const useSearchBooks = (setTotalPage: Dispatch<SetStateAction<number>>) => {
   const [bookList, setBookList] = useState([]);
+  const [resultSearch, setResultSearch] = useState('');
 
   const callGetSearchBookApi = async (search: string, pageIndex: number, updateTotalPages = false) => {
     try {
+      setResultSearch(search);
       const response = await getSearchBookApi(search, pageIndex);
       if (updateTotalPages && response.result.totalCount !== undefined) {
         setTotalPage(response.result.totalCount);
@@ -18,6 +20,7 @@ export const useSearchBooks = (setTotalPage: Dispatch<SetStateAction<number>>) =
 
   return {
     bookList,
+    resultSearch,
     callGetSearchBookApi,
   };
 };

@@ -69,14 +69,14 @@ export const QuizStyled = styled.View`
 
 export const QuizTextInput = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
-  maxLength: 60, // 최대 글자 수
+  maxLength: 21, // 최대 글자 수
 })`
   width: 80%;
   height: 38px;
   font-size: 12px;
-  font-family: fontMedium;
+  font-family: 'fontMedium';
   text-align: start;
-  padding-left: 5px;
+  padding: 5px;
 `;
 
 export const SearchContainer = styled.View`
