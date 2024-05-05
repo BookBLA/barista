@@ -4,6 +4,7 @@ import { IProps } from './Delete.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { useToggle } from '../../../../commons/hooks/useToggle';
+import { useDeleteMember } from './hooks/useDeleteMember';
 import * as S from '../../SettingStack.styles';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import CheckboxOff from '../../../../../assets/images/icons/CheckboxOff.png';
@@ -12,6 +13,7 @@ import CheckboxOn from '../../../../../assets/images/icons/CheckboxOn.png';
 export const Delete = ({ route }: IProps) => {
   const { config } = route.params;
   const { toggle, isOpen } = useToggle();
+  const { callDeleteMember } = useDeleteMember();
   useHeaderControl(config);
 
   return (
@@ -54,7 +56,7 @@ export const Delete = ({ route }: IProps) => {
             <CustomText size="14px">정말 계정을 영구 삭제하시겠습니까?</CustomText>
           </S.TextWrapper>
         </S.RowWrapper>
-        <CustomButton contents="게정 삭제" margin="30px 0 0" />
+        <CustomButton onPress={callDeleteMember(isOpen)} contents="계정 삭제" margin="30px 0 0" />
       </View>
     </S.DeleteWrapper>
   );

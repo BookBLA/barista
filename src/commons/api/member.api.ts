@@ -1,6 +1,8 @@
-import { Get } from '../utils/http.api';
+import { Delete, Get } from '../utils/http.api';
 
 export const getMemberApi = () => Get('members');
+
+export const deleteMemberApi = () => Delete('members');
 
 export const getMemberSameBookApi = (params: object) => Get(`members/same-book-members`, params);
 

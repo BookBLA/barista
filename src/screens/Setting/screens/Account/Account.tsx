@@ -15,18 +15,18 @@ import { getMemberProfileApi } from '../../../../commons/api/memberProfile.api';
 import { useUserStore } from '../../../../commons/store/useUserinfo';
 
 const Account = () => {
-  const { movePage } = useMovePage();
-  const { toggle, isOpen } = useToggle(); // 토글 훅 인스턴스1 // 스위치 관리 토글 훅
-  const { toggle: modalToggle, isOpen: isOpenModal } = useToggle(); // 토글 훅 인스턴스2 // 모달 관리 토글 훅
+  const { movePage, handleReset } = useMovePage();
+  const { toggle, isOpen } = useToggle();
+  const { toggle: modalToggle, isOpen: isOpenModal } = useToggle();
   const { onClickLogout } = useLogout();
   const [selected, setSelected] = useState('');
 
-  // config 재사용하기 위해 변수로 만듬
+  // NOTE: 성진 - config 재사용하기 위해 변수로 만듬
   const config = {
     title: '계정',
     right: {
       image: Home,
-      onPress: movePage('tapScreens'),
+      onPress: () => handleReset('tapScreens'),
     },
   };
 
@@ -58,7 +58,7 @@ const Account = () => {
         <S.BetweenWrapper>
           <CustomText margin="16px 0">매칭 활성화</CustomText>
           <Switch
-            value={isOpen}
+            value={!isOpen}
             onValueChange={toggle}
             circleSize={16}
             barHeight={20}
