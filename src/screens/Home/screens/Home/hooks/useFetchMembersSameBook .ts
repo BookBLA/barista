@@ -29,7 +29,7 @@ export const useFetchMembersSameBook = (filter: TFilterState) => {
 
   useEffect(() => {
     fetchMembersSameBook();
-  }, [fetchMembersSameBook]);
+  }, [filter]);
 
   return { data };
 };
