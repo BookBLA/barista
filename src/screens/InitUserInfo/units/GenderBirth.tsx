@@ -17,7 +17,7 @@ const GenderBirth = () => {
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  const [date, setDate] = useState(new Date('1980-01-01'));
+  const [date, setDate] = useState(new Date('2000-01-01'));
 
   console.log('userInfo', userInfo);
 
@@ -45,7 +45,7 @@ const GenderBirth = () => {
       <TitleProgress gauge={25} />
       <S.ColumnStyled>
         <View>
-          <S.ContentStyled>성별을 선택해 주세요.</S.ContentStyled>
+          <S.ContentStyled style={{ textAlign: 'center' }}>성별을 선택해 주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === 'FEMALE'}

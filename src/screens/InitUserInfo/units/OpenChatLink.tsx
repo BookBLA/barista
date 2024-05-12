@@ -5,12 +5,13 @@ import * as S from '../InitUserInfo.styles';
 import { TitleProgress2 } from './TitleProgress2';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import { TextFiledStyled } from '../../InitStyle/InitStyle.styles';
+import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import { postPolicyApi } from '../../../commons/api/memberPolicy';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postMemberProfileApi } from '../../../commons/api/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import { deviceHeight } from '../../../commons/utils/dimensions';
 
 const OpenChatLink = () => {
   const { movePage } = useMovePage();
@@ -64,10 +65,11 @@ const OpenChatLink = () => {
     <S.Wrapper>
       <TitleProgress2 gauge={50} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <S.ColumnStyled style={{ height: '80%' }}>
+        {/* <S.ColumnStyled style={{ height: '80%' }}> */}
+        <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
-            <TextFiledStyled
+            <OpenChatTextFiledStyled
               value={userInfo.openKakaoRoomUrl}
               onChangeText={(text: string) => updateUserInfo({ openKakaoRoomUrl: text })}
               // onFocus={handleFocus}

@@ -41,14 +41,12 @@ export const TouchableStyled = styled.TouchableHighlight`
 
 export const TitleStyled = styled.Text`
   font-size: 16px;
-  color: black;
   font-family: fontMedium;
 `;
 
 export const ContentStyled = styled.Text`
   font-size: 22px;
   font-family: fontMedium;
-  color: black;
   margin-bottom: 16px;
 `;
 
@@ -86,7 +84,7 @@ export const ButtonStyled = styled.TouchableOpacity<{ borderRadius?: number }>`
   /* margin-bottom: 20px; */
 `;
 export const CodeFiledStyled = styled.View`
-  width: 80%;
+  width: 78%;
   height: 40px;
   border-radius: 60px;
   background-color: ${colors.buttonMain};
@@ -145,7 +143,7 @@ export const OpenChatTitleStyled = styled.Text`
   text-align: center;
   color: 'black';
   margin-bottom: 16px;
-  margin-top: 50px;
+  margin-top: 13%;
 `;
 
 export const OpenChatContentStyled = styled.Text`
