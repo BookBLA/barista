@@ -51,7 +51,7 @@ const TermsOfService = () => {
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper style={{ paddingBottom: 5 }}>
       <View style={{ width: '100%' }}>
         <S.SafeAreaViewStyled>
           <S.TitleStyled>약관 동의</S.TitleStyled>

@@ -64,13 +64,13 @@ const Kakao = () => {
       setToken(response.result.accessToken);
       await saveMemberInfo();
       showToast({
-        content: '회원가입에 성공하였습니다.',
+        content: '로그인에 성공하였습니다.',
       });
       movePage(getInitialRouteName())();
     } catch (error) {
       console.log('error', error);
       showToast({
-        content: '회원가입에 실패하였습니다.',
+        content: '로그인에 실패하였습니다.',
       });
     }
   };

@@ -97,9 +97,7 @@ const WaitConfirm = () => {
 
               <TouchableOpacity
                 style={{ marginTop: 26 }}
-                onPress={() =>
-                  Linking.openURL('https://www.instagram.com/book_dating?igsh=MXY3dnpzMGZ2Mm8zYQ%3D%3D&utm_source=qr')
-                }
+                onPress={() => Linking.openURL('https://www.instagram.com/bookbla_kr')}
               >
                 <S.RowStyled style={{ alignItems: 'center', justifyContent: 'flex-start', width: 'auto' }}>
                   <Image source={optionA} style={{ width: 30, height: 30 }} />

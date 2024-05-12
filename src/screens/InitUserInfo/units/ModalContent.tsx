@@ -5,7 +5,6 @@ import { View } from 'react-native';
 const ModalContent = ({ date, setDate }: { date: Date; setDate: (value: Date) => void }) => {
   return (
     <>
-      <S.RowStyled style={{ justifyContent: 'flex-start' }}></S.RowStyled>
       <View style={{ marginBottom: 43, marginTop: 27 }}>
         <DatePicker
           value={date}

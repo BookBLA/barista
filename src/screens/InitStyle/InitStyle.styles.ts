@@ -5,6 +5,16 @@ interface IProps {
   isSelect: boolean;
 }
 
+export const InnerWrapper = styled.TouchableHighlight`
+  height: 80%;
+  /* margin-top: 10; */
+  /* margin-bottom: 10; */
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+`;
+
 export const ButtonStyled = styled.TouchableOpacity`
   width: 105px;
   height: 44px;
@@ -35,12 +45,23 @@ export const TextFiledStyled = styled.TextInput.attrs({
   font-size: 14px;
   font-family: fontMedium;
   background-color: ${colors.buttonMain};
-  justify-content: center;
+  justify-content: flex-start;
   text-align: left;
   padding: 12px 12px 12px 12px;
-  /* padding-top: 12px; */
-
-  flex-shrink: 1;
+`;
+export const OpenChatTextFiledStyled = styled.TextInput.attrs({
+  multiline: true, // 여러 줄 입력 가능
+  maxLength: 1000, // 최대 글자 수
+})`
+  width: 85%;
+  height: 35%;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: fontMedium;
+  background-color: ${colors.buttonMain};
+  /* justify-content: flex-start; */
+  /* text-align: left; */
+  padding: 12px 12px 12px 12px;
 `;
 
 export const MoveButtonStyled = styled.TouchableOpacity`

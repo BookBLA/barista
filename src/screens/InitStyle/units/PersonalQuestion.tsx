@@ -12,8 +12,10 @@ import { TouchableHighlight } from '@gorhom/bottom-sheet';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
 import useMemberStore from '../../../commons/store/useMemberStore';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const PersonalQuestion = () => {
+  useManageMargin();
   const [question, setQuestion] = useState('');
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const memberId = useMemberStore((state) => state.memberInfo.id);
@@ -46,25 +48,16 @@ const PersonalQuestion = () => {
   const nextPage = async () => {
     await callPostStyleApi();
     resetStyleInfo();
+    movePage('initBookStack')();
 
     console.log('styleInfo', styleInfo);
   };
 
   return (
-    <S.Wrapper>
+    <S.Wrapper style={{ paddingBottom: 5 }}>
       <TitleProgress gauge={100} />
-      <TouchableHighlight
-        style={{
-          height: deviceHeight * 0.7,
-          width: '100%',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-          alignItems: 'center',
-        }}
-        onPress={Keyboard.dismiss}
-        underlayColor="transparent"
-      >
-        <View style={{ width: '100%', alignItems: 'center' }}>
+      <T.InnerWrapper onPress={Keyboard.dismiss} underlayColor="transparent">
+        <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           <S.ContentStyled style={{ marginBottom: 10 }}>상대방에게 궁금한 점을 적어주세요</S.ContentStyled>
           <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 10 }}>
             ex) 주로 어디서 책을 읽나요?
@@ -72,8 +65,6 @@ const PersonalQuestion = () => {
           <T.TextFiledStyled
             defaultValue={styleInfo.memberAsk}
             onChangeText={(text: string) => setQuestion(text)}
-            //onFocus={handleFocus}
-            // onBlur={() => updateStyleInfo('memberAsk', question)}
             style={{
               color: colors.primary,
             }}
@@ -84,14 +75,14 @@ const PersonalQuestion = () => {
                 color: colors.textGray2,
                 fontFamily: 'fontRegular',
                 fontSize: 12,
-                marginTop: 5,
               }}
             >
               {question.length}/80자
             </Text>
           </S.RowStyled>
         </View>
-      </TouchableHighlight>
+      </T.InnerWrapper>
+
       {question === '' ? (
         <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
           <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>

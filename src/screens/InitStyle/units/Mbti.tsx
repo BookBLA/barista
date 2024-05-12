@@ -7,8 +7,10 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useEffect, useState } from 'react';
 import { useStyleStore } from '../../../commons/store/useStyle';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const Mbti = () => {
+  useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
   console.log('styleInfp', styleInfo);
 

@@ -10,10 +10,11 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const CommStyle = () => {
   const { updateStyleInfo, styleInfo } = useStyleStore();
-
+  useManageMargin();
   const { movePage } = useMovePage();
 
   return (

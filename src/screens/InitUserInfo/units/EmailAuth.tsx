@@ -15,13 +15,15 @@ import { postAuthEmailApi, postAuthVerifyApi, putAuthEmailApi } from '../../../c
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import useToastStore from '../../../commons/store/useToastStore';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const EmailAuth = () => {
+  useManageMargin();
   const showToast = useToastStore((state) => state.showToast);
 
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
+  const [isSuccess, setIsSuccess] = useState('true'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
 
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
@@ -140,8 +142,8 @@ const EmailAuth = () => {
             }}
           >
             <View>
-              <S.ContentStyled>학교 이메일을 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%' }}>
+              <S.ContentStyled style={{ textAlign: 'center' }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
+              <S.RowStyled style={{ width: '93%' }}>
                 <S.TextFiledStyled
                   defaultValue={userInfo.schoolEmail}
                   onChangeText={(text: string) => setEmail(text)}
@@ -174,8 +176,8 @@ const EmailAuth = () => {
               </Text>
             </View>
             <View>
-              <S.ContentStyled>인증 코드를 입력해 주세요.</S.ContentStyled>
-              <S.RowStyled style={{ width: '100%' }}>
+              <S.ContentStyled style={{ textAlign: 'center' }}>인증 코드를 입력해 주세요.</S.ContentStyled>
+              <S.RowStyled style={{ width: '93%' }}>
                 <S.CodeFiledStyled>
                   <S.InputStyled
                     value={code}

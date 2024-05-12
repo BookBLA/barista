@@ -16,6 +16,8 @@ import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
 import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
+import { deviceHeight } from '../../../commons/utils/dimensions';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -27,6 +29,7 @@ const profileExList = [
 ];
 
 const ProfileImage = () => {
+  useManageMargin();
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
 
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -37,7 +40,7 @@ const ProfileImage = () => {
     handleOpenBottomSheet();
   }, []);
   // const bottomRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%'], []);
+  const snapPoints = useMemo(() => ['17%'], []);
 
   //'사진 가드' 바텀시트 모달
   const handleProfileGuideModalRef = useCallback(() => {
@@ -90,7 +93,8 @@ const ProfileImage = () => {
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={25} />
-      <S.ColumnStyled style={{ height: '80%' }}>
+      {/* <S.ColumnStyled style={{ height: '80%' }}> */}
+      <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
           <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
           <Text
@@ -214,7 +218,11 @@ const ProfileImage = () => {
       </CustomBottomSheetModal>
       <S.NextButtonStyled
         onPress={userInfo.profileImageUrl === '' ? undefined : movePage('openChatLink')}
-        style={{ backgroundColor: userInfo.profileImageUrl === '' ? colors.buttonAuthToggle : colors.primary }}
+        style={{
+          backgroundColor: userInfo.profileImageUrl === '' ? colors.buttonAuthToggle : colors.primary,
+          zIndex: 2,
+          marginBottom: '5%',
+        }}
       >
         <Text
           style={{

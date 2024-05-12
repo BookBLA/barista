@@ -19,11 +19,7 @@ const { width } = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  //height: 70%;
 `;
-// const CarouselContainer = styled.View`
-//   flex: 1;
-// `;
 const CarouselItemContainer = styled.View`
   width: ${(props) => props.width}px;
   height: 100%;
@@ -89,7 +85,6 @@ const InfoOpenChat = ({ again }: { again: boolean }) => {
       <>
         <LinearGradient style={{ flex: 1 }} colors={['#F7F4ED', 'white']}>
           <ScrollView
-            style={{}}
             onMomentumScrollEnd={onScrollEnd}
             horizontal
             pagingEnabled

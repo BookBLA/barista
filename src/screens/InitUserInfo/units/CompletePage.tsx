@@ -21,7 +21,7 @@ const CompletePage = () => {
         <S.ContentStyled style={{ marginTop: 30, marginBottom: 10 }}>BOOK BLA에 오신 것을 환영합니다!</S.ContentStyled>
         <S.ContentStyled>프로필 서재를 꾸며볼까요?</S.ContentStyled>
       </View>
-      <S.NextButtonStyled onPress={nextPage} style={{ zIndex: 2, position: 'fixed' }}>
+      <S.NextButtonStyled onPress={nextPage}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
       </S.NextButtonStyled>
     </S.Wrapper>

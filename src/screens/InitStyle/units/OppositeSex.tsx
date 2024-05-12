@@ -9,9 +9,11 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 const OppositeSex = () => {
+  useManageMargin();
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const { movePage } = useMovePage();
