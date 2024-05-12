@@ -19,7 +19,6 @@ export const RowStyled = styled.View`
   width: 95%;
   height: 7%;
   margin-top: 6px;
-  background-color: skyblue;
 `;
 
 export const DividerStyled = styled.View`
