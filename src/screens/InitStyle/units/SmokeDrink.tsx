@@ -11,11 +11,11 @@ import { TitleProgress } from './TitleProgress';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import useManageMargin from '../../../commons/hooks/useManageMargin';
 
 const SmokeDrink = () => {
-  // const [selectedButton, setSelectedButton] = useState<null | string>(null);
+  useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
-  // const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const buttonTitles = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
 
   const { movePage } = useMovePage();
