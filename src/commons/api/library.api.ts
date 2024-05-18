@@ -1,4 +1,4 @@
-import { Delete, Get, Put } from '../utils/http.api';
+import { Delete, Get, Patch, Put } from '../utils/http.api';
 import { TBookInfo, TBookQuizInfo } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
@@ -27,8 +27,17 @@ type updateBookInfo = {
   secondWrongChoice: string;
 };
 
-export const updateBookInfo = async ({ memberBookId, ...data }: updateBookInfo) => {
+type updateBookReview = {
+  memberBookId: number;
+  contents: string;
+};
+
+export const updateQuiz = async ({ memberBookId, ...data }: updateBookInfo) => {
   await Put(`quizzes/${memberBookId}`, data);
+};
+
+export const updateBookReview = async ({ memberBookId, ...data }: updateBookReview) => {
+  await Patch(`member-books/${memberBookId}/review`, data);
 };
 
 export const deleteBook = async (memberBookId: number) => {

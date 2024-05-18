@@ -84,6 +84,8 @@ const Library: React.FC<Props> = ({ route }) => {
   const fetchYourLibraryInfo = async (targetMemberId: number) => {
     const { result } = await getYourLibraryInfo(targetMemberId);
     setLibraryInfo(result);
+
+    return result;
   };
 
   useEffect(() => {
