@@ -10,6 +10,7 @@ export type TBookInfo = {
   imageUrl: string;
   authors: string[];
   representative: boolean;
+  review: string;
 };
 
 export type TBookQuizInfo = {

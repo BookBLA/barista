@@ -24,8 +24,9 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
-import { deleteBook, getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
+import { deleteBook, getBookInfo, getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
+import { TBookInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -44,8 +45,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
-  const isYourLibrary = route.params?.isYourLibrary;
-  const targetMemberId = route.params?.memberId;
+  // const isYourLibrary = route.params?.isYourLibrary;
+  const isYourLibrary = true;
+  // const targetMemberId = route.params?.memberId;
+  const targetMemberId = 386;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
@@ -57,6 +60,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
   const [selectedBookId, setSelectedBookId] = useState(0);
+  const [bookInfo, setBookInfo] = useState<TBookInfo>();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -82,8 +86,9 @@ const Library: React.FC<Props> = ({ route }) => {
   };
 
   const fetchYourLibraryInfo = async (targetMemberId: number) => {
-    const { result } = await getYourLibraryInfo(targetMemberId);
+    const result = await getYourLibraryInfo(targetMemberId);
     setLibraryInfo(result);
+    splitBook(result.bookResponses);
 
     return result;
   };
@@ -95,6 +100,12 @@ const Library: React.FC<Props> = ({ route }) => {
       fetchMyLibraryInfo();
     }
   }, []);
+
+  const fetchBookInfo = async (memberBookId: number) => {
+    const response = await getBookInfo(memberBookId);
+    console.log(response);
+    setBookInfo(response);
+  };
 
   const { movePage, handleReset } = useMovePage();
 
@@ -297,8 +308,9 @@ const Library: React.FC<Props> = ({ route }) => {
             {topFloorBookList.map((book) => (
               <S.BookTouchableOpacity
                 key={book.memberBookId}
-                onPress={() => {
+                onPress={async () => {
                   if (isYourLibrary) {
+                    await fetchBookInfo(book.memberBookId);
                     handleViewBookInfoModalRef();
                   } else {
                     handleModifyBookModalRef(book.memberBookId);
@@ -326,8 +338,9 @@ const Library: React.FC<Props> = ({ route }) => {
             {secondFloorBookList.map((book) => (
               <S.BookTouchableOpacity
                 key={book.memberBookId}
-                onPress={() => {
+                onPress={async () => {
                   if (isYourLibrary) {
+                    await fetchBookInfo(book.memberBookId);
                     handleViewBookInfoModalRef();
                   } else {
                     handleModifyBookModalRef(book.memberBookId);
@@ -404,10 +417,10 @@ const Library: React.FC<Props> = ({ route }) => {
       <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewBookInfo
-            bookName="카와카츠 맛있겠다."
-            bookAuthors={['샤브샤브']}
-            bookImageUrl="https://source.unsplash.com/random/300×300"
-            bookReview="한 줄로 감상문이 들어갈 자리입니다."
+            bookName={bookInfo?.title}
+            bookAuthors={bookInfo?.authors}
+            bookImageUrl={bookInfo?.imageUrl}
+            bookReview={bookInfo?.review}
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>

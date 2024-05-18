@@ -3,7 +3,13 @@ import { TBookInfo, TBookQuizInfo } from '../../screens/Library/MyBookInfoModify
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
-export const getYourLibraryInfo = (targetMemberId: number) => Get('members/library/target', { targetMemberId }, true);
+export const getYourLibraryInfo = async (targetMemberId: number) => {
+  const {
+    result: { baseResponse },
+  } = await Get(`members/library/target/${Number(targetMemberId)}`, true);
+
+  return baseResponse;
+};
 
 export const getBookQuizInfo = async (memberBookId: number) => {
   const { result } = await Get(`quizzes/${memberBookId}`);
