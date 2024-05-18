@@ -18,7 +18,6 @@ import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import useMovePage from '../../commons/hooks/useMovePage';
 import { useBottomSheet } from '../../commons/hooks/useBottomSheet';
-import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
@@ -33,6 +32,7 @@ import {
 } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcar';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -59,7 +59,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
-  const postcardCounter = usePostcardCounter((state) => state.count);
+  const { memberPostcard } = useFetchMemberPostcard();
   const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
   const navigation = useNavigation();
   const memberId = useMemberStore((state) => state.memberInfo.id);
@@ -143,7 +143,7 @@ const Library: React.FC<Props> = ({ route }) => {
   };
 
   const handlePostcardClick = () => {
-    if (postcardCounter > 0) {
+    if (memberPostcard > 0) {
       toggleSendPostcardModal();
     } else {
       console.debug('엽서 부족');
