@@ -24,7 +24,6 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
     try {
       await updateQuiz({
         memberBookId,
-        review: bookReviewText,
         quiz: bookQuizText,
         quizAnswer: bookQuizFirstAnswerText,
         firstWrongChoice: bookQuizSecondAnswerText,
@@ -241,7 +240,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
               <S.BookQuizInfoView>
-                <S.QuizCircle isCorrect>
+                <S.QuizCircle isCorrect={false}>
                   <S.QuizCircleText>C</S.QuizCircleText>
                 </S.QuizCircle>
                 <S.BookQuizAnswerWrapper>
