@@ -335,18 +335,39 @@ const Library: React.FC<Props> = ({ route }) => {
                 <S.BookImage source={{ uri: book.bookImageUrl }} />
               </S.BookTouchableOpacity>
             ))}
-            {secondFloorBookList.length === 0 && (
-              <S.BookTouchableOpacity
-                onPress={
-                  secondFloorBookList ? movePage('initBookStack', { screen: 'addBook', isModify: true }) : () => {}
-                }
-              >
-                <S.EmptyBookImage>
-                  <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
-                </S.EmptyBookImage>
-              </S.BookTouchableOpacity>
+            {topFloorBookList.length === 2 && secondFloorBookList.length === 0 && (
+              <>
+                <S.BookTouchableOpacity
+                  onPress={
+                    secondFloorBookList ? movePage('initBookStack', { screen: 'addBook', isModify: true }) : () => {}
+                  }
+                >
+                  <S.EmptyBookImage>
+                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                  </S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+              </>
             )}
-            <S.BookTouchableOpacity></S.BookTouchableOpacity>
+            {topFloorBookList.length === 2 && secondFloorBookList.length === 1 && (
+              <>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+              </>
+            )}
+            {topFloorBookList.length !== 2 && (
+              <>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+              </>
+            )}
           </S.ModalBookListContainer>
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
