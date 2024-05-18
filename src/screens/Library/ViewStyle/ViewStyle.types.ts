@@ -1,5 +1,5 @@
 export interface IViewStyleProps {
-  styles: string[];
-  friendPreferenceType: string;
-  personalQuestion: string;
+  styles: (string | undefined)[];
+  friendPreferenceType?: string;
+  personalQuestion?: string;
 }

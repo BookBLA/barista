@@ -25,3 +25,16 @@ export type TBookResponses = {
   bookImageUrl: string;
   representative: boolean;
 };
+
+export type TUpdateBookInfo = {
+  memberBookId: number;
+  quiz: string;
+  quizAnswer: string;
+  firstWrongChoice: string;
+  secondWrongChoice: string;
+};
+
+export type TUpdateBookReview = {
+  memberBookId: number;
+  contents: string;
+};

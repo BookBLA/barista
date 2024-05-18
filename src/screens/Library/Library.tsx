@@ -24,9 +24,15 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
-import { deleteBook, getBookInfo, getMyLibraryInfo, getYourLibraryInfo } from '../../commons/api/library.api';
+import {
+  deleteBook,
+  getBookInfo,
+  getMemberStyle,
+  getMyLibraryInfo,
+  getYourLibraryInfo,
+} from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
-import { TBookInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -45,6 +51,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
+  //todo 추후 삭제
   // const isYourLibrary = route.params?.isYourLibrary;
   const isYourLibrary = true;
   // const targetMemberId = route.params?.memberId;
@@ -61,6 +68,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
+  const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -102,9 +110,13 @@ const Library: React.FC<Props> = ({ route }) => {
   }, []);
 
   const fetchBookInfo = async (memberBookId: number) => {
-    const response = await getBookInfo(memberBookId);
-    console.log(response);
-    setBookInfo(response);
+    const result = await getBookInfo(memberBookId);
+    setBookInfo(result);
+  };
+
+  const fetchTargetMemberStyle = async (targetMemberId: number) => {
+    const result = await getMemberStyle(targetMemberId);
+    setMemberStyle(result);
   };
 
   const { movePage, handleReset } = useMovePage();
@@ -284,11 +296,18 @@ const Library: React.FC<Props> = ({ route }) => {
         <S.ProfileHeaderButtonContainer>
           {isYourLibrary ? (
             <>
-              <S.ProfileModifyButtonWrapper onPress={handleViewStyleModalRef}>
+              <S.ProfileModifyButtonWrapper
+                onPress={async () => {
+                  await fetchTargetMemberStyle(targetMemberId);
+                  handleViewStyleModalRef();
+                }}
+              >
                 <S.ProfileModifyButtonText>스타일 보기</S.ProfileModifyButtonText>
               </S.ProfileModifyButtonWrapper>
               <S.ProfileModifyButtonWrapper
-                onPress={handlePostcardClick}
+                onPress={async () => {
+                  handlePostcardClick();
+                }}
                 style={{ backgroundColor: colors.buttonPrimary }}
               >
                 <S.ProfileModifyButtonText style={{ color: colors.textYellow }}>엽서 보내기</S.ProfileModifyButtonText>
@@ -407,9 +426,16 @@ const Library: React.FC<Props> = ({ route }) => {
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewStyle
-            styles={['테스트1', '테스트2', '테스트3']}
-            friendPreferenceType="남사친여사친"
-            personalQuestion="테스트 개인 질문"
+            styles={[
+              memberStyle?.dateStyleType,
+              memberStyle?.dateCostType,
+              memberStyle?.contactType,
+              memberStyle?.drinkType,
+              memberStyle?.smokeType,
+              memberStyle?.mbti,
+            ]}
+            friendPreferenceType={memberStyle?.justFriendType}
+            personalQuestion={memberStyle?.memberAsk}
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>

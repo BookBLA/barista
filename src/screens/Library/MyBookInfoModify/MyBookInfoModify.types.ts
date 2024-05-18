@@ -21,3 +21,15 @@ export type TBookQuizInfo = {
   thirdChoice: string;
   review: string;
 };
+
+export type TMemberStyleInfo = {
+  memberId?: number;
+  smokeType?: string;
+  contactType?: string;
+  dateCostType?: string;
+  dateStyleType?: string;
+  justFriendType?: string;
+  drinkType?: string;
+  mbti?: string;
+  memberAsk?: string;
+};

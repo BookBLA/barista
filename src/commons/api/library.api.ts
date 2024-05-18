@@ -1,5 +1,10 @@
 import { Delete, Get, Patch } from '../utils/http.api';
-import { TBookInfo, TBookQuizInfo } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
+import {
+  TBookInfo,
+  TBookQuizInfo,
+  TMemberStyleInfo,
+} from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
+import { TUpdateBookInfo, TUpdateBookReview } from '../../screens/Library/Library.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
@@ -24,24 +29,16 @@ export const getBookInfo = async (memberBookId: number) => {
   return result as TBookInfo;
 };
 
-type updateBookInfo = {
-  memberBookId: number;
-  quiz: string;
-  quizAnswer: string;
-  firstWrongChoice: string;
-  secondWrongChoice: string;
+export const getMemberStyle = async (targetMemberId: number) => {
+  const { result } = await Get(`members/styles/${targetMemberId}`);
+  return result as TMemberStyleInfo;
 };
 
-type updateBookReview = {
-  memberBookId: number;
-  contents: string;
-};
-
-export const updateQuiz = async ({ memberBookId, ...data }: updateBookInfo) => {
+export const updateQuiz = async ({ memberBookId, ...data }: TUpdateBookInfo) => {
   await Patch(`member-books/${memberBookId}/quiz`, data);
 };
 
-export const updateBookReview = async ({ memberBookId, ...data }: updateBookReview) => {
+export const updateBookReview = async ({ memberBookId, ...data }: TUpdateBookReview) => {
   await Patch(`member-books/${memberBookId}/review`, data);
 };
 
