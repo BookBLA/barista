@@ -38,7 +38,7 @@ const screens = [
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
-  { name: 'login', component: LoginStack },
+  { name: 'loginStack', component: LoginStack },
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
   { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'notice', component: CustomScreen(Notice) },
