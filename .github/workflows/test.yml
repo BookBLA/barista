@@ -1,0 +1,57 @@
+name: build expo
+
+on:
+  push:
+    branches: [ feature/home ]
+
+jobs:
+  update:
+    name: EAS Update
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: create bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json"
+          json: ${{ secrets.FIREBASE_JSON }}
+
+      - name: create app.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "app.json"
+          json: ${{ secrets.APP_JSON }}
+
+      - name: create google-service.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "google-service.json"
+          json: ${{ secrets.GOOGLE_SERVICE_JSON }}
+
+      - name: create eas.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "eas.json"
+          json: ${{ secrets.EAS_JSON }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      - name: Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Publish update
+        run: eas update --auto --non-interactive
