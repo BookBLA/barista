@@ -1,11 +1,11 @@
-import { Delete, Get, Patch } from '../utils/http.api';
+import { Delete, Get, Patch, Post } from '../utils/http.api';
 import {
   TBookInfo,
   TBookQuizInfo,
   TMemberStyleInfo,
 } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 import { TUpdateBookInfo, TUpdateBookReview } from '../../screens/Library/Library.types';
-import { TPostcardInfo } from '../../screens/Library/SendPostcardModal/SendPostcardModal.types';
+import { ISendPostcardRequest, TPostcardInfo } from '../../screens/Library/SendPostcardModal/SendPostcardModal.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
@@ -54,3 +54,5 @@ export const updateBookReview = async ({ memberBookId, ...data }: TUpdateBookRev
 export const deleteBook = async (memberBookId: number) => {
   await Delete(`member-books/${memberBookId}`);
 };
+
+export const postPostcard = (contents: ISendPostcardRequest) => Post('postcard/send', contents, true);

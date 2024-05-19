@@ -38,4 +38,5 @@ export type TMemberStyleInfo = {
   drinkType?: string;
   mbti?: string;
   memberAsk?: string;
+  memberAskId?: number;
 };

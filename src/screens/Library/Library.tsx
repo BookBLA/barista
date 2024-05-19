@@ -31,7 +31,7 @@ import {
 } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
-import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcar';
+import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -51,10 +51,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   //todo 추후 삭제
-  // const isYourLibrary = route.params?.isYourLibrary;
-  const isYourLibrary = true;
-  // const targetMemberId = route.params?.memberId;
-  const targetMemberId = 386;
+  const isYourLibrary = route.params?.isYourLibrary;
+  // const isYourLibrary = true;
+  const targetMemberId = route.params?.memberId;
+  // const targetMemberId = 386;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
@@ -401,6 +401,7 @@ const Library: React.FC<Props> = ({ route }) => {
           isVisible={isSendPostcardModalVisible}
           targetMemberId={targetMemberId}
           memberBookIdList={libraryInfo?.bookResponses.map((bookResponse) => bookResponse.memberBookId) || []}
+          onClose={toggleSendPostcardModal}
         />
       </CustomModal>
 
