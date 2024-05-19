@@ -53,5 +53,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name : install eas-cli
+        run: npm install -g eas-cli 
+
       - name: Publish update
         run: eas build -p all --profile local
