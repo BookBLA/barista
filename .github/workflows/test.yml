@@ -25,11 +25,11 @@ jobs:
           name: "app.json"
           json: ${{ secrets.APP_JSON }}
 
-      - name: create google-service.json
+      - name: create google-services.json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "google-service.json"
-          json: ${{ secrets.GOOGLE_SERVICE_JSON }}
+          name: "google-services.json"
+          json: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: create eas.json
         uses: jsdaniell/create-json@1.1.2
