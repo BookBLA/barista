@@ -20,7 +20,6 @@ import useMovePage from '../../commons/hooks/useMovePage';
 import { useBottomSheet } from '../../commons/hooks/useBottomSheet';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
-import { IBookInfo } from './SendPostcardModal/SendPostcardModal.types';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import {
@@ -60,7 +59,6 @@ const Library: React.FC<Props> = ({ route }) => {
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const [sendPostcardProps, setSendPostcardProps] = useState<IBookInfo[] | null>(null);
   const navigation = useNavigation();
   const memberId = useMemberStore((state) => state.memberInfo.id);
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
@@ -215,59 +213,6 @@ const Library: React.FC<Props> = ({ route }) => {
         },
     isYourLibrary ? [] : [libraryInfo],
   );
-
-  useEffect(() => {
-    setSendPostcardProps([
-      {
-        bookName: '나미야 잡하줨',
-        bookImageUrl: 'https://image.yes24.com/Goods/8157957/XL',
-        bookAuthors: ['방근호', '굿굿'],
-        bookQuiz: {
-          id: 111,
-          title: '퀴즈1',
-          answerId: 1,
-          questions: [
-            {
-              id: 123,
-              text: '달토끼',
-            },
-            {
-              id: 234,
-              text: '근호방',
-            },
-            {
-              id: 131,
-              text: '고도현',
-            },
-          ],
-        },
-      },
-      {
-        bookName: '두번째 책',
-        bookImageUrl: 'https://www.socialfocus.co.kr/news/photo/202003/6719_10162_2027.jpg',
-        bookAuthors: ['방근호', '굿굿'],
-        bookQuiz: {
-          id: 111,
-          title: '퀴즈1',
-          answerId: 1,
-          questions: [
-            {
-              id: 123,
-              text: '달토끼',
-            },
-            {
-              id: 234,
-              text: '근호방',
-            },
-            {
-              id: 131,
-              text: '고도현',
-            },
-          ],
-        },
-      },
-    ]);
-  }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
@@ -451,26 +396,26 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
 
-      {sendPostcardProps && (
-        <CustomModal modalConfig={sendPostcardModalConfig}>
-          <SendPostcardModal
-            postcardInfos={[
-              {
-                id: 1,
-                imageUrl:
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Kon85L5WZLubsh6MZ-9XjDcci-19OYmxHOa2HM6mMA&s',
-              },
-              {
-                id: 2,
-                imageUrl:
-                  'https://youthpress.net/xe/files/attach/images/9794/110/374/3df640717098f1dfdf5110ca29a64536.jpg',
-              },
-            ]}
-            personalQuiz="금사빠세요?"
-            bookInfos={sendPostcardProps}
-          />
-        </CustomModal>
-      )}
+      <CustomModal modalConfig={sendPostcardModalConfig}>
+        <SendPostcardModal
+          isVisible={isSendPostcardModalVisible}
+          targetMemberId={targetMemberId}
+          memberBookIdList={libraryInfo?.bookResponses.map((bookResponse) => bookResponse.memberBookId) || []}
+          postcardInfos={[
+            {
+              id: 1,
+              imageUrl:
+                'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-Kon85L5WZLubsh6MZ-9XjDcci-19OYmxHOa2HM6mMA&s',
+            },
+            {
+              id: 2,
+              imageUrl:
+                'https://youthpress.net/xe/files/attach/images/9794/110/374/3df640717098f1dfdf5110ca29a64536.jpg',
+            },
+          ]}
+        />
+      </CustomModal>
+
       <CustomModal modalConfig={emptyPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <S.EmptyPostcardModalHeader>

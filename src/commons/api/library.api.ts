@@ -26,11 +26,19 @@ export const getBookQuizInfo = async (memberBookId: number) => {
 
 export const getBookInfo = async (memberBookId: number) => {
   const { result } = await Get(`member-books/${memberBookId}`);
-  return result as TBookInfo;
+  return {
+    ...result,
+    memberBookId,
+  } as TBookInfo;
 };
 
 export const getMemberStyle = async (targetMemberId: number) => {
   const { result } = await Get(`members/styles/${targetMemberId}`);
+  return result as TMemberStyleInfo;
+};
+
+export const getPostcardTypeList = async () => {
+  const { result } = await Get(`postcard/type-list`);
   return result as TMemberStyleInfo;
 };
 
@@ -43,6 +51,5 @@ export const updateBookReview = async ({ memberBookId, ...data }: TUpdateBookRev
 };
 
 export const deleteBook = async (memberBookId: number) => {
-  console.log('삭제');
   await Delete(`member-books/${memberBookId}`);
 };
