@@ -1,13 +1,14 @@
 export interface ISendPostcardModalProps {
   targetMemberId: number;
-  postcardInfos: postcardInfo[];
   memberBookIdList: number[];
   isVisible: boolean;
 }
 
-export interface postcardInfo {
-  id: number;
-  imageUrl: string;
+export interface TPostcardInfo {
+  postcardTypeId: number;
+  postcardTypeName: string;
+  postcardTypePrice: number;
+  postcardImageUrl: string;
 }
 
 export interface checkedQuizAnswer {

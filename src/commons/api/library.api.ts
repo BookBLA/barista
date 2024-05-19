@@ -5,6 +5,7 @@ import {
   TMemberStyleInfo,
 } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 import { TUpdateBookInfo, TUpdateBookReview } from '../../screens/Library/Library.types';
+import { TPostcardInfo } from '../../screens/Library/SendPostcardModal/SendPostcardModal.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
@@ -38,8 +39,8 @@ export const getMemberStyle = async (targetMemberId: number) => {
 };
 
 export const getPostcardTypeList = async () => {
-  const { result } = await Get(`postcard/type-list`);
-  return result as TMemberStyleInfo;
+  const { result: postcardTypeList } = await Get(`postcard/type-list`);
+  return postcardTypeList.postcardTypeList as TPostcardInfo[];
 };
 
 export const updateQuiz = async ({ memberBookId, ...data }: TUpdateBookInfo) => {
