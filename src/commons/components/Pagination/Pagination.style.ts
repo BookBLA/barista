@@ -6,9 +6,15 @@ export const PageIndexRow = styled.View`
   justify-content: space-between;
   align-items: center;
   height: 30px;
-  width: auto;
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 70px;
+  padding: 0 16px;
+`;
+
+export const SideWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
 `;
 
 export const MovePageImageStyled = styled.Image`

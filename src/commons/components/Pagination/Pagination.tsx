@@ -16,12 +16,14 @@ const Pagination = ({
 }: IProps) => {
   return (
     <S.PageIndexRow>
-      <TouchableOpacity onPress={prevEndPage}>
-        <S.MovePageImageStyled source={icons.leftEndPage} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={changePageGroup('prev')}>
-        <S.MovePageImageStyled source={icons.leftPage} />
-      </TouchableOpacity>
+      <S.SideWrapper>
+        <TouchableOpacity onPress={prevEndPage}>
+          <S.MovePageImageStyled source={icons.leftEndPage} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={changePageGroup('prev')}>
+          <S.MovePageImageStyled source={icons.leftPage} />
+        </TouchableOpacity>
+      </S.SideWrapper>
       {new Array(size).fill('').map(
         (_, index) =>
           index + startPage <= Math.ceil(totalPage / itemsPerPage) && (
@@ -32,12 +34,14 @@ const Pagination = ({
             </TouchableOpacity>
           ),
       )}
-      <TouchableOpacity onPress={changePageGroup('next')}>
-        <S.MovePageImageStyled source={icons.rightPage} />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={nextEndPage}>
-        <S.MovePageImageStyled source={icons.rightEndPage} />
-      </TouchableOpacity>
+      <S.SideWrapper>
+        <TouchableOpacity onPress={changePageGroup('next')}>
+          <S.MovePageImageStyled source={icons.rightPage} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={nextEndPage}>
+          <S.MovePageImageStyled source={icons.rightEndPage} />
+        </TouchableOpacity>
+      </S.SideWrapper>
     </S.PageIndexRow>
   );
 };
