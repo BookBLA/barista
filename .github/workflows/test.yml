@@ -54,4 +54,4 @@ jobs:
         run: npm install
 
       - name: Publish update
-        run: eas update --auto --non-interactive
+        run: eas build -p all --profile local
