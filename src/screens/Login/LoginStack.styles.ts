@@ -62,3 +62,16 @@ export const LoginButton = styled.TouchableOpacity`
   margin-bottom: 14px;
   margin-top: 18px;
 `;
+
+export const KakaoWrapper = styled.View`
+  flex: 1;
+  margin-top: 24px;
+  background-color: #fff;
+`;
+
+export const LoadingWrapper = styled.View`
+  flex-direction: 1;
+  background-color: #fff;
+  justify-content: center;
+  align-items: center;
+`;
