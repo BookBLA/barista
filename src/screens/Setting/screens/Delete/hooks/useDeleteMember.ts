@@ -17,7 +17,7 @@ export const useDeleteMember = () => {
     try {
       await deleteMemberApi();
       removeToken();
-      movePage('login')();
+      movePage('loginStack')();
     } catch {
       showToast({
         content: '회원탈퇴에 실패하였습니다.',

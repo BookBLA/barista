@@ -9,4 +9,3 @@ type ScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 export interface IProps {
   navigation: ScreenNavigationProp;
 }
-

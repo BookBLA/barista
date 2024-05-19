@@ -95,4 +95,5 @@ export const logos = {
 
 export const buttons = {
   moveTop: require('../../../assets/images/buttons/MoveTop.png'),
+  kakaoLogin: require('../../../assets/images/buttons/kakaoLogin.png'),
 };

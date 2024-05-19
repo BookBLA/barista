@@ -1,22 +1,20 @@
 import useMemberStore from '../store/useMemberStore';
 
+type TRouteMap = {
+  [key: string]: string;
+};
+
 export const useInitialRouteName = () => {
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
 
-  const getInitialRouteName = () => {
-    switch (memberStatus) {
-      case 'p':
-        return 'termsOfService';
-      case 'a':
-        return 'waitConfirm';
-      case 's':
-        return 'initStyleStack';
-      case 'c':
-        return 'tapScreens';
-      default:
-        return 'login';
-    }
+  const routeMap: TRouteMap = {
+    p: 'termsOfService',
+    a: 'waitConfirm',
+    s: 'initStyleStack',
+    c: 'tapScreens',
   };
+
+  const getInitialRouteName = () => routeMap[memberStatus] || 'loginStack';
 
   return getInitialRouteName;
 };

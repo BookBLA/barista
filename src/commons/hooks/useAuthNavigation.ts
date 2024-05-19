@@ -8,10 +8,12 @@ export const useAuthNavigation = () => {
   const token = useAuthStore((state) => state.token);
 
   useEffect(() => {
-    // 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
+    // NOTE: 토큰이 없을 경우 로그인 페이지로 이동하기 위해 사용
     if (!token && navigationRef.current) {
-      navigationRef.current.navigate('login');
-      // TODO: 성진 - 로그인 페이지로 이동할 때 스택 초기화가 필요함
+      navigationRef.current.reset({
+        index: 0,
+        routes: [{ name: 'loginStack' }],
+      });
     }
   }, [token]);
 

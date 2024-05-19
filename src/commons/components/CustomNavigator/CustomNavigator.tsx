@@ -11,8 +11,6 @@ import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
 import InitBookStack from '../../../screens/InitBook/initBookStack';
-import Kakao from '../../../screens/Login/KakaoLogin';
-import Login from '../../../screens/Login/Login';
 import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 import SettingStack from '../../../screens/Setting/SettingStack';
@@ -25,6 +23,7 @@ import WaitConfirm from '../../../screens/InitUserInfo/units/WaitConfirm';
 import CompletePage from '../../../screens/InitUserInfo/units/CompletePage';
 import FailedSign from '../../../screens/InitUserInfo/units/FailedSign';
 import OpenChatLink from '../../../screens/InitUserInfo/units/OpenChatLink';
+import LoginStack from '../../../screens/Login/LoginStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -39,8 +38,7 @@ const screens = [
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
-  { name: 'login', component: CustomScreen(Login) },
-  { name: 'kakao', component: CustomScreen(Kakao) },
+  { name: 'loginStack', component: LoginStack },
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
   { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'notice', component: CustomScreen(Notice) },
@@ -63,7 +61,7 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        <Stack.Navigator initialRouteName={'termsOfService'} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator initialRouteName="notice" screenOptions={{ headerShown: false }}>
           {/* <Stack.Navigator initialRouteName={getInitialRouteName()} screenOptions={{ headerShown: false }}> */}
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />

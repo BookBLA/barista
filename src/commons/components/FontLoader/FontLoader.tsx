@@ -27,14 +27,12 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
         if (token) {
           await saveMemberInfo();
         }
-        setFontsLoaded(true);
-        await SplashScreen.hideAsync();
       } catch (error) {
-        // NOTE: 성진 - 서버 또는 토큰에 문제가 있을 시 방지하기 위해 사용
         removeToken();
+        console.error('Error loading assets:', error);
+      } finally {
         setFontsLoaded(true);
         await SplashScreen.hideAsync();
-        console.error('Error loading assets:', error);
       }
     };
 
