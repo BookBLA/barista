@@ -57,4 +57,4 @@ jobs:
         run: npm install -g eas-cli 
 
       - name: Publish update
-        run: eas build -p all --profile local
+        run: eas build -p all --profile local --non-interactive
