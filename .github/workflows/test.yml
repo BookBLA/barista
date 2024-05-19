@@ -13,7 +13,7 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v3
 
-      - name: create bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json
+      - name: create bookbla-2024-firebase-adminsdk.json
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json"
