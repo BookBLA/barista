@@ -6,7 +6,7 @@ import { CustomText } from '../../../commons/components/TextComponents/CustomTex
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
-import { getBookInfo, getBookQuizInfo, updateBookInfo } from '../../../commons/api/library.api';
+import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
@@ -20,12 +20,11 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [bookImageUrl, setBookImageUrl] = useState<string>();
 
-  const putUpdateBookInfo = async () => {
+  const putQuizInfo = async () => {
     try {
-      await updateBookInfo({
+      await updateQuiz({
         memberBookId,
         quiz: bookQuizText,
-        review: bookReviewText,
         quizAnswer: bookQuizFirstAnswerText,
         firstWrongChoice: bookQuizSecondAnswerText,
         secondWrongChoice: bookQuizThirdAnswerText,
@@ -35,14 +34,25 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
     }
   };
 
+  const patchBookReview = async () => {
+    try {
+      await updateBookReview({
+        memberBookId,
+        contents: bookReviewText,
+      });
+    } catch (err) {
+      console.error('업데이트에 실패하였습니다.', err);
+    }
+  };
+
   const handleOnModifyBookReview = (status: boolean) => {
     setIsModifiableBookReview(status);
-    if (!status) putUpdateBookInfo();
+    if (!status) patchBookReview();
   };
 
   const handleOnModifyBookQuestion = (status: boolean) => {
     setIsModifiableBookQuestion(status);
-    if (!status) putUpdateBookInfo();
+    if (!status) putQuizInfo();
   };
 
   const fetchBookQuiz = async (memberBookId: number) => {
@@ -230,7 +240,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
               <S.BookQuizInfoView>
-                <S.QuizCircle isCorrect>
+                <S.QuizCircle isCorrect={false}>
                   <S.QuizCircleText>C</S.QuizCircleText>
                 </S.QuizCircle>
                 <S.BookQuizAnswerWrapper>

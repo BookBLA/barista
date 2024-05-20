@@ -2,7 +2,7 @@ import * as S from './Header.styles';
 import LogoDarkBg from '../../../../../../../assets/images/logos/logoDarkBg.png';
 import useMovePage from '../../../../../../commons/hooks/useMovePage';
 import { icons, logos } from '../../../../../../commons/utils/variablesImages';
-import useFetchMemberPostcard from '../../../../../../commons/hooks/useMemberPostcar';
+import useFetchMemberPostcard from '../../../../../../commons/hooks/useMemberPostcard';
 
 const Header = () => {
   const { movePage } = useMovePage();

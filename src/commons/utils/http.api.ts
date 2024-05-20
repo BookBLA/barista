@@ -6,6 +6,14 @@ import * as Device from 'expo-device';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
+httpApi.interceptors.request.use(async (request) => {
+  console.debug('headers: ', request.headers);
+  console.debug('url: ', request.url);
+  console.debug('params: ', request.params);
+  console.debug('body: ', request.data);
+  return request;
+});
+
 httpApi.interceptors.request.use(
   (config) => {
     const token = useAuthStore.getState().token;
