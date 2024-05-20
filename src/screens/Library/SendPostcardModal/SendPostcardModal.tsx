@@ -1,48 +1,148 @@
-import React, { useState } from 'react';
-import { checkedQuizAnswer, ISendPostcardModalProps } from './SendPostcardModal.types';
+import React, { useEffect, useState } from 'react';
+import {
+  ISendPostcardModalProps,
+  TCheckedQuizAnswer,
+  TMemberPersonalAsk,
+  TPostcardInfo,
+} from './SendPostcardModal.types';
 import * as S from './SendPostcardModal.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { icons } from '../../../commons/utils/variablesImages';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';
+import {
+  getBookInfo,
+  getBookQuizInfo,
+  getMemberStyle,
+  getPostcardTypeList,
+  postPostcard,
+} from '../../../commons/api/library.api';
+import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
+import useToastStore from '../../../commons/store/useToastStore';
+import useFetchMemberPostcard from '../../../commons/hooks/useMemberPostcard';
 
 export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
-  personalQuiz,
-  postcardInfos,
-  bookInfos: books,
+  targetMemberId,
+  memberBookIdList,
+  isVisible,
+  onClose,
 }) => {
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-  const [currentPressedQuestion, setCurrentPressedQuestion] = useState<number>(0);
-  const [currentPressedPostcard, setCurrentPressedPostcard] = useState<number>(0);
+  const [currentPressedAnswer, setCurrentPressedAnswer] = useState<number>(-1);
+  const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
   const [isQuizSection, setIsQuizSection] = useState<boolean>(true);
   const [personalQuestionAnswerText, onChangePersonalQuestionAnswerText] = useState('');
-  const [checkedQuizAnswerList, setCheckedQuizAnswerList] = useState<checkedQuizAnswer[]>([]);
+  const [checkedQuizAnswerList, setCheckedQuizAnswerList] = useState<TCheckedQuizAnswer[]>([]);
+  const [bookInfoList, setBookInfoList] = useState<TBookInfo[]>([]);
+  const [memberPersonalAsk, setMemberPersonalAsk] = useState<TMemberPersonalAsk>();
+  const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
+  const { memberPostcard } = useFetchMemberPostcard();
 
   const answerAlphabetIndex = ['A', 'B', 'C', 'D', 'E'];
 
-  const moveNextQuiz = (quizId: number, checkedAnswerId: number) => {
-    setCurrentQuizIndex(currentQuizIndex + 1);
-    setCurrentPressedQuestion(0);
-    setCheckedQuizAnswerList([...checkedQuizAnswerList, { quizId, checkedAnswerId }]);
+  const fetchBookInfo = async (memberBookIdList: number[]) => {
+    const bookInfoResultList = await Promise.all(memberBookIdList.map((memberBookId) => getBookInfo(memberBookId)));
+    const bookQuizInfoResultList = await Promise.all(
+      memberBookIdList.map((memberBookId) => getBookQuizInfo(memberBookId)),
+    );
 
-    if (currentQuizIndex + 1 >= books.length) {
-      setIsQuizSection(false);
+    const updatedBookInfoList = bookInfoResultList.map((bookInfoResult) => {
+      const quizInfo = bookQuizInfoResultList.find(
+        (bookQuizInfo) => bookQuizInfo.memberBookId === bookInfoResult.memberBookId,
+      );
+      return {
+        memberBookId: bookInfoResult.memberBookId,
+        title: bookInfoResult.title,
+        imageUrl: bookInfoResult.imageUrl,
+        authors: bookInfoResult.authors,
+        quizId: quizInfo ? quizInfo.id : undefined,
+        quiz: quizInfo ? quizInfo.quiz : undefined,
+        firstChoice: quizInfo ? quizInfo.firstChoice : undefined,
+        secondChoice: quizInfo ? quizInfo.secondChoice : undefined,
+        thirdChoice: quizInfo ? quizInfo.thirdChoice : undefined,
+      };
+    });
+
+    setBookInfoList(updatedBookInfoList);
+  };
+
+  const fetchMemberPersonalAsk = async (targetMemberId: number) => {
+    const result = await getMemberStyle(targetMemberId);
+    setMemberPersonalAsk({ contents: result.memberAsk!, id: result.memberAskId! });
+  };
+
+  const fetchPostcardInfo = async () => {
+    const result = await getPostcardTypeList();
+    setPostcardTypeInfoList(result);
+  };
+
+  const sendPostCardHandler = async () => {
+    const postcardInfo = {
+      quizAnswerList: checkedQuizAnswerList.map((checkedQuizAnswer) => {
+        return { quizId: checkedQuizAnswer.quizId, quizAnswer: checkedQuizAnswer.answer };
+      })!,
+      postcardTypeId: currentPressedPostcard?.postcardTypeId!,
+      imageUrl: currentPressedPostcard?.postcardImageUrl!,
+      memberAskId: memberPersonalAsk?.id!,
+      memberReply: personalQuestionAnswerText!,
+    };
+
+    await postPostcard(postcardInfo);
+    onClose();
+    useToastStore.getState().showToast({ content: '회원님의 엽서가 성공적으로 전달되었어요😀' });
+  };
+
+  const getCurrentAnswer = (index: number) => {
+    switch (index) {
+      case 0:
+        return bookInfoList[currentQuizIndex].firstChoice;
+      case 1:
+        return bookInfoList[currentQuizIndex].secondChoice;
+      case 2:
+        return bookInfoList[currentQuizIndex].thirdChoice;
+    }
+  };
+
+  useEffect(() => {
+    if (isVisible) {
+      fetchMemberPersonalAsk(targetMemberId);
+      fetchBookInfo(memberBookIdList);
+      fetchPostcardInfo();
+    }
+  }, [isVisible]);
+
+  const moveNextQuiz = (checkedAnswerIndex: number, answer: string) => {
+    setCheckedQuizAnswerList((prev) => {
+      const newList = [...prev];
+      newList[currentQuizIndex] = { index: checkedAnswerIndex, answer, quizId: bookInfoList[currentQuizIndex].quizId! };
+      return newList;
+    });
+    setCurrentQuizIndex((prev) => {
+      const nextIndex = prev + 1;
+      if (nextIndex >= bookInfoList.length) {
+        setIsQuizSection(false);
+      }
+      return nextIndex;
+    });
+    if (checkedQuizAnswerList[currentQuizIndex + 1]) {
+      setCurrentPressedAnswer(checkedQuizAnswerList[currentQuizIndex + 1].index);
+    } else {
+      setCurrentPressedAnswer(-1);
     }
   };
 
   const movePreviousQuiz = () => {
-    setCurrentQuizIndex(currentQuizIndex - 1);
-    setCurrentPressedQuestion(checkedQuizAnswerList[currentQuizIndex - 1].checkedAnswerId);
+    setCurrentQuizIndex((prev) => prev - 1);
+    setCurrentPressedAnswer(checkedQuizAnswerList[currentQuizIndex - 1].index);
   };
 
   const selectAnswer = (questionId: number) => {
-    setCurrentPressedQuestion(questionId);
+    setCurrentPressedAnswer(questionId);
   };
 
-  const selectPostcard = (postcardId: number) => {
+  const selectPostcard = (postcardId: TPostcardInfo) => {
     setCurrentPressedPostcard(postcardId);
-    console.log(postcardId);
   };
 
   return (
@@ -51,14 +151,14 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
         <>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={{ uri: books[currentQuizIndex].bookImageUrl }} />
+              <S.BookImage source={{ uri: bookInfoList[currentQuizIndex]?.imageUrl }} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
-                {books[currentQuizIndex].bookName}
+                {bookInfoList[currentQuizIndex]?.title}
               </CustomText>
               <CustomText font="fontLight" size="14px" color="#616C90">
-                {books[currentQuizIndex].bookAuthors.join(', ')}
+                {bookInfoList[currentQuizIndex]?.authors?.join(', ')}
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>
@@ -68,7 +168,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
           <S.PersonalQuestionContainer>
             <S.PersonalQuestionHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-                {personalQuiz}
+                {memberPersonalAsk?.contents}
               </CustomText>
             </S.PersonalQuestionHeaderWrapper>
             <S.PersonalQuestionAnswerInputBox
@@ -98,15 +198,19 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
           <S.BookQuizContainer>
             <S.BookQuizTitleWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-                {books[currentQuizIndex].bookQuiz.title}
+                {bookInfoList[currentQuizIndex]?.quiz}
               </CustomText>
             </S.BookQuizTitleWrapper>
-            {books[currentQuizIndex].bookQuiz.questions.map((question, index) => (
-              <TouchableOpacity onPress={() => selectAnswer(question.id)}>
-                <S.BookQuizInfoView key={question.id}>
+            {[
+              bookInfoList[currentQuizIndex]?.firstChoice,
+              bookInfoList[currentQuizIndex]?.secondChoice,
+              bookInfoList[currentQuizIndex]?.thirdChoice,
+            ].map((question, index) => (
+              <TouchableOpacity key={index} onPress={() => selectAnswer(index)}>
+                <S.BookQuizInfoView>
                   <S.QuizCircle
                     style={{
-                      backgroundColor: currentPressedQuestion === question.id ? '#AFDFF8' : colors.buttonPrimary,
+                      backgroundColor: currentPressedAnswer === index ? '#AFDFF8' : colors.buttonPrimary,
                     }}
                   >
                     <S.QuizCircleText>{answerAlphabetIndex[index]}</S.QuizCircleText>
@@ -114,7 +218,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
                   <S.BookQuizAnswerWrapper>
                     <S.BookQuizAnswerView>
                       <CustomText font="fontLight" size="12px" color="black">
-                        {question.text}
+                        {question}
                       </CustomText>
                     </S.BookQuizAnswerView>
                   </S.BookQuizAnswerWrapper>
@@ -123,14 +227,14 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
             ))}
           </S.BookQuizContainer>
           <S.BottomButtonContainer isSingle={currentQuizIndex === 0}>
-            {currentQuizIndex !== 0 && (
-              <TouchableOpacity onPress={movePreviousQuiz}>
+            {currentQuizIndex > 0 && (
+              <TouchableOpacity onPress={() => movePreviousQuiz()}>
                 <S.BottomArrowButton source={icons.leftArrow} />
               </TouchableOpacity>
             )}
-            {currentPressedQuestion ? (
+            {currentPressedAnswer !== -1 ? (
               <TouchableOpacity
-                onPress={() => moveNextQuiz(books[currentQuizIndex].bookQuiz.id, currentPressedQuestion)}
+                onPress={() => moveNextQuiz(currentPressedAnswer, getCurrentAnswer(currentPressedAnswer)!)}
               >
                 <S.BottomArrowButton source={icons.rightArrow} />
               </TouchableOpacity>
@@ -146,11 +250,14 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
               엽서 선택하기
             </CustomText>
             <S.PostcardImageListWrapper>
-              {postcardInfos.map((postcardInfo) => (
-                <TouchableWithoutFeedback key={postcardInfo.id} onPress={() => selectPostcard(postcardInfo.id)}>
+              {postcardTypeInfoList?.map((postcardInfo) => (
+                <TouchableWithoutFeedback
+                  key={postcardInfo.postcardTypeId}
+                  onPress={() => selectPostcard(postcardInfo)}
+                >
                   <S.PostcardImageWrapper>
-                    <S.PostcardImage source={{ uri: postcardInfo.imageUrl }} />
-                    {currentPressedPostcard === postcardInfo.id && (
+                    <S.PostcardImage source={{ uri: postcardInfo.postcardImageUrl }} />
+                    {currentPressedPostcard?.postcardTypeId === postcardInfo.postcardTypeId && (
                       <S.TransparentWrapper>
                         <S.CheckIcon source={icons.checkPostcard} />
                       </S.TransparentWrapper>
@@ -159,7 +266,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
                 </TouchableWithoutFeedback>
               ))}
             </S.PostcardImageListWrapper>
-            <CustomButton contents="엽서 보내기" />
+            <CustomButton onPress={sendPostCardHandler} contents="엽서 보내기" />
           </S.PostcardSelectionContainer>
         </>
       )}

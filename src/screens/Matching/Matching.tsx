@@ -10,7 +10,7 @@ import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
 import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
-import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcar';
+import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();

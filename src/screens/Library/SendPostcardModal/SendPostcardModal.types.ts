@@ -1,34 +1,42 @@
 export interface ISendPostcardModalProps {
-  personalQuiz: string;
-  postcardInfos: postcardInfo[];
-  bookInfos: IBookInfo[];
+  targetMemberId: number;
+  memberBookIdList: number[];
+  isVisible: boolean;
+  onClose: () => void;
 }
 
-export interface postcardInfo {
-  id: number;
-  imageUrl: string;
-}
-
-export interface IBookInfo {
-  bookImageUrl: string;
-  bookName: string;
-  bookAuthors: string[];
-  bookQuiz: IBookQuiz;
-}
-
-export interface IBookQuiz {
-  id: number;
-  title: string;
-  answerId: number;
-  questions: IBookQuestion[];
-}
-
-export interface IBookQuestion {
-  id: number;
-  text: string;
+export interface TPostcardInfo {
+  postcardTypeId: number;
+  postcardTypeName: string;
+  postcardTypePrice: number;
+  postcardImageUrl: string;
 }
 
 export interface checkedQuizAnswer {
-  quizId: number;
-  checkedAnswerId: number;
+  quizIndex: number;
+  checkedAnswerIndex: number;
 }
+
+export interface ISendPostcardRequest {
+  quizAnswerList: IQuizAnswerRequest[];
+  postcardTypeId: number;
+  imageUrl: string; //postcard 이미지
+  memberAskId: number;
+  memberReply: string;
+}
+
+export interface IQuizAnswerRequest {
+  quizId: number;
+  quizAnswer: string;
+}
+
+export type TCheckedQuizAnswer = {
+  index: number;
+  answer: string;
+  quizId: number;
+};
+
+export type TMemberPersonalAsk = {
+  contents: string;
+  id: number;
+};
