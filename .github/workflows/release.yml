@@ -66,3 +66,9 @@ jobs:
 
       # - name: reflect testflight
       #   run: eas submit -p ios --latest --profile local --non-interactive
+
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: "따끈따끈한 새 빌드가 완료됐다네~"
