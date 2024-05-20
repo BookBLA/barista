@@ -1,19 +1,22 @@
-name: build expo
+name: build expo by eas
 
 on:
   push:
-    branches: [ feature/home ]
+    branches: [ release ]
+
+  pull_request:
+    branches: [ release ]
+
 
 jobs:
   update:
-    name: EAS Update
+    name: build expo file via eas
     runs-on: ubuntu-latest
     steps:
-
       - name: checkout repository
         uses: actions/checkout@v3
 
-      - name: create bookbla-2024-firebase-adminsdk.json
+      - name: create firebase.json
         uses: jsdaniell/create-json@1.1.2
         with:
           name: "bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json"
@@ -37,14 +40,14 @@ jobs:
           name: "eas.json"
           json: ${{ secrets.EAS_JSON }}
 
-      - name: setup Node
+      - name: setup node with cache
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
           cache: npm
           cache-dependency-path: ./package-lock.json
 
-      - name: setup EAS
+      - name: setup eas
         uses: expo/expo-github-action@v8
         with:
           eas-version: latest
@@ -54,7 +57,7 @@ jobs:
         run: npm install
 
       - name: publish update
-        run: eas build -p all --profile local --non-interactive
+        run: eas update --profile local --non-interactive
 
-      - name: reflect testflight
-        run: eas submit -p ios --latest --profile local --non-interactive
+      # - name: reflect testflight
+      #   run: eas submit -p ios --latest --profile local --non-interactive
