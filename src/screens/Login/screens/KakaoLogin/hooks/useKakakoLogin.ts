@@ -1,10 +1,11 @@
 import { postLogin } from '../../../../../commons/api/login.api';
 import { useInitialRouteName } from '../../../../../commons/hooks/useInitialRouteName';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
-import usePushToken from '../../../../../commons/hooks/usePushToken';
+import useGetPushToken from '../../../../../commons/hooks/useGetPushToken';
 import useAuthStore from '../../../../../commons/store/useAuthStore';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useToastStore from '../../../../../commons/store/useToastStore';
+import { usePostPushToken } from '../../../../../commons/hooks/usePostPushToken';
 
 export const useKakaoLogin = () => {
   const showToast = useToastStore((state) => state.showToast);
@@ -12,16 +13,18 @@ export const useKakaoLogin = () => {
   const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
   const getInitialRouteName = useInitialRouteName();
   const { handleReset } = useMovePage();
-
-  const { getPushToken } = usePushToken();
+  const { getPushToken } = useGetPushToken();
+  const { postPushToken } = usePostPushToken();
 
   const callPostLogin = async (authCode: string) => {
     try {
       const { result } = await postLogin(authCode, 'kakao');
       setToken(result.accessToken);
       if (result.memberStatus !== 'p') {
-        getPushToken();
+        const pushToken = await getPushToken();
+        await postPushToken(pushToken);
       }
+
       await saveMemberInfo();
       showToast({
         content: '로그인에 성공하였습니다.',

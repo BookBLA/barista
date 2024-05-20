@@ -8,9 +8,11 @@ import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { buttons, logos } from '../../../../commons/utils/variablesImages';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import { useTestLogin } from './hooks/useTestLogin';
+import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
 
 const LoginHome = () => {
   useManageMargin();
+  // usePushNotifications();
   const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
   const { handleTestLogin } = useTestLogin();
