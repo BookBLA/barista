@@ -11,6 +11,7 @@ export const useInitialRouteName = () => {
     p: 'termsOfService',
     a: 'waitConfirm',
     s: 'initStyleStack',
+    bo: 'initBookStack',
     c: 'tapScreens',
   };
 
