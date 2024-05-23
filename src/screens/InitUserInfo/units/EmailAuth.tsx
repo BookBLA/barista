@@ -23,7 +23,7 @@ const EmailAuth = () => {
 
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [isSuccess, setIsSuccess] = useState('true'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
+  const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
 
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
@@ -47,6 +47,7 @@ const EmailAuth = () => {
   }, [isActive, time]);
 
   const startTimer = () => {
+    setIsSuccess('done'); //테스트 확인해봐야함
     callPostAuthEmailApi();
   };
   const resetTimer = () => {
@@ -84,10 +85,11 @@ const EmailAuth = () => {
       setIsActive(true);
 
       updateUserInfo({ schoolEmail: email });
-      setIsSuccess('done'); // 이메일 전송 성공
+      // setIsSuccess('done'); // 이메일 전송 성공
       console.log('callPostEmailAuthApi', response);
     } catch (error) {
       console.log('callPostAuthApi error', error);
+      setIsSuccess('false');
       if (error.response.data.message === '이메일이 이미 존재합니다.') {
         showToast({
           content: '이메일이 이미 존재합니다.',
