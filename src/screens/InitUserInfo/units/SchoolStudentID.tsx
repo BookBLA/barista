@@ -1,6 +1,6 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View, Alert, Linking } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
@@ -38,6 +38,14 @@ const SchoolStudentID = () => {
     if (!status?.granted) {
       const permission = await requestPermission();
       if (!permission.granted) {
+        Alert.alert(
+          '권한 필요',
+          '앱에서 이미지를 업로드하려면 접근 권한이 필요합니다. 설정으로 이동하여 권한을 부여하세요.',
+          [
+            { text: '취소', style: 'cancel' },
+            { text: '설정으로 이동', onPress: () => Linking.openSettings() },
+          ],
+        );
         return null;
       }
     }
