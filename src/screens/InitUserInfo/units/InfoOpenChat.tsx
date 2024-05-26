@@ -100,19 +100,19 @@ const InfoOpenChat = ({ again }: { again: boolean }) => {
                 <CarouselItemContainer key={index} width={itemWidth}>
                   <Image source={image} style={{ width: 336, height: 356, objectFit: 'fill' }} />
 
-                  <S.OpenChatTitleStyled>본인 오픈채팅방 링크 달기</S.OpenChatTitleStyled>
+                  {/* <S.OpenChatTitleStyled>본인 오픈채팅방 링크 달기</S.OpenChatTitleStyled> */}
                   {index === 4 ? (
-                    <S.OpenChatContentStyled>
-                      <S.TextStyled style={{ color: colors.primary }}>5. (필수) </S.TextStyled>
-                      <S.TextStyled style={{ color: colors.errorMessageRed, fontFamily: 'fontSemiBold' }}>
+                    <S.OpenChatTitleStyled>
+                      <S.TextStyled style={{ color: colors.primary, fontSize: 20 }}>5. (필수) </S.TextStyled>
+                      <S.TextStyled style={{ color: colors.errorMessageRed, fontFamily: 'fontSemiBold', fontSize: 20 }}>
                         기본프로필
                       </S.TextStyled>
-                      <S.TextStyled style={{ color: colors.primary }}>만 참가 허용하기</S.TextStyled>
-                    </S.OpenChatContentStyled>
+                      <S.TextStyled style={{ color: colors.primary, fontSize: 20 }}>만 참가 허용하기</S.TextStyled>
+                    </S.OpenChatTitleStyled>
                   ) : (
-                    <S.OpenChatContentStyled key={index}>
-                      <Text style={{ color: colors.primary }}>{contents[index]}</Text>
-                    </S.OpenChatContentStyled>
+                    <S.OpenChatTitleStyled key={index}>
+                      <Text style={{ color: colors.primary, fontSize: 20 }}>{contents[index]}</Text>
+                    </S.OpenChatTitleStyled>
                   )}
                 </CarouselItemContainer>
               ))}
