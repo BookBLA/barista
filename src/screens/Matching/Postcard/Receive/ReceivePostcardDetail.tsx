@@ -1,10 +1,10 @@
 import { ScrollView, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
-import { RouteProp } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
@@ -12,6 +12,7 @@ import { EGender } from '../Send/SendPostcard.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
+import { getReceivePostcardList } from '../../../../commons/api/matching.api';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -25,32 +26,41 @@ type Props = {
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const { movePage } = useMovePage();
-  const {
-    postcardId,
-    memberId,
-    memberName,
-    memberAge,
-    memberGender,
-    drinkType,
-    smokeType,
-    contactType,
-    dateStyleType,
-    dateCostType,
-    mbti,
-    justFriendType,
-    memberSchoolName,
-    quizScore,
-    bookTitles,
-    correctStatuses,
-    memberReplyContent,
-  } = route.params;
-
-  const styleList = [mbti, drinkType, smokeType, contactType, dateStyleType, dateCostType];
+  const { postcardId } = route.params;
+  const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
+  const styleList = [
+    postcardDetails?.mbti,
+    postcardDetails?.drinkType,
+    postcardDetails?.smokeType,
+    postcardDetails?.contactType,
+    postcardDetails?.dateStyleType,
+    postcardDetails?.dateCostType,
+  ];
   const quizCircleList = ['A', 'B', 'C', 'D', 'E'];
+
+  const fetchPostcardDetails = useCallback(async () => {
+    try {
+      const responseList = await getReceivePostcardList();
+      const result = responseList.find((response) => response.postcardId === postcardId);
+      setPostcardDetails(result!);
+    } catch (error) {
+      console.error('error', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPostcardDetails();
+  }, [fetchPostcardDetails]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchPostcardDetails();
+    }, [fetchPostcardDetails]),
+  );
 
   return (
     <>
-      <View style={{ backgroundColor: 'white' }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <S.HeaderView>
           <TouchableOpacity onPress={movePage('Matching')}>
             <S.HeaderImage source={prevButtonBlack} />
@@ -59,22 +69,28 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             <S.HeaderText>받은 엽서</S.HeaderText>
           </S.HeaderTextWrapper>
         </S.HeaderView>
-        <ScrollView alwaysBounceHorizontal={false} style={{ backgroundColor: 'white' }} overScrollMode="never">
+        <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
           <S.UserInfoContainerView>
             <S.UserInfoView>
-              <S.CircularImage source={postcardImage} resizeMode="contain" />
+              <S.CircularImage source={postcardImage} />
               <S.UserInfoWrapper>
                 <S.UserInfoNameWrapper>
                   <S.UserNameText>
-                    {memberName} | {memberAge}
+                    {postcardDetails?.memberName} | {postcardDetails?.memberAge}
                   </S.UserNameText>
-                  <S.GenderIconStyled source={memberGender === EGender.MALE ? manIcon : womanIcon} />
+                  <S.GenderIconStyled source={postcardDetails?.memberGender === EGender.MALE ? manIcon : womanIcon} />
                 </S.UserInfoNameWrapper>
-                <S.SchoolNameText>{memberSchoolName}</S.SchoolNameText>
+                <S.SchoolNameText>{postcardDetails?.memberSchoolName}</S.SchoolNameText>
               </S.UserInfoWrapper>
             </S.UserInfoView>
 
-            <S.UserLibraryButtonContainer onPress={movePage('OtherLibrary', { userId: memberId, isYourLibrary: true })}>
+            <S.UserLibraryButtonContainer
+              onPress={movePage('OtherLibrary', {
+                memberId: postcardDetails?.memberId,
+                postcardId: postcardId,
+                isYourLibrary: true,
+              })}
+            >
               <S.UserLibraryButtonText>상대방 서재 보러가기</S.UserLibraryButtonText>
             </S.UserLibraryButtonContainer>
           </S.UserInfoContainerView>
@@ -84,9 +100,12 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
           <S.BodyView>
             <S.QuizStatusView>
               <S.QuizStatusTitle>퀴즈 맞춤 여부</S.QuizStatusTitle>
-              {bookTitles.map((bookTitle, index) => (
-                <S.QuizInfoView style={[{ flex: 1 }, index === bookTitle.length - 1 && { marginBottom: 0 }]}>
-                  <S.QuizCircle isCorrect={correctStatuses[index] !== 'WRONG'}>
+              {postcardDetails?.bookTitles.map((bookTitle, index) => (
+                <S.QuizInfoView
+                  key={index}
+                  style={[{ flex: 1 }, index === bookTitle.length - 1 && { marginBottom: 0 }]}
+                >
+                  <S.QuizCircle isCorrect={postcardDetails?.correctStatuses[index] !== 'WRONG'}>
                     <S.QuizCircleText>{quizCircleList[index]}</S.QuizCircleText>
                   </S.QuizCircle>
                   <S.QuizBookTitleWrapper>
@@ -103,8 +122,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
                 스타일
               </CustomText>
               <S.UserStyleBoxContainer>
-                {styleList.map((style) => (
-                  <UserStyleBox>
+                {styleList.map((style, index) => (
+                  <UserStyleBox key={index}>
                     <CustomText size="12px" font="fontLight">
                       {style}
                     </CustomText>
@@ -122,7 +141,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               <S.UserStyleBoxContainer>
                 <UserStyleBox>
                   <CustomText size="12px" font="fontLight">
-                    {justFriendType}
+                    {postcardDetails?.justFriendType}
                   </CustomText>
                 </UserStyleBox>
               </S.UserStyleBoxContainer>
@@ -137,7 +156,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               <S.UserStyleBoxContainer>
                 <PersonalQuizAnswerBox>
                   <CustomText size="14px" font="fontLight">
-                    {memberReplyContent}
+                    {postcardDetails?.memberReplyContent}
                   </CustomText>
                 </PersonalQuizAnswerBox>
               </S.UserStyleBoxContainer>

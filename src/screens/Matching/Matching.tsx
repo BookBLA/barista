@@ -4,19 +4,18 @@ import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import GoToTopButton from '../../../assets/images/icons/GoToTop.png';
 import postcardIcon from '../../../assets/images/icons/Postcard.png';
-import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
-import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
-import { getReceivePostcardList, getSendPostcardList } from '../../commons/api/matching.api';
+import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
+import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
 
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
-  const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
-  const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
+  const receivedPostcards = useFetchReceivePostcard();
+  const sendPostcards = useFetchSendPostcard();
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -43,22 +42,6 @@ const Matching = () => {
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
-
-  const fetchReceivePostcardList = async () => {
-    const result = await getReceivePostcardList();
-    setReceivedPostcards(result);
-  };
-
-  const fetchSendPostcardList = async () => {
-    const result = await getSendPostcardList();
-    setSendPostcards(result);
-  };
-
-  useEffect(() => {
-    //todo api 활용해서 데이터 받아오는 부분
-    fetchReceivePostcardList();
-    fetchSendPostcardList();
-  }, []);
 
   return (
     <S.Wrapper>
@@ -116,7 +99,7 @@ const Matching = () => {
                 renderItem={({ item, index }) => {
                   const isSingleItem = receivedPostcards.length === 1;
                   return (
-                    <View style={[isSingleItem ? { width: '50%' } : { flex: 1 }]}>
+                    <View style={[isSingleItem ? { height: '100%', width: '50%' } : { flex: 1 }]}>
                       <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
                         <ReceivePostcard key={item.postcardId} {...item} />
                       </S.receivedPostcardViewStyled>

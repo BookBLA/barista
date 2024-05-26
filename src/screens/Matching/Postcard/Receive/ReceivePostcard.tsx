@@ -5,10 +5,8 @@ import * as S from './ReceivePostcard.styles';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
 import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useMovePage from '../../../../commons/hooks/useMovePage';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 
@@ -34,10 +32,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const postcardCounter = usePostcardCounter((state) => state.count);
-  const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
   const navigation = useNavigation();
-  const { movePage } = useMovePage();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);

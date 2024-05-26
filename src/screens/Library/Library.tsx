@@ -95,7 +95,7 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   };
 
-  const fetchYourLibraryInfo = async (targetMemberId: number) => {
+  const fetchYourLibraryInfo = async () => {
     const result = await getYourLibraryInfo(targetMemberId);
     setLibraryInfo(result);
     splitBook(result.bookResponses);
@@ -105,7 +105,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   useEffect(() => {
     if (isYourLibrary) {
-      fetchYourLibraryInfo(targetMemberId);
+      fetchYourLibraryInfo();
     } else {
       fetchMyLibraryInfo();
     }
