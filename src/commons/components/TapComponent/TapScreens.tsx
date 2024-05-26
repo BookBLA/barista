@@ -48,6 +48,7 @@ const TapScreens = () => {
           tabBarIcon: ({ focused }) => (
             <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 21, height: 21 }} />
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
