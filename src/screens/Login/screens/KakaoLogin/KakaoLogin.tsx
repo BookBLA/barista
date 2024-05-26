@@ -33,7 +33,7 @@ const KakaoLogin = () => {
         source={{
           uri: KAKAO_URL,
         }}
-        startInLoadingState={true}
+        startInLoadingState
         renderLoading={() => (
           <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#000" />

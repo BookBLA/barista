@@ -20,7 +20,7 @@ export const useKakaoLogin = () => {
     try {
       const { result } = await postLogin(authCode, 'kakao');
       setToken(result.accessToken);
-      if (result.memberStatus !== 'p') {
+      if (result.memberStatus !== 'PROFILE') {
         const pushToken = await getPushToken();
         await postPushToken(pushToken);
       }
@@ -29,7 +29,7 @@ export const useKakaoLogin = () => {
       showToast({
         content: '로그인에 성공하였습니다.',
       });
-      handleReset(getInitialRouteName());
+      handleReset(getInitialRouteName(result.memberStatus));
     } catch (error) {
       console.log('error', error);
       showToast({
