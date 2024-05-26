@@ -38,6 +38,8 @@ httpApi.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.debug(error.response.status);
+    console.debug(error.response.data);
     const originalRequest = error.config;
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;

@@ -1,9 +1,19 @@
 export interface IReceivePostcardProps {
   postcardId: number;
-  index: number;
-  userId: number;
+  memberId: number;
+  memberName: string;
+  memberAge: number;
+  memberGender: string;
+  drinkType: string;
+  smokeType: string;
+  contactType: string;
+  dateStyleType: string;
+  dateCostType: string;
+  mbti: string;
+  justFriendType: string;
+  memberSchoolName: string;
   quizScore: number;
-  schoolName: string;
-  postcardImageUrl: string;
-  age: number;
+  bookTitles: string[];
+  correctStatuses: string[];
+  memberReplyContent: string;
 }

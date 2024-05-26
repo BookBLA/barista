@@ -8,13 +8,24 @@ import { Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 
-export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) => {
-  console.log(rest);
-  const { userId, userName, userProfileImageUrl, gender, schoolName, age, postcardStatus, bookName, bookAuthor } = rest;
+export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
+  const {
+    memberId,
+    memberName,
+    memberAge,
+    memberGender,
+    memberSchoolName,
+    memberProfileImageUrl,
+    memberOpenKakaoRoomUrl,
+    representativeBookTitle,
+    representativeBookAuthor,
+    bookImageUrls,
+    postcardStatus,
+  } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
   const platformBlurRadius = Platform.select({
-    ios: postcardStatus === EPostcardStatus.APPROVE ? 0 : 9,
-    android: postcardStatus === EPostcardStatus.APPROVE ? 0 : 30,
+    ios: postcardStatus === EPostcardStatus.ACCEPT ? 0 : 9,
+    android: postcardStatus === EPostcardStatus.ACCEPT ? 0 : 30,
   });
 
   const toggleModal = () => {
@@ -35,14 +46,14 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
     <>
       <S.ContainerViewStyled>
         <S.UserInfoViewStyled>
-          <S.CircularImage source={postcardImage} resizeMode="contain" blurRadius={platformBlurRadius} />
+          <S.CircularImage source={postcardImage} blurRadius={platformBlurRadius} />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
-              <S.UserNameText>{`${userName} | ${age}`}</S.UserNameText>
-              <S.GenderIconStyled source={gender === EGender.MALE ? manIcon : womanIcon} />
+              <S.UserNameText>{`${memberName} | ${memberAge}`}</S.UserNameText>
+              <S.GenderIconStyled source={memberGender === EGender.MALE ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
-            <S.SchoolNameText>{schoolName}</S.SchoolNameText>
-            <S.BookInfoText>{`${bookName} · ${bookAuthor}`}</S.BookInfoText>
+            <S.SchoolNameText>{memberSchoolName}</S.SchoolNameText>
+            <S.BookInfoText>{`${representativeBookTitle} · ${representativeBookAuthor.join(', ')}`}</S.BookInfoText>
           </S.UserInfoWrapper>
         </S.UserInfoViewStyled>
         <S.ButtonContainerViewStyled>
@@ -60,7 +71,8 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
               </TouchableWithoutFeedback>
             </>
           )}
-          {postcardStatus === EPostcardStatus.READ && (
+          {/*//todo 상태 변경 하기*/}
+          {postcardStatus === EPostcardStatus.ACCEPT && (
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#ECEDEF">
@@ -74,7 +86,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
               </TouchableWithoutFeedback>
             </>
           )}
-          {postcardStatus === EPostcardStatus.REJECT && (
+          {postcardStatus === EPostcardStatus.REFUSED && (
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#ECEDEF">
@@ -88,7 +100,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
               </TouchableWithoutFeedback>
             </>
           )}
-          {postcardStatus === EPostcardStatus.APPROVE && (
+          {postcardStatus === EPostcardStatus.ACCEPT && (
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#ECEDEF">
@@ -102,7 +114,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
               </TouchableWithoutFeedback>
             </>
           )}
-          {postcardStatus === EPostcardStatus.FAIL && (
+          {postcardStatus === EPostcardStatus.ALL_WRONG && (
             <>
               <TouchableWithoutFeedback>
                 <S.SingleButtonContainer right backgroundColor="#616C90" flex={1}>
@@ -120,10 +132,10 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ index, ...rest }) =
             <S.CircularImage source={postcardImage} resizeMode="contain" />
             <S.UserInfoWrapper>
               <S.UserInfoNameWrapper>
-                <S.UserNameText style={{ fontSize: 16 }}>{`${userName} | ${age}`}</S.UserNameText>
-                <S.GenderIconStyled source={gender === EGender.MALE ? manIcon : womanIcon} />
+                <S.UserNameText style={{ fontSize: 16 }}>{`${memberName} | ${memberAge}`}</S.UserNameText>
+                <S.GenderIconStyled source={memberGender === EGender.MALE ? manIcon : womanIcon} />
               </S.UserInfoNameWrapper>
-              <S.ModalSchoolNameText>{schoolName}</S.ModalSchoolNameText>
+              <S.ModalSchoolNameText>{memberSchoolName}</S.ModalSchoolNameText>
             </S.UserInfoWrapper>
           </S.ModalUserInfoViewStyled>
           <S.ModalBookListContainer>

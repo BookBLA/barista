@@ -5,32 +5,52 @@ import * as S from './ReceivePostcard.styles';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
 import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useToastStore from '../../../../commons/store/useToastStore';
+import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
+import { patchPostcardDecrease } from '../../../../commons/api/matching.api';
 
-export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postcardId, ...rest }) => {
-  const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
+export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
+  const {
+    postcardId,
+    memberId,
+    memberName,
+    memberAge,
+    memberGender,
+    drinkType,
+    smokeType,
+    contactType,
+    dateStyleType,
+    dateCostType,
+    mbti,
+    justFriendType,
+    memberSchoolName,
+    quizScore,
+    bookTitles,
+    correctStatuses,
+    memberReplyContent,
+  } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
-  const postcardCounter = usePostcardCounter((state) => state.count);
-  const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
+  const { memberPostcard } = useFetchMemberPostcard();
   const navigation = useNavigation();
-  const { movePage } = useMovePage();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
 
-  const handlePostcardClick = () => {
-    if (postcardCounter > 0) {
-      console.debug('엽서 차감', postcardCounter);
-      //todo 엽서 열람 정보를 넣어줘야할듯
-      decrementPostcardCounter();
+  const handlePostcardClick = async () => {
+    if (memberPostcard > 0) {
+      try {
+        await patchPostcardDecrease('Pay');
+        console.debug('엽서 차감', memberPostcard);
+      } catch {
+        useToastStore.getState().showToast({ content: '엽서 차감에 실패하였습니다.' });
+      }
+
       // @ts-ignore
-      navigation.navigate('receivePostcardDetail', { postcardId });
+      navigation.navigate('receivePostcardDetail', rest);
     } else {
-      console.debug('엽서 부족');
       toggleModal();
     }
   };
@@ -52,13 +72,13 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
         <Image source={postcardImage} style={S.styles.image} />
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
-            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${age}살 `}</S.PostcardTextViewStyled>
+            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${memberAge}살 `}</S.PostcardTextViewStyled>
             <S.PostcardTextViewStyled style={{ fontSize: 10 }}>
               {`(독서퀴즈: ${quizScore}점)`}{' '}
             </S.PostcardTextViewStyled>
           </S.PostcardInfoFirstViewStyled>
           <S.PostcardTextViewStyled style={{ fontSize: 12, fontFamily: 'fontLight' }}>
-            {schoolName}
+            {memberSchoolName}
           </S.PostcardTextViewStyled>
         </S.PostcardInfoViewStyled>
       </TouchableOpacity>

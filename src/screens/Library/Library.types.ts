@@ -38,3 +38,9 @@ export type TUpdateBookReview = {
   memberBookId: number;
   contents: string;
 };
+
+export type TValidatePostcardStatus = {
+  isRefused?: boolean;
+  isSuccess?: boolean;
+  rejectMessage?: string;
+};

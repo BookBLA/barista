@@ -20,9 +20,10 @@ export interface checkedQuizAnswer {
 export interface ISendPostcardRequest {
   quizAnswerList: IQuizAnswerRequest[];
   postcardTypeId: number;
-  imageUrl: string; //postcard 이미지
+  receiveMemberId: number;
   memberAskId: number;
   memberReply: string;
+  postcardPayType: string;
 }
 
 export interface IQuizAnswerRequest {
