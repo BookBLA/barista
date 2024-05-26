@@ -21,7 +21,7 @@ const MatchingContent = ({ selected, setSelected }: IProps) => {
           margin="16px 0 0 0"
         />
       ))}
-      <TextBox />
+      <TextBox placeholder="기타) 직접 작성'" />
     </S.ModalWrapper>
   );
 };
