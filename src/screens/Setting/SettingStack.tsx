@@ -16,8 +16,8 @@ const screens = [
 const SettingStack = ({ route }: IProps) => {
   return (
     <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false }}>
-      {screens.map(({ name, component }) =>
-        name === 'setting' ? (
+      {screens.map(({ name, component }, index) =>
+        !index ? (
           <Stack.Screen
             key={name}
             name={name}

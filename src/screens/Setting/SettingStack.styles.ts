@@ -4,6 +4,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 export const ProfileWrapper = styled.View`
@@ -52,7 +53,7 @@ export const MenuButton = styled.TouchableOpacity`
 `;
 
 export const MenuImage = styled.Image`
-  width: 36px;
+  width: 30px;
   height: 30px;
   margin-bottom: 10px;
   object-fit: fill;
