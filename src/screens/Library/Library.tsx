@@ -1,8 +1,7 @@
-import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
-import postcardImage from '../../../assets/images/example-book.png';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
 import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -34,6 +33,8 @@ import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 import useToastStore from '../../commons/store/useToastStore';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
+import { useUserStore } from '../../commons/store/useUserinfo';
+import { icons } from '../../commons/utils/variablesImages';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -63,14 +64,18 @@ const Library: React.FC<Props> = ({ route }) => {
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const navigation = useNavigation();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
+  const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
+  const platformBlurRadius = Platform.select({
+    ios: isProfileImageModificationStatus ? 9 : 0,
+    android: isProfileImageModificationStatus ? 30 : 0,
+  });
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -228,6 +233,9 @@ const Library: React.FC<Props> = ({ route }) => {
     onClose: toggleEmptyPostcardModal,
   };
 
+  const { memberInfo } = useMemberStore((state) => state);
+  const { saveUserInfo } = useUserStore();
+
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {
@@ -243,8 +251,10 @@ const Library: React.FC<Props> = ({ route }) => {
     });
 
     if (!result.canceled) {
-      await uploadImageToS3(result?.assets[0].uri, memberId);
+      const imageUrl = await uploadImageToS3(result?.assets[0].uri, memberInfo.id);
       setSelectedImage(result?.assets[0].uri);
+      await saveUserInfo({ profileImageUrl: imageUrl });
+      setIsProfileImageModificationStatus(true);
     }
     handleCloseBottomSheet();
   };
@@ -272,8 +282,19 @@ const Library: React.FC<Props> = ({ route }) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
       <S.UserInfoContainerView>
+        {isProfileImageModificationStatus && (
+          <S.UserModificationStatusBar>
+            <CustomText size="14px" font="fontMedium" color="#F7F4ED">
+              사진이 수정되어 승인 대기중입니다.
+            </CustomText>
+          </S.UserModificationStatusBar>
+        )}
         <S.UserInfoView>
-          <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} />
+          <S.CircularImage
+            source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
+            blurRadius={platformBlurRadius}
+          />
+          {isProfileImageModificationStatus && <S.OverlayImage source={icons.hourGlass} />}
           {!isYourLibrary && (
             <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
               <S.ProfileImageModificationImage
@@ -409,7 +430,11 @@ const Library: React.FC<Props> = ({ route }) => {
 
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify memberId={memberId} memberBookId={selectedBookId} deleteBookFunc={deleteBookInBookList} />
+          <MyBookInfoModify
+            memberId={memberInfo.id}
+            memberBookId={selectedBookId}
+            deleteBookFunc={deleteBookInBookList}
+          />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
 
