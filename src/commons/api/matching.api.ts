@@ -3,9 +3,8 @@ import { IReceivePostcardProps } from '../../screens/Matching/Postcard/Receive/R
 import { ISendPostcardProps, IUpdatePostcardRequest } from '../../screens/Matching/Postcard/Send/SendPostcard.types';
 
 export const getReceivePostcardList = async () => {
-  const { responses } = await Get('postcard/to', {}, true);
-  console.log('뎅터', responses);
-  return responses as IReceivePostcardProps[];
+  const { result } = await Get('postcard/to', {}, true);
+  return result as IReceivePostcardProps[];
 };
 
 export const getSendPostcardList = async () => {

@@ -1,13 +1,12 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { getReceivePostcardList } from '../../../../../commons/api/matching.api';
 import { IReceivePostcardProps } from '../../../../Matching/Postcard/Receive/ReceivePostcard.types';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const useFetchReceivePostcard = () => {
   const [data, setData] = useState<IReceivePostcardProps[]>([]);
 
   const fetchReceivePostcard = useCallback(async () => {
-    const params: Record<string, string> = {};
-
     try {
       const response = await getReceivePostcardList();
       setData(response ?? []);
@@ -16,9 +15,11 @@ export const useFetchReceivePostcard = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchReceivePostcard();
-  }, [fetchReceivePostcard]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchReceivePostcard();
+    }, []),
+  );
 
   return data;
 };

@@ -9,7 +9,6 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
-  console.log(rest);
   const {
     memberId,
     memberName,
@@ -72,6 +71,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
               </TouchableWithoutFeedback>
             </>
           )}
+          {/*//todo 상태 변경 하기*/}
           {postcardStatus === EPostcardStatus.ACCEPT && (
             <>
               <TouchableWithoutFeedback>
