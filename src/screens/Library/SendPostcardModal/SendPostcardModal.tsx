@@ -90,7 +90,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
 
     await postPostcard(postcardInfo);
     onClose();
-    useToastStore.getState().showToast({ content: '회원님의 엽서가 성공적으로 전달되었어요😀' });
+    useToastStore.getState().showToast({ content: '엽서 보내기에 성공했습니다.😀' });
   };
 
   const getCurrentAnswer = (index: number) => {

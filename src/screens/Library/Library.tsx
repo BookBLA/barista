@@ -28,10 +28,12 @@ import {
   getMemberStyle,
   getMyLibraryInfo,
   getYourLibraryInfo,
+  validateSendPostcard,
 } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
+import useToastStore from '../../commons/store/useToastStore';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -51,12 +53,13 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   //todo 추후 삭제
-  const isYourLibrary = route.params?.isYourLibrary;
-  // const isYourLibrary = true;
-  const targetMemberId = route.params?.memberId;
-  // const targetMemberId = 386;
+  // const isYourLibrary = route.params?.isYourLibrary;
+  const isYourLibrary = true;
+  // const targetMemberId = route.params?.memberId;
+  const targetMemberId = 386;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
+  const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const navigation = useNavigation();
@@ -67,6 +70,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
+  const showToast = useToastStore((state) => state.showToast);
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -136,11 +140,43 @@ const Library: React.FC<Props> = ({ route }) => {
     setSendPostcardModalVisible(!isSendPostcardModalVisible);
   };
 
+  const toggleResendPostcardModal = () => {
+    setResendPostcardModalVisible(!isResendPostcardModalVisible);
+  };
+
   const toggleEmptyPostcardModal = () => {
     setEmptyPostcardVisible(!isEmptyPostcardModalVisible);
   };
 
-  const handlePostcardClick = () => {
+  const getCurrentPostcardStatus = async () => {
+    return await validateSendPostcard(targetMemberId);
+  };
+
+  const handlePostcardClick = async () => {
+    const validateResult = await getCurrentPostcardStatus();
+
+    if (!validateResult?.isSuccess) {
+      showToast({
+        content: validateResult?.rejectMessage!,
+      });
+      return;
+    }
+
+    if (validateResult?.isSuccess && validateResult.isRefused) {
+      toggleResendPostcardModal();
+      return;
+    }
+
+    if (validateResult?.isSuccess && !validateResult.isRefused) {
+      toggleSendPostcardModal();
+    }
+  };
+
+  const handleOpenPostcardModal = async () => {
+    if (isResendPostcardModalVisible) {
+      toggleResendPostcardModal();
+    }
+
     if (memberPostcard > 0) {
       toggleSendPostcardModal();
     } else {
@@ -159,6 +195,12 @@ const Library: React.FC<Props> = ({ route }) => {
     toggleEmptyPostcardModal();
     //@ts-ignore
     navigation.navigate('product');
+  };
+
+  const resendPostcardModalConfig = {
+    visible: isResendPostcardModalVisible,
+    onClose: toggleResendPostcardModal,
+    mode: 'round',
   };
 
   const sendPostcardModalConfig = {
@@ -251,7 +293,7 @@ const Library: React.FC<Props> = ({ route }) => {
               </S.ProfileModifyButtonWrapper>
               <S.ProfileModifyButtonWrapper
                 onPress={async () => {
-                  handlePostcardClick();
+                  await handlePostcardClick();
                 }}
                 style={{ backgroundColor: colors.buttonPrimary }}
               >
@@ -395,6 +437,31 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
+      <CustomModal modalConfig={resendPostcardModalConfig}>
+        <S.EmptyPostcardModalWrapper>
+          <S.EmptyPostcardModalHeader>
+            <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+              엽서 다시 보내기
+            </CustomText>
+            <CustomText font="fontRegular" size="12px">
+              이전에 매칭을 거부한 상대입니다. 그래도 보내시겠어요?
+            </CustomText>
+          </S.EmptyPostcardModalHeader>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleResendPostcardModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={handleOpenPostcardModal} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                네
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
+        </S.EmptyPostcardModalWrapper>
+      </CustomModal>
 
       <CustomModal modalConfig={sendPostcardModalConfig}>
         <SendPostcardModal
