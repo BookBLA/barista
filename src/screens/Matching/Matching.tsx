@@ -7,7 +7,6 @@ import postcardIcon from '../../../assets/images/icons/Postcard.png';
 import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
-import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
@@ -18,13 +17,14 @@ const Matching = () => {
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
   const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
   const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
-  const postcardCounter = usePostcardCounter((state) => state.count);
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   const handleScroll = (event: any) => {
     const currentOffset: number = event.nativeEvent.contentOffset.y;
     const buttonThreshold: number = 100;
+    setScrollPosition(event.nativeEvent.contentOffset.y);
 
     if (currentOffset > buttonThreshold) {
       setShowButton(true);
@@ -32,6 +32,13 @@ const Matching = () => {
       setShowButton(false);
     }
   };
+
+  useEffect(() => {
+    // 화면에 돌아왔을 때 스크롤 위치를 설정
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: scrollPosition, animated: false });
+    }
+  }, [scrollPosition]);
 
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
@@ -111,12 +118,12 @@ const Matching = () => {
                   return (
                     <View style={[isSingleItem ? { width: '50%' } : { flex: 1 }]}>
                       <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
-                        <ReceivePostcard key={index} {...item} />
+                        <ReceivePostcard key={item.postcardId} {...item} />
                       </S.receivedPostcardViewStyled>
                     </View>
                   );
                 }}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => item.postcardId}
                 numColumns={2}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}

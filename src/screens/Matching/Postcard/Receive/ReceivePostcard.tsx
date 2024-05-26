@@ -9,11 +9,12 @@ import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter
 import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useMovePage from '../../../../commons/hooks/useMovePage';
-import { patchPostcardDecrease } from '../../../../commons/api/matching.api';
 import useToastStore from '../../../../commons/store/useToastStore';
+import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
+    postcardId,
     memberId,
     memberName,
     memberAge,
@@ -32,6 +33,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     memberReplyContent,
   } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
+  const { memberPostcard } = useFetchMemberPostcard();
   const postcardCounter = usePostcardCounter((state) => state.count);
   const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
   const navigation = useNavigation();
@@ -42,17 +44,17 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    if (postcardCounter > 0) {
-      console.debug('엽서 차감', postcardCounter);
+    if (memberPostcard > 0) {
       try {
-        await patchPostcardDecrease('Free');
-        decrementPostcardCounter();
+        // await patchPostcardDecrease('Free');
+        // decrementPostcardCounter();
+        console.debug('엽서 차감', memberPostcard);
       } catch {
         useToastStore.getState().showToast({ content: '엽서 차감에 실패하였습니다.' });
       }
 
       // @ts-ignore
-      navigation.navigate('receivePostcardDetail', { postcardId });
+      navigation.navigate('receivePostcardDetail', rest);
     } else {
       toggleModal();
     }
