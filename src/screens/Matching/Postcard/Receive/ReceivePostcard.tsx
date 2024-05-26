@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
+import { patchPostcardDecrease } from '../../../../commons/api/matching.api';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -41,8 +42,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const handlePostcardClick = async () => {
     if (memberPostcard > 0) {
       try {
-        // await patchPostcardDecrease('Free');
-        // decrementPostcardCounter();
+        await patchPostcardDecrease('Pay');
         console.debug('엽서 차감', memberPostcard);
       } catch {
         useToastStore.getState().showToast({ content: '엽서 차감에 실패하였습니다.' });
