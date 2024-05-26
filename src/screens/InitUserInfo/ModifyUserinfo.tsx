@@ -13,6 +13,7 @@ import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberProfileApi, putMemberProfileApi } from '../../commons/api/memberProfile.api';
+import useToastStore from '../../commons/store/useToastStore';
 
 const ModifyUserinfo = () => {
   const { updateUserInfo, userInfo } = useUserStore();
@@ -20,6 +21,7 @@ const ModifyUserinfo = () => {
   const [link, setLink] = useState('');
   const [name, setName] = useState('');
   const [phNum, setPhNum] = useState('');
+  const showToast = useToastStore((state) => state.showToast);
 
   const handlePhoneNumberChange = (phNum: string) => {
     const onlyNums = phNum.replace(/[^0-9]/g, '');
@@ -82,6 +84,9 @@ const ModifyUserinfo = () => {
         openKakaoRoomUrl: link,
       });
       console.log('callPutMemberProfileApi', response);
+      showToast({
+        content: '회원 정보가 수정되었습니다.',
+      });
     } catch (error) {
       console.log('callPutMemberProfileApi error', error);
     }
