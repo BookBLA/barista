@@ -14,3 +14,7 @@ export const agreementTitles = [
   '민감정보 수집 및 이용 동의 (필수)',
   '마케팅 정보 수신 동의 (선택)',
 ];
+
+export const agreementMainUrl = 'https://rust-sprite-73f.notion.site/fead23d9ddda4acf8874bec913e3219e';
+
+export const noticeUrl = 'https://pf.kakao.com/_NrxbnG';
