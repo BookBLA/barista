@@ -200,7 +200,7 @@ const EmailAuth = () => {
                 </S.CodeFiledStyled>
                 {/* 코드 확인 버튼 */}
                 <S.ButtonStyled
-                  onPress={time !== 0 && code !== '' && callPostAuthVerifyApi}
+                  onPress={time !== 0 && code !== '' ? callPostAuthVerifyApi : null}
                   style={{
                     width: 70,
                     marginBottom: 6,
@@ -243,15 +243,7 @@ const EmailAuth = () => {
         </TouchableWithoutFeedback>
       </S.ColumnStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-        {/* {isRefused ? (
-          <S.NextButtonStyled>
-            <CustomText font="fontMedium" size="14" color={colors.secondary}>
-              수정 완료
-            </CustomText>
-          </S.NextButtonStyled>
-        ) : (
-          <> */}
-        <TouchableOpacity onPress={movePage()}>
+        <TouchableOpacity onPress={() => (isSuccess === 'true' ? movePage() : null)}>
           <Image source={prevButton} />
         </TouchableOpacity>
         {isSuccess !== 'true' ? (
