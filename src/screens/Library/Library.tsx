@@ -11,7 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
@@ -85,7 +85,8 @@ const Library: React.FC<Props> = ({ route }) => {
     setTopFloorBookList(newTopFloorList);
     setSecondFloorBookList(newSecondFloorList);
   };
-  const fetchMyLibraryInfo = async () => {
+
+  const fetchMyLibraryInfo = useCallback(async () => {
     try {
       const { result } = await getMyLibraryInfo();
       setLibraryInfo(result);
@@ -93,15 +94,17 @@ const Library: React.FC<Props> = ({ route }) => {
     } catch {
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
     }
-  };
+  }, []);
 
-  const fetchYourLibraryInfo = async () => {
-    const result = await getYourLibraryInfo(targetMemberId);
-    setLibraryInfo(result);
-    splitBook(result.bookResponses);
-
-    return result;
-  };
+  const fetchYourLibraryInfo = useCallback(async () => {
+    try {
+      const result = await getYourLibraryInfo(targetMemberId);
+      setLibraryInfo(result);
+      splitBook(result.bookResponses);
+    } catch {
+      console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
+    }
+  }, [targetMemberId]);
 
   useEffect(() => {
     if (isYourLibrary) {
@@ -109,7 +112,17 @@ const Library: React.FC<Props> = ({ route }) => {
     } else {
       fetchMyLibraryInfo();
     }
-  }, []);
+  }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (isYourLibrary) {
+        fetchYourLibraryInfo();
+      } else {
+        fetchMyLibraryInfo();
+      }
+    }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]),
+  );
 
   const fetchBookInfo = async (memberBookId: number) => {
     const result = await getBookInfo(memberBookId);
