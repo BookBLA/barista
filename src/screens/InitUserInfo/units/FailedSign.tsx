@@ -18,7 +18,7 @@ const FailedSign: React.FC<Props> = ({ route }) => {
   useManageMargin();
   const { movePage } = useMovePage();
   const { userInfo, updateUserInfo } = useUserStore();
-  const rejectCase = route.params?.rejectCase;
+  const rejectCase = route.params?.rejectCase ?? [];
   console.log('rejectCase', rejectCase);
   const { count } = useCounter();
   // console.log('count', count);
