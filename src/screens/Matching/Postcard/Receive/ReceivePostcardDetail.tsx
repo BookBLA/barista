@@ -8,11 +8,11 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { EGender } from '../Send/SendPostcard.types';
+import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
-import { getReceivePostcardList } from '../../../../commons/api/matching.api';
+import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching.api';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -47,6 +47,22 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
       console.error('error', error);
     }
   }, []);
+
+  const rejectPostcard = async () => {
+    try {
+      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.REFUSED });
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
+
+  const acceptPostcard = async () => {
+    try {
+      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.ACCEPT });
+    } catch (error) {
+      console.error('error', error);
+    }
+  };
 
   useEffect(() => {
     fetchPostcardDetails();
@@ -164,12 +180,12 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
             <S.ButtonContainer>
               {/*todo onPress 구현하기*/}
-              <S.Button type="reject">
+              <S.Button type="reject" onPress={async () => await rejectPostcard()}>
                 <CustomText size="14px" font="fontMedium" color="white">
                   거절하기
                 </CustomText>
               </S.Button>
-              <S.Button>
+              <S.Button onPress={async () => await acceptPostcard()}>
                 <CustomText size="14px" font="fontMedium" color={colors.textYellow}>
                   수락하기
                 </CustomText>

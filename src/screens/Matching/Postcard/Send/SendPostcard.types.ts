@@ -24,3 +24,7 @@ export enum EPostcardStatus {
   REFUSED = 'REFUSED',
   ALL_WRONG = 'ALL_WRONG',
 }
+
+export interface IUpdatePostcardRequest {
+  status: EPostcardStatus;
+}
