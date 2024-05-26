@@ -3,7 +3,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
 import postcardImage from '../../../assets/images/example-book.png';
-import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
 import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -34,6 +33,7 @@ import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 import useToastStore from '../../commons/store/useToastStore';
+import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };

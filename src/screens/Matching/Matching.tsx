@@ -11,6 +11,7 @@ import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
+import { getReceivePostcardList, getSendPostcardList } from '../../commons/api/matching.api';
 
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();
@@ -36,33 +37,20 @@ const Matching = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
+  const fetchReceivePostcardList = async () => {
+    const result = await getReceivePostcardList();
+    setReceivedPostcards(result);
+  };
+
+  const fetchSendPostcardList = async () => {
+    const result = await getSendPostcardList();
+    setSendPostcards(result);
+  };
+
   useEffect(() => {
     //todo api 활용해서 데이터 받아오는 부분
-    const receivedFakeData: IReceivePostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
-      index,
-      postcardId: Math.floor(Math.random() * 1000) + 1,
-      userId: Math.floor(Math.random() * 1000) + 1,
-      quizScore: Math.floor(Math.random() * 101),
-      schoolName: `School ${index + 1}`,
-      age: index + 1,
-      postcardImageUrl: `https://example.com/postcard-${index + 1}.jpg`,
-    }));
-
-    const sendFakeData: ISendPostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
-      index,
-      userId: Math.floor(Math.random() * 1000) + 1,
-      userName: '방근호',
-      userProfileImageUrl: 'https://source.unsplash.com/random/300×300',
-      gender: Math.floor(Math.random() * 2),
-      schoolName: `가천대학교`,
-      age: Math.floor(Math.random() * 10) + 20,
-      postcardStatus: Math.floor(Math.random() * 5),
-      bookName: '나미야 잡화점의 이야기',
-      bookAuthor: '베르베르 베르베뉘뉘',
-    }));
-
-    setReceivedPostcards(receivedFakeData);
-    setSendPostcards(sendFakeData);
+    fetchReceivePostcardList();
+    fetchSendPostcardList();
   }, []);
 
   return (
@@ -118,11 +106,16 @@ const Matching = () => {
                 ref={flatListRef}
                 onScroll={handleScroll}
                 data={receivedPostcards}
-                renderItem={({ item, index }) => (
-                  <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
-                    <ReceivePostcard key={index} {...item} />
-                  </S.receivedPostcardViewStyled>
-                )}
+                renderItem={({ item, index }) => {
+                  const isSingleItem = receivedPostcards.length === 1;
+                  return (
+                    <View style={[isSingleItem ? { width: '50%' } : { flex: 1 }]}>
+                      <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
+                        <ReceivePostcard key={index} {...item} />
+                      </S.receivedPostcardViewStyled>
+                    </View>
+                  );
+                }}
                 keyExtractor={(item, index) => index.toString()}
                 numColumns={2}
                 alwaysBounceVertical={false}
@@ -141,11 +134,13 @@ const Matching = () => {
                 ref={flatListRef}
                 onScroll={handleScroll}
                 data={sendPostcards}
-                renderItem={({ item, index }) => (
-                  <S.sendPostcardViewStyled>
-                    <SendPostcard key={index} {...item} />
-                  </S.sendPostcardViewStyled>
-                )}
+                renderItem={({ item, index }) => {
+                  return (
+                    <S.sendPostcardViewStyled>
+                      <SendPostcard key={index} {...item} />
+                    </S.sendPostcardViewStyled>
+                  );
+                }}
                 keyExtractor={(item, index) => index.toString()}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
