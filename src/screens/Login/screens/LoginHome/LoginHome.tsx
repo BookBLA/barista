@@ -12,7 +12,7 @@ import usePushNotifications from '../../../../commons/hooks/usePushNotifications
 
 const LoginHome = () => {
   useManageMargin();
-  // usePushNotifications();
+  usePushNotifications();
   const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
   const { handleTestLogin } = useTestLogin();

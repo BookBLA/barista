@@ -34,21 +34,18 @@ export const TextFiledStyled = styled.TextInput.attrs({
   height: 55%;
   border-radius: 10px;
   font-size: 14px;
-  font-family: fontMedium;
-  background-color: ${colors.buttonMain};
+  font-family: 'fontMedium';
   justify-content: center;
   text-align: start;
   padding: 12px;
   padding-top: 12px;
-  /* margin-bottom: 10px; */
   flex-shrink: 1;
 `;
 
 export const QuizTextFiledStyled = styled.TextInput.attrs({
   multiline: true, // 여러 줄 입력 가능
-  maxLength: 60, // 최대 글자 수
+  maxLength: 21, // 최대 글자 수
 })`
-  placeholdertextcolor: ${colors.textGray2};
   width: 86%;
   height: 38px;
   border-radius: 60px;
@@ -64,20 +61,19 @@ export const QuizTextFiledStyled = styled.TextInput.attrs({
 `;
 
 export const QuizStyled = styled.View`
+  display: flex;
+  flex-direction: row;
   width: 86%;
   height: 38px;
   border-radius: 60px;
-  padding: 12px 0;
   background-color: ${colors.buttonMain};
-  align-items: center;
-  /* justify-content: start; */
-  flex-direction: row;
   padding-left: 16px;
+  margin-bottom: 26px;
 `;
 
 export const QuizTextInput = styled.TextInput.attrs({
-  multiline: true, // 여러 줄 입력 가능
-  maxLength: 21, // 최대 글자 수
+  multiline: true,
+  maxLength: 21,
 })`
   width: 80%;
   height: 38px;
@@ -105,7 +101,7 @@ export const SearchBarStyled = styled.TextInput`
   width: 85%;
   height: 44px;
   font-size: 14px;
-  font-family: fontMedium;
+  font-family: 'fontMedium';
 `;
 
 export const ColumnStyled = styled.View`
@@ -131,7 +127,6 @@ export const PageIndexRow = styled.View`
   width: auto;
   margin-top: 20px;
   margin-bottom: 70px;
-  /* background-color: pink; */
 `;
 
 export const MovePageImageStyled = styled.Image`

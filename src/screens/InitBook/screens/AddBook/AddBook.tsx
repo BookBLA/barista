@@ -18,6 +18,7 @@ const AddBook = () => {
   useManageMargin();
   const { movePage, handleReset } = useMovePage();
   const { data, fetchGetMemberBook } = useFetchMemberBook();
+  const dataLength = data.length;
 
   return (
     <S.Wrapper>
@@ -55,9 +56,9 @@ const AddBook = () => {
               </React.Fragment>
             ))}
 
-            {!data.length && <DashDividerLine />}
-            {data.length < EBook.MaxBooks && (
-              <T.ButtonStyled onPress={movePage('searchBook', { isRepresentative: !data.length })}>
+            {!dataLength && <DashDividerLine />}
+            {dataLength < EBook.MaxBooks && (
+              <T.ButtonStyled onPress={movePage('searchBook', { isRepresentative: !dataLength })}>
                 <Image source={icons.plusCircle} style={{ width: 29, height: 28 }} />
               </T.ButtonStyled>
             )}

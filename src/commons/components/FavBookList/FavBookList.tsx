@@ -4,8 +4,11 @@ import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
 import { useErrorMessage } from '../../store/useErrorMessage';
 import { icons } from '../../utils/variablesImages';
+import { useTruncateText } from '../../hooks/useTruncateText';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
+  const truncateText = useTruncateText();
+
   const callDeleteMemberBook = async () => {
     try {
       await deleteMemberBookApi(item.memberBookId);
@@ -21,8 +24,8 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
     <S.BookListStyled>
       <Image style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }} source={{ uri: item.thumbnail }} />
       <S.ColumnStyled>
-        <S.BookTitleStyled>{item.title}</S.BookTitleStyled>
-        <S.BookAuthorStyled>{item.authors.join(', ')}</S.BookAuthorStyled>
+        <S.BookTitleStyled>{truncateText(item.title, 45)}</S.BookTitleStyled>
+        <S.BookAuthorStyled>{truncateText(item?.authors.join(', '), 30)}</S.BookAuthorStyled>
         <View
           style={{
             width: '100%',

@@ -4,15 +4,14 @@ import * as T from './TermsOfService.styles';
 import { Text, TouchableOpacity, Image, View, Linking } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import nextArrow from '../../../assets/images/icons/NextArrow.png';
 import { useAgreementStore } from '../../commons/store/useAgreement';
 import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
+import usePushNotifications from '../../commons/hooks/usePushNotifications';
 
 const TermsOfService = () => {
-  useEffect(() => {
-    console.log('agreementInfo', agreementInfo);
-  });
+  usePushNotifications();
   const { movePage } = useMovePage();
   const { updateAgreement, agreementInfo } = useAgreementStore();
 

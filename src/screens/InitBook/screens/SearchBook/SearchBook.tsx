@@ -68,7 +68,12 @@ const SearchBook = ({ route }: IProps) => {
           <>
             <ScrollView
               ref={scrollViewRef}
-              style={{ flex: 1, paddingLeft: 16, paddingRight: 16, position: 'relative' }}
+              style={{
+                flex: 1,
+                paddingLeft: 16,
+                paddingRight: 16,
+                position: 'relative',
+              }}
             >
               <CustomText font="fontRegular" size="12px">
                 검색결과 {totalPage}건
@@ -81,15 +86,6 @@ const SearchBook = ({ route }: IProps) => {
                   onSelectBook={setSelectedBook}
                 />
               ))}
-              <Pagination
-                pageIndex={pageIndex}
-                startPage={startPage}
-                totalPage={totalPage}
-                movePageIndex={movePageIndex}
-                changePageGroup={changePageGroup}
-                prevEndPage={prevEndPage}
-                nextEndPage={nextEndPage}
-              />
             </ScrollView>
 
             <View style={{ position: 'absolute', bottom: 95, right: 10, zIndex: 2 }}>
@@ -97,6 +93,15 @@ const SearchBook = ({ route }: IProps) => {
                 <Image source={buttons.moveTop} style={{ width: 45, height: 45 }} />
               </TouchableOpacity>
             </View>
+            <Pagination
+              pageIndex={pageIndex}
+              startPage={startPage}
+              totalPage={totalPage}
+              movePageIndex={movePageIndex}
+              changePageGroup={changePageGroup}
+              prevEndPage={prevEndPage}
+              nextEndPage={nextEndPage}
+            />
             <S.NextButtonStyled
               style={{ height: 50, position: 'absolute', bottom: 10, zIndex: 1 }}
               onPress={movePage('initQuiz', { isRepresentative, selectedBook })}

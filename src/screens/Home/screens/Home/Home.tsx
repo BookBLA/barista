@@ -15,6 +15,7 @@ const Home = () => {
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const { bottomRef, handleOpenBottomSheet, useBackHandler } = useBottomSheet();
   const { data } = useFetchMembersSameBook(filter);
+  const dataLength = data.length;
   const snapPoints = useMemo(() => ['40%', '60%'], []);
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
@@ -25,7 +26,7 @@ const Home = () => {
     <>
       <S.Wrapper>
         <Menu handlePresentModalPress={handlePresentModalPress} filter={filter} setFilter={setFilter} />
-        {data.length ? (
+        {dataLength ? (
           <S.PositionedWrapper>
             {/* <Lock /> */}
             <S.ContentWrapper>
@@ -35,7 +36,7 @@ const Home = () => {
                     <React.Fragment key={index}>
                       <S.RowWrapper>
                         <Profile item={item} />
-                        {index + 1 < data.length && <Profile item={data[index + 1]} />}
+                        {index + 1 < dataLength && <Profile item={data[index + 1]} />}
                       </S.RowWrapper>
                       <S.Line />
                     </React.Fragment>
