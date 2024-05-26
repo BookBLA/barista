@@ -5,6 +5,7 @@ import Product from './screens/Product/Product';
 import Home from './screens/Home/Home';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import Header from './screens/Home/units/Header/Header';
+import usePushNotifications from '../../commons/hooks/usePushNotifications';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -13,6 +14,7 @@ const screens = [
 ];
 
 const HomeStack = () => {
+  usePushNotifications();
   useHeaderControl({
     free: <Header />,
   });
