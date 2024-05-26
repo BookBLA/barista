@@ -9,7 +9,6 @@ import { TouchableOpacity, View, Image, Text } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
-import Example02 from '../Example02/Example02';
 import { useStyleStore } from '../../commons/store/useStyle';
 import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -35,7 +34,7 @@ const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는
 const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 
 const ModifyStyle = () => {
-  const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
+  const [mbti, setMbti] = useState(['', '', '', '']);
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const showToast = useToastStore((state) => state.showToast);
 
@@ -112,8 +111,8 @@ const ModifyStyle = () => {
       await updateStyleInfo('justFriendType', response.result.justFriendType);
       await updateStyleInfo('memberAsk', response.result.memberAsk);
       const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
-      setMbti(newMbti); // Update the mbti array with the newMbti array
-      console.log('newMbti', newMbti);
+      setMbti([...newMbti]); // Update the mbti array with the newMbti array
+      console.log('style.mbti', newMbti);
       setQuestion(response.result.memberAsk);
     } catch (error) {
       console.log('ERROR) getMemberStyleApi', error);
@@ -123,14 +122,6 @@ const ModifyStyle = () => {
   useEffect(() => {
     callGetStyleApi();
   }, []);
-
-  useEffect(() => {
-    // callGetStyleApi();
-    const mbtiString = mbti.join('');
-    console.log('mbti', mbti);
-    console.log('mbtiString', mbtiString);
-    updateStyleInfo('mbti', mbtiString);
-  }, [mbti]);
 
   const callPutStyleApi = async () => {
     try {
@@ -210,7 +201,7 @@ const ModifyStyle = () => {
               <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 40 }}>
                 4가지 모두 골라주세요.
               </Text>
-              <ModifyMBTI setMbti={setMbti} mbti={styleInfo.mbti} />
+              <ModifyMBTI setMbti={setMbti} mbti={mbti} />
             </S.ViewStyled>
             <DashDividerLine />
             <S.ViewStyled height={480}>
