@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { TouchableOpacity, ActivityIndicator, Image } from 'react-native';
+import { TouchableOpacity, ActivityIndicator, Image, StyleSheet, View } from 'react-native';
 import { icons } from '../../../../commons/utils/variablesImages';
 import { INJECTED_JAVASCRIPT, KAKAO_URL } from '../../LoginStack.constants';
 import { useKakaoLogin } from './hooks/useKakakoLogin';
 import { useAuthCode } from './hooks/useAuthCode';
 import * as S from '../../LoginStack.styles';
-import WebView, { WebViewMessageEvent } from 'react-native-webview';
+import WebView from 'react-native-webview';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
 
@@ -35,13 +35,13 @@ const KakaoLogin = () => {
         }}
         startInLoadingState={true}
         renderLoading={() => (
-          <S.LoadingWrapper>
+          <View style={styles.loadingContainer}>
             <ActivityIndicator size="large" color="#000" />
-          </S.LoadingWrapper>
+          </View>
         )}
         injectedJavaScript={INJECTED_JAVASCRIPT}
         javaScriptEnabled
-        onMessage={(event: WebViewMessageEvent) => {
+        onMessage={(event) => {
           getAuthCode(event.nativeEvent['url']);
         }}
       />
@@ -50,3 +50,13 @@ const KakaoLogin = () => {
 };
 
 export default KakaoLogin;
+
+const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    // zIndex: 100,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
