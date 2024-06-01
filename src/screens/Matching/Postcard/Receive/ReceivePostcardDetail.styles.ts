@@ -68,6 +68,7 @@ export const SchoolNameText = styled.Text`
 export const CircularImage = styled.Image`
   width: 60px;
   height: 60px;
+  resize-mode: cover;
   border-radius: 30px;
   margin-right: 10px;
 `;

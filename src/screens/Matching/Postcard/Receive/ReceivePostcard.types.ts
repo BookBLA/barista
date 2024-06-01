@@ -6,6 +6,7 @@ export interface IReceivePostcardProps {
   memberName: string;
   memberAge: number;
   memberGender: string;
+  memberProfileImageUrl: string;
   drinkType: string;
   smokeType: string;
   contactType: string;

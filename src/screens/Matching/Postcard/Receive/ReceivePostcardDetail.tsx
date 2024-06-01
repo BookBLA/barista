@@ -5,7 +5,6 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
-import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
@@ -89,7 +88,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
         <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
           <S.UserInfoContainerView>
             <S.UserInfoView>
-              <S.CircularImage source={postcardImage} />
+              <S.CircularImage source={{ uri: postcardDetails?.memberProfileImageUrl }} />
               <S.UserInfoWrapper>
                 <S.UserInfoNameWrapper>
                   <S.UserNameText>
