@@ -75,17 +75,18 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   );
 
   return (
-    <>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <S.HeaderView>
-          <TouchableOpacity onPress={movePage()}>
-            <S.HeaderImage source={prevButtonBlack} />
-          </TouchableOpacity>
-          <S.HeaderTextWrapper>
-            <S.HeaderText>받은 엽서</S.HeaderText>
-          </S.HeaderTextWrapper>
-        </S.HeaderView>
-        <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
+    <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
+      <S.Wrapper>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <S.HeaderView>
+            <TouchableOpacity onPress={movePage()}>
+              <S.HeaderImage source={prevButtonBlack} />
+            </TouchableOpacity>
+            <S.HeaderTextWrapper>
+              <S.HeaderText>받은 엽서</S.HeaderText>
+            </S.HeaderTextWrapper>
+          </S.HeaderView>
+
           <S.UserInfoContainerView>
             <S.UserInfoView>
               <S.CircularImage source={{ uri: postcardDetails?.memberProfileImageUrl }} />
@@ -192,9 +193,9 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               </S.Button>
             </S.ButtonContainer>
           </S.BodyView>
-        </ScrollView>
-      </View>
-    </>
+        </View>
+      </S.Wrapper>
+    </ScrollView>
   );
 };
 

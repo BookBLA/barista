@@ -2,6 +2,13 @@ import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { deviceWidth } from '../../../../commons/utils/dimensions';
 
+export const Wrapper = styled.View`
+  flex: 1;
+  height: 100%;
+  padding: 0 16px;
+  background-color: #fff;
+`;
+
 export const HeaderView = styled.View`
   flex-direction: row;
   width: 100%;
