@@ -5,6 +5,8 @@ export type TLibrary = {
   gender: string;
   school: string;
   profileImageUrl: string;
+  openKakaoRoomStatus: string;
+  profileImageStatus: string;
   bookResponses: [TBookResponses];
 };
 

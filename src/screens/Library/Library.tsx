@@ -54,10 +54,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   //todo 추후 삭제
-  const isYourLibrary = route.params?.isYourLibrary;
-  // const isYourLibrary = true;
-  const targetMemberId = route.params?.memberId;
-  // const targetMemberId = 386;
+  // const isYourLibrary = route.params?.isYourLibrary;
+  const isYourLibrary = true;
+  // const targetMemberId = route.params?.memberId;
+  const targetMemberId = 4;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
@@ -96,6 +96,10 @@ const Library: React.FC<Props> = ({ route }) => {
       const { result } = await getMyLibraryInfo();
       setLibraryInfo(result);
       splitBook(result.bookResponses);
+
+      if (result.profileImageUrl) {
+        setIsProfileImageModificationStatus(true);
+      }
     } catch {
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
     }
