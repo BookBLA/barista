@@ -21,10 +21,12 @@ export enum EGender {
 export enum EPostcardStatus {
   PENDING = 'PENDING',
   ACCEPT = 'ACCEPT',
+  READ = 'READ',
   REFUSED = 'REFUSED',
   ALL_WRONG = 'ALL_WRONG',
 }
 
 export interface IUpdatePostcardRequest {
+  postcardId: number;
   status: EPostcardStatus;
 }

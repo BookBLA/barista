@@ -1,9 +1,12 @@
+import { EPostcardStatus } from '../Send/SendPostcard.types';
+
 export interface IReceivePostcardProps {
   postcardId: number;
   memberId: number;
   memberName: string;
   memberAge: number;
   memberGender: string;
+  memberProfileImageUrl: string;
   drinkType: string;
   smokeType: string;
   contactType: string;
@@ -16,4 +19,6 @@ export interface IReceivePostcardProps {
   bookTitles: string[];
   correctStatuses: string[];
   memberReplyContent: string;
+  postcardImageUrl: string;
+  postcardStatus: EPostcardStatus;
 }

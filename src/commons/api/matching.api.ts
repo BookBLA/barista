@@ -1,4 +1,4 @@
-import { Get, Patch, Post } from '../utils/http.api';
+import { Get, Post } from '../utils/http.api';
 import { IReceivePostcardProps } from '../../screens/Matching/Postcard/Receive/ReceivePostcard.types';
 import { ISendPostcardProps, IUpdatePostcardRequest } from '../../screens/Matching/Postcard/Send/SendPostcard.types';
 
@@ -12,7 +12,6 @@ export const getSendPostcardList = async () => {
   return result as ISendPostcardProps[];
 };
 
-export const patchPostcardDecrease = async (payType: string) => Patch(`postcard/${payType}`);
+export const readPostcard = async (postcardId: number) => Post(`postcard/read/${postcardId}`);
 
-export const postPostcardStatusUpdate = (postcardId: number, contents: IUpdatePostcardRequest) =>
-  Post(`postcard/status/${postcardId}`, contents, true);
+export const postPostcardStatusUpdate = (contents: IUpdatePostcardRequest) => Post(`postcard/status`, contents, true);

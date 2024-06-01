@@ -1,11 +1,10 @@
 import { ScrollView, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
-import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
-import postcardImage from '../../../../../assets/images/example-book.png';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
@@ -26,7 +25,6 @@ type Props = {
 };
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
-  const { movePage } = useMovePage();
   const { postcardId } = route.params;
   const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
   const styleList = [
@@ -38,7 +36,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     postcardDetails?.dateCostType,
   ];
   const quizCircleList = ['A', 'B', 'C', 'D', 'E'];
-  const navigation = useNavigation();
+  const { movePage, movePageNoReference } = useMovePage();
 
   const fetchPostcardDetails = useCallback(async () => {
     try {
@@ -52,8 +50,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
   const rejectPostcard = async () => {
     try {
-      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.REFUSED });
-      navigation.goBack();
+      await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.REFUSED });
+      movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 거절하였습니다.' });
     } catch (error) {
       console.error('error', error);
@@ -62,17 +60,13 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
   const acceptPostcard = async () => {
     try {
-      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.ACCEPT });
-      navigation.goBack();
+      await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
+      movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });
     } catch (error) {
       console.error('error', error);
     }
   };
-
-  useEffect(() => {
-    fetchPostcardDetails();
-  }, [fetchPostcardDetails]);
 
   useFocusEffect(
     useCallback(() => {
@@ -81,20 +75,21 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   );
 
   return (
-    <>
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
-        <S.HeaderView>
-          <TouchableOpacity onPress={movePage('Matching')}>
-            <S.HeaderImage source={prevButtonBlack} />
-          </TouchableOpacity>
-          <S.HeaderTextWrapper>
-            <S.HeaderText>받은 엽서</S.HeaderText>
-          </S.HeaderTextWrapper>
-        </S.HeaderView>
-        <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
+    <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
+      <S.Wrapper>
+        <View style={{ flex: 1, backgroundColor: 'white' }}>
+          <S.HeaderView>
+            <TouchableOpacity onPress={movePage()}>
+              <S.HeaderImage source={prevButtonBlack} />
+            </TouchableOpacity>
+            <S.HeaderTextWrapper>
+              <S.HeaderText>받은 엽서</S.HeaderText>
+            </S.HeaderTextWrapper>
+          </S.HeaderView>
+
           <S.UserInfoContainerView>
             <S.UserInfoView>
-              <S.CircularImage source={postcardImage} />
+              <S.CircularImage source={{ uri: postcardDetails?.memberProfileImageUrl }} />
               <S.UserInfoWrapper>
                 <S.UserInfoNameWrapper>
                   <S.UserNameText>
@@ -107,9 +102,9 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             </S.UserInfoView>
 
             <S.UserLibraryButtonContainer
-              onPress={movePage('OtherLibrary', {
+              onPress={movePage('library', {
                 memberId: postcardDetails?.memberId,
-                postcardId: postcardId,
+                postcardId,
                 isYourLibrary: true,
               })}
             >
@@ -198,9 +193,9 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               </S.Button>
             </S.ButtonContainer>
           </S.BodyView>
-        </ScrollView>
-      </View>
-    </>
+        </View>
+      </S.Wrapper>
+    </ScrollView>
   );
 };
 

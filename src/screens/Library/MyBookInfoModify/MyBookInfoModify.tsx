@@ -93,7 +93,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 {bookInfo?.title}
               </CustomText>
               <CustomText font="fontLight" size="14px" color="#616C90">
-                {bookInfo?.authors.join(', ')}
+                {bookInfo?.authors?.join(', ')}
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>

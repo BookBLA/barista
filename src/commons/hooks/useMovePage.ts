@@ -23,6 +23,14 @@ const useMovePage = <T extends ParamListBase>() => {
     // movePage('InitUserInfoStack', {screen: "genderBirth" ,params: { isEditing: true } });
   };
 
+  const movePageNoReference = (screenName?: string, params?: T[keyof T]) => {
+    if (!screenName) {
+      goBack();
+    } else {
+      handleNext(screenName, params)();
+    }
+  };
+
   const handleReset = (screenName: string, params?: T[keyof T]) => {
     // 현재 스택을 제거하고 다른 화면으로 이동할 때 사용
     navigation?.reset({
@@ -31,7 +39,7 @@ const useMovePage = <T extends ParamListBase>() => {
     });
   };
 
-  return { goBack, handleNext, movePage, handleReset };
+  return { goBack, handleNext, movePage, handleReset, movePageNoReference };
 };
 
 export default useMovePage;

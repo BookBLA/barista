@@ -57,7 +57,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const isYourLibrary = route.params?.isYourLibrary;
   // const isYourLibrary = true;
   const targetMemberId = route.params?.memberId;
-  // const targetMemberId = 386;
+  // const targetMemberId = 4;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
@@ -76,6 +76,7 @@ const Library: React.FC<Props> = ({ route }) => {
     ios: isProfileImageModificationStatus ? 9 : 0,
     android: isProfileImageModificationStatus ? 30 : 0,
   });
+  const { movePage, handleReset } = useMovePage();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -96,6 +97,10 @@ const Library: React.FC<Props> = ({ route }) => {
       const { result } = await getMyLibraryInfo();
       setLibraryInfo(result);
       splitBook(result.bookResponses);
+
+      if (result.profileImageUrl) {
+        setIsProfileImageModificationStatus(true);
+      }
     } catch {
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
     }
@@ -138,8 +143,6 @@ const Library: React.FC<Props> = ({ route }) => {
     const result = await getMemberStyle(targetMemberId);
     setMemberStyle(result);
   };
-
-  const { movePage, handleReset } = useMovePage();
 
   const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
     setSelectedBookId(bookMemberId);
@@ -211,8 +214,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    //@ts-ignore
-    navigation.navigate('product');
+    movePage('product');
   };
 
   const resendPostcardModalConfig = {
@@ -264,7 +266,7 @@ const Library: React.FC<Props> = ({ route }) => {
       ? {
           title: '상대페이지',
           left: true,
-          onPressLeft: movePage('receivePostcardDetail', { postcardId }),
+          onPressLeft: movePage(),
         }
       : {
           title: '마이페이지',

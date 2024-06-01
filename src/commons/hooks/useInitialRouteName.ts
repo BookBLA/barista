@@ -22,6 +22,7 @@ export const useInitialRouteName = () => {
         case 'BOOK':
           memberStatus = 'bo';
           break;
+        case 'MATCHING_DISABLED':
         case 'COMPLETED':
           memberStatus = 'c';
           break;

@@ -11,7 +11,7 @@ const Profile = ({ item }: { item: IDdata }) => {
   const modifiedName = item?.memberName ? `${item.memberName.charAt(0)}0${item.memberName.slice(2)}` : '이름';
 
   return (
-    <S.ProfileWrapper onPress={movePage('OtherLibrary', { memberId: item?.memberId, isYourLibrary: true })}>
+    <S.ProfileWrapper onPress={movePage('library', { memberId: item?.memberId, isYourLibrary: true })}>
       <S.BookImage source={item.bookImageUrl ? { uri: item.bookImageUrl } : icons.bookCover} />
       <CustomText size="12px">{truncateText(item.bookName, 15)}</CustomText>
       <CustomText size="10px">{`${modifiedName} (${item?.memberAge ?? '0'}살)`}</CustomText>

@@ -4,9 +4,10 @@ import * as S from './SendPostcard.styles';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { Platform, TouchableWithoutFeedback, View } from 'react-native';
+import { Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
+import useToastStore from '../../../../commons/store/useToastStore';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
@@ -32,13 +33,28 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     setModalVisible(!isModalVisible);
   };
 
+  const handleOpenKakaoRoomUrl = async () => {
+    const supported = await Linking.canOpenURL(memberOpenKakaoRoomUrl);
+
+    if (supported) {
+      await Linking.openURL(memberOpenKakaoRoomUrl);
+    } else {
+      useToastStore.getState().showToast({ content: '올바르지 않은 링크입니다! 관리자에게 문의해주세요!' });
+    }
+  };
+
   const modalConfig = {
     visible: isModalVisible,
     onClose: toggleModal,
     mode: 'round',
     close: true,
     buttons: [
-      { label: '오픈채팅방으로 이동', action: toggleModal, color: colors.textYellow, bgColor: colors.buttonPrimary },
+      {
+        label: '오픈채팅방으로 이동',
+        action: handleOpenKakaoRoomUrl,
+        color: colors.textYellow,
+        bgColor: colors.buttonPrimary,
+      },
     ],
   };
 
@@ -46,7 +62,10 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     <>
       <S.ContainerViewStyled>
         <S.UserInfoViewStyled>
-          <S.CircularImage source={postcardImage} blurRadius={platformBlurRadius} />
+          <S.CircularImage
+            source={{ uri: memberProfileImageUrl }}
+            blurRadius={postcardStatus === EPostcardStatus.ACCEPT ? undefined : platformBlurRadius}
+          />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText>{`${memberName} | ${memberAge}`}</S.UserNameText>
@@ -71,8 +90,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
               </TouchableWithoutFeedback>
             </>
           )}
-          {/*//todo 상태 변경 하기*/}
-          {postcardStatus === EPostcardStatus.ACCEPT && (
+          {postcardStatus === EPostcardStatus.READ && (
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#ECEDEF">
@@ -139,15 +157,11 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
             </S.UserInfoWrapper>
           </S.ModalUserInfoViewStyled>
           <S.ModalBookListContainer>
-            <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-            </S.ModalBookWrapper>
-            <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-            </S.ModalBookWrapper>
-            <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-            </S.ModalBookWrapper>
+            {bookImageUrls?.map((bookImageUrl) => (
+              <S.ModalBookWrapper>
+                <S.ModalBookImage source={{ uri: bookImageUrl }} />
+              </S.ModalBookWrapper>
+            ))}
           </S.ModalBookListContainer>
           <S.ModalBookShelves style={S.styles.Shadow} />
         </View>
