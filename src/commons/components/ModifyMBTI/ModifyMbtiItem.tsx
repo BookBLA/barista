@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as S from './ModifyMBTI.styles';
 import { IProps } from './ModifyMbtiItem.types';
 // import { useStyleStore } from '../../store/useStyle';
 
 const ModifyMbtiItem = ({ name, setMbti, index, mbti, isSelect }: IProps) => {
-  console.log('name', name[0][0]);
-  console.log('mbti', mbti);
-  console.log('isSelect', isSelect);
-
   const [firstPart, secondPart] = name[0].split('\n');
   const [firstPart2, secondPart2] = name[1].split('\n');
 
@@ -17,7 +13,6 @@ const ModifyMbtiItem = ({ name, setMbti, index, mbti, isSelect }: IProps) => {
     setMbti((prev) => {
       const newMbti = [...prev];
       newMbti[index] = selectedName;
-      console.log('newMbti', newMbti);
       return newMbti;
     });
   };

@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { colors } from '../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle/InitStyle.styles';
-import useMovePage from '../../commons/hooks/useMovePage';
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { ModifyTitleBar } from '../../commons/components/ModifyTitleBar/ModifyTitleBar';
-import { TouchableOpacity, View, Image, Text } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
@@ -17,7 +16,6 @@ import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberStyle.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
-import { set } from 'react-hook-form';
 
 const buttonList = [
   'MBTI',
@@ -101,7 +99,6 @@ const ModifyStyle = () => {
   const callGetStyleApi = async () => {
     try {
       const response = await getMemberStyleApi(memberId);
-      console.log('getMemberStyleApi', response);
       await updateStyleInfo('mbti', response.result.mbti);
       await updateStyleInfo('smokeType', response.result.smokeType);
       await updateStyleInfo('drinkType', response.result.drinkType);
@@ -112,7 +109,6 @@ const ModifyStyle = () => {
       await updateStyleInfo('memberAsk', response.result.memberAsk);
       const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
       setMbti([...newMbti]); // Update the mbti array with the newMbti array
-      console.log('style.mbti', newMbti);
       setQuestion(response.result.memberAsk);
     } catch (error) {
       console.log('ERROR) getMemberStyleApi', error);

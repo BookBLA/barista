@@ -6,11 +6,13 @@ import Home from './screens/Home/Home';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import Header from './screens/Home/units/Header/Header';
 import usePushNotifications from '../../commons/hooks/usePushNotifications';
+import Library from '../Library/Library';
 
 const Stack = createStackNavigator();
 const screens = [
   { name: 'home', component: Home },
   { name: 'product', component: Product },
+  { name: 'library', component: Library },
 ];
 
 const HomeStack = () => {

@@ -102,7 +102,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             </S.UserInfoView>
 
             <S.UserLibraryButtonContainer
-              onPress={movePage('OtherLibrary', {
+              onPress={movePage('library', {
                 memberId: postcardDetails?.memberId,
                 postcardId,
                 isYourLibrary: true,

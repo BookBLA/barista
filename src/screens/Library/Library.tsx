@@ -76,6 +76,7 @@ const Library: React.FC<Props> = ({ route }) => {
     ios: isProfileImageModificationStatus ? 9 : 0,
     android: isProfileImageModificationStatus ? 30 : 0,
   });
+  const { movePage, handleReset } = useMovePage();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -142,8 +143,6 @@ const Library: React.FC<Props> = ({ route }) => {
     const result = await getMemberStyle(targetMemberId);
     setMemberStyle(result);
   };
-
-  const { movePage, handleReset } = useMovePage();
 
   const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
     setSelectedBookId(bookMemberId);
@@ -215,8 +214,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    //@ts-ignore
-    navigation.navigate('product');
+    movePage('product');
   };
 
   const resendPostcardModalConfig = {
@@ -268,7 +266,7 @@ const Library: React.FC<Props> = ({ route }) => {
       ? {
           title: '상대페이지',
           left: true,
-          onPressLeft: movePage('receivePostcardDetail', { postcardId }),
+          onPressLeft: movePage(),
         }
       : {
           title: '마이페이지',
