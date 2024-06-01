@@ -5,7 +5,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 import Close from '../../../assets/images/icons/close.png';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import useMovePage from '../../commons/hooks/useMovePage';
-import { IAlarmData, useGetAlarms } from './hooks/useGetAlarms';
+import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 
 const Notice = () => {
@@ -17,11 +17,15 @@ const Notice = () => {
   const { data, setData } = useGetAlarms();
   const { callDeleteAlarm } = useDeleteAlarm();
 
-  const onClickDeleteAlarm = async (memberPushAlarmId: string) => {
+  const onClickDeleteAlarm = async (memberPushAlarmId?: string | null) => {
     try {
-      await callDeleteAlarm(memberPushAlarmId);
-      const filterData = data.filter((el) => String(el.memberPushAlarmId) !== memberPushAlarmId);
-      setData([...filterData]);
+      await callDeleteAlarm(memberPushAlarmId ?? null);
+      if (memberPushAlarmId) {
+        const filterData = data.filter((el) => String(el.memberPushAlarmId) !== memberPushAlarmId);
+        setData([...filterData]);
+      } else {
+        setData([]);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -30,7 +34,7 @@ const Notice = () => {
   return (
     <S.Wrapper>
       <TouchableOpacity>
-        <CustomText margin="0 0 10px" onPress={callDeleteAlarm}>
+        <CustomText margin="0 0 10px" onPress={() => onClickDeleteAlarm(null)}>
           전체 삭제
         </CustomText>
       </TouchableOpacity>
