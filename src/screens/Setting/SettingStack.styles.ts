@@ -26,6 +26,7 @@ export const ProfileImage = styled.Image`
   width: 100%;
   height: 100%;
   object-fit: fill;
+  border-radius: 50px;
 `;
 
 export const RightWrapper = styled.View`
@@ -94,6 +95,7 @@ export const DeleteWrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding: 0 16px;
 `;
 
 export const CheckBoxImage = styled.Image`
