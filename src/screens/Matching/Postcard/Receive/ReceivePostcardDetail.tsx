@@ -1,5 +1,5 @@
 import { ScrollView, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
@@ -69,10 +69,6 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
       console.error('error', error);
     }
   };
-
-  useEffect(() => {
-    fetchPostcardDetails();
-  }, [fetchPostcardDetails]);
 
   useFocusEffect(
     useCallback(() => {
