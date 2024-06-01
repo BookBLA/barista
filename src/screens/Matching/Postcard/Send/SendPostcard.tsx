@@ -141,14 +141,13 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
             </S.UserInfoWrapper>
           </S.ModalUserInfoViewStyled>
           <S.ModalBookListContainer>
+            {bookImageUrls?.map((bookImageUrl) => (
+              <S.ModalBookWrapper>
+                <S.ModalBookImage source={{ uri: bookImageUrl }} />
+              </S.ModalBookWrapper>
+            ))}
             <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-            </S.ModalBookWrapper>
-            <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
-            </S.ModalBookWrapper>
-            <S.ModalBookWrapper>
-              <S.ModalBookImage source={require('../../../../../assets/images/example-book.png')} />
+              <S.ModalBookImage source={{ uri: bookImageUrls[1] }} />
             </S.ModalBookWrapper>
           </S.ModalBookListContainer>
           <S.ModalBookShelves style={S.styles.Shadow} />
