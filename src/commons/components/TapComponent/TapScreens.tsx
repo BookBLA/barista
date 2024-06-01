@@ -7,10 +7,10 @@ import matchingBright from '../../../../assets/images/icons/MatchingBright.png';
 import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
 import { colors } from '../../styles/variablesStyles';
-import Matching from '../../../screens/Matching/Matching';
 import Library from '../../../screens/Library/Library';
 import HomeStack from '../../../screens/Home/HomeStack';
 import useManageMargin from '../../hooks/useManageMargin';
+import MatchingStack from '../../../screens/Matching/MatchingStack';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -53,7 +53,7 @@ const TapScreens = () => {
       />
       <Tab.Screen
         name="Matching"
-        component={Matching}
+        component={MatchingStack}
         options={{
           tabBarLabel: '매칭',
           tabBarIcon: ({ focused }) => (

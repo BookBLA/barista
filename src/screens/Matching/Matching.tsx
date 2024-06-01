@@ -1,15 +1,17 @@
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import GoToTopButton from '../../../assets/images/icons/GoToTop.png';
-import postcardIcon from '../../../assets/images/icons/Postcard.png';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
 import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
+import { icons } from '../../commons/utils/variablesImages';
+import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
+import useMovePage from '../../commons/hooks/useMovePage';
 
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();
@@ -19,6 +21,7 @@ const Matching = () => {
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const { movePage } = useMovePage();
 
   const handleScroll = (event: any) => {
     const currentOffset: number = event.nativeEvent.contentOffset.y;
@@ -81,12 +84,13 @@ const Matching = () => {
       </S.ViewStyled>
       <S.ListWrapper>
         {isReceivedPostcard && (
-          //todo 수신 받은 엽서
           <>
             <S.InfoViewStyled>
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
-                <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
+                <IconButton onPress={movePage('product')}>
+                  <IconImage source={icons.postcard} />
+                </IconButton>
                 <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
@@ -115,7 +119,6 @@ const Matching = () => {
           </>
         )}
         {!isReceivedPostcard && (
-          //todo 보낸 엽서
           <>
             {sendPostcards.length === 0 && <EmptyPostcard type={EType.SEND} />}
             {sendPostcards.length > 0 && (

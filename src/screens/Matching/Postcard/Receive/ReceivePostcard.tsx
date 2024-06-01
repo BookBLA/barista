@@ -4,12 +4,12 @@ import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 import { readPostcard } from '../../../../commons/api/matching.api';
 import { EPostcardStatus } from '../Send/SendPostcard.types';
+import useMovePage from '../../../../commons/hooks/useMovePage';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -36,7 +36,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isNoPostcardModalVisible, setModalVisible] = useState(false);
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const navigation = useNavigation();
+  const { movePageNoReference } = useMovePage();
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -48,8 +48,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const handlePostcardClick = async () => {
     if (postcardStatus === EPostcardStatus.READ) {
-      // @ts-ignore
-      navigation.navigate('receivePostcardDetail', rest);
+      console.log('ㅇ갹');
+      movePageNoReference('receivePostcardDetail', rest);
+      console.log('ㅇ갹1231231');
     } else {
       if (memberPostcard > 0) {
         toggleCheckBeforeSendPostcardModal();
@@ -65,8 +66,8 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       console.debug('엽서 차감', memberPostcard);
 
       toggleCheckBeforeSendPostcardModal();
-      // @ts-ignore
-      navigation.navigate('receivePostcardDetail', rest);
+      console.log('ㅇ갹');
+      movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
@@ -74,8 +75,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
-    //@ts-ignore
-    navigation.navigate('product');
+    movePageNoReference('receivePostcardDetail', rest);
   };
 
   const checkBeforeSendPostcardModalConfig = {

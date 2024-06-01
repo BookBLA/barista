@@ -11,7 +11,6 @@ import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
 import InitBookStack from '../../../screens/InitBook/initBookStack';
-import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
 import SettingStack from '../../../screens/Setting/SettingStack';
 import Notice from '../../../screens/Notice/Notice';
@@ -40,7 +39,6 @@ const screens = [
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
-  { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'notice', component: CustomScreen(Notice) },
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },

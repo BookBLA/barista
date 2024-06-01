@@ -4,7 +4,7 @@ import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlac
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
-import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
@@ -26,7 +26,6 @@ type Props = {
 };
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
-  const { movePage } = useMovePage();
   const { postcardId } = route.params;
   const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
   const styleList = [
@@ -38,7 +37,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     postcardDetails?.dateCostType,
   ];
   const quizCircleList = ['A', 'B', 'C', 'D', 'E'];
-  const navigation = useNavigation();
+  const { movePage, movePageNoReference } = useMovePage();
 
   const fetchPostcardDetails = useCallback(async () => {
     try {
@@ -53,7 +52,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const rejectPostcard = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.REFUSED });
-      navigation.goBack();
+      movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 거절하였습니다.' });
     } catch (error) {
       console.error('error', error);
@@ -63,7 +62,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const acceptPostcard = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
-      navigation.goBack();
+      movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });
     } catch (error) {
       console.error('error', error);
@@ -80,7 +79,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     <>
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <S.HeaderView>
-          <TouchableOpacity onPress={movePage('Matching')}>
+          <TouchableOpacity onPress={movePage()}>
             <S.HeaderImage source={prevButtonBlack} />
           </TouchableOpacity>
           <S.HeaderTextWrapper>
@@ -105,7 +104,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             <S.UserLibraryButtonContainer
               onPress={movePage('OtherLibrary', {
                 memberId: postcardDetails?.memberId,
-                postcardId: postcardId,
+                postcardId,
                 isYourLibrary: true,
               })}
             >
