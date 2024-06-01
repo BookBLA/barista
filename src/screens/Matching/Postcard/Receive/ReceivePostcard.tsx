@@ -8,7 +8,10 @@ import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
-import { patchPostcardDecrease } from '../../../../commons/api/matching.api';
+import { readPostcard } from '../../../../commons/api/matching.api';
+import { AxiosError } from 'axios';
+import { ResponseData } from '../../../../commons/utils/http.api';
+import { isAxiosErrorResponse } from '../../../../commons/utils/isAxiosErrorResponse';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -42,14 +45,23 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const handlePostcardClick = async () => {
     if (memberPostcard > 0) {
       try {
-        await patchPostcardDecrease('Pay');
+        await readPostcard(postcardId);
         console.debug('엽서 차감', memberPostcard);
-      } catch {
-        useToastStore.getState().showToast({ content: '엽서 차감에 실패하였습니다.' });
-      }
+        // @ts-ignore
+        navigation.navigate('receivePostcardDetail', rest);
+      } catch (error) {
+        if (isAxiosErrorResponse(error)) {
+          const axiosError = error as AxiosError;
+          const response = axiosError?.response?.data as ResponseData<string>;
 
-      // @ts-ignore
-      navigation.navigate('receivePostcardDetail', rest);
+          if (response.code === 'postcard-009') {
+            // @ts-ignore
+            navigation.navigate('receivePostcardDetail', rest);
+          }
+        } else {
+          useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
+        }
+      }
     } else {
       toggleModal();
     }
