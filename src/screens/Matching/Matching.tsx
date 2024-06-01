@@ -14,8 +14,8 @@ import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSen
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
-  const receivedPostcards = useFetchReceivePostcard();
-  const sendPostcards = useFetchSendPostcard();
+  const receivedPostcards = useFetchReceivePostcard(isReceivedPostcard);
+  const sendPostcards = useFetchSendPostcard(isReceivedPostcard);
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
