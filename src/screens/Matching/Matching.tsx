@@ -97,9 +97,8 @@ const Matching = () => {
                 onScroll={handleScroll}
                 data={receivedPostcards}
                 renderItem={({ item, index }) => {
-                  const isSingleItem = receivedPostcards.length === 1;
                   return (
-                    <View style={[isSingleItem ? { height: '100%', width: '50%' } : { flex: 1 }]}>
+                    <View style={{ height: '100%', width: '50%' }}>
                       <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
                         <ReceivePostcard key={item.postcardId} {...item} />
                       </S.receivedPostcardViewStyled>

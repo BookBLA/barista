@@ -54,10 +54,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
   //todo 추후 삭제
-  // const isYourLibrary = route.params?.isYourLibrary;
-  const isYourLibrary = true;
-  // const targetMemberId = route.params?.memberId;
-  const targetMemberId = 4;
+  const isYourLibrary = route.params?.isYourLibrary;
+  // const isYourLibrary = true;
+  const targetMemberId = route.params?.memberId;
+  // const targetMemberId = 4;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);

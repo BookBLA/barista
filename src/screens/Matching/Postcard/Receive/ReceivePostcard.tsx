@@ -1,8 +1,7 @@
-import { Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
-import postcardImage from '../../../../../assets/images/example-book.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { useNavigation } from '@react-navigation/native';
@@ -30,6 +29,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     bookTitles,
     correctStatuses,
     memberReplyContent,
+    postcardImageUrl,
   } = rest;
   const [isModalVisible, setModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
@@ -68,8 +68,13 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   return (
     <S.ContainerViewStyled>
-      <TouchableOpacity onPress={handlePostcardClick} style={{ height: '100%' }}>
-        <Image source={postcardImage} style={S.styles.image} />
+      <TouchableOpacity onPress={handlePostcardClick}>
+        <S.BookImage
+          source={{
+            uri: postcardImageUrl,
+          }}
+        />
+
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
             <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${memberAge}살 `}</S.PostcardTextViewStyled>

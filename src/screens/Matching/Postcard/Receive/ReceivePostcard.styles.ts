@@ -1,18 +1,28 @@
 import styled from 'styled-components/native';
-import { StyleSheet } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 
 export const ContainerViewStyled = styled.View`
   width: 100%;
-  height: 244px;
+  height: 100%;
   color: white;
 `;
 
+export const BookImage = styled.Image`
+  width: 104.8%;
+  height: 80%;
+  resize-mode: cover;
+  border-radius: 15px 15px 0 0;
+  position: relative;
+  top: 0;
+  left: -3px;
+`;
+
 export const PostcardInfoViewStyled = styled.View`
+  width: auto;
   background: white;
   height: 20%;
-  border-bottom-left-radius: 8px;
-  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   padding: 4px 8px;
 `;
 
@@ -29,15 +39,6 @@ export const PostcardInfoFirstViewStyled = styled.View`
 `;
 
 //todo 자기가 열람했을때 색 변할 수 도있음. 투명도
-export const styles = StyleSheet.create({
-  image: {
-    resizeMode: 'cover',
-    borderTopLeftRadius: 8,
-    borderTopRightRadius: 8,
-    width: '100%',
-    height: '80%',
-  },
-});
 
 export const EmptyPostcardModalWrapper = styled.View`
   padding: 20px;

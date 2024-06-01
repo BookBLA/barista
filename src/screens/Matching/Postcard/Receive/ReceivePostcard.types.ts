@@ -16,4 +16,5 @@ export interface IReceivePostcardProps {
   bookTitles: string[];
   correctStatuses: string[];
   memberReplyContent: string;
+  postcardImageUrl: string;
 }
