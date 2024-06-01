@@ -9,9 +9,6 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 import { readPostcard } from '../../../../commons/api/matching.api';
-import { AxiosError } from 'axios';
-import { ResponseData } from '../../../../commons/utils/http.api';
-import { isAxiosErrorResponse } from '../../../../commons/utils/isAxiosErrorResponse';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -33,49 +30,63 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     correctStatuses,
     memberReplyContent,
     postcardImageUrl,
+    postcardStatus,
   } = rest;
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isNoPostcardModalVisible, setModalVisible] = useState(false);
+  const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const navigation = useNavigation();
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const toggleNoPostcardModal = () => {
+    setModalVisible(!isNoPostcardModalVisible);
+  };
+
+  const toggleCheckBeforeSendPostcardModal = () => {
+    setCheckBeforeSendPostcardModalVisible(!isCheckBeforeSendPostcardModalVisible);
   };
 
   const handlePostcardClick = async () => {
-    if (memberPostcard > 0) {
-      try {
-        await readPostcard(postcardId);
-        console.debug('엽서 차감', memberPostcard);
-        // @ts-ignore
-        navigation.navigate('receivePostcardDetail', rest);
-      } catch (error) {
-        if (isAxiosErrorResponse(error)) {
-          const axiosError = error as AxiosError;
-          const response = axiosError?.response?.data as ResponseData<string>;
-
-          if (response.code === 'postcard-009') {
-            // @ts-ignore
-            navigation.navigate('receivePostcardDetail', rest);
-          }
-        } else {
-          useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
-        }
-      }
+    if (postcardStatus === 'READ') {
+      toggleCheckBeforeSendPostcardModal();
+      // @ts-ignore
+      navigation.navigate('receivePostcardDetail', rest);
     } else {
-      toggleModal();
+      if (memberPostcard > 0) {
+        console.log(memberPostcard);
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
+  };
+
+  const showPostcardDetail = async () => {
+    try {
+      await readPostcard(postcardId);
+      console.debug('엽서 차감', memberPostcard);
+
+      toggleCheckBeforeSendPostcardModal();
+      // @ts-ignore
+      navigation.navigate('receivePostcardDetail', rest);
+    } catch {
+      useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
   };
 
   const moveProductScreen = () => {
-    toggleModal();
+    toggleNoPostcardModal();
     //@ts-ignore
     navigation.navigate('product');
   };
 
-  const modalConfig = {
-    visible: isModalVisible,
-    onClose: toggleModal,
+  const checkBeforeSendPostcardModalConfig = {
+    visible: isCheckBeforeSendPostcardModalVisible,
+    onClose: toggleCheckBeforeSendPostcardModal,
+  };
+
+  const noPostcardModalConfig = {
+    visible: isNoPostcardModalVisible,
+    onClose: toggleNoPostcardModal,
   };
 
   return (
@@ -99,7 +110,29 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           </S.PostcardTextViewStyled>
         </S.PostcardInfoViewStyled>
       </TouchableOpacity>
-      <CustomModal modalConfig={modalConfig}>
+      <CustomModal modalConfig={checkBeforeSendPostcardModalConfig}>
+        <S.EmptyPostcardModalWrapper>
+          <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+            받은 엽서 열어보기
+          </CustomText>
+          <CustomText font="fontRegular" size="12px">
+            엽서 1개를 사용해 받은 엽서를 열어보시겠어요?
+          </CustomText>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleCheckBeforeSendPostcardModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={showPostcardDetail} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                예
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
+        </S.EmptyPostcardModalWrapper>
+      </CustomModal>
+      <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
             엽서가 부족합니다.
@@ -108,7 +141,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
           </CustomText>
           <S.ModalBottomWrapper>
-            <S.RoundButton onPress={toggleModal} bgColor={colors.buttonMain}>
+            <S.RoundButton onPress={toggleNoPostcardModal} bgColor={colors.buttonMain}>
               <CustomText size="14px" color={colors.textBlack}>
                 아니요
               </CustomText>
