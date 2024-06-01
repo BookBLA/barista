@@ -46,7 +46,10 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     <>
       <S.ContainerViewStyled>
         <S.UserInfoViewStyled>
-          <S.CircularImage source={postcardImage} blurRadius={platformBlurRadius} />
+          <S.CircularImage
+            source={{ uri: memberProfileImageUrl }}
+            blurRadius={postcardStatus === EPostcardStatus.ACCEPT ? undefined : platformBlurRadius}
+          />
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText>{`${memberName} | ${memberAge}`}</S.UserNameText>
@@ -71,8 +74,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
               </TouchableWithoutFeedback>
             </>
           )}
-          {/*//todo 상태 변경 하기*/}
-          {postcardStatus === EPostcardStatus.ACCEPT && (
+          {postcardStatus === EPostcardStatus.READ && (
             <>
               <TouchableWithoutFeedback>
                 <S.ButtonContainer left backgroundColor="#ECEDEF">
