@@ -9,7 +9,6 @@ import * as S from '../../SettingStack.styles';
 import Matching from '../../../../../assets/images/icons/MatchingTransparent.png';
 import Support from '../../../../../assets/images/icons/SupportTransparent.png';
 import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
@@ -21,7 +20,6 @@ const Setting = ({ route }: IProps) => {
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
   const { handleLinkPress } = useLinkingOpen();
-  useManageMargin();
   useHeaderControl({
     title: '설정',
   });
