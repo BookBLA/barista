@@ -14,10 +14,4 @@ export const getSendPostcardList = async () => {
 
 export const readPostcard = async (postcardId: number) => Post(`postcard/read/${postcardId}`);
 
-export const getPostcardStatus = async (postcardId: number) => {
-  const { result } = await Get(`postcard/status/${postcardId}`);
-  return result as Pick<IReceivePostcardProps, 'postcardId'>;
-};
-
-export const postPostcardStatusUpdate = (postcardId: number, contents: IUpdatePostcardRequest) =>
-  Post(`postcard/status/${postcardId}`, contents, true);
+export const postPostcardStatusUpdate = (contents: IUpdatePostcardRequest) => Post(`postcard/status`, contents, true);

@@ -1,3 +1,5 @@
+import { EPostcardStatus } from '../Send/SendPostcard.types';
+
 export interface IReceivePostcardProps {
   postcardId: number;
   memberId: number;
@@ -17,5 +19,5 @@ export interface IReceivePostcardProps {
   correctStatuses: string[];
   memberReplyContent: string;
   postcardImageUrl: string;
-  postcardStatus: string;
+  postcardStatus: EPostcardStatus;
 }

@@ -52,7 +52,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
   const rejectPostcard = async () => {
     try {
-      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.REFUSED });
+      await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.REFUSED });
       navigation.goBack();
       useToastStore.getState().showToast({ content: '엽서를 거절하였습니다.' });
     } catch (error) {
@@ -62,7 +62,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
   const acceptPostcard = async () => {
     try {
-      await postPostcardStatusUpdate(postcardId, { status: EPostcardStatus.ACCEPT });
+      await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
       navigation.goBack();
       useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });
     } catch (error) {

@@ -9,6 +9,7 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 import { readPostcard } from '../../../../commons/api/matching.api';
+import { EPostcardStatus } from '../Send/SendPostcard.types';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -46,13 +47,11 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    if (postcardStatus === 'READ') {
-      toggleCheckBeforeSendPostcardModal();
+    if (postcardStatus === EPostcardStatus.READ) {
       // @ts-ignore
       navigation.navigate('receivePostcardDetail', rest);
     } else {
       if (memberPostcard > 0) {
-        console.log(memberPostcard);
         toggleCheckBeforeSendPostcardModal();
       } else {
         toggleNoPostcardModal();
