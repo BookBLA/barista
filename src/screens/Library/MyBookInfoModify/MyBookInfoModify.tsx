@@ -127,7 +127,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
         <ScrollView>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
+              <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">

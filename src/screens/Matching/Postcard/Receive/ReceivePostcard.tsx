@@ -212,7 +212,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           <ModalBookListContainer>
             {bookImageUrls?.map((bookImageUrl) => (
               <ModalBookWrapper>
-                <ModalBookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
+                <ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
               </ModalBookWrapper>
             ))}
           </ModalBookListContainer>

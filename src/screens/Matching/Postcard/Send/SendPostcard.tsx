@@ -159,7 +159,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
           <S.ModalBookListContainer>
             {bookImageUrls?.map((bookImageUrl) => (
               <S.ModalBookWrapper>
-                <S.ModalBookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
+                <S.ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
               </S.ModalBookWrapper>
             ))}
           </S.ModalBookListContainer>

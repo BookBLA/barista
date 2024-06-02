@@ -7,7 +7,7 @@ import {
 } from './SendPostcardModal.types';
 import * as S from './SendPostcardModal.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { icons } from '../../../commons/utils/variablesImages';
+import { icons, img } from '../../../commons/utils/variablesImages';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';
@@ -162,7 +162,13 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
           <>
             <S.BookInfoContainer>
               <S.BookWrapper>
-                <S.BookImage source={{ uri: bookInfoList[currentQuizIndex]?.imageUrl }} />
+                <S.BookImage
+                  source={
+                    bookInfoList[currentQuizIndex]?.imageUrl
+                      ? { uri: bookInfoList[currentQuizIndex]?.imageUrl }
+                      : img.prepareBookImage
+                  }
+                />
               </S.BookWrapper>
               <S.BookTitleWrapper>
                 <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">

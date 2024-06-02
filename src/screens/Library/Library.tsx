@@ -357,7 +357,7 @@ const Library: React.FC<Props> = ({ route }) => {
                   }
                 }}
               >
-                <S.BookImage source={{ uri: book.bookImageUrl ?? img.prepareBookImage }} />
+                <S.BookImage source={book.bookImageUrl ? { uri: book.bookImageUrl } : img.prepareBookImage} />
                 {book.representative && (
                   <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
                 )}
@@ -392,7 +392,7 @@ const Library: React.FC<Props> = ({ route }) => {
                   }
                 }}
               >
-                <S.BookImage source={{ uri: book.bookImageUrl ?? img.prepareBookImage }} />
+                <S.BookImage source={book.bookImageUrl ? { uri: book.bookImageUrl } : img.prepareBookImage} />
               </S.BookTouchableOpacity>
             ))}
             {topFloorBookList.length === 2 && secondFloorBookList.length === 0 && (
