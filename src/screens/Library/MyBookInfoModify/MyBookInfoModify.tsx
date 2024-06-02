@@ -8,6 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { ScrollView } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
 import useToastStore from '../../../commons/store/useToastStore';
+import { img } from '../../../commons/utils/variablesImages';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
@@ -126,7 +127,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
         <ScrollView>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={{ uri: bookImageUrl }} />
+              <S.BookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">

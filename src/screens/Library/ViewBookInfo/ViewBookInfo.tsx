@@ -2,13 +2,14 @@ import React from 'react';
 import { IViewBookInfoProps } from './ViewBookInfo.types';
 import * as S from './ViewBookInfo.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { img } from '../../../commons/utils/variablesImages';
 
 export const ViewBookInfo: React.FC<IViewBookInfoProps> = ({ bookImageUrl, bookAuthors, bookName, bookReview }) => {
   return (
     <>
       <S.BookInfoContainer>
         <S.BookWrapper>
-          <S.BookImage source={{ uri: bookImageUrl }} />
+          <S.BookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
         </S.BookWrapper>
         <S.BookTitleWrapper>
           <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">

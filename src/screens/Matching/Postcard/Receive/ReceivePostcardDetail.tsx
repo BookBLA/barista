@@ -188,7 +188,6 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             </S.UserStyleView>
 
             <S.ButtonContainer>
-              {/*todo onPress 구현하기*/}
               <S.Button type="reject" onPress={async () => await rejectPostcard()}>
                 <CustomText size="14px" font="fontMedium" color="white">
                   거절하기

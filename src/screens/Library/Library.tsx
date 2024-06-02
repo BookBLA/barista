@@ -34,7 +34,7 @@ import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 import useToastStore from '../../commons/store/useToastStore';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 import { useUserStore } from '../../commons/store/useUserinfo';
-import { icons } from '../../commons/utils/variablesImages';
+import { icons, img } from '../../commons/utils/variablesImages';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -357,7 +357,7 @@ const Library: React.FC<Props> = ({ route }) => {
                   }
                 }}
               >
-                <S.BookImage source={{ uri: book.bookImageUrl }} />
+                <S.BookImage source={{ uri: book.bookImageUrl ?? img.prepareBookImage }} />
                 {book.representative && (
                   <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
                 )}
@@ -387,7 +387,7 @@ const Library: React.FC<Props> = ({ route }) => {
                   }
                 }}
               >
-                <S.BookImage source={{ uri: book.bookImageUrl }} />
+                <S.BookImage source={{ uri: book.bookImageUrl ?? img.prepareBookImage }} />
               </S.BookTouchableOpacity>
             ))}
             {topFloorBookList.length === 2 && secondFloorBookList.length === 0 && (
@@ -470,7 +470,7 @@ const Library: React.FC<Props> = ({ route }) => {
           <ViewBookInfo
             bookName={bookInfo?.title}
             bookAuthors={bookInfo?.authors}
-            bookImageUrl={bookInfo?.imageUrl}
+            bookImageUrl={bookInfo?.imageUrl ?? img.prepareBookImage}
             bookReview={bookInfo?.review}
           />
         </S.BookModificationBottomSheetContainer>

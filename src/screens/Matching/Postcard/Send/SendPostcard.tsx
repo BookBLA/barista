@@ -7,6 +7,7 @@ import { Linking, Platform, TouchableWithoutFeedback, View } from 'react-native'
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import useToastStore from '../../../../commons/store/useToastStore';
+import { img } from '../../../../commons/utils/variablesImages';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
@@ -158,7 +159,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
           <S.ModalBookListContainer>
             {bookImageUrls?.map((bookImageUrl) => (
               <S.ModalBookWrapper>
-                <S.ModalBookImage source={{ uri: bookImageUrl }} />
+                <S.ModalBookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
               </S.ModalBookWrapper>
             ))}
           </S.ModalBookListContainer>

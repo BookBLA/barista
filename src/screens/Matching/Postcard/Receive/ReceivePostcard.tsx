@@ -27,6 +27,7 @@ import {
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
+import { img } from '../../../../commons/utils/variablesImages';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -211,7 +212,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           <ModalBookListContainer>
             {bookImageUrls?.map((bookImageUrl) => (
               <ModalBookWrapper>
-                <ModalBookImage source={{ uri: bookImageUrl }} />
+                <ModalBookImage source={{ uri: bookImageUrl ?? img.prepareBookImage }} />
               </ModalBookWrapper>
             ))}
           </ModalBookListContainer>
