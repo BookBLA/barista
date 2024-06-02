@@ -1,4 +1,4 @@
-import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { BackHandler, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
@@ -258,6 +258,22 @@ const Library: React.FC<Props> = ({ route }) => {
     }
     handleCloseBottomSheet();
   };
+
+  useEffect(() => {
+    const onBackPress = () => {
+      if (modifyBookModalRef.current) {
+        modifyBookModalRef.current.close();
+        return true;
+      }
+      return false;
+    };
+
+    BackHandler.addEventListener('hardwareBackPress', onBackPress);
+
+    return () => {
+      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    };
+  }, []);
 
   useHeaderControl(
     isYourLibrary
