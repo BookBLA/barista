@@ -3,10 +3,12 @@ import LogoDarkBg from '../../../../../../../assets/images/logos/logoDarkBg.png'
 import useMovePage from '../../../../../../commons/hooks/useMovePage';
 import { icons, logos } from '../../../../../../commons/utils/variablesImages';
 import useFetchMemberPostcard from '../../../../../../commons/hooks/useMemberPostcard';
+import { useGetAlarms } from '../../../../../../commons/hooks/useGetAlarms';
 
 const Header = () => {
   const { movePage } = useMovePage();
   const { memberPostcard } = useFetchMemberPostcard();
+  const { data } = useGetAlarms();
 
   return (
     <S.HeaderWrapper>
@@ -20,7 +22,7 @@ const Header = () => {
         </S.IconButton>
         <S.IconText>{memberPostcard}</S.IconText>
         <S.IconButton onPress={movePage('notice')}>
-          <S.IconImage source={icons.bellOn} />
+          <S.IconImage source={data.length ? icons.bellOn : icons.bellOff} />
         </S.IconButton>
       </S.IconWrapper>
     </S.HeaderWrapper>

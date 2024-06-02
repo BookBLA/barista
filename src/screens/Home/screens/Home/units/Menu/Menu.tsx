@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { useLogout } from '../../../../../../commons/hooks/useLogout';
 import { icons } from '../../../../../../commons/utils/variablesImages';
 import { initStates } from '../../../../HomeStack.constants';
 import { TFilterKeys, TFilterState } from '../../../../HomeStack.types';
@@ -8,8 +7,6 @@ import * as S from './Menu.styles';
 import { IProps } from './Menu.types';
 
 const Menu = ({ handlePresentModalPress, filter, setFilter }: IProps) => {
-  const { onClickLogout } = useLogout();
-
   const isFilterChanged = useMemo(() => {
     return Object.keys(filter).some((key) => {
       const filterKey = key as TFilterKeys;
@@ -19,12 +16,10 @@ const Menu = ({ handlePresentModalPress, filter, setFilter }: IProps) => {
 
   return (
     <S.MenuWrapper>
-      <CustomText margin="0 0 8px" onPress={onClickLogout}>
-        서재 구경하기
-      </CustomText>
-      <S.FilterWrapper horizontal={true}>
+      <CustomText margin="0 0 8px">서재 구경하기</CustomText>
+      <S.FilterWrapper horizontal>
         {isFilterChanged && (
-          <S.FilterBox onPress={() => setFilter({ ...initStates })} isSelect={true}>
+          <S.FilterBox onPress={() => setFilter({ ...initStates })} isSelect>
             <S.FilterImage source={icons.reset} />
             <CustomText size="12px" font="fontRegular">
               초기화

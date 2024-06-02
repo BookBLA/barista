@@ -1,14 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getMemberSameBookApi } from '../../../../../commons/api/member.api';
-import { TFilterKeys, TFilterState } from '../../../HomeStack.types';
+import { getMemberAllOtherMembersApi } from '../../../../../commons/api/member.api';
+import { IDdata, TFilterKeys, TFilterState } from '../../../HomeStack.types';
 import { filterOptions } from '../../../HomeStack.constants';
 
-export const useFetchMembersSameBook = (filter: TFilterState) => {
-  const [data, setData] = useState([]);
+export const useFetchAllMembers = (filter: TFilterState) => {
+  const [data, setData] = useState<IDdata[]>([]);
+  const [page, setPage] = useState(0);
 
-  // TODO: 성진 - 페이지 처리 예정
-  const fetchMembersSameBook = useCallback(async () => {
-    const params: Record<string, string> = {};
+  const fetchAllMembersBook = useCallback(async () => {
+    const params: Record<string, string> = { page: String(page) };
 
     for (const key of Object.keys(filter)) {
       const filterKey = key as TFilterKeys;
@@ -20,16 +20,21 @@ export const useFetchMembersSameBook = (filter: TFilterState) => {
     }
 
     try {
-      const response = await getMemberSameBookApi({ params });
-      setData(response?.result.content ?? []);
+      const response = await getMemberAllOtherMembersApi({ params });
+      setData((prev) => [...prev, ...(response?.result.content ?? [])]);
     } catch (error) {
       console.error('error', error);
     }
+  }, [filter, page]);
+
+  useEffect(() => {
+    setPage(0);
+    setData([]);
   }, [filter]);
 
   useEffect(() => {
-    fetchMembersSameBook();
-  }, [filter]);
+    fetchAllMembersBook();
+  }, [page]);
 
-  return { data };
+  return { data, setPage, setData };
 };
