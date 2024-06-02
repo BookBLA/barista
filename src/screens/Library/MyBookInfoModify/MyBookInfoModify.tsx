@@ -177,11 +177,9 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               />
             ) : (
               <S.BookReviewWrapper>
-                <ScrollView>
-                  <CustomText font="fontMedium" size="14px" color="black">
-                    {bookReviewText}
-                  </CustomText>
-                </ScrollView>
+                <CustomText font="fontMedium" size="14px" color="black">
+                  {bookReviewText}
+                </CustomText>
               </S.BookReviewWrapper>
             )}
             <S.BookReviewLengthView>
@@ -222,17 +220,11 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizText(text)}
                 textAlignVertical="top"
                 value={bookQuizText}
+                scrollEnabled
               />
             ) : (
               <BookQuizQuestionWrapper>
-                <CustomText
-                  font="fontMedium"
-                  size="14px"
-                  color="black"
-                  weight="bold"
-                  numberOfLines={1}
-                  ellipsizeMode="tail"
-                >
+                <CustomText font="fontMedium" size="14px" color="black" weight="bold">
                   {bookQuizText}
                 </CustomText>
               </BookQuizQuestionWrapper>
