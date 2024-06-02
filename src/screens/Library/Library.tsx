@@ -10,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
@@ -63,7 +63,6 @@ const Library: React.FC<Props> = ({ route }) => {
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const navigation = useNavigation();
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
@@ -76,7 +75,7 @@ const Library: React.FC<Props> = ({ route }) => {
     ios: isProfileImageModificationStatus ? 9 : 0,
     android: isProfileImageModificationStatus ? 30 : 0,
   });
-  const { movePage, handleReset } = useMovePage();
+  const { movePage, movePageNoReference, handleReset } = useMovePage();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -189,7 +188,7 @@ const Library: React.FC<Props> = ({ route }) => {
     }
 
     if (validateResult?.isSuccess && !validateResult.isRefused) {
-      toggleSendPostcardModal();
+      handleOpenPostcardModal();
     }
   };
 
@@ -201,7 +200,6 @@ const Library: React.FC<Props> = ({ route }) => {
     if (memberPostcard > 0) {
       toggleSendPostcardModal();
     } else {
-      console.debug('엽서 부족');
       toggleEmptyPostcardModal();
     }
   };
@@ -214,7 +212,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    movePage('product');
+    movePageNoReference('product');
   };
 
   const resendPostcardModalConfig = {
