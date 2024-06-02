@@ -176,7 +176,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               />
             ) : (
               <S.BookReviewWrapper>
-                <CustomText font="fontMedium" size="14px" color="black">
+                <CustomText font="fontMedium" size="14px" color="black" numberOfLines={4} ellipsizeMode="tail">
                   {bookReviewText}
                 </CustomText>
               </S.BookReviewWrapper>
@@ -222,7 +222,14 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               />
             ) : (
               <BookQuizQuestionWrapper>
-                <CustomText font="fontMedium" size="14px" color="black" weight="bold">
+                <CustomText
+                  font="fontMedium"
+                  size="14px"
+                  color="black"
+                  weight="bold"
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
                   {bookQuizText}
                 </CustomText>
               </BookQuizQuestionWrapper>
@@ -248,7 +255,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizFirstAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>
@@ -275,7 +282,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizSecondAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>
@@ -302,7 +309,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizThirdAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>
