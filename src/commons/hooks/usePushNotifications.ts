@@ -14,15 +14,12 @@ const usePushNotifications = () => {
       }),
     });
 
-    // const receiveNotificationListener = Notifications.addNotificationReceivedListener((notification) => {});
-
     // 알림을 사용자가 탭했을 때 호출될 리스너
     const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
       handleReset('notice');
     });
 
     return () => {
-      // Notifications.removeNotificationSubscription(receiveNotificationListener);
       Notifications.removeNotificationSubscription(responseListener);
     };
   }, []);

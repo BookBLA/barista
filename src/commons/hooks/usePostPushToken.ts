@@ -7,7 +7,7 @@ export const usePostPushToken = () => {
   const postPushToken = async (token: string) => {
     try {
       const result = await postPushes({
-        token,
+        token: token.split('[')[1].split(']')[0],
       });
       showToast({
         content: `토큰을 보냈습니다. ${token}`,
