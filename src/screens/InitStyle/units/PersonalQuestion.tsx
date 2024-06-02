@@ -49,12 +49,11 @@ const PersonalQuestion = () => {
     await callPostStyleApi();
     resetStyleInfo();
     movePage('initBookStack')();
-
     console.log('styleInfo', styleInfo);
   };
 
   return (
-    <S.Wrapper style={{ paddingBottom: 5 }}>
+    <S.Wrapper style={{ paddingBottom: deviceHeight * 0.03 }}>
       <TitleProgress gauge={100} />
       <T.InnerWrapper onPress={Keyboard.dismiss} underlayColor="transparent">
         <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
@@ -83,15 +82,12 @@ const PersonalQuestion = () => {
         </View>
       </T.InnerWrapper>
 
-      {question === '' ? (
-        <S.NextButtonStyled style={{ backgroundColor: '#BBBFCF' }}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      ) : (
-        <S.NextButtonStyled onPress={nextPage}>
-          <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-        </S.NextButtonStyled>
-      )}
+      <S.NextButtonStyled
+        onPress={question === '' ? undefined : nextPage}
+        style={{ backgroundColor: question === '' ? colors.buttonAuthToggle : colors.primary }}
+      >
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };

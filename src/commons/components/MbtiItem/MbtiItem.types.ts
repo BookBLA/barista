@@ -4,4 +4,5 @@ export interface IProps {
   name: string[];
   setMbti: Dispatch<SetStateAction<string[]>>;
   index: number;
+  char: string;
 }

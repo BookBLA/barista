@@ -1,5 +1,4 @@
-import DatePicker from 'bamb14';
-import * as S from '../InitUserInfo.styles';
+import DatePicker from '@dietime/react-native-date-picker';
 import { View } from 'react-native';
 
 const ModalContent = ({ date, setDate }: { date: Date; setDate: (value: Date) => void }) => {

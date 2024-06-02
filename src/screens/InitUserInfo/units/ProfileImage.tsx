@@ -94,7 +94,7 @@ const ProfileImage = () => {
     <S.Wrapper>
       <TitleProgress2 gauge={25} />
       {/* <S.ColumnStyled style={{ height: '80%' }}> */}
-      <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
+      <S.ColumnStyled style={{ height: 'auto' }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
           <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
           <Text
@@ -220,8 +220,6 @@ const ProfileImage = () => {
         onPress={userInfo.profileImageUrl === '' ? undefined : movePage('openChatLink')}
         style={{
           backgroundColor: userInfo.profileImageUrl === '' ? colors.buttonAuthToggle : colors.primary,
-          zIndex: 2,
-          marginBottom: '5%',
         }}
       >
         <Text

@@ -121,10 +121,10 @@ const ModifyStyle = () => {
 
   const callPutStyleApi = async () => {
     try {
-      console.log('styleInfo', styleInfo);
+      // console.log('styleInfo', styleInfo);
       const response = await putMemberStyleApi(
         {
-          mbti: styleInfo.mbti,
+          mbti: mbti.join(''),
           smokeType: styleInfo.smokeType,
           drinkType: styleInfo.drinkType,
           contactType: styleInfo.contactType,
@@ -135,12 +135,13 @@ const ModifyStyle = () => {
         },
         memberId,
       );
-      console.log('putMemberStyleApi Success', response);
+      // console.log('putMemberStyleApi Success', response);
       showToast({
         content: '스타일 정보가 수정되었습니다.',
       });
+      updateStyleInfo('mbti', mbti.join(''));
     } catch (error) {
-      console.log('ERROR) putMemberStyleApi', error);
+      // console.log('ERROR) putMemberStyleApi', error);
     }
   };
 

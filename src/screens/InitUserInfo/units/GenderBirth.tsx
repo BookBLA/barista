@@ -5,7 +5,6 @@ import { TouchableOpacity, View, Image, Text } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
-import DatePicker from 'bamb14';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';

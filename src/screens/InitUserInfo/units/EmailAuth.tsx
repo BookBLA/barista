@@ -23,12 +23,10 @@ const EmailAuth = () => {
 
   const [email, setEmail] = useState('');
   const [code, setCode] = useState('');
-  const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
-
+  // const [isSuccess, setIsSuccess] = useState('false'); //false: 이메일 전송 전, true: 인증 완료, done: 이메일 전송 완료, error: 인증 코드 오류
+  const [isSuccess, setIsSuccess] = useState('true');
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
-  const [isFocused1, setIsFocused1] = useState(false);
-  const [isFocused2, setIsFocused2] = useState(false);
 
   const [time, setTime] = useState(300); // 5분을 초 단위로 표현
 
@@ -87,6 +85,9 @@ const EmailAuth = () => {
       updateUserInfo({ schoolEmail: email });
       // setIsSuccess('done'); // 이메일 전송 성공
       console.log('callPostEmailAuthApi', response);
+      showToast({
+        content: '인증 코드가 전송되었습니다.',
+      });
     } catch (error) {
       console.log('callPostAuthApi error', error);
       setIsSuccess('false');
@@ -106,12 +107,16 @@ const EmailAuth = () => {
       setIsSuccess('true');
 
       console.log('callPostAuthVerifyApi', response);
-      console.log('isSuccess 성공', isSuccess);
+      // console.log('isSuccess 성공', isSuccess);
+      showToast({
+        content: '인증 코드가 확인되었습니다.',
+      });
+
       setIsActive(false);
     } catch (error) {
       setIsSuccess('error');
       console.log('callPostAuthVerifyApi error', error);
-      console.log('isSuccess 에러', isSuccess);
+      // console.log('isSuccess 에러', isSuccess);
     }
   };
   const callPutAuthEmailApi = async () => {
@@ -125,6 +130,9 @@ const EmailAuth = () => {
       setIsActive(true);
       updateUserInfo({ schoolEmail: email });
       console.log('callPutAuthEmailApi', response);
+      showToast({
+        content: '인증 코드가 재전송되었습니다.',
+      });
     } catch (error) {
       console.log('callPutAuthEmailApi error', error);
     }
@@ -163,6 +171,7 @@ const EmailAuth = () => {
                 {/* 인증 전송 버튼 */}
                 <S.ButtonStyled
                   onPress={isSuccess === 'false' && email !== '' ? startTimer : undefined}
+                  disabled={isSuccess === 'done'}
                   style={{
                     width: 70,
                     marginBottom: 6,
@@ -201,10 +210,11 @@ const EmailAuth = () => {
                 {/* 코드 확인 버튼 */}
                 <S.ButtonStyled
                   onPress={time !== 0 && code !== '' ? callPostAuthVerifyApi : null}
+                  disabled={isSuccess === 'true'}
                   style={{
                     width: 70,
                     marginBottom: 6,
-                    backgroundColor: time !== 0 ? colors.primary : colors.buttonAuthToggle,
+                    backgroundColor: isSuccess !== 'true' ? colors.primary : colors.buttonAuthToggle,
                   }}
                 >
                   <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>확인</Text>
@@ -243,7 +253,7 @@ const EmailAuth = () => {
         </TouchableWithoutFeedback>
       </S.ColumnStyled>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-        <TouchableOpacity onPress={() => (isSuccess === 'true' ? movePage() : null)}>
+        <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
         {isSuccess !== 'true' ? (
