@@ -129,7 +129,7 @@ const Matching = () => {
                 renderItem={({ item, index }) => {
                   return (
                     <S.sendPostcardViewStyled>
-                      <SendPostcard key={index} {...item} />
+                      <SendPostcard key={item.postcardId} {...item} />
                     </S.sendPostcardViewStyled>
                   );
                 }}

@@ -71,8 +71,8 @@ export const postcardCountTextStyled = styled.Text`
 
 export const receivedPostcardViewStyled = styled.View`
   margin-bottom: 10px;
-  background: #d9d9d9;
-  border-radius: 15px;
+  background: transparent;
+  border-radius: 20px;
   margin-right: ${({ index }: any) => (index % 2 === 0 ? '5px' : 0)};
   margin-left: ${({ index }: any) => (index % 2 !== 0 ? '5px' : 0)};
   height: 244px;
@@ -125,9 +125,9 @@ export const styles: any = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
           width: 0,
-          height: 3,
+          height: 2,
         },
-        shadowOpacity: 0.29,
+        shadowOpacity: 0.15,
         shadowRadius: 4.65,
       },
       android: {

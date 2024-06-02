@@ -45,10 +45,10 @@ export const ModifyButton = styled.TouchableOpacity`
   border-radius: 14px;
 `;
 
-export const BookReviewWrapper = styled.View`
+export const BookReviewWrapper = styled.ScrollView`
   width: 100%;
   height: 120px;
-  padding: 20px;
+  padding: 14px;
   border-radius: 10px;
   background-color: #fff5d6;
 `;
@@ -78,7 +78,7 @@ export const BookQuizHeaderWrapper = styled.View`
   margin-bottom: 12px;
 `;
 
-export const BookQuizQuestionWrapper = styled.View`
+export const BookQuizQuestionWrapper = styled.ScrollView`
   width: 100%;
   height: 50px;
   margin-bottom: 12px;
