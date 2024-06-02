@@ -173,12 +173,15 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 onChangeText={(text: React.SetStateAction<string>) => onChangeBookReviewText(text)}
                 style={{ backgroundColor: '#F5F0E2' }}
                 value={bookReviewText}
+                scrollEnabled
               />
             ) : (
               <S.BookReviewWrapper>
-                <CustomText font="fontMedium" size="14px" color="black" numberOfLines={4} ellipsizeMode="tail">
-                  {bookReviewText}
-                </CustomText>
+                <ScrollView>
+                  <CustomText font="fontMedium" size="14px" color="black">
+                    {bookReviewText}
+                  </CustomText>
+                </ScrollView>
               </S.BookReviewWrapper>
             )}
             <S.BookReviewLengthView>
