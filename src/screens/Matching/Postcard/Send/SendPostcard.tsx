@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { EGender, EPostcardStatus, ISendPostcardProps } from './SendPostcard.types';
 import * as S from './SendPostcard.styles';
-import postcardImage from '../../../../../assets/images/example-book.png';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
@@ -147,7 +146,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
       <CustomModal modalConfig={modalConfig}>
         <View>
           <S.ModalUserInfoViewStyled>
-            <S.CircularImage source={postcardImage} resizeMode="contain" />
+            <S.CircularImage source={{ uri: memberProfileImageUrl }} resizeMode="cover" />
             <S.UserInfoWrapper>
               <S.UserInfoNameWrapper>
                 <S.UserNameText style={{ fontSize: 16 }}>{`${memberName} | ${memberAge}`}</S.UserNameText>

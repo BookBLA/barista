@@ -17,8 +17,10 @@ export interface IReceivePostcardProps {
   memberSchoolName: string;
   quizScore: number;
   bookTitles: string[];
+  bookImageUrls: string[];
   correctStatuses: string[];
   memberReplyContent: string;
+  memberOpenKakaoRoomUrl: string;
   postcardImageUrl: string;
   postcardStatus: EPostcardStatus;
 }

@@ -13,6 +13,7 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching.api';
 import useToastStore from '../../../../commons/store/useToastStore';
+import useModalStore from '../../../../commons/store/useModalStore';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -25,7 +26,8 @@ type Props = {
 };
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
-  const { postcardId } = route.params;
+  const { postcardId, bookImageUrls, memberOpenKakaoRoomUrl, memberName, memberAge, memberGender, memberSchoolName } =
+    route.params;
   const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
   const styleList = [
     postcardDetails?.mbti,
@@ -37,6 +39,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   ];
   const quizCircleList = ['A', 'B', 'C', 'D', 'E'];
   const { movePage, movePageNoReference } = useMovePage();
+  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible } = useModalStore();
 
   const fetchPostcardDetails = useCallback(async () => {
     try {
@@ -47,6 +50,10 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
       console.error('error', error);
     }
   }, []);
+
+  const toggleMatchingApproveModal = () => {
+    setMatchingApproveModalVisible(!isMatchingApproveModalVisible);
+  };
 
   const rejectPostcard = async () => {
     try {
@@ -61,6 +68,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const acceptPostcard = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
+      toggleMatchingApproveModal();
       movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });
     } catch (error) {
