@@ -143,7 +143,7 @@ export const OpenChatTitleStyled = styled.Text`
   text-align: center;
   color: 'black';
   margin-bottom: 16px;
-  margin-top: 13%;
+  margin-top: 8%;
 `;
 
 export const OpenChatContentStyled = styled.Text`
