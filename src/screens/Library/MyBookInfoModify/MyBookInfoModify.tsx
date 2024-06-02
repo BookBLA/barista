@@ -242,7 +242,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="첫 번째 답이 들어갈 자리입니다."
+                      placeholder="정답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizFirstAnswerText(text)}
                       textAlignVertical="center"
@@ -268,7 +268,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="두 번째 답이 들어갈 자리입니다."
+                      placeholder="오답이 들어갈 자리입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizSecondAnswerText(text)}
                       textAlignVertical="center"
@@ -294,7 +294,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="세 번째 답이 들어갈 자리입니다."
+                      placeholder="오답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizThirdAnswerText(text)}
                       textAlignVertical="center"
