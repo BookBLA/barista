@@ -52,7 +52,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '88%'], []);
+  const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary;
   // const isYourLibrary = true;
