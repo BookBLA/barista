@@ -48,9 +48,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const handlePostcardClick = async () => {
     if (postcardStatus === EPostcardStatus.READ) {
-      console.log('ㅇ갹');
       movePageNoReference('receivePostcardDetail', rest);
-      console.log('ㅇ갹1231231');
     } else {
       if (memberPostcard > 0) {
         toggleCheckBeforeSendPostcardModal();
@@ -63,10 +61,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const showPostcardDetail = async () => {
     try {
       await readPostcard(postcardId);
-      console.debug('엽서 차감', memberPostcard);
-
       toggleCheckBeforeSendPostcardModal();
-      console.log('ㅇ갹');
       movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
@@ -90,13 +85,12 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   return (
     <S.ContainerViewStyled>
-      <TouchableOpacity onPress={handlePostcardClick}>
+      <TouchableOpacity onPress={handlePostcardClick} style={{ backgroundColor: '#ECEDEF' }}>
         <S.BookImage
           source={{
             uri: postcardImageUrl,
           }}
         />
-
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
             <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${memberAge}살 `}</S.PostcardTextViewStyled>
@@ -108,6 +102,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             {memberSchoolName}
           </S.PostcardTextViewStyled>
         </S.PostcardInfoViewStyled>
+        {postcardStatus === EPostcardStatus.READ && <S.BookImageWrapper />}
       </TouchableOpacity>
       <CustomModal modalConfig={checkBeforeSendPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>

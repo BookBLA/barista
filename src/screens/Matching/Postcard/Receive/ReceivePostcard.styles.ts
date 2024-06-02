@@ -7,11 +7,20 @@ export const ContainerViewStyled = styled.View`
   color: white;
 `;
 
+export const BookImageWrapper = styled.View`
+  width: 101%;
+  height: 100%;
+  background-color: rgba(236, 237, 239, 0.5);
+  resize-mode: cover;
+  border-radius: 12px;
+  position: absolute;
+`;
+
 export const BookImage = styled.Image`
   width: 104.8%;
   height: 80%;
   resize-mode: cover;
-  border-radius: 15px 15px 0 0;
+  border-radius: 20px 20px 0 0;
   position: relative;
   top: 0;
   left: -3px;
