@@ -15,7 +15,7 @@ export const ViewBookInfo: React.FC<IViewBookInfoProps> = ({ bookImageUrl, bookA
             {bookName}
           </CustomText>
           <CustomText font="fontLight" size="14px" color="#616C90">
-            {bookAuthors.join(', ')}
+            {bookAuthors?.join(', ')}
           </CustomText>
         </S.BookTitleWrapper>
       </S.BookInfoContainer>

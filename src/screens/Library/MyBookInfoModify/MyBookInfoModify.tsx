@@ -7,6 +7,7 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
+import useToastStore from '../../../commons/store/useToastStore';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
@@ -20,39 +21,78 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [bookImageUrl, setBookImageUrl] = useState<string>();
 
+  const isEmptyReview = () => {
+    if (!bookReviewText) {
+      useToastStore.getState().showToast({ content: '한 줄 감상문을 입력해주세요!' });
+      return true;
+    }
+
+    return false;
+  };
+
+  const isEmptyQuiz = () => {
+    if (!bookQuizText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizFirstAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizSecondAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizThirdAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
+      return true;
+    }
+
+    return false;
+  };
+
   const putQuizInfo = async () => {
-    try {
-      await updateQuiz({
-        memberBookId,
-        quiz: bookQuizText,
-        quizAnswer: bookQuizFirstAnswerText,
-        firstWrongChoice: bookQuizSecondAnswerText,
-        secondWrongChoice: bookQuizThirdAnswerText,
-      });
-    } catch (err) {
-      console.error('업데이트에 실패하였습니다.', err);
+    if (!isEmptyQuiz()) {
+      try {
+        await updateQuiz({
+          memberBookId,
+          quiz: bookQuizText,
+          quizAnswer: bookQuizFirstAnswerText,
+          firstWrongChoice: bookQuizSecondAnswerText,
+          secondWrongChoice: bookQuizThirdAnswerText,
+        });
+        useToastStore.getState().showToast({ content: '독서 퀴즈가 변경되었습니다.' });
+      } catch (err) {
+        console.error('업데이트에 실패하였습니다.', err);
+      }
     }
   };
 
   const patchBookReview = async () => {
-    try {
-      await updateBookReview({
-        memberBookId,
-        contents: bookReviewText,
-      });
-    } catch (err) {
-      console.error('업데이트에 실패하였습니다.', err);
+    if (!isEmptyReview()) {
+      try {
+        await updateBookReview({
+          memberBookId,
+          contents: bookReviewText,
+        });
+        useToastStore.getState().showToast({ content: '한 줄 감상문이 변경되었습니다.' });
+      } catch (err) {
+        console.error('업데이트에 실패하였습니다.', err);
+      }
     }
   };
 
-  const handleOnModifyBookReview = (status: boolean) => {
+  const handleOnModifyBookReview = async (status: boolean) => {
     setIsModifiableBookReview(status);
-    if (!status) patchBookReview();
+    if (!status) await patchBookReview();
   };
 
-  const handleOnModifyBookQuestion = (status: boolean) => {
+  const handleOnModifyBookQuestion = async (status: boolean) => {
     setIsModifiableBookQuestion(status);
-    if (!status) putQuizInfo();
+    if (!status) await putQuizInfo();
   };
 
   const fetchBookQuiz = async (memberBookId: number) => {
@@ -104,13 +144,16 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 한 줄 감상문
               </CustomText>
               {isModifiableBookReview ? (
-                <S.ModifyButton onPress={() => handleOnModifyBookReview(false)}>
+                <S.ModifyButton onPress={async () => await handleOnModifyBookReview(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookReview(true)}>
+                <S.ModifyButton
+                  style={{ backgroundColor: '#F0E7CF' }}
+                  onPress={async () => await handleOnModifyBookReview(true)}
+                >
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
