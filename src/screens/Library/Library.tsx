@@ -363,13 +363,18 @@ const Library: React.FC<Props> = ({ route }) => {
                 )}
               </S.BookTouchableOpacity>
             ))}
-            {topFloorBookList.length === 1 && (
-              <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
-                <S.EmptyBookImage>
-                  <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
-                </S.EmptyBookImage>
-              </S.BookTouchableOpacity>
-            )}
+            {topFloorBookList.length === 1 &&
+              (isYourLibrary ? (
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
+                </S.BookTouchableOpacity>
+              ) : (
+                <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
+                  <S.EmptyBookImage>
+                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                  </S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+              ))}
           </S.ModalBookListContainer>
           <S.BookShelves style={S.styles.Shadow} />
         </S.BookContainer>
@@ -392,34 +397,41 @@ const Library: React.FC<Props> = ({ route }) => {
             ))}
             {topFloorBookList.length === 2 && secondFloorBookList.length === 0 && (
               <>
-                <S.BookTouchableOpacity
-                  onPress={
-                    secondFloorBookList ? movePage('initBookStack', { screen: 'addBook', isModify: true }) : () => {}
-                  }
-                >
-                  <S.EmptyBookImage>
-                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
-                  </S.EmptyBookImage>
-                </S.BookTouchableOpacity>
+                {isYourLibrary && (
+                  <S.BookTouchableOpacity>
+                    <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
+                  </S.BookTouchableOpacity>
+                )}
+                {!isYourLibrary && (
+                  <S.BookTouchableOpacity
+                    onPress={
+                      secondFloorBookList ? movePage('initBookStack', { screen: 'addBook', isModify: true }) : () => {}
+                    }
+                  >
+                    <S.EmptyBookImage>
+                      <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                    </S.EmptyBookImage>
+                  </S.BookTouchableOpacity>
+                )}
                 <S.BookTouchableOpacity>
-                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
                 </S.BookTouchableOpacity>
               </>
             )}
             {topFloorBookList.length === 2 && secondFloorBookList.length === 1 && (
               <>
                 <S.BookTouchableOpacity>
-                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
                 </S.BookTouchableOpacity>
               </>
             )}
             {topFloorBookList.length !== 2 && (
               <>
                 <S.BookTouchableOpacity>
-                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
                 </S.BookTouchableOpacity>
                 <S.BookTouchableOpacity>
-                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }}></S.EmptyBookImage>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
                 </S.BookTouchableOpacity>
               </>
             )}
