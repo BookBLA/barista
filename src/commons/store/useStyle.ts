@@ -19,7 +19,7 @@ interface StyleState {
 
 export const useStyleStore = create<StyleState>((set) => ({
   styleInfo: {
-    mbti: '',
+    mbti: 'ESTJ',
     smokeType: '',
     drinkType: '',
     contactType: '',
@@ -33,7 +33,7 @@ export const useStyleStore = create<StyleState>((set) => ({
     set({
       styleInfo: {
         // Reset styleInfo to initial state
-        mbti: '',
+        mbti: 'ESTJ',
         smokeType: '',
         drinkType: '',
         contactType: '',

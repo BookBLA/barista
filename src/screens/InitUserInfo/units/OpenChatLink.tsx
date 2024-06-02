@@ -66,7 +66,7 @@ const OpenChatLink = () => {
       <TitleProgress2 gauge={50} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {/* <S.ColumnStyled style={{ height: '80%' }}> */}
-        <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
+        <S.ColumnStyled style={{ height: 'auto' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
             <OpenChatTextFiledStyled

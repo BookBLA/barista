@@ -16,6 +16,17 @@ const NamePhone = () => {
   const [name, setName] = useState(userInfo.name);
   const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
+  const isHangul = (text: string) => {
+    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3]+$/;
+    return hangulRegex.test(text);
+  };
+
+  const handleChangeName = (input: string) => {
+    if (isHangul(input) || input === '') {
+      setName(input);
+    }
+  };
+
   const handlePhoneNumberChange = (phNum: string) => {
     const onlyNums = phNum.replace(/[^0-9]/g, '');
     let formattedNumber = '';
@@ -51,10 +62,11 @@ const NamePhone = () => {
               <S.TextFiledStyled
                 maxLength={10} // 최대 길이 제한
                 defaultValue={userInfo.name}
-                onChangeText={(text: string) => setName(text)}
+                onChangeText={(text: string) => handleChangeName(text)}
                 // onBlur={() => updateUserInfo('name', name)}
                 placeholder="이름"
                 placeholderTextColor={colors.textGray2}
+                value={name}
               />
             </View>
 
@@ -77,7 +89,7 @@ const NamePhone = () => {
         <TouchableOpacity onPress={movePage()}>
           <Image source={prevButton} />
         </TouchableOpacity>
-        {name === '' || phNum.length !== 13 ? (
+        {name.length < 2 || phNum.length !== 13 ? (
           <Image source={notYetNextButton} />
         ) : (
           <TouchableOpacity onPress={nextPage}>
