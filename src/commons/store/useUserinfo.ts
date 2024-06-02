@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { getMemberProfileApi, putMemberProfileApi } from '../api/memberProfile.api';
 
 interface UserInfo {
   gender: string;
@@ -14,23 +15,26 @@ interface UserInfo {
 
 interface UserState {
   userInfo: UserInfo;
-  updateUserInfo: (newUser: object) => Promise<void>;
+  updateUserInfo: (newUser: Partial<UserInfo>) => Promise<void>;
   resetUserInfo: () => void;
+  saveUserInfo: (newUser: Partial<UserInfo>) => Promise<void>;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
-    gender: '',
-    birthDate: '',
     name: '',
-    phoneNumber: '',
+    birthDate: '',
+    gender: '',
     schoolName: '',
-    studentIdImageUrl: '',
     schoolEmail: '',
+    phoneNumber: '',
     profileImageUrl: '',
     openKakaoRoomUrl: '',
+    studentIdImageUrl: '',
   },
-  updateUserInfo: async (newUser) => set((state) => ({ userInfo: { ...state.userInfo, ...newUser } })),
+  updateUserInfo: async (newUser) => {
+    set((state) => ({ userInfo: { ...state.userInfo, ...newUser } }));
+  },
   resetUserInfo: () =>
     set({
       userInfo: {
@@ -45,4 +49,13 @@ export const useUserStore = create<UserState>((set) => ({
         openKakaoRoomUrl: '',
       },
     }),
+  saveUserInfo: async (newUser) => {
+    try {
+      const { result } = await getMemberProfileApi();
+      set((state) => ({ userInfo: { ...result, ...newUser } }));
+      await putMemberProfileApi(get().userInfo);
+    } catch (error) {
+      console.error('Failed to save user info:', error);
+    }
+  },
 }));

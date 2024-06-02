@@ -1,68 +1,137 @@
-import { Image, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
-import postcardImage from '../../../../../assets/images/example-book.png';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { usePostcardCounter } from '../../../../commons/store/usePostcardCounter';
-import { useNavigation } from '@react-navigation/native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import useToastStore from '../../../../commons/store/useToastStore';
+import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
+import { readPostcard } from '../../../../commons/api/matching.api';
+import { EPostcardStatus } from '../Send/SendPostcard.types';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 
-export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postcardId, ...rest }) => {
-  const { postcardImageUrl, quizScore, schoolName, userId, age } = rest;
-  const [isModalVisible, setModalVisible] = useState(false);
-  const postcardCounter = usePostcardCounter((state) => state.count);
-  const decrementPostcardCounter = usePostcardCounter((state) => state.decrement);
-  const navigation = useNavigation();
-  const { movePage } = useMovePage();
+export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
+  const {
+    postcardId,
+    memberId,
+    memberName,
+    memberAge,
+    memberGender,
+    drinkType,
+    smokeType,
+    contactType,
+    dateStyleType,
+    dateCostType,
+    mbti,
+    justFriendType,
+    memberSchoolName,
+    quizScore,
+    bookTitles,
+    correctStatuses,
+    memberReplyContent,
+    postcardImageUrl,
+    postcardStatus,
+  } = rest;
+  const [isNoPostcardModalVisible, setModalVisible] = useState(false);
+  const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
+  const { memberPostcard } = useFetchMemberPostcard();
+  const { movePageNoReference } = useMovePage();
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+  const toggleNoPostcardModal = () => {
+    setModalVisible(!isNoPostcardModalVisible);
   };
 
-  const handlePostcardClick = () => {
-    if (postcardCounter > 0) {
-      console.debug('엽서 차감', postcardCounter);
-      //todo 엽서 열람 정보를 넣어줘야할듯
-      decrementPostcardCounter();
-      // @ts-ignore
-      navigation.navigate('receivePostcardDetail', { postcardId });
+  const toggleCheckBeforeSendPostcardModal = () => {
+    setCheckBeforeSendPostcardModalVisible(!isCheckBeforeSendPostcardModalVisible);
+  };
+
+  const handlePostcardClick = async () => {
+    if (postcardStatus === EPostcardStatus.READ) {
+      console.log('ㅇ갹');
+      movePageNoReference('receivePostcardDetail', rest);
+      console.log('ㅇ갹1231231');
     } else {
-      console.debug('엽서 부족');
-      toggleModal();
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
+  };
+
+  const showPostcardDetail = async () => {
+    try {
+      await readPostcard(postcardId);
+      console.debug('엽서 차감', memberPostcard);
+
+      toggleCheckBeforeSendPostcardModal();
+      console.log('ㅇ갹');
+      movePageNoReference('receivePostcardDetail', rest);
+    } catch {
+      useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
   };
 
   const moveProductScreen = () => {
-    toggleModal();
-    //@ts-ignore
-    navigation.navigate('product');
+    toggleNoPostcardModal();
+    movePageNoReference('receivePostcardDetail', rest);
   };
 
-  const modalConfig = {
-    visible: isModalVisible,
-    onClose: toggleModal,
+  const checkBeforeSendPostcardModalConfig = {
+    visible: isCheckBeforeSendPostcardModalVisible,
+    onClose: toggleCheckBeforeSendPostcardModal,
+  };
+
+  const noPostcardModalConfig = {
+    visible: isNoPostcardModalVisible,
+    onClose: toggleNoPostcardModal,
   };
 
   return (
     <S.ContainerViewStyled>
-      <TouchableOpacity onPress={handlePostcardClick} style={{ height: '100%' }}>
-        <Image source={postcardImage} style={S.styles.image} />
+      <TouchableOpacity onPress={handlePostcardClick}>
+        <S.BookImage
+          source={{
+            uri: postcardImageUrl,
+          }}
+        />
+
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
-            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${age}살 `}</S.PostcardTextViewStyled>
+            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${memberAge}살 `}</S.PostcardTextViewStyled>
             <S.PostcardTextViewStyled style={{ fontSize: 10 }}>
               {`(독서퀴즈: ${quizScore}점)`}{' '}
             </S.PostcardTextViewStyled>
           </S.PostcardInfoFirstViewStyled>
           <S.PostcardTextViewStyled style={{ fontSize: 12, fontFamily: 'fontLight' }}>
-            {schoolName}
+            {memberSchoolName}
           </S.PostcardTextViewStyled>
         </S.PostcardInfoViewStyled>
       </TouchableOpacity>
-      <CustomModal modalConfig={modalConfig}>
+      <CustomModal modalConfig={checkBeforeSendPostcardModalConfig}>
+        <S.EmptyPostcardModalWrapper>
+          <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+            받은 엽서 열어보기
+          </CustomText>
+          <CustomText font="fontRegular" size="12px">
+            엽서 1개를 사용해 받은 엽서를 열어보시겠어요?
+          </CustomText>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleCheckBeforeSendPostcardModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={showPostcardDetail} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                예
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
+        </S.EmptyPostcardModalWrapper>
+      </CustomModal>
+      <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
             엽서가 부족합니다.
@@ -71,7 +140,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ index, postca
             엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
           </CustomText>
           <S.ModalBottomWrapper>
-            <S.RoundButton onPress={toggleModal} bgColor={colors.buttonMain}>
+            <S.RoundButton onPress={toggleNoPostcardModal} bgColor={colors.buttonMain}>
               <CustomText size="14px" color={colors.textBlack}>
                 아니요
               </CustomText>

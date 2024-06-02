@@ -5,6 +5,7 @@ import Setting from './screens/Setting/Setting';
 import Account from './screens/Account/Account';
 import Delete from './screens/Delete/Delete';
 import { IProps } from './SettingStack.types';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -14,10 +15,12 @@ const screens = [
 ];
 
 const SettingStack = ({ route }: IProps) => {
+  useManageMargin();
+
   return (
     <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false }}>
-      {screens.map(({ name, component }) =>
-        name === 'setting' ? (
+      {screens.map(({ name, component }, index) =>
+        !index ? (
           <Stack.Screen
             key={name}
             name={name}

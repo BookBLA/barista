@@ -1,9 +1,7 @@
-import { SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
-import postcardImage from '../../../assets/images/example-book.png';
-import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
 import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -12,7 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useNavigation } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
 import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
@@ -28,10 +26,15 @@ import {
   getMemberStyle,
   getMyLibraryInfo,
   getYourLibraryInfo,
+  validateSendPostcard,
 } from '../../commons/api/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
+import useToastStore from '../../commons/store/useToastStore';
+import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
+import { useUserStore } from '../../commons/store/useUserinfo';
+import { icons } from '../../commons/utils/variablesImages';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -54,19 +57,26 @@ const Library: React.FC<Props> = ({ route }) => {
   const isYourLibrary = route.params?.isYourLibrary;
   // const isYourLibrary = true;
   const targetMemberId = route.params?.memberId;
-  // const targetMemberId = 386;
+  // const targetMemberId = 4;
   const postcardId = route.params?.postcardId;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
+  const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const navigation = useNavigation();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
   const [secondFloorBookList, setSecondFloorBookList] = useState<TBookResponses[]>([]);
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
+  const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
+  const showToast = useToastStore((state) => state.showToast);
+  const platformBlurRadius = Platform.select({
+    ios: isProfileImageModificationStatus ? 9 : 0,
+    android: isProfileImageModificationStatus ? 30 : 0,
+  });
+  const { movePage, handleReset } = useMovePage();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -81,31 +91,48 @@ const Library: React.FC<Props> = ({ route }) => {
     setTopFloorBookList(newTopFloorList);
     setSecondFloorBookList(newSecondFloorList);
   };
-  const fetchMyLibraryInfo = async () => {
+
+  const fetchMyLibraryInfo = useCallback(async () => {
     try {
       const { result } = await getMyLibraryInfo();
       setLibraryInfo(result);
       splitBook(result.bookResponses);
+
+      if (result.profileImageUrl) {
+        setIsProfileImageModificationStatus(true);
+      }
     } catch {
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
     }
-  };
+  }, []);
 
-  const fetchYourLibraryInfo = async (targetMemberId: number) => {
-    const result = await getYourLibraryInfo(targetMemberId);
-    setLibraryInfo(result);
-    splitBook(result.bookResponses);
-
-    return result;
-  };
+  const fetchYourLibraryInfo = useCallback(async () => {
+    try {
+      const result = await getYourLibraryInfo(targetMemberId);
+      setLibraryInfo(result);
+      splitBook(result.bookResponses);
+    } catch {
+      console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
+    }
+  }, [targetMemberId]);
 
   useEffect(() => {
     if (isYourLibrary) {
-      fetchYourLibraryInfo(targetMemberId);
+      fetchYourLibraryInfo();
     } else {
       fetchMyLibraryInfo();
     }
-  }, []);
+  }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (isYourLibrary) {
+        fetchYourLibraryInfo();
+      } else {
+        fetchMyLibraryInfo();
+      }
+    }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]),
+  );
 
   const fetchBookInfo = async (memberBookId: number) => {
     const result = await getBookInfo(memberBookId);
@@ -116,8 +143,6 @@ const Library: React.FC<Props> = ({ route }) => {
     const result = await getMemberStyle(targetMemberId);
     setMemberStyle(result);
   };
-
-  const { movePage, handleReset } = useMovePage();
 
   const handleModifyBookModalRef = useCallback((bookMemberId: number) => {
     setSelectedBookId(bookMemberId);
@@ -136,11 +161,43 @@ const Library: React.FC<Props> = ({ route }) => {
     setSendPostcardModalVisible(!isSendPostcardModalVisible);
   };
 
+  const toggleResendPostcardModal = () => {
+    setResendPostcardModalVisible(!isResendPostcardModalVisible);
+  };
+
   const toggleEmptyPostcardModal = () => {
     setEmptyPostcardVisible(!isEmptyPostcardModalVisible);
   };
 
-  const handlePostcardClick = () => {
+  const getCurrentPostcardStatus = async () => {
+    return await validateSendPostcard(targetMemberId);
+  };
+
+  const handlePostcardClick = async () => {
+    const validateResult = await getCurrentPostcardStatus();
+
+    if (!validateResult?.isSuccess) {
+      showToast({
+        content: validateResult?.rejectMessage!,
+      });
+      return;
+    }
+
+    if (validateResult?.isSuccess && validateResult.isRefused) {
+      toggleResendPostcardModal();
+      return;
+    }
+
+    if (validateResult?.isSuccess && !validateResult.isRefused) {
+      toggleSendPostcardModal();
+    }
+  };
+
+  const handleOpenPostcardModal = async () => {
+    if (isResendPostcardModalVisible) {
+      toggleResendPostcardModal();
+    }
+
     if (memberPostcard > 0) {
       toggleSendPostcardModal();
     } else {
@@ -157,8 +214,13 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    //@ts-ignore
-    navigation.navigate('product');
+    movePage('product');
+  };
+
+  const resendPostcardModalConfig = {
+    visible: isResendPostcardModalVisible,
+    onClose: toggleResendPostcardModal,
+    mode: 'round',
   };
 
   const sendPostcardModalConfig = {
@@ -172,6 +234,9 @@ const Library: React.FC<Props> = ({ route }) => {
     visible: isEmptyPostcardModalVisible,
     onClose: toggleEmptyPostcardModal,
   };
+
+  const { memberInfo } = useMemberStore((state) => state);
+  const { saveUserInfo } = useUserStore();
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -188,8 +253,10 @@ const Library: React.FC<Props> = ({ route }) => {
     });
 
     if (!result.canceled) {
-      await uploadImageToS3(result?.assets[0].uri, memberId);
+      const imageUrl = await uploadImageToS3(result?.assets[0].uri, memberInfo.id);
       setSelectedImage(result?.assets[0].uri);
+      await saveUserInfo({ profileImageUrl: imageUrl });
+      setIsProfileImageModificationStatus(true);
     }
     handleCloseBottomSheet();
   };
@@ -199,7 +266,7 @@ const Library: React.FC<Props> = ({ route }) => {
       ? {
           title: '상대페이지',
           left: true,
-          onPressLeft: movePage('receivePostcardDetail', { postcardId }),
+          onPressLeft: movePage(),
         }
       : {
           title: '마이페이지',
@@ -217,8 +284,19 @@ const Library: React.FC<Props> = ({ route }) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
       <S.UserInfoContainerView>
+        {isProfileImageModificationStatus && (
+          <S.UserModificationStatusBar>
+            <CustomText size="14px" font="fontMedium" color="#F7F4ED">
+              사진이 수정되어 승인 대기중입니다.
+            </CustomText>
+          </S.UserModificationStatusBar>
+        )}
         <S.UserInfoView>
-          <S.CircularImage source={selectedImage ? { uri: selectedImage } : postcardImage} />
+          <S.CircularImage
+            source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
+            blurRadius={platformBlurRadius}
+          />
+          {isProfileImageModificationStatus && <S.OverlayImage source={icons.hourGlass} />}
           {!isYourLibrary && (
             <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
               <S.ProfileImageModificationImage
@@ -251,7 +329,7 @@ const Library: React.FC<Props> = ({ route }) => {
               </S.ProfileModifyButtonWrapper>
               <S.ProfileModifyButtonWrapper
                 onPress={async () => {
-                  handlePostcardClick();
+                  await handlePostcardClick();
                 }}
                 style={{ backgroundColor: colors.buttonPrimary }}
               >
@@ -354,7 +432,11 @@ const Library: React.FC<Props> = ({ route }) => {
 
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify memberId={memberId} memberBookId={selectedBookId} deleteBookFunc={deleteBookInBookList} />
+          <MyBookInfoModify
+            memberId={memberInfo.id}
+            memberBookId={selectedBookId}
+            deleteBookFunc={deleteBookInBookList}
+          />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
 
@@ -395,6 +477,31 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
+
+      <CustomModal modalConfig={resendPostcardModalConfig}>
+        <S.EmptyPostcardModalWrapper>
+          <S.EmptyPostcardModalHeader>
+            <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+              엽서 다시 보내기
+            </CustomText>
+            <CustomText font="fontRegular" size="12px">
+              이전에 매칭을 거부한 상대입니다. 그래도 보내시겠어요?
+            </CustomText>
+          </S.EmptyPostcardModalHeader>
+          <S.ModalBottomWrapper>
+            <S.RoundButton onPress={toggleResendPostcardModal} bgColor={colors.buttonMain}>
+              <CustomText size="14px" color={colors.textBlack}>
+                아니요
+              </CustomText>
+            </S.RoundButton>
+            <S.RoundButton onPress={handleOpenPostcardModal} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                네
+              </CustomText>
+            </S.RoundButton>
+          </S.ModalBottomWrapper>
+        </S.EmptyPostcardModalWrapper>
+      </CustomModal>
 
       <CustomModal modalConfig={sendPostcardModalConfig}>
         <SendPostcardModal

@@ -9,18 +9,17 @@ import * as S from '../../SettingStack.styles';
 import Matching from '../../../../../assets/images/icons/MatchingTransparent.png';
 import Support from '../../../../../assets/images/icons/SupportTransparent.png';
 import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
 import { IProps } from './Setting.types';
+import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
 
 const Setting = ({ route }: IProps) => {
   const { age, name, school, profileImageUrl } = route.params;
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
   const { handleLinkPress } = useLinkingOpen();
-  useManageMargin();
   useHeaderControl({
     title: '설정',
   });
@@ -53,15 +52,15 @@ const Setting = ({ route }: IProps) => {
           </S.RightWrapper>
         </S.ProfileWrapper>
         <S.MenuWrapper>
-          <S.MenuButton onPress={movePage('tapScreens', { screen: 'Library' })}>
+          <S.MenuButton onPress={() => handleReset('tapScreens', { screen: 'Library' })}>
             <S.MenuImage source={Library} />
             <CustomText color={colors.primary}>내 서재</CustomText>
           </S.MenuButton>
-          <S.MenuButton onPress={movePage('tapScreens', { screen: 'Matching' })}>
+          <S.MenuButton onPress={() => handleReset('tapScreens', { screen: 'Matching' })}>
             <S.MenuImage source={Matching} />
             <CustomText color={colors.primary}>매칭</CustomText>
           </S.MenuButton>
-          <S.MenuButton onPress={handleLinkPress('https://pf.kakao.com/_NrxbnG')}>
+          <S.MenuButton onPress={handleLinkPress(noticeUrl)}>
             <S.MenuImage source={Support} />
             <CustomText color={colors.primary}>고객센터</CustomText>
           </S.MenuButton>
@@ -71,10 +70,7 @@ const Setting = ({ route }: IProps) => {
           <CustomText onPress={movePage('account')} margin="16px 0">
             계정
           </CustomText>
-          <CustomText
-            margin="16px 0"
-            onPress={handleLinkPress('https://rust-sprite-73f.notion.site/fead23d9ddda4acf8874bec913e3219e')}
-          >
+          <CustomText margin="16px 0" onPress={handleLinkPress(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
           <S.BetweenWrapper>
@@ -96,7 +92,7 @@ const Setting = ({ route }: IProps) => {
               switchWidthMultiplier={2}
             />
           </S.BetweenWrapper>
-          <CustomText margin="16px 0" onPress={handleLinkPress('https://pf.kakao.com/_NrxbnG')}>
+          <CustomText margin="16px 0" onPress={handleLinkPress(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
           <S.BetweenWrapper>

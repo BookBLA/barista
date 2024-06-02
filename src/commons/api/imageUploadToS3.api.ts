@@ -23,7 +23,7 @@ const extractFileExtension = (fileName: string) => {
 };
 
 export const getPresignedUrl = (uploadType: EUploadImageType, memberId: number | string | number[], uri: string) => {
-  return Get(`aws/s3/presigned-url/${uploadType}`, { params: { fileName: `${memberId.toString()}.jpg}` } }, true);
+  return Get(`aws/s3/presigned-url/${uploadType}`, { params: { fileName: `${memberId.toString()}.jpg` } }, true);
 };
 
 const compressImage = async (imageUri: string) => {

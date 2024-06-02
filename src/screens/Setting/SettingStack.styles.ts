@@ -4,6 +4,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 `;
 
 export const ProfileWrapper = styled.View`
@@ -25,6 +26,7 @@ export const ProfileImage = styled.Image`
   width: 100%;
   height: 100%;
   object-fit: fill;
+  border-radius: 50px;
 `;
 
 export const RightWrapper = styled.View`
@@ -52,7 +54,7 @@ export const MenuButton = styled.TouchableOpacity`
 `;
 
 export const MenuImage = styled.Image`
-  width: 36px;
+  width: 30px;
   height: 30px;
   margin-bottom: 10px;
   object-fit: fill;
@@ -93,6 +95,7 @@ export const DeleteWrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
+  padding: 0 16px;
 `;
 
 export const CheckBoxImage = styled.Image`

@@ -102,13 +102,13 @@ export const ButtonText = styled.Text`
 
 export const ModalBookListContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   gap: 14px;
   padding: 0 16px;
 `;
 
 export const ModalBookWrapper = styled.View`
-  flex: 1;
+  width: 30%;
 `;
 
 export const ModalBookShelves = styled.View`

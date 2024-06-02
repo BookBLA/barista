@@ -1,28 +1,22 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
-import Product from './screens/Product/Product';
-import Home from './screens/Home/Home';
-import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import Header from './screens/Home/units/Header/Header';
-import usePushNotifications from '../../commons/hooks/usePushNotifications';
+import Matching from './Matching';
+import ReceivePostcardDetail from './Postcard/Receive/ReceivePostcardDetail';
+import Product from '../Home/screens/Product/Product';
 import Library from '../Library/Library';
 
 const Stack = createStackNavigator();
 const screens = [
-  { name: 'home', component: Home },
+  { name: 'matching', component: Matching },
+  { name: 'receivePostcardDetail', component: ReceivePostcardDetail },
   { name: 'product', component: Product },
   { name: 'library', component: Library },
 ];
 
-const HomeStack = () => {
-  usePushNotifications();
-  useHeaderControl({
-    free: <Header />,
-  });
-
+const MatchingStack = () => {
   return (
-    <Stack.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="matching" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
       ))}
@@ -30,4 +24,4 @@ const HomeStack = () => {
   );
 };
 
-export default HomeStack;
+export default MatchingStack;

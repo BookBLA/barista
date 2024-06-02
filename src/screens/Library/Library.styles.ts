@@ -4,7 +4,16 @@ import { colors } from '../../commons/styles/variablesStyles';
 import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
 
 export const UserInfoContainerView = styled.View`
-  margin: 16px 16px;
+  margin: 8px 16px;
+`;
+
+export const UserModificationStatusBar = styled.View`
+  background-color: #2ea16a;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 6px 0;
+  margin-bottom: 8px;
 `;
 
 export const UserInfoView = styled.View`
@@ -46,6 +55,14 @@ export const CircularImage = styled.Image`
   height: 60px;
   border-radius: 30px;
   margin-right: 10px;
+`;
+
+export const OverlayImage = styled.Image`
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 15px;
+  top: 15px;
 `;
 
 export const ProfileImageModificationImage = styled.Image`

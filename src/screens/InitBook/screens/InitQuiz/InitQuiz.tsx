@@ -8,16 +8,18 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { usePostMemberBook } from './hooks/usePostMemberBook';
 import { IProps } from './initQuiz.types';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import truncateText from '../../../../commons/utils/truncateText';
 
 const InitQuiz = ({ route }: IProps) => {
   const { isRepresentative, selectedBook } = route?.params ?? '';
   useHeaderControl({
-    title: selectedBook.title ?? '',
+    title: truncateText(selectedBook?.title ?? '', 22),
   });
   const { control, handleSubmit, watch, formState } = useForm({
     defaultValues,
@@ -78,9 +80,18 @@ const InitQuiz = ({ route }: IProps) => {
             dashThickness={1.5}
             dashColor={colors.lineDivider}
           />
-          <View style={{ height: 'auto', width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>독서퀴즈</S.ContentStyled>
-            <U.QuizStyled style={{ height: 'auto', marginBottom: 32 }}>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>
+              객관식 독서퀴즈 출제하기
+            </S.ContentStyled>
+            <CustomText size="12px" font="fontRegular" color={colors.textGray2}>
+              상대방이 책을 읽었는지 확인하기 위한{' '}
+            </CustomText>
+            <CustomText size="12px" font="fontRegular" color={colors.textGray2} margin="0 0 30px">
+              문제와 보기를 적어주세요! (정답 1개, 오답 2개)
+            </CustomText>
+
+            <U.QuizStyled>
               <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
               <Controller
                 control={control}
@@ -89,7 +100,6 @@ const InitQuiz = ({ route }: IProps) => {
                     value={value}
                     onChangeText={onChange}
                     onBlur={onBlur}
-                    style={{ height: 'auto' }}
                     placeholder="책을 읽었는지 확인할 질문을 적어주세요."
                     placeholderTextColor={colors.textGray2}
                   />

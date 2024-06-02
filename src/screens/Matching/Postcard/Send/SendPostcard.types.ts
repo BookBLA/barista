@@ -1,9 +1,16 @@
-export enum EPostcardStatus {
-  PENDING,
-  REJECT,
-  APPROVE,
-  FAIL,
-  READ,
+export interface ISendPostcardProps {
+  postcardId: number;
+  memberId: number;
+  memberName: string;
+  memberAge: number;
+  memberGender: EGender;
+  memberSchoolName: string;
+  memberProfileImageUrl: string;
+  memberOpenKakaoRoomUrl: string;
+  representativeBookTitle: string;
+  representativeBookAuthor: string[];
+  bookImageUrls: string[];
+  postcardStatus: EPostcardStatus;
 }
 
 export enum EGender {
@@ -11,15 +18,15 @@ export enum EGender {
   FEMALE = 'FEMALE',
 }
 
-export interface ISendPostcardProps {
-  index: number;
-  userId: number;
-  userName: string;
-  userProfileImageUrl: string;
-  gender: EGender;
-  schoolName: string;
-  age: number;
-  postcardStatus: EPostcardStatus;
-  bookName: string;
-  bookAuthor: string;
+export enum EPostcardStatus {
+  PENDING = 'PENDING',
+  ACCEPT = 'ACCEPT',
+  READ = 'READ',
+  REFUSED = 'REFUSED',
+  ALL_WRONG = 'ALL_WRONG',
+}
+
+export interface IUpdatePostcardRequest {
+  postcardId: number;
+  status: EPostcardStatus;
 }

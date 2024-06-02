@@ -4,7 +4,7 @@ import {
   TBookQuizInfo,
   TMemberStyleInfo,
 } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
-import { TUpdateBookInfo, TUpdateBookReview } from '../../screens/Library/Library.types';
+import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '../../screens/Library/Library.types';
 import { ISendPostcardRequest, TPostcardInfo } from '../../screens/Library/SendPostcardModal/SendPostcardModal.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
@@ -36,6 +36,28 @@ export const getBookInfo = async (memberBookId: number) => {
 export const getMemberStyle = async (targetMemberId: number) => {
   const { result } = await Get(`members/styles/${targetMemberId}`);
   return result as TMemberStyleInfo;
+};
+
+export const validateSendPostcard = async (targetMemberId: number) => {
+  try {
+    const { result } = await Post(`postcard/send/validation`, { targetMemberId });
+
+    return { isRefused: result.isRefused, isSuccess: true } as TValidatePostcardStatus;
+  } catch (error: any) {
+    if (error.response.data.code === 'postcard-003' || error.response.data.code === 'postcard-005') {
+      return {
+        isSuccess: false,
+        rejectMessage: '현재 매칭 상대의 답장을 기다리는 중입니다.',
+      } as TValidatePostcardStatus;
+    }
+
+    if (error.response.data.code === 'postcard-004') {
+      return {
+        isSuccess: false,
+        rejectMessage: '이전에 매칭된 상대에게는 보낼 수 없습니다',
+      } as TValidatePostcardStatus;
+    }
+  }
 };
 
 export const getPostcardTypeList = async () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as S from './ModifyMBTI.styles';
 import { IProps } from './ModifyMbtiItem.types';
 // import { useStyleStore } from '../../store/useStyle';

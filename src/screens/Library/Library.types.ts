@@ -5,6 +5,8 @@ export type TLibrary = {
   gender: string;
   school: string;
   profileImageUrl: string;
+  openKakaoRoomStatus: string;
+  profileImageStatus: string;
   bookResponses: [TBookResponses];
 };
 
@@ -37,4 +39,10 @@ export type TUpdateBookInfo = {
 export type TUpdateBookReview = {
   memberBookId: number;
   contents: string;
+};
+
+export type TValidatePostcardStatus = {
+  isRefused?: boolean;
+  isSuccess?: boolean;
+  rejectMessage?: string;
 };

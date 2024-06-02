@@ -1,29 +1,32 @@
-import { FlatList, Image, TouchableOpacity, View } from 'react-native';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
 import GoToTopButton from '../../../assets/images/icons/GoToTop.png';
-import postcardIcon from '../../../assets/images/icons/Postcard.png';
-import { IReceivePostcardProps } from './Postcard/Receive/ReceivePostcard.types';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
-import { ISendPostcardProps } from './Postcard/Send/SendPostcard.types';
-import { usePostcardCounter } from '../../commons/store/usePostcardCounter';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
+import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
+import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
+import { icons } from '../../commons/utils/variablesImages';
+import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
+import useMovePage from '../../commons/hooks/useMovePage';
 
 const Matching = () => {
   const { memberPostcard } = useFetchMemberPostcard();
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
-  const [receivedPostcards, setReceivedPostcards] = useState<IReceivePostcardProps[]>([]);
-  const [sendPostcards, setSendPostcards] = useState<ISendPostcardProps[]>([]);
-  const postcardCounter = usePostcardCounter((state) => state.count);
+  const receivedPostcards = useFetchReceivePostcard(isReceivedPostcard);
+  const sendPostcards = useFetchSendPostcard(isReceivedPostcard);
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const { movePage } = useMovePage();
 
   const handleScroll = (event: any) => {
     const currentOffset: number = event.nativeEvent.contentOffset.y;
     const buttonThreshold: number = 100;
+    setScrollPosition(event.nativeEvent.contentOffset.y);
 
     if (currentOffset > buttonThreshold) {
       setShowButton(true);
@@ -32,38 +35,16 @@ const Matching = () => {
     }
   };
 
+  useEffect(() => {
+    // 화면에 돌아왔을 때 스크롤 위치를 설정
+    if (flatListRef.current) {
+      flatListRef.current.scrollToOffset({ offset: scrollPosition, animated: false });
+    }
+  }, [scrollPosition]);
+
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
-
-  useEffect(() => {
-    //todo api 활용해서 데이터 받아오는 부분
-    const receivedFakeData: IReceivePostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
-      index,
-      postcardId: Math.floor(Math.random() * 1000) + 1,
-      userId: Math.floor(Math.random() * 1000) + 1,
-      quizScore: Math.floor(Math.random() * 101),
-      schoolName: `School ${index + 1}`,
-      age: index + 1,
-      postcardImageUrl: `https://example.com/postcard-${index + 1}.jpg`,
-    }));
-
-    const sendFakeData: ISendPostcardProps[] = Array.from({ length: 10 }, (_, index) => ({
-      index,
-      userId: Math.floor(Math.random() * 1000) + 1,
-      userName: '방근호',
-      userProfileImageUrl: 'https://source.unsplash.com/random/300×300',
-      gender: Math.floor(Math.random() * 2),
-      schoolName: `가천대학교`,
-      age: Math.floor(Math.random() * 10) + 20,
-      postcardStatus: Math.floor(Math.random() * 5),
-      bookName: '나미야 잡화점의 이야기',
-      bookAuthor: '베르베르 베르베뉘뉘',
-    }));
-
-    setReceivedPostcards(receivedFakeData);
-    setSendPostcards(sendFakeData);
-  }, []);
 
   return (
     <S.Wrapper>
@@ -103,12 +84,13 @@ const Matching = () => {
       </S.ViewStyled>
       <S.ListWrapper>
         {isReceivedPostcard && (
-          //todo 수신 받은 엽서
           <>
             <S.InfoViewStyled>
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
-                <Image source={postcardIcon} style={{ width: 25, height: 24 }} />
+                <IconButton onPress={movePage('product')}>
+                  <IconImage source={icons.postcard} />
+                </IconButton>
                 <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
               </S.postcardCountViewStyled>
             </S.InfoViewStyled>
@@ -118,12 +100,16 @@ const Matching = () => {
                 ref={flatListRef}
                 onScroll={handleScroll}
                 data={receivedPostcards}
-                renderItem={({ item, index }) => (
-                  <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
-                    <ReceivePostcard key={index} {...item} />
-                  </S.receivedPostcardViewStyled>
-                )}
-                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item, index }) => {
+                  return (
+                    <View style={{ height: '100%', width: '50%' }}>
+                      <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
+                        <ReceivePostcard key={item.postcardId} {...item} />
+                      </S.receivedPostcardViewStyled>
+                    </View>
+                  );
+                }}
+                keyExtractor={(item, index) => item.postcardId}
                 numColumns={2}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
@@ -133,7 +119,6 @@ const Matching = () => {
           </>
         )}
         {!isReceivedPostcard && (
-          //todo 보낸 엽서
           <>
             {sendPostcards.length === 0 && <EmptyPostcard type={EType.SEND} />}
             {sendPostcards.length > 0 && (
@@ -141,11 +126,13 @@ const Matching = () => {
                 ref={flatListRef}
                 onScroll={handleScroll}
                 data={sendPostcards}
-                renderItem={({ item, index }) => (
-                  <S.sendPostcardViewStyled>
-                    <SendPostcard key={index} {...item} />
-                  </S.sendPostcardViewStyled>
-                )}
+                renderItem={({ item, index }) => {
+                  return (
+                    <S.sendPostcardViewStyled>
+                      <SendPostcard key={index} {...item} />
+                    </S.sendPostcardViewStyled>
+                  );
+                }}
                 keyExtractor={(item, index) => index.toString()}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
