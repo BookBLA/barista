@@ -48,7 +48,7 @@ export const ModifyButton = styled.TouchableOpacity`
 export const BookReviewWrapper = styled.ScrollView`
   width: 100%;
   height: 120px;
-  padding: 20px;
+  padding: 14px;
   border-radius: 10px;
   background-color: #fff5d6;
 `;

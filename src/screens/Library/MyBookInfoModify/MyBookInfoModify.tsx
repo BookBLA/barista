@@ -238,7 +238,6 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
@@ -265,7 +264,6 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
@@ -292,7 +290,6 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
