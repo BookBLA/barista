@@ -4,9 +4,8 @@ import { IProps } from './MbtiItem.types';
 import { set } from 'react-hook-form';
 // import { useStyleStore } from '../../store/useStyle';
 
-const MbtiItem = ({ name, setMbti, index }: IProps) => {
-  const [isSelect, setSelect] = useState<boolean>(true);
-  const [selected, setSelected] = useState<string>(name[0][0]);
+const MbtiItem = ({ name, setMbti, index, char }: IProps) => {
+  const [isSelect, setSelect] = useState<boolean>(name[0][0] === char);
 
   const [firstPart, secondPart] = name[0].split('\n');
   const [firstPart2, secondPart2] = name[1].split('\n');
@@ -14,9 +13,10 @@ const MbtiItem = ({ name, setMbti, index }: IProps) => {
   const handleSelect = (selectedName: string) => () => {
     console.log('selectedName', selectedName);
     console.log('name[0][0]', name[0][0]);
-    if (selected === selectedName) return;
+    console.log('char', char);
+    if (char === selectedName) return;
     else {
-      setSelected(selectedName);
+      // setSelected(selectedName);
       setSelect((prev) => !prev);
       setMbti((prev) => {
         const newMbti = [...prev];

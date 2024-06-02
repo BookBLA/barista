@@ -12,23 +12,15 @@ import useManageMargin from '../../../commons/hooks/useManageMargin';
 const Mbti = () => {
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
-  console.log('styleInfp', styleInfo);
 
   const { movePage } = useMovePage();
-  const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
-
-  useEffect(() => {
-    console.log('mbti11', mbti);
-    const mbtiString = mbti.join('');
-    console.log('mbtiString', mbtiString);
-    updateStyleInfo('mbti', mbtiString);
-  }, [mbti]);
+  const [mbti, setMbti] = useState(styleInfo.mbti.split(''));
 
   const nextPage = () => {
-    // const mbtiString = mbti.join('');
+    const mbtiString = mbti.join('');
     // console.log('mbtiString', mbtiString);
-    // updateStyleInfo('mbti', mbtiString);
-    console.log('styleInfo', styleInfo);
+    updateStyleInfo('mbti', mbtiString);
+    // console.log('styleInfo', styleInfo);
     movePage('smokeDrink')();
   };
 
@@ -43,12 +35,12 @@ const Mbti = () => {
           </Text>
         </View>
 
-        <Example02 setMbti={setMbti} />
+        <Example02 mbti={mbti} setMbti={setMbti} />
 
         <View
           style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '13%', marginBottom: '5%' }}
         >
-          <TouchableOpacity onPress={movePage('smokeDrink')}>
+          <TouchableOpacity onPress={() => nextPage()}>
             <Image source={nextButton} />
           </TouchableOpacity>
         </View>
