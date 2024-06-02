@@ -41,6 +41,11 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
 
   const answerAlphabetIndex = ['A', 'B', 'C', 'D', 'E'];
 
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
+
   const fetchBookInfo = async (memberBookIdList: number[]) => {
     const bookInfoResultList = await Promise.all(memberBookIdList.map((memberBookId) => getBookInfo(memberBookId)));
     const bookQuizInfoResultList = await Promise.all(
@@ -204,7 +209,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
           <>
             <S.BookQuizContainer>
               <S.BookQuizTitleWrapper>
-                <CustomText font="fontMedium" size="16px" color="black" weight="bold">
+                <CustomText font="fontMedium" size="16px" color="black" weight="bold" numberOfLines={7}>
                   {bookInfoList[currentQuizIndex]?.quiz}
                 </CustomText>
               </S.BookQuizTitleWrapper>
