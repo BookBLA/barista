@@ -11,15 +11,34 @@ export const CustomText = <T extends unknown[] = []>({
   margin,
   style,
   onPress,
+  numberOfLines,
+  ellipsizeMode,
 }: IProps<T>) => {
   return onPress ? (
     <S.Wrapper onPress={onPress} margin={margin}>
-      <S.CustomText size={size} color={color} font={font} weight={weight} style={style}>
+      <S.CustomText
+        size={size}
+        color={color}
+        font={font}
+        weight={weight}
+        style={style}
+        numberOfLines={numberOfLines}
+        ellipsizeMode={ellipsizeMode}
+      >
         {children}
       </S.CustomText>
     </S.Wrapper>
   ) : (
-    <S.CustomText size={size} color={color} font={font} weight={weight} style={style} margin={margin}>
+    <S.CustomText
+      size={size}
+      color={color}
+      font={font}
+      weight={weight}
+      style={style}
+      margin={margin}
+      numberOfLines={numberOfLines}
+      ellipsizeMode={ellipsizeMode}
+    >
       {children}
     </S.CustomText>
   );

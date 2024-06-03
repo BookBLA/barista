@@ -9,4 +9,6 @@ export interface IProps<T extends unknown[] = []> {
   margin?: string;
   style?: ViewStyle | TextStyle;
   onPress?: (...args: T) => void;
+  numberOfLines?: number;
+  ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip';
 }

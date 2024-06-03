@@ -73,7 +73,7 @@ const Setting = ({ route }: IProps) => {
           <CustomText margin="16px 0" onPress={handleLinkPress(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
-          <S.BetweenWrapper>
+          {/* <S.BetweenWrapper>
             <CustomText margin="16px 0">아는 사람 피하기</CustomText>
             <Switch
               value={isOpen}
@@ -91,7 +91,7 @@ const Setting = ({ route }: IProps) => {
               switchRightPx={3}
               switchWidthMultiplier={2}
             />
-          </S.BetweenWrapper>
+          </S.BetweenWrapper> */}
           <CustomText margin="16px 0" onPress={handleLinkPress(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
