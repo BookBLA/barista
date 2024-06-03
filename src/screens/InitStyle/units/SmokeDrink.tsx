@@ -73,18 +73,18 @@ const SmokeDrink = () => {
           </S.RowStyled>
         </View>
       </S.ColumnStyled>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-        <TouchableOpacity onPress={movePage()}>
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
-        </TouchableOpacity>
+        </S.MoveButton>
         {styleInfo.smokeType === '' || styleInfo.drinkType === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <TouchableOpacity onPress={movePage('oppositeSex')}>
+          <S.MoveButton onPress={movePage('oppositeSex')}>
             <Image source={nextButton} />
-          </TouchableOpacity>
+          </S.MoveButton>
         )}
-      </View>
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

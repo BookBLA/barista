@@ -17,7 +17,6 @@ import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
-import { deviceHeight } from '../../../commons/utils/dimensions';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -83,11 +82,14 @@ const ProfileImage = () => {
     }
 
     const randomId = uuid.v4();
-    setImageUrl(result?.assets[0].uri);
+    // setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
 
-    if (uploadedFileUrl) updateUserInfo({ profileImageUrl: uploadedFileUrl });
-    handleCloseBottomSheet();
+    if (uploadedFileUrl) {
+      updateUserInfo({ profileImageUrl: uploadedFileUrl });
+      setImageUrl(String(uploadedFileUrl));
+      handleCloseBottomSheet();
+    }
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (

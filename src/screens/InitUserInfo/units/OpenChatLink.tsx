@@ -34,9 +34,9 @@ const OpenChatLink = () => {
           adAgreementPolicy: agreementInfo.adAgreementPolicy,
         },
       });
-      console.log('callPostPolicyApi', response);
+      console.log('약관 등록 성공', response);
     } catch (error) {
-      console.log('callPostPolicyApi error', error);
+      console.log('약관 등록 실패', error);
     }
   };
 
@@ -55,9 +55,9 @@ const OpenChatLink = () => {
         profileImageUrl: userInfo.profileImageUrl,
         openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
       });
-      console.log('callPostMemberProfileApi', response);
+      console.log('프로필 등록 성공', response);
     } catch (error) {
-      console.log('callPostMemberProfileApi error', error);
+      console.log('프로필 등록 실패', error);
     }
   };
 

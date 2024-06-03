@@ -23,19 +23,16 @@ const PersonalQuestion = () => {
   const callPostStyleApi = async () => {
     try {
       console.log('styleInfo', styleInfo);
-      const response = await postMemberStyleApi(
-        {
-          mbti: styleInfo.mbti,
-          smokeType: styleInfo.smokeType,
-          drinkType: styleInfo.drinkType,
-          contactType: styleInfo.contactType,
-          dateStyleType: styleInfo.dateStyleType,
-          dateCostType: styleInfo.dateCostType,
-          justFriendType: styleInfo.justFriendType,
-          memberAsk: question,
-        },
-        memberId,
-      );
+      const response = await postMemberStyleApi({
+        mbti: styleInfo.mbti,
+        smokeType: styleInfo.smokeType,
+        drinkType: styleInfo.drinkType,
+        contactType: styleInfo.contactType,
+        dateStyleType: styleInfo.dateStyleType,
+        dateCostType: styleInfo.dateCostType,
+        justFriendType: styleInfo.justFriendType,
+        memberAsk: question,
+      });
       updateStyleInfo('memberAsk', question);
       console.log('postMemberStyleApi', response);
       movePage('initBookStack')();
@@ -53,7 +50,7 @@ const PersonalQuestion = () => {
   };
 
   return (
-    <S.Wrapper style={{ paddingBottom: deviceHeight * 0.03 }}>
+    <S.Wrapper>
       <TitleProgress gauge={100} />
       <T.InnerWrapper onPress={Keyboard.dismiss} underlayColor="transparent">
         <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>

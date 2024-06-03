@@ -27,24 +27,16 @@ const Mbti = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={16} />
-      <S.ColumnStyled>
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <S.ContentStyled style={{ marginBottom: 8 }}>MBTI를 알려주세요.</S.ContentStyled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14 }}>
-            4가지 모두 골라주세요.
-          </Text>
-        </View>
-
-        <Example02 mbti={mbti} setMbti={setMbti} />
-
-        <View
-          style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '13%', marginBottom: '5%' }}
-        >
-          <TouchableOpacity onPress={() => nextPage()}>
-            <Image source={nextButton} />
-          </TouchableOpacity>
-        </View>
-      </S.ColumnStyled>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled style={{ marginBottom: 8 }}>MBTI를 알려주세요.</S.ContentStyled>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14 }}>4가지 모두 골라주세요.</Text>
+      </View>
+      <Example02 mbti={mbti} setMbti={setMbti} />
+      <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
+        <S.MoveButton onPress={() => nextPage()}>
+          <Image source={nextButton} />
+        </S.MoveButton>
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

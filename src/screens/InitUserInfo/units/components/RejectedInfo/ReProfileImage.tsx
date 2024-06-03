@@ -80,7 +80,7 @@ const ReProfileImage = () => {
     }
 
     const randomId = uuid.v4();
-    setImageUrl(result?.assets[0].uri);
+    // setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
 
     if (uploadedFileUrl) updateUserInfo({ profileImageUrl: uploadedFileUrl });
@@ -107,11 +107,7 @@ const ReProfileImage = () => {
           </Text>
           <TouchableOpacity onPress={handleOpenBottomSheet}>
             <Image
-              source={
-                userInfo.profileImageUrl === ''
-                  ? require('../../../../../../assets/images/icons/Circle.png')
-                  : { uri: imageUrl }
-              }
+              source={{ uri: userInfo.profileImageUrl }}
               style={
                 imageUrl === '' ? { height: 190, aspectRatio: 1 } : { height: 190, aspectRatio: 1, borderRadius: 100 }
               }
@@ -213,10 +209,9 @@ const ReProfileImage = () => {
         </ScrollView>
       </CustomBottomSheetModal>
       <S.NextButtonStyled
-        onPress={userInfo.profileImageUrl === '' && imageUrl === '' ? undefined : () => increment()}
+        onPress={userInfo.profileImageUrl === imageUrl ? null : () => increment()}
         style={{
-          backgroundColor:
-            userInfo.profileImageUrl === '' && imageUrl === '' ? colors.buttonAuthToggle : colors.primary,
+          backgroundColor: userInfo.profileImageUrl === imageUrl ? colors.buttonAuthToggle : colors.primary,
         }}
       >
         <Text

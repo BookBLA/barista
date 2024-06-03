@@ -35,18 +35,18 @@ const DateCost = () => {
           ))}
         </View>
       </S.ColumnStyled>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-        <TouchableOpacity onPress={movePage()}>
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
-        </TouchableOpacity>
+        </S.MoveButton>
         {styleInfo.dateCostType === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <TouchableOpacity onPress={movePage('personalQeustion')}>
+          <S.MoveButton onPress={movePage('personalQeustion')}>
             <Image source={nextButton} />
-          </TouchableOpacity>
+          </S.MoveButton>
         )}
-      </View>
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

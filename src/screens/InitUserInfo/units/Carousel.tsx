@@ -53,7 +53,7 @@ export default function Carousel({ pages, pageWidth, gap, offset }: ICarousel) {
           paddingHorizontal: offset + gap / 2,
         }}
         data={pages}
-        decelerationRate={0.7}
+        decelerationRate={0.9999999999}
         horizontal
         keyExtractor={(item: any) => `page__${item.color}`}
         onScroll={onScroll}
