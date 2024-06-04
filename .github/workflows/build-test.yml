@@ -60,17 +60,17 @@ jobs:
       - name: install dependencies
         run: npm install
 
-      # eas를 통해 새로 빌드 후 반영
-      - name: publish update
-        run: eas update --auto 
-
       # iphone testflight에 반영
       - name: upload to ios
         run: eas submit --platform ios --latest --profile local --non-interactive
 
       # android에 반영
-      - name: upload to android
-        run: eas submit --platform android --latest --profile local --non-interactive
+#      - name: upload to android
+ #       run: eas submit --platform android --latest --profile local --non-interactive
+
+      # eas를 통해 새로 빌드 후 반영
+      - name: publish update
+        run: eas update --auto 
 
       # 디스코드 웹훅 알림 전송
       - name: Discord Webhook Action
