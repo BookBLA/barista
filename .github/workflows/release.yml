@@ -62,7 +62,7 @@ jobs:
 
       # submit testflight
       - name: update testflight
-        run: eas submit --platform ios
+        run: eas submit --platform ios --profile local --non-intractive
 
       # submit android
       - name : update android
