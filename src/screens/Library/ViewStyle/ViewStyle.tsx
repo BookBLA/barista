@@ -46,7 +46,7 @@ const ViewStyle: React.FC<IViewStyleProps> = ({ styles, friendPreferenceType, pe
 
           <S.UserStyleView>
             <CustomText size="16px" font="fontMedium">
-              개인 질문 답
+              개인 질문
             </CustomText>
             <S.UserStyleBoxContainer>
               <PersonalQuizAnswerBox>

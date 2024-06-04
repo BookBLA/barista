@@ -9,7 +9,6 @@ import * as S from '../../SettingStack.styles';
 import Matching from '../../../../../assets/images/icons/MatchingTransparent.png';
 import Support from '../../../../../assets/images/icons/SupportTransparent.png';
 import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
@@ -21,7 +20,6 @@ const Setting = ({ route }: IProps) => {
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
   const { handleLinkPress } = useLinkingOpen();
-  useManageMargin();
   useHeaderControl({
     title: '설정',
   });
@@ -75,7 +73,7 @@ const Setting = ({ route }: IProps) => {
           <CustomText margin="16px 0" onPress={handleLinkPress(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
-          <S.BetweenWrapper>
+          {/* <S.BetweenWrapper>
             <CustomText margin="16px 0">아는 사람 피하기</CustomText>
             <Switch
               value={isOpen}
@@ -93,7 +91,7 @@ const Setting = ({ route }: IProps) => {
               switchRightPx={3}
               switchWidthMultiplier={2}
             />
-          </S.BetweenWrapper>
+          </S.BetweenWrapper> */}
           <CustomText margin="16px 0" onPress={handleLinkPress(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>

@@ -23,6 +23,17 @@ const ModifyUserinfo = () => {
   const [phNum, setPhNum] = useState('');
   const showToast = useToastStore((state) => state.showToast);
 
+  const isHangul = (text: string) => {
+    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3]+$/;
+    return hangulRegex.test(text);
+  };
+
+  const handleChangeName = (input: string) => {
+    if (isHangul(input) || input === '') {
+      setName(input);
+    }
+  };
+
   const handlePhoneNumberChange = (phNum: string) => {
     const onlyNums = phNum.replace(/[^0-9]/g, '');
     let formattedNumber = '';
@@ -50,7 +61,7 @@ const ModifyUserinfo = () => {
   const callGetMemberProfileApi = async () => {
     try {
       const response = await getMemberProfileApi();
-      console.log('callGetMemberProfileApi', response);
+      console.log('유저 정보 불러오기', response);
       updateUserInfo({
         name: response.result.name,
         phoneNumber: response.result.phoneNumber,
@@ -66,7 +77,7 @@ const ModifyUserinfo = () => {
       setPhNum(response.result.phoneNumber);
       setLink(response.result.openKakaoRoomUrl);
     } catch (error) {
-      console.log('callGetMemberProfileApi error', error);
+      console.log('유저 정보 Get error', error);
     }
   };
 
@@ -83,25 +94,24 @@ const ModifyUserinfo = () => {
         profileImageUrl: userInfo.profileImageUrl,
         openKakaoRoomUrl: link,
       });
-      console.log('callPutMemberProfileApi', response);
+      console.log('회원 정보 수정', response);
       showToast({
         content: '회원 정보가 수정되었습니다.',
       });
     } catch (error) {
-      console.log('callPutMemberProfileApi error', error);
+      console.log('회원 정보 실패', error);
     }
   };
 
   const modifyInfo = async () => {
     if (name !== '' && phNum !== '' && link !== '') {
       console.log('modifyInfo', name, phNum, link);
-
+      await callPutMemberProfileApi();
       await updateUserInfo({
         name: name,
         phoneNumber: phNum,
         openKakaoRoomUrl: link,
       });
-      await callPutMemberProfileApi();
     }
   };
 
@@ -153,11 +163,13 @@ const ModifyUserinfo = () => {
           <S.ViewStyled height={320}>
             <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
+              maxLength={10} // 최대 길이 제한
               defaultValue={name}
-              onChangeText={(text: string) => setName(text)}
+              onChangeText={(text: string) => handleChangeName(text)}
               // onBlur={() => updateUserInfo('name', name)}
               placeholder="이름"
               placeholderTextColor={colors.textGray2}
+              value={name}
             />
 
             <S.ContentStyled style={{ marginTop: 50 }}>전화번호를 입력해 주세요.</S.ContentStyled>
@@ -165,7 +177,6 @@ const ModifyUserinfo = () => {
               defaultValue={userInfo.phoneNumber}
               value={phNum}
               onChangeText={handlePhoneNumberChange}
-              // onBlur={() => updateUserInfo('phoneNumber', phNum)}
               keyboardType="numeric" // 숫자 키패드만 허용
               maxLength={13} // 최대 길이 제한 (하이픈 포함)
               placeholder="010-1234-5678"

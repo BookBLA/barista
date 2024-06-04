@@ -7,10 +7,10 @@ import matchingBright from '../../../../assets/images/icons/MatchingBright.png';
 import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
 import { colors } from '../../styles/variablesStyles';
-import Matching from '../../../screens/Matching/Matching';
-import Library from '../../../screens/Library/Library';
 import HomeStack from '../../../screens/Home/HomeStack';
 import useManageMargin from '../../hooks/useManageMargin';
+import MatchingStack from '../../../screens/Matching/MatchingStack';
+import LibraryStack from '../../../screens/Library/LibraryStack';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -53,7 +53,7 @@ const TapScreens = () => {
       />
       <Tab.Screen
         name="Matching"
-        component={Matching}
+        component={MatchingStack}
         options={{
           tabBarLabel: '매칭',
           tabBarIcon: ({ focused }) => (
@@ -67,7 +67,7 @@ const TapScreens = () => {
       />
       <Tab.Screen
         name="Library"
-        component={Library}
+        component={LibraryStack}
         options={{
           tabBarLabel: '내 서재',
           tabBarIcon: ({ focused }) => (
@@ -77,13 +77,6 @@ const TapScreens = () => {
               style={{ width: 21, height: 21 }}
             />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="OtherLibrary"
-        component={Library}
-        options={{
-          tabBarButton: () => null,
         }}
       />
     </Tab.Navigator>

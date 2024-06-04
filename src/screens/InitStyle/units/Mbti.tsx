@@ -12,47 +12,31 @@ import useManageMargin from '../../../commons/hooks/useManageMargin';
 const Mbti = () => {
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
-  console.log('styleInfp', styleInfo);
 
   const { movePage } = useMovePage();
-  const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
-
-  useEffect(() => {
-    console.log('mbti11', mbti);
-    const mbtiString = mbti.join('');
-    console.log('mbtiString', mbtiString);
-    updateStyleInfo('mbti', mbtiString);
-  }, [mbti]);
+  const [mbti, setMbti] = useState(styleInfo.mbti.split(''));
 
   const nextPage = () => {
-    // const mbtiString = mbti.join('');
+    const mbtiString = mbti.join('');
     // console.log('mbtiString', mbtiString);
-    // updateStyleInfo('mbti', mbtiString);
-    console.log('styleInfo', styleInfo);
+    updateStyleInfo('mbti', mbtiString);
+    // console.log('styleInfo', styleInfo);
     movePage('smokeDrink')();
   };
 
   return (
     <S.Wrapper>
       <TitleProgress gauge={16} />
-      <S.ColumnStyled>
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <S.ContentStyled style={{ marginBottom: 8 }}>MBTI를 알려주세요.</S.ContentStyled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14 }}>
-            4가지 모두 골라주세요.
-          </Text>
-        </View>
-
-        <Example02 setMbti={setMbti} />
-
-        <View
-          style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '13%', marginBottom: '5%' }}
-        >
-          <TouchableOpacity onPress={movePage('smokeDrink')}>
-            <Image source={nextButton} />
-          </TouchableOpacity>
-        </View>
-      </S.ColumnStyled>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled style={{ marginBottom: 8 }}>MBTI를 알려주세요.</S.ContentStyled>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14 }}>4가지 모두 골라주세요.</Text>
+      </View>
+      <Example02 mbti={mbti} setMbti={setMbti} />
+      <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
+        <S.MoveButton onPress={() => nextPage()}>
+          <Image source={nextButton} />
+        </S.MoveButton>
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

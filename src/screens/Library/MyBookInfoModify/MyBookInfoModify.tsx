@@ -7,6 +7,8 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
+import useToastStore from '../../../commons/store/useToastStore';
+import { img } from '../../../commons/utils/variablesImages';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   //todo props 정의하기
@@ -20,39 +22,78 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [bookImageUrl, setBookImageUrl] = useState<string>();
 
+  const isEmptyReview = () => {
+    if (!bookReviewText) {
+      useToastStore.getState().showToast({ content: '한 줄 감상문을 입력해주세요!' });
+      return true;
+    }
+
+    return false;
+  };
+
+  const isEmptyQuiz = () => {
+    if (!bookQuizText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizFirstAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizSecondAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
+      return true;
+    }
+
+    if (!bookQuizThirdAnswerText) {
+      useToastStore.getState().showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
+      return true;
+    }
+
+    return false;
+  };
+
   const putQuizInfo = async () => {
-    try {
-      await updateQuiz({
-        memberBookId,
-        quiz: bookQuizText,
-        quizAnswer: bookQuizFirstAnswerText,
-        firstWrongChoice: bookQuizSecondAnswerText,
-        secondWrongChoice: bookQuizThirdAnswerText,
-      });
-    } catch (err) {
-      console.error('업데이트에 실패하였습니다.', err);
+    if (!isEmptyQuiz()) {
+      try {
+        await updateQuiz({
+          memberBookId,
+          quiz: bookQuizText,
+          quizAnswer: bookQuizFirstAnswerText,
+          firstWrongChoice: bookQuizSecondAnswerText,
+          secondWrongChoice: bookQuizThirdAnswerText,
+        });
+        useToastStore.getState().showToast({ content: '독서 퀴즈가 변경되었습니다.' });
+      } catch (err) {
+        console.error('업데이트에 실패하였습니다.', err);
+      }
     }
   };
 
   const patchBookReview = async () => {
-    try {
-      await updateBookReview({
-        memberBookId,
-        contents: bookReviewText,
-      });
-    } catch (err) {
-      console.error('업데이트에 실패하였습니다.', err);
+    if (!isEmptyReview()) {
+      try {
+        await updateBookReview({
+          memberBookId,
+          contents: bookReviewText,
+        });
+        useToastStore.getState().showToast({ content: '한 줄 감상문이 변경되었습니다.' });
+      } catch (err) {
+        console.error('업데이트에 실패하였습니다.', err);
+      }
     }
   };
 
-  const handleOnModifyBookReview = (status: boolean) => {
+  const handleOnModifyBookReview = async (status: boolean) => {
     setIsModifiableBookReview(status);
-    if (!status) patchBookReview();
+    if (!status) await patchBookReview();
   };
 
-  const handleOnModifyBookQuestion = (status: boolean) => {
+  const handleOnModifyBookQuestion = async (status: boolean) => {
     setIsModifiableBookQuestion(status);
-    if (!status) putQuizInfo();
+    if (!status) await putQuizInfo();
   };
 
   const fetchBookQuiz = async (memberBookId: number) => {
@@ -86,14 +127,14 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
         <ScrollView>
           <S.BookInfoContainer>
             <S.BookWrapper>
-              <S.BookImage source={{ uri: bookImageUrl }} />
+              <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
             </S.BookWrapper>
             <S.BookTitleWrapper>
               <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
                 {bookInfo?.title}
               </CustomText>
               <CustomText font="fontLight" size="14px" color="#616C90">
-                {bookInfo?.authors.join(', ')}
+                {bookInfo?.authors?.join(', ')}
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>
@@ -104,13 +145,16 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 한 줄 감상문
               </CustomText>
               {isModifiableBookReview ? (
-                <S.ModifyButton onPress={() => handleOnModifyBookReview(false)}>
+                <S.ModifyButton onPress={async () => await handleOnModifyBookReview(false)}>
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정완료
                   </CustomText>
                 </S.ModifyButton>
               ) : (
-                <S.ModifyButton style={{ backgroundColor: '#F0E7CF' }} onPress={() => handleOnModifyBookReview(true)}>
+                <S.ModifyButton
+                  style={{ backgroundColor: '#F0E7CF' }}
+                  onPress={async () => await handleOnModifyBookReview(true)}
+                >
                   <CustomText font="fontMedium" size="12px" color="black">
                     수정
                   </CustomText>
@@ -130,6 +174,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 onChangeText={(text: React.SetStateAction<string>) => onChangeBookReviewText(text)}
                 style={{ backgroundColor: '#F5F0E2' }}
                 value={bookReviewText}
+                scrollEnabled
               />
             ) : (
               <S.BookReviewWrapper>
@@ -176,6 +221,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizText(text)}
                 textAlignVertical="top"
                 value={bookQuizText}
+                scrollEnabled
               />
             ) : (
               <BookQuizQuestionWrapper>
@@ -193,11 +239,10 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="첫 번째 답이 들어갈 자리입니다."
+                      placeholder="정답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizFirstAnswerText(text)}
                       textAlignVertical="center"
@@ -205,7 +250,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizFirstAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>
@@ -220,11 +265,10 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="두 번째 답이 들어갈 자리입니다."
+                      placeholder="오답이 들어갈 자리입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizSecondAnswerText(text)}
                       textAlignVertical="center"
@@ -232,7 +276,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizSecondAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>
@@ -247,11 +291,10 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      multiline
                       numberOfLines={1}
                       maxLength={25}
                       inputMode="text"
-                      placeholder="세 번째 답이 들어갈 자리입니다."
+                      placeholder="오답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
                       onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizThirdAnswerText(text)}
                       textAlignVertical="center"
@@ -259,7 +302,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                     />
                   ) : (
                     <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="14px" color="black">
+                      <CustomText font="fontLight" size="14px" color="black" numberOfLines={1} ellipsizeMode="tail">
                         {bookQuizThirdAnswerText}
                       </CustomText>
                     </S.BookQuizAnswerView>

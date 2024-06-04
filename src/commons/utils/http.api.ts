@@ -67,7 +67,7 @@ const config = {
 };
 
 export interface ResponseData<T> {
-  code: number;
+  code: string;
   isSuccess: boolean;
   result: T;
 }

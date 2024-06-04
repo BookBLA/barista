@@ -17,7 +17,6 @@ import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
-import { deviceHeight } from '../../../commons/utils/dimensions';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -83,18 +82,21 @@ const ProfileImage = () => {
     }
 
     const randomId = uuid.v4();
-    setImageUrl(result?.assets[0].uri);
+    // setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
 
-    if (uploadedFileUrl) updateUserInfo({ profileImageUrl: uploadedFileUrl });
-    handleCloseBottomSheet();
+    if (uploadedFileUrl) {
+      updateUserInfo({ profileImageUrl: uploadedFileUrl });
+      setImageUrl(String(uploadedFileUrl));
+      handleCloseBottomSheet();
+    }
   };
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (
     <S.Wrapper>
       <TitleProgress2 gauge={25} />
       {/* <S.ColumnStyled style={{ height: '80%' }}> */}
-      <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
+      <S.ColumnStyled style={{ height: 'auto' }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
           <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
           <Text
@@ -220,8 +222,6 @@ const ProfileImage = () => {
         onPress={userInfo.profileImageUrl === '' ? undefined : movePage('openChatLink')}
         style={{
           backgroundColor: userInfo.profileImageUrl === '' ? colors.buttonAuthToggle : colors.primary,
-          zIndex: 2,
-          marginBottom: '5%',
         }}
       >
         <Text

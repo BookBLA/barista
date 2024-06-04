@@ -87,6 +87,8 @@ export const img = {
   profileEx4: require('../../../assets/images/img/profile_ex4.png'),
   profileEx5: require('../../../assets/images/img/profile_ex5.png'),
   profileEx6: require('../../../assets/images/img/profile_ex6.png'),
+
+  prepareBookImage: require('../../../assets/images/img/prepareBookImage.png'),
 };
 
 export const logos = {

@@ -4,11 +4,9 @@ import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
 import { useErrorMessage } from '../../store/useErrorMessage';
 import { icons } from '../../utils/variablesImages';
-import { useTruncateText } from '../../hooks/useTruncateText';
+import truncateText from '../../utils/truncateText';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
-  const truncateText = useTruncateText();
-
   const callDeleteMemberBook = async () => {
     try {
       await deleteMemberBookApi(item.memberBookId);

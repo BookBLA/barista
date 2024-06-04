@@ -32,10 +32,6 @@ const useGetPushToken = () => {
           projectId,
         });
         pushToken = token.data;
-
-        showToast({
-          content: `푸시토큰: ${token.data}`,
-        });
       } catch (err) {
         showToast({
           content: `푸시토큰 발급에 실패하였습니다.`,

@@ -7,8 +7,8 @@ import {
 } from './SendPostcardModal.types';
 import * as S from './SendPostcardModal.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { icons } from '../../../commons/utils/variablesImages';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { icons, img } from '../../../commons/utils/variablesImages';
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';
 import {
@@ -40,6 +40,11 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   const { memberPostcard } = useFetchMemberPostcard();
 
   const answerAlphabetIndex = ['A', 'B', 'C', 'D', 'E'];
+
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
+  console.log(bookInfoList[currentQuizIndex].quiz);
 
   const fetchBookInfo = async (memberBookIdList: number[]) => {
     const bookInfoResultList = await Promise.all(memberBookIdList.map((memberBookId) => getBookInfo(memberBookId)));
@@ -151,130 +156,139 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   };
 
   return (
-    <S.SendPostcardModalContainer>
-      {isQuizSection ? (
-        <>
-          <S.BookInfoContainer>
-            <S.BookWrapper>
-              <S.BookImage source={{ uri: bookInfoList[currentQuizIndex]?.imageUrl }} />
-            </S.BookWrapper>
-            <S.BookTitleWrapper>
-              <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
-                {bookInfoList[currentQuizIndex]?.title}
-              </CustomText>
-              <CustomText font="fontLight" size="14px" color="#616C90">
-                {bookInfoList[currentQuizIndex]?.authors?.join(', ')}
-              </CustomText>
-            </S.BookTitleWrapper>
-          </S.BookInfoContainer>
-        </>
-      ) : (
-        <>
-          <S.PersonalQuestionContainer>
-            <S.PersonalQuestionHeaderWrapper>
-              <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-                {memberPersonalAsk?.contents}
-              </CustomText>
-            </S.PersonalQuestionHeaderWrapper>
-            <S.PersonalQuestionAnswerInputBox
-              editable
-              multiline
-              numberOfLines={3}
-              maxLength={100}
-              inputMode="text"
-              placeholder="개인 질문에 대한 답변을 적어주세요👀"
-              placeholderTextColor={colors.textGray2}
-              textAlignVertical="top"
-              onChangeText={(text: React.SetStateAction<string>) => onChangePersonalQuestionAnswerText(text)}
-              style={{ backgroundColor: colors.buttonMain }}
-              value={personalQuestionAnswerText}
-            />
-            <S.PersonalQuestionAnswerTextLengthView>
-              <CustomText font="fontMedium" size="10px" color={colors.textGray3}>
-                {personalQuestionAnswerText.length}/100자
-              </CustomText>
-            </S.PersonalQuestionAnswerTextLengthView>
-          </S.PersonalQuestionContainer>
-        </>
-      )}
-      <S.DashLine />
-      {isQuizSection ? (
-        <>
-          <S.BookQuizContainer>
-            <S.BookQuizTitleWrapper>
-              <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-                {bookInfoList[currentQuizIndex]?.quiz}
-              </CustomText>
-            </S.BookQuizTitleWrapper>
-            {[
-              bookInfoList[currentQuizIndex]?.firstChoice,
-              bookInfoList[currentQuizIndex]?.secondChoice,
-              bookInfoList[currentQuizIndex]?.thirdChoice,
-            ].map((question, index) => (
-              <TouchableOpacity key={index} onPress={() => selectAnswer(index)}>
-                <S.BookQuizInfoView>
-                  <S.QuizCircle
-                    style={{
-                      backgroundColor: currentPressedAnswer === index ? '#AFDFF8' : colors.buttonPrimary,
-                    }}
-                  >
-                    <S.QuizCircleText>{answerAlphabetIndex[index]}</S.QuizCircleText>
-                  </S.QuizCircle>
-                  <S.BookQuizAnswerWrapper>
-                    <S.BookQuizAnswerView>
-                      <CustomText font="fontLight" size="12px" color="black">
-                        {question}
-                      </CustomText>
-                    </S.BookQuizAnswerView>
-                  </S.BookQuizAnswerWrapper>
-                </S.BookQuizInfoView>
-              </TouchableOpacity>
-            ))}
-          </S.BookQuizContainer>
-          <S.BottomButtonContainer isSingle={currentQuizIndex === 0}>
-            {currentQuizIndex > 0 && (
-              <TouchableOpacity onPress={() => movePreviousQuiz()}>
-                <S.BottomArrowButton source={icons.leftArrow} />
-              </TouchableOpacity>
-            )}
-            {currentPressedAnswer !== -1 ? (
-              <TouchableOpacity
-                onPress={() => moveNextQuiz(currentPressedAnswer, getCurrentAnswer(currentPressedAnswer)!)}
-              >
-                <S.BottomArrowButton source={icons.rightArrow} />
-              </TouchableOpacity>
-            ) : (
-              <S.BottomArrowButton source={icons.disableRightArrow} />
-            )}
-          </S.BottomButtonContainer>
-        </>
-      ) : (
-        <>
-          <S.PostcardSelectionContainer>
-            <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-              엽서 선택하기
-            </CustomText>
-            <S.PostcardImageListWrapper>
-              {postcardTypeInfoList?.map((postcardInfo) => (
-                <TouchableWithoutFeedback
-                  key={postcardInfo.postcardTypeId}
-                  onPress={() => selectPostcard(postcardInfo)}
-                >
-                  <S.PostcardImageWrapper>
-                    <S.PostcardImage source={{ uri: postcardInfo.postcardImageUrl }} />
-                    {currentPressedPostcard?.postcardTypeId === postcardInfo.postcardTypeId && (
-                      <S.TransparentWrapper>
-                        <S.CheckIcon source={icons.checkPostcard} />
-                      </S.TransparentWrapper>
-                    )}
-                  </S.PostcardImageWrapper>
-                </TouchableWithoutFeedback>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <S.SendPostcardModalContainer>
+        {isQuizSection ? (
+          <>
+            <S.BookInfoContainer>
+              <S.BookWrapper>
+                <S.BookImage
+                  source={
+                    bookInfoList[currentQuizIndex]?.imageUrl
+                      ? { uri: bookInfoList[currentQuizIndex]?.imageUrl }
+                      : img.prepareBookImage
+                  }
+                />
+              </S.BookWrapper>
+              <S.BookTitleWrapper>
+                <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
+                  {bookInfoList[currentQuizIndex]?.title}
+                </CustomText>
+                <CustomText font="fontLight" size="14px" color="#616C90">
+                  {bookInfoList[currentQuizIndex]?.authors?.join(', ')}
+                </CustomText>
+              </S.BookTitleWrapper>
+            </S.BookInfoContainer>
+          </>
+        ) : (
+          <>
+            <S.PersonalQuestionContainer>
+              <S.PersonalQuestionHeaderWrapper>
+                <CustomText font="fontMedium" size="16px" color="black" weight="bold">
+                  {memberPersonalAsk?.contents}
+                </CustomText>
+              </S.PersonalQuestionHeaderWrapper>
+              <S.PersonalQuestionAnswerInputBox
+                editable
+                multiline
+                numberOfLines={3}
+                maxLength={100}
+                inputMode="text"
+                placeholder="개인 질문에 대한 답변을 적어주세요👀"
+                placeholderTextColor={colors.textGray2}
+                textAlignVertical="top"
+                onChangeText={(text: React.SetStateAction<string>) => onChangePersonalQuestionAnswerText(text)}
+                style={{ backgroundColor: colors.buttonMain }}
+                value={personalQuestionAnswerText}
+                scrollEnabled
+              />
+              <S.PersonalQuestionAnswerTextLengthView>
+                <CustomText font="fontMedium" size="10px" color={colors.textGray3}>
+                  {personalQuestionAnswerText.length}/100자
+                </CustomText>
+              </S.PersonalQuestionAnswerTextLengthView>
+            </S.PersonalQuestionContainer>
+          </>
+        )}
+        <S.DashLine />
+        {isQuizSection ? (
+          <>
+            <S.BookQuizContainer>
+              <S.BookQuizTitleWrapper>
+                <CustomText font="fontMedium" size="16px" color="black" weight="bold" numberOfLines={7}>
+                  {bookInfoList[currentQuizIndex]?.quiz}
+                </CustomText>
+              </S.BookQuizTitleWrapper>
+              {[
+                bookInfoList[currentQuizIndex]?.firstChoice,
+                bookInfoList[currentQuizIndex]?.secondChoice,
+                bookInfoList[currentQuizIndex]?.thirdChoice,
+              ].map((question, index) => (
+                <TouchableOpacity key={index} onPress={() => selectAnswer(index)}>
+                  <S.BookQuizInfoView>
+                    <S.QuizCircle
+                      style={{
+                        backgroundColor: currentPressedAnswer === index ? '#AFDFF8' : colors.buttonPrimary,
+                      }}
+                    >
+                      <S.QuizCircleText>{answerAlphabetIndex[index]}</S.QuizCircleText>
+                    </S.QuizCircle>
+                    <S.BookQuizAnswerWrapper>
+                      <S.BookQuizAnswerView>
+                        <CustomText font="fontLight" size="12px" color="black">
+                          {question}
+                        </CustomText>
+                      </S.BookQuizAnswerView>
+                    </S.BookQuizAnswerWrapper>
+                  </S.BookQuizInfoView>
+                </TouchableOpacity>
               ))}
-            </S.PostcardImageListWrapper>
-            <CustomButton onPress={sendPostCardHandler} contents="엽서 보내기" />
-          </S.PostcardSelectionContainer>
-        </>
-      )}
-    </S.SendPostcardModalContainer>
+            </S.BookQuizContainer>
+            <S.BottomButtonContainer isSingle={currentQuizIndex === 0}>
+              {currentQuizIndex > 0 && (
+                <TouchableOpacity onPress={() => movePreviousQuiz()}>
+                  <S.BottomArrowButton source={icons.leftArrow} />
+                </TouchableOpacity>
+              )}
+              {currentPressedAnswer !== -1 ? (
+                <TouchableOpacity
+                  onPress={() => moveNextQuiz(currentPressedAnswer, getCurrentAnswer(currentPressedAnswer)!)}
+                >
+                  <S.BottomArrowButton source={icons.rightArrow} />
+                </TouchableOpacity>
+              ) : (
+                <S.BottomArrowButton source={icons.disableRightArrow} />
+              )}
+            </S.BottomButtonContainer>
+          </>
+        ) : (
+          <>
+            <S.PostcardSelectionContainer>
+              <CustomText font="fontMedium" size="16px" color="black" weight="bold">
+                엽서 선택하기
+              </CustomText>
+              <S.PostcardImageListWrapper>
+                {postcardTypeInfoList?.map((postcardInfo) => (
+                  <TouchableWithoutFeedback
+                    key={postcardInfo.postcardTypeId}
+                    onPress={() => selectPostcard(postcardInfo)}
+                  >
+                    <S.PostcardImageWrapper>
+                      <S.PostcardImage source={{ uri: postcardInfo.postcardImageUrl }} />
+                      {currentPressedPostcard?.postcardTypeId === postcardInfo.postcardTypeId && (
+                        <S.TransparentWrapper>
+                          <S.CheckIcon source={icons.checkPostcard} />
+                        </S.TransparentWrapper>
+                      )}
+                    </S.PostcardImageWrapper>
+                  </TouchableWithoutFeedback>
+                ))}
+              </S.PostcardImageListWrapper>
+              <CustomButton onPress={sendPostCardHandler} contents="엽서 보내기" />
+            </S.PostcardSelectionContainer>
+          </>
+        )}
+      </S.SendPostcardModalContainer>
+    </TouchableWithoutFeedback>
   );
 };

@@ -31,11 +31,13 @@ export const TextFiledStyled = styled.TextInput.attrs({
   maxLength: 100, // 최대 글자 수
 })`
   width: 88%;
-  height: 55%;
+  height: 78px;
+  padding: 5px;
   border-radius: 10px;
   font-size: 14px;
   font-family: 'fontMedium';
   justify-content: center;
+  background-color: ${colors.buttonMain};
   text-align: start;
   padding: 12px;
   padding-top: 12px;
@@ -63,6 +65,7 @@ export const QuizTextFiledStyled = styled.TextInput.attrs({
 export const QuizStyled = styled.View`
   display: flex;
   flex-direction: row;
+  align-items: center;
   width: 86%;
   height: 38px;
   border-radius: 60px;
@@ -72,14 +75,12 @@ export const QuizStyled = styled.View`
 `;
 
 export const QuizTextInput = styled.TextInput.attrs({
-  multiline: true,
   maxLength: 21,
 })`
   width: 80%;
   height: 38px;
   font-size: 12px;
   font-family: 'fontMedium';
-  text-align: start;
   padding: 5px;
 `;
 

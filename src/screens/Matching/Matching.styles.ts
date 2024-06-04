@@ -70,14 +70,13 @@ export const postcardCountTextStyled = styled.Text`
 `;
 
 export const receivedPostcardViewStyled = styled.View`
-  flex: 1;
   margin-bottom: 10px;
-  align-items: center;
-  justify-content: center;
-  background: #d9d9d9;
-  border-radius: 8px;
+  background: transparent;
+  border-radius: 20px;
   margin-right: ${({ index }: any) => (index % 2 === 0 ? '5px' : 0)};
   margin-left: ${({ index }: any) => (index % 2 !== 0 ? '5px' : 0)};
+  height: 244px;
+  color: white;
 `;
 
 export const sendPostcardViewStyled = styled.View`
@@ -126,9 +125,9 @@ export const styles: any = StyleSheet.create({
         shadowColor: '#000',
         shadowOffset: {
           width: 0,
-          height: 3,
+          height: 2,
         },
-        shadowOpacity: 0.29,
+        shadowOpacity: 0.15,
         shadowRadius: 4.65,
       },
       android: {

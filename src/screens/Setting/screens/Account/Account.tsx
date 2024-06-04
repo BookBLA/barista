@@ -11,15 +11,20 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import Home from '../../../../../assets/images/icons/HomeBlack.png';
 import LogOutContent from './units/LogOutContent/LogOutContent';
 import MatchingContent from './units/MatchingContent/MatchingContent';
-import { getMemberProfileApi } from '../../../../commons/api/memberProfile.api';
-import { useUserStore } from '../../../../commons/store/useUserinfo';
+import useMemberStore from '../../../../commons/store/useMemberStore';
+import { EMemberStatus } from '../../../../commons/types/memberStatus';
+import { postMemberStatusesApi } from '../../../../commons/api/member.api';
 
 const Account = () => {
+  // TODO: 성진 - 가독성 개선 예정
   const { movePage, handleReset } = useMovePage();
+  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const updateMemberInfo = useMemberStore((state) => state.updateMemberInfo);
   const { toggle, isOpen } = useToggle();
   const { toggle: modalToggle, isOpen: isOpenModal } = useToggle();
   const { onClickLogout } = useLogout();
   const [selected, setSelected] = useState('');
+  const [reason, setReason] = useState('');
 
   // NOTE: 성진 - config 재사용하기 위해 변수로 만듬
   const config = {
@@ -36,15 +41,52 @@ const Account = () => {
     visible: isOpen || isOpenModal,
     onClose: isOpen ? toggle : modalToggle,
     mode: 'round',
-    contents: isOpen ? <MatchingContent selected={selected} setSelected={setSelected} /> : <LogOutContent />,
+    contents: isOpen ? (
+      <MatchingContent reason={reason} setReason={setReason} selected={selected} setSelected={setSelected} />
+    ) : (
+      <LogOutContent />
+    ),
     buttons: isOpen
-      ? [{ label: '비활성화하기', action: toggle }]
+      ? [{ label: '비활성화하기', action: () => callEnableMatching(EMemberStatus.MATCHING_DISABLED) }]
       : [
-          { label: '로그아웃', action: onClickLogout, bgColor: colors.buttonMain, color: 'black' },
+          {
+            label: '로그아웃',
+            action: () => {
+              modalToggle();
+              onClickLogout();
+            },
+            bgColor: colors.buttonMain,
+            color: 'black',
+          },
           { label: '취소', action: modalToggle },
         ],
   };
-  const { updateUserInfo, userInfo } = useUserStore();
+
+  const onClickEnableMatching = () => {
+    if (EMemberStatus.COMPLETED === memberStatus) {
+      toggle();
+    } else {
+      callEnableMatching(EMemberStatus.COMPLETED);
+    }
+  };
+
+  const callEnableMatching = async (memberStatus: string) => {
+    try {
+      await postMemberStatusesApi({
+        memberStatus,
+        reason: memberStatus === EMemberStatus.COMPLETED ? '' : reason ?? selected,
+      });
+      updateMemberInfo('memberStatus', memberStatus);
+    } catch (err) {
+      console.log('err', err);
+    } finally {
+      if (memberStatus === EMemberStatus.MATCHING_DISABLED) {
+        setReason('');
+        setSelected('');
+        toggle();
+      }
+    }
+  };
 
   return (
     <>
@@ -58,8 +100,8 @@ const Account = () => {
         <S.BetweenWrapper>
           <CustomText margin="16px 0">매칭 활성화</CustomText>
           <Switch
-            value={!isOpen}
-            onValueChange={toggle}
+            value={memberStatus === EMemberStatus.COMPLETED ? true : false}
+            onValueChange={onClickEnableMatching}
             circleSize={16}
             barHeight={20}
             circleBorderWidth={0}

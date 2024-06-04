@@ -9,6 +9,7 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
+// import useMemberStore from '../../../commons/store/useMemberStore';
 import { uploadStudentIdImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 
@@ -30,6 +31,7 @@ const SchoolStudentID = () => {
   // };
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
+  // const memberId = useMemberStore((state) => state.memberInfo.id);
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
@@ -61,9 +63,11 @@ const SchoolStudentID = () => {
       return null; //이미지 업로드 취소시
     }
 
-    setImageUrl(result?.assets[0].uri);
     const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
-    if (uploadedFileUrl) updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+    if (uploadedFileUrl) {
+      updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+      setImageUrl(String(uploadedFileUrl));
+    }
   };
 
   const moveNext = () => {
@@ -74,13 +78,13 @@ const SchoolStudentID = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={75} />
-      <S.ColumnStyled>
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
-          <S.ButtonStyled disabled>
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
-          </S.ButtonStyled>
-          {/* <S.TextFiledStyled
+      {/* <S.ColumnStyled style={{ height: 'auto', justifyContent: 'space-between' }}> */}
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
+        <S.ButtonStyled disabled>
+          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
+        </S.ButtonStyled>
+        {/* <S.TextFiledStyled
             value={school}
             onChangeText={setSchool}
             onFocus={handleFocus}
@@ -89,53 +93,49 @@ const SchoolStudentID = () => {
               color: school === '학교' ? colors.textGray2 : colors.primary,
             }}
           /> */}
-        </View>
-        <View style={{ width: '100%', alignItems: 'center' }}>
-          <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
-            실물 학생증 및 모바일 학생증 모두 가능합니다.
-          </Text>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
-            실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
-          </Text>
-          <S.ButtonStyled
-            onPress={() => uploadeImage()}
-            style={{ height: 132 /*borderRadius: 10*/, marginBottom: 6 }}
-            borderRadius={10}
-          >
-            <Image
-              source={
-                userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
-              }
-              style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
-            />
-          </S.ButtonStyled>
+      </View>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
+          실물 학생증 및 모바일 학생증 모두 가능합니다.
+        </Text>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
+          실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
+        </Text>
+        <S.ButtonStyled onPress={() => uploadeImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
+          <Image
+            source={
+              userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
+            }
+            style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
+          />
+        </S.ButtonStyled>
 
-          <Text
-            style={{
-              color: colors.textGray,
-              fontFamily: 'fontMedium',
-              fontSize: 12,
-              textAlign: 'right',
-              width: '80%',
-            }}
-          >
-            학생증 도용 시 처벌 대상이 될 수 있습니다.
-          </Text>
-        </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-          <TouchableOpacity onPress={movePage()}>
-            <Image source={prevButton} />
-          </TouchableOpacity>
-          {userInfo.studentIdImageUrl === '' ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <TouchableOpacity onPress={moveNext}>
-              <Image source={nextButton} />
-            </TouchableOpacity>
-          )}
-        </View>
-      </S.ColumnStyled>
+        <Text
+          style={{
+            color: colors.textGray,
+            fontFamily: 'fontMedium',
+            fontSize: 12,
+            textAlign: 'right',
+            width: '80%',
+          }}
+        >
+          학생증 도용 시 처벌 대상이 될 수 있습니다.
+        </Text>
+      </View>
+      {/* </S.ColumnStyled> */}
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
+          <Image source={prevButton} />
+        </S.MoveButton>
+        {userInfo.studentIdImageUrl === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <S.MoveButton onPress={moveNext}>
+            <Image source={nextButton} />
+          </S.MoveButton>
+        )}
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

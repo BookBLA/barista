@@ -11,12 +11,8 @@ import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
 import InitBookStack from '../../../screens/InitBook/initBookStack';
-import ReceivePostcardDetail from '../../../screens/Matching/Postcard/Receive/ReceivePostcardDetail';
 import TermsOfService from '../../../screens/TermsOfService/TermsOfService';
-import SettingStack from '../../../screens/Setting/SettingStack';
 import Notice from '../../../screens/Notice/Notice';
-import ModifyUserinfo from '../../../screens/InitUserInfo/ModifyUserinfo';
-import ModifyStyle from '../../../screens/InitStyle/ModifyStyle';
 import InfoOpenChat from '../../../screens/InitUserInfo/units/InfoOpenChat';
 import ProfileImage from '../../../screens/InitUserInfo/units/ProfileImage';
 import WaitConfirm from '../../../screens/InitUserInfo/units/WaitConfirm';
@@ -24,6 +20,7 @@ import CompletePage from '../../../screens/InitUserInfo/units/CompletePage';
 import FailedSign from '../../../screens/InitUserInfo/units/FailedSign';
 import OpenChatLink from '../../../screens/InitUserInfo/units/OpenChatLink';
 import LoginStack from '../../../screens/Login/LoginStack';
+import SettingStack from '../../../screens/Setting/SettingStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -40,10 +37,7 @@ const screens = [
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
   { name: 'termsOfService', component: CustomScreen(TermsOfService) },
-  { name: 'receivePostcardDetail', component: CustomScreen(ReceivePostcardDetail) },
   { name: 'notice', component: CustomScreen(Notice) },
-  { name: 'modifyUserinfo', component: ModifyUserinfo },
-  { name: 'modifyStyle', component: CustomScreen(ModifyStyle) },
 ];
 
 export const CustomNavigator = () => {

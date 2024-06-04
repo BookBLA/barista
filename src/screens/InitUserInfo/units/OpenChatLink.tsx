@@ -34,9 +34,9 @@ const OpenChatLink = () => {
           adAgreementPolicy: agreementInfo.adAgreementPolicy,
         },
       });
-      console.log('callPostPolicyApi', response);
+      console.log('약관 등록 성공', response);
     } catch (error) {
-      console.log('callPostPolicyApi error', error);
+      console.log('약관 등록 실패', error);
     }
   };
 
@@ -55,9 +55,9 @@ const OpenChatLink = () => {
         profileImageUrl: userInfo.profileImageUrl,
         openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
       });
-      console.log('callPostMemberProfileApi', response);
+      console.log('프로필 등록 성공', response);
     } catch (error) {
-      console.log('callPostMemberProfileApi error', error);
+      console.log('프로필 등록 실패', error);
     }
   };
 
@@ -66,7 +66,7 @@ const OpenChatLink = () => {
       <TitleProgress2 gauge={50} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {/* <S.ColumnStyled style={{ height: '80%' }}> */}
-        <S.ColumnStyled style={{ height: deviceHeight * 0.75 }}>
+        <S.ColumnStyled style={{ height: 'auto' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
             <OpenChatTextFiledStyled

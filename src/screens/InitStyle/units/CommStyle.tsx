@@ -55,18 +55,18 @@ const CommStyle = () => {
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '13%' }}>
-          <TouchableOpacity onPress={movePage()}>
+        <S.ButtonArea>
+          <S.MoveButton onPress={movePage()}>
             <Image source={prevButton} />
-          </TouchableOpacity>
+          </S.MoveButton>
           {styleInfo.contactType === '' || styleInfo.dateStyleType === '' ? (
             <Image source={notYetNextButton} />
           ) : (
-            <TouchableOpacity onPress={movePage('dateCost')}>
+            <S.MoveButton onPress={movePage('dateCost')}>
               <Image source={nextButton} />
-            </TouchableOpacity>
+            </S.MoveButton>
           )}
-        </View>
+        </S.ButtonArea>
       </S.ColumnStyled>
     </S.Wrapper>
   );

@@ -14,11 +14,10 @@ import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { useTruncateText } from '../../../../commons/hooks/useTruncateText';
+import truncateText from '../../../../commons/utils/truncateText';
 
 const InitQuiz = ({ route }: IProps) => {
   const { isRepresentative, selectedBook } = route?.params ?? '';
-  const truncateText = useTruncateText();
   useHeaderControl({
     title: truncateText(selectedBook?.title ?? '', 22),
   });
@@ -93,7 +92,7 @@ const InitQuiz = ({ route }: IProps) => {
             </CustomText>
 
             <U.QuizStyled>
-              <Text style={{ fontFamily: 'fontExtraLight', height: 38, fontSize: 20, color: colors.primary }}>Q.</Text>
+              <Text style={{ fontFamily: 'fontExtraLight', fontSize: 20, color: colors.primary }}>Q.</Text>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
