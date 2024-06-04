@@ -1,0 +1,80 @@
+name: build expo via eas
+
+on:
+  push:
+    branches: [ build/eas-test ]
+
+  pull_request:
+    branches: [ release ]
+
+
+jobs:
+  update:
+    name: build expo file via eas
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      # 필요 json 파일들 세팅
+      - name: create firebase.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json"
+          json: ${{ secrets.FIREBASE_JSON }}
+
+      - name: create app.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "app.json"
+          json: ${{ secrets.APP_JSON }}
+
+      - name: create google-services.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "google-services.json"
+          json: ${{ secrets.GOOGLE_SERVICES_JSON }}
+
+      - name: create eas.json
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "eas.json"
+          json: ${{ secrets.EAS_JSON }}
+
+      # 노드, 패키지 매니저, 캐시 설정
+      - name: setup node with cache
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: npm
+          cache-dependency-path: ./package-lock.json
+
+      # eas 설정
+      - name: setup eas
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      # npm 의존성 설치
+      - name: install dependencies
+        run: npm install
+
+      # eas를 통해 새로 빌드 후 반영
+      - name: publish update
+        run: eas update --auto 
+
+      # iphone testflight에 반영
+      - name: upload to ios
+        run: eas submit --platform ios --latest --profile local --non-interactive
+
+      # android에 반영
+      - name: upload to android
+        run: eas submit --platform android --latest --profile local --non-interactive
+
+      # 디스코드 웹훅 알림 전송
+      - name: Discord Webhook Action
+        uses: tsickert/discord-webhook@v5.3.0
+        with:
+          webhook-url: ${{ secrets.WEBHOOK_URL }}
+          content: "따끈따끈한 새 빌드가 완료됐다네~"
