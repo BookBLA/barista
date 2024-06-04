@@ -62,7 +62,7 @@ jobs:
 
       # iphone testflight에 반영
       - name: upload to ios
-        run: build --platform ios --profile local --non-interactive
+        run: eas build --platform ios --profile local --non-interactive
 
       # android에 반영
 #      - name: upload to android
