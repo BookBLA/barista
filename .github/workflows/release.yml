@@ -1,12 +1,8 @@
 name: build expo via eas
 
 on:
-  push:
-    branches: [ release ]
-
   pull_request:
     branches: [ release ]
-
 
 jobs:
   update:
@@ -62,14 +58,15 @@ jobs:
 
       # eas를 통해 새로 빌드 후 반영
       - name: publish update
-        run: eas update --profile local --non-interactive
+        run: eas update --auto
 
-      # - name: reflect testflight
-      #   run: eas submit -p ios --latest --profile local --non-interactive
+      # iphone testflight에 반영
+      - name: upload to ios
+        run: eas submit --platform ios --latest --profile local --non-interactive
 
       # 디스코드 웹훅 알림 전송
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "따끈따끈한 새 빌드가 완료됐다네~"
+          content: "따끈따끈한 새 빌드를 성공했다네~"
