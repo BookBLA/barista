@@ -56,17 +56,21 @@ jobs:
       - name: install dependencies
         run: npm install
 
-      # eas를 통해 새로 빌드 후 반영
-      - name: publish update
-        run: eas update --auto
+      # build
+      - name: build eas
+        run: build --platform all --profile local --non-interactive
 
-      # iphone testflight에 반영
-      - name: upload to ios
-        run: eas submit --platform ios --latest --profile local --non-interactive
+      # submit testflight
+      - name: update testflight
+        run: eas submit --platform ios
+
+      # submit android
+      - name : update android
+        run : eas submit --platform android
 
       # 디스코드 웹훅 알림 전송
       - name: Discord Webhook Action
         uses: tsickert/discord-webhook@v5.3.0
         with:
           webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "따끈따끈한 새 빌드를 성공했다네~"
+          content: "따끈따끈한 새 빌드가 완료됐다네~"
