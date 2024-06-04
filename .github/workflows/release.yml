@@ -58,7 +58,7 @@ jobs:
 
       # build
       - name: build eas
-        run: eas build --platform android --profile local --non-interactive
+        run: eas build --platform all --profile local --non-interactive
 
       # submit testflight
       - name: update testflight
