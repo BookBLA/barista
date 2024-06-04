@@ -62,11 +62,11 @@ jobs:
 
       # submit testflight
       - name: update testflight
-        run: eas submit --platform ios --profile local --non-interactive
+        run: eas submit --platform ios --latest --profile local --non-interactive
 
       # submit android
       - name : update android
-        run: eas submit --platform android --profile local --non-interactive
+        run: eas submit --platform android --latest --profile local --non-interactive
 
       # 디스코드 웹훅 알림 전송
       - name: Discord Webhook Action
