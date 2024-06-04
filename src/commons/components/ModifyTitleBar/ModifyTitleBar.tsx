@@ -12,7 +12,7 @@ export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?
   return (
     <View
       style={{
-        width: '100%',
+        width: '98%',
         flexDirection: 'row',
         alignItems: 'center',
         height: '9%',

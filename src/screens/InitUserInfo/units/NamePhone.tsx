@@ -48,55 +48,55 @@ const NamePhone = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={50} />
-      <S.ColumnStyled style={{ height: '80%' }}>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <KeyboardAwareScrollView
-            style={{ width: '100%' }}
-            contentContainerStyle={{
-              height: '80%',
-              justifyContent: 'space-around',
-            }}
-          >
-            <View style={{ width: '100%', alignItems: 'center' }}>
-              <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
-              <S.TextFiledStyled
-                maxLength={10} // 최대 길이 제한
-                defaultValue={userInfo.name}
-                onChangeText={(text: string) => handleChangeName(text)}
-                // onBlur={() => updateUserInfo('name', name)}
-                placeholder="이름"
-                placeholderTextColor={colors.textGray2}
-                value={name}
-              />
-            </View>
+      {/* <S.ColumnStyled style={{ height: '80%' }}> */}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAwareScrollView
+          style={{ width: '100%' }}
+          contentContainerStyle={{
+            height: '85%',
+            justifyContent: 'space-around',
+          }}
+        >
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
+            <S.TextFiledStyled
+              maxLength={10} // 최대 길이 제한
+              defaultValue={userInfo.name}
+              onChangeText={(text: string) => handleChangeName(text)}
+              // onBlur={() => updateUserInfo('name', name)}
+              placeholder="이름"
+              placeholderTextColor={colors.textGray2}
+              value={name}
+            />
+          </View>
 
-            <View style={{ width: '100%', alignItems: 'center' }}>
-              <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
-              <S.TextFiledStyled
-                value={phNum}
-                onChangeText={handlePhoneNumberChange}
-                // onBlur={() => updateUserInfo('phoneNumber', phNum)}
-                keyboardType="numeric" // 숫자 키패드만 허용
-                maxLength={13} // 최대 길이 제한 (하이픈 포함)
-                placeholder="010-1234-5678"
-                placeholderTextColor={colors.textGray2}
-              />
-            </View>
-          </KeyboardAwareScrollView>
-        </TouchableWithoutFeedback>
-      </S.ColumnStyled>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%', height: '10%' }}>
-        <TouchableOpacity onPress={movePage()}>
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
+            <S.TextFiledStyled
+              value={phNum}
+              onChangeText={handlePhoneNumberChange}
+              // onBlur={() => updateUserInfo('phoneNumber', phNum)}
+              keyboardType="numeric" // 숫자 키패드만 허용
+              maxLength={13} // 최대 길이 제한 (하이픈 포함)
+              placeholder="010-1234-5678"
+              placeholderTextColor={colors.textGray2}
+            />
+          </View>
+        </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback>
+      {/* </S.ColumnStyled> */}
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
-        </TouchableOpacity>
+        </S.MoveButton>
         {name.length < 2 || phNum.length !== 13 ? (
           <Image source={notYetNextButton} />
         ) : (
-          <TouchableOpacity onPress={nextPage}>
+          <S.MoveButton onPress={nextPage}>
             <Image source={nextButton} />
-          </TouchableOpacity>
+          </S.MoveButton>
         )}
-      </View>
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

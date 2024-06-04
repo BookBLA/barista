@@ -74,13 +74,22 @@ const GenderBirth = () => {
           </S.ButtonStyled>
         </View>
         <CustomModal modalConfig={modalConfig} />
-        <View style={{ flexDirection: 'row', justifyContent: 'flex-end', width: '80%', height: '10%' }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            width: '85%',
+            height: '7%',
+          }}
+        >
           {userInfo.gender === '' || userInfo.birthDate === '' ? (
             <Image source={notYetNextButton} />
           ) : (
-            <TouchableOpacity onPress={movePage('namePhone')}>
+            <S.MoveButton onPress={movePage('namePhone')}>
               <Image source={nextButton} />
-            </TouchableOpacity>
+            </S.MoveButton>
           )}
         </View>
       </S.ColumnStyled>

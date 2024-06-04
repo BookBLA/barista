@@ -122,19 +122,16 @@ const ModifyStyle = () => {
   const callPutStyleApi = async () => {
     try {
       // console.log('styleInfo', styleInfo);
-      const response = await putMemberStyleApi(
-        {
-          mbti: mbti.join(''),
-          smokeType: styleInfo.smokeType,
-          drinkType: styleInfo.drinkType,
-          contactType: styleInfo.contactType,
-          dateStyleType: styleInfo.dateStyleType,
-          dateCostType: styleInfo.dateCostType,
-          justFriendType: styleInfo.justFriendType,
-          memberAsk: styleInfo.memberAsk,
-        },
-        memberId,
-      );
+      const response = await putMemberStyleApi({
+        mbti: mbti.join(''),
+        smokeType: styleInfo.smokeType,
+        drinkType: styleInfo.drinkType,
+        contactType: styleInfo.contactType,
+        dateStyleType: styleInfo.dateStyleType,
+        dateCostType: styleInfo.dateCostType,
+        justFriendType: styleInfo.justFriendType,
+        memberAsk: styleInfo.memberAsk,
+      });
       // console.log('putMemberStyleApi Success', response);
       showToast({
         content: '스타일 정보가 수정되었습니다.',

@@ -81,7 +81,6 @@ export const ButtonStyled = styled.TouchableOpacity<{ borderRadius?: number }>`
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
-  /* margin-bottom: 20px; */
 `;
 export const CodeFiledStyled = styled.View`
   width: 78%;
@@ -117,16 +116,9 @@ export const TextFiledStyled = styled.TextInput`
 `;
 
 export const InputStyled = styled.TextInput`
-  /* width: 80%; */
-  /* height: 40px; */
-  /* border-radius: 60px; */
-  //padding: 0 20px;
   font-size: 16px;
   font-family: fontMedium;
-  /* background-color: ${colors.buttonMain}; */
-  //align-items: center;
   justify-content: center;
-  //margin-bottom: 20px;
   text-align: center;
 `;
 
@@ -178,3 +170,16 @@ export const ViewStyled = styled.View`
   justify-content: center;
   /* background-color: pink; */
 `;
+
+export const ButtonArea = styled.View`
+  width: 85%;
+  height: 7%;
+  flex-direction: row;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+`;
+
+export const MoveButton = styled.TouchableOpacity.attrs({
+  hitSlop: { top: 20, bottom: 20, left: 20, right: 20 },
+})``;
