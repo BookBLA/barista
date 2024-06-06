@@ -1,7 +1,6 @@
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { LightText } from '../../../../commons/components/TextComponents/LightText/LightText';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { Switch } from 'react-native-switch';
 import { useToggle } from '../../../../commons/hooks/useToggle';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { useLinkingOpen } from '../../../../commons/hooks/useLinkingOpen';
@@ -14,26 +13,17 @@ import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
 import { IProps } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
+import { getAppVersion } from '../../../../commons/utils/getAppVersion';
 
 const Setting = ({ route }: IProps) => {
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
   const { handleLinkPress } = useLinkingOpen();
+  const appVersion = getAppVersion();
   useHeaderControl({
     title: '설정',
   });
-
-  const modalConfig = {
-    visible: isOpen,
-    onClose: toggle,
-    mode: 'round',
-    contents: <ModalContent />,
-    buttons: [
-      { label: '취소', action: toggle, bgColor: colors.buttonMain, color: 'black' },
-      { label: '설정', action: toggle },
-    ],
-  };
 
   return (
     <>
@@ -73,25 +63,6 @@ const Setting = ({ route }: IProps) => {
           <CustomText margin="16px 0" onPress={handleLinkPress(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
-          {/* <S.BetweenWrapper>
-            <CustomText margin="16px 0">아는 사람 피하기</CustomText>
-            <Switch
-              value={isOpen}
-              onValueChange={toggle}
-              circleSize={16}
-              barHeight={20}
-              circleBorderWidth={0}
-              backgroundActive={colors.primary}
-              backgroundInactive={colors.buttonAuthToggle}
-              circleActiveColor={'#fff'}
-              circleInActiveColor={'#fff'}
-              renderActiveText={false}
-              renderInActiveText={false}
-              switchLeftPx={3}
-              switchRightPx={3}
-              switchWidthMultiplier={2}
-            />
-          </S.BetweenWrapper> */}
           <CustomText margin="16px 0" onPress={handleLinkPress(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
@@ -99,16 +70,27 @@ const Setting = ({ route }: IProps) => {
             <S.RowWrapper>
               <CustomText margin="16px 5px 0 0">현재 버전</CustomText>
               <CustomText margin="16px 5px 0 0" color={colors.textGray2}>
-                V1.00.1
+                {`V${appVersion}`}
               </CustomText>
             </S.RowWrapper>
-            <CustomText margin="16px 5px 0 0" color={colors.textGray2} size="12px">
+            {/* <CustomText margin="16px 5px 0 0" color={colors.textGray2} size="12px">
               최신 버전
-            </CustomText>
+            </CustomText> */}
           </S.BetweenWrapper>
         </S.BottomWrapper>
       </S.Wrapper>
-      <CustomModal modalConfig={modalConfig}></CustomModal>
+      <CustomModal
+        modalConfig={{
+          visible: isOpen,
+          onClose: toggle,
+          mode: 'round',
+          contents: <ModalContent />,
+          buttons: [
+            { label: '취소', action: toggle, bgColor: colors.buttonMain, color: 'black' },
+            { label: '설정', action: toggle },
+          ],
+        }}
+      />
     </>
   );
 };
