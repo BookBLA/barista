@@ -3,8 +3,11 @@ import { useErrorMessage } from '../store/useErrorMessage';
 import useAuthStore from '../store/useAuthStore';
 import useToastStore from '../store/useToastStore';
 import * as Device from 'expo-device';
+import { getAppVersion } from './getAppVersion';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
+
+const appVersion = getAppVersion();
 
 httpApi.interceptors.request.use(async (request) => {
   console.debug('headers: ', request.headers);
@@ -24,6 +27,8 @@ httpApi.interceptors.request.use(
     const osVersion = Device.osVersion;
     config.headers['x-device-type'] = systemName === 'iOS' ? 'ios' : 'android';
     config.headers['x-os-version'] = osVersion;
+    config.headers['x-app-version'] = appVersion;
+
     return config;
   },
   (error) => {

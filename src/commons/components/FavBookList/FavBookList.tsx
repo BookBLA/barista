@@ -3,7 +3,7 @@ import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
 import { useErrorMessage } from '../../store/useErrorMessage';
-import { icons } from '../../utils/variablesImages';
+import { icons, img } from '../../utils/variablesImages';
 import truncateText from '../../utils/truncateText';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
@@ -20,9 +20,14 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
 
   return (
     <S.BookListStyled>
-      <Image style={{ height: 62, width: 62, marginRight: '3%', borderRadius: 10 }} source={{ uri: item.thumbnail }} />
+      <S.ImageWrapper>
+        <Image
+          style={{ height: 62, width: 62, borderRadius: 10, objectFit: 'fill' }}
+          source={item.thumbnail ? { uri: item.thumbnail } : img.prepareBookImage}
+        />
+      </S.ImageWrapper>
       <S.ColumnStyled>
-        <S.BookTitleStyled>{truncateText(item.title, 45)}</S.BookTitleStyled>
+        <S.BookTitleStyled>{truncateText(item.title, 40)}</S.BookTitleStyled>
         <S.BookAuthorStyled>{truncateText(item?.authors.join(', '), 30)}</S.BookAuthorStyled>
         <View
           style={{
