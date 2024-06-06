@@ -51,3 +51,11 @@ export const BookMarkIconImage = styled.Image`
   right: ${deviceWidth / 10}px;
   top: ${deviceHeight / 500 - 5}px;
 `;
+
+export const ImageWrapper = styled.View`
+  width: 62px;
+  height: 62px;
+  margin-right: 3%;
+  border-radius: 10px;
+  background-color: #e9e9e9;
+`;
