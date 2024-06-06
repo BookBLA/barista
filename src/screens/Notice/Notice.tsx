@@ -11,7 +11,7 @@ import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 const Notice = () => {
   const { handleReset } = useMovePage();
   useHeaderControl({
-    title: '설정',
+    title: '알림',
     onPressLeft: () => handleReset('tapScreens'),
   });
   const { data, setData } = useGetAlarms();
@@ -47,7 +47,7 @@ const Notice = () => {
             </CustomText>
             <S.BottomWrapper>
               <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
-                YY.MM.DD
+                {el.createdAt}
               </CustomText>
               <TouchableOpacity onPress={() => onClickDeleteAlarm(String(el.memberPushAlarmId))}>
                 <Image source={Close} />
