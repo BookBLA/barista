@@ -1,4 +1,4 @@
-import { icons } from '../../utils/variablesImages';
+import { icons, img } from '../../utils/variablesImages';
 import * as S from './SearchedBookList.styles';
 import { Image, View } from 'react-native';
 import { IProps } from './SearchedBookList.types';
@@ -23,7 +23,12 @@ export const SearchedBookList = ({ item, isSelected = false, onSelectBook }: IPr
             <Image style={{ height: 40, width: 40 }} source={icons.selected} />
           </View>
         )}
-        <Image style={{ height: 100, width: 72, borderRadius: 6 }} source={{ uri: item.imageUrl }} />
+        <S.ImageWrapper>
+          <Image
+            style={{ height: '100%', width: '100%', borderRadius: 6, objectFit: 'fill' }}
+            source={item.imageUrl ? { uri: item.imageUrl } : img.prepareBookImage}
+          />
+        </S.ImageWrapper>
       </S.BookImageStyled>
       <S.ColumnStyled>
         <S.BookTitleStyled>{item.title}</S.BookTitleStyled>

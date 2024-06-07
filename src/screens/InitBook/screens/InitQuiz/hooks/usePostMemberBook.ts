@@ -3,9 +3,10 @@ import useMovePage from '../../../../../commons/hooks/useMovePage';
 import useToastStore from '../../../../../commons/store/useToastStore';
 import { IBookData, IRequestQuizzes } from '../../../InitBookStack.types';
 import { isAxiosErrorResponse } from '../../../../../commons/utils/isAxiosErrorResponse';
+import { EErrorMessage } from '../../../../../commons/types/errorMessage';
 
 export const usePostMemberBook = (isRepresentative: boolean, selectedBook: Partial<IBookData>) => {
-  const { handleReset } = useMovePage();
+  const { handleReset, goBack } = useMovePage();
   const showToast = useToastStore((state) => state.showToast);
 
   const callPostMemberBook = async (data: IRequestQuizzes) => {
@@ -22,10 +23,11 @@ export const usePostMemberBook = (isRepresentative: boolean, selectedBook: Parti
       handleReset('initBookStack');
     } catch (error) {
       if (isAxiosErrorResponse(error)) {
-        if (error.response?.data.message === '해당 회원이 이미 등록한 도서입니다.') {
+        if (error.response?.data.message === EErrorMessage.BOOK_ALREADY_REGISTERED) {
           showToast({
             content: '이미 등록한 책입니다.',
           });
+          goBack();
         }
       } else {
         showToast({
