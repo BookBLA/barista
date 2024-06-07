@@ -4,10 +4,10 @@ export interface IDdata {
   memberAge: number;
   memberName: string;
   memberSchoolName: string;
-  memberId?: number; // todo: 추후에 필수 값으로 바꿀 예정
+  memberId: number;
 }
 
-export type TFilterKeys = 'gender' | 'smoking' | 'drinking' | 'contact' | 'dating';
+export type TFilterKeys = 'gender' | 'smokeType' | 'drinkType' | 'contactType' | 'dateStyleType';
 
 export type TFilterOption = {
   label: string;

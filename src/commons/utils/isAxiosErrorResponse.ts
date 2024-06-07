@@ -6,6 +6,6 @@ const isAxiosError = (error: unknown): error is AxiosError => {
 
 export const isAxiosErrorResponse = (
   error: unknown,
-): error is AxiosError & { response: { data: { message: string } } } => {
+): error is AxiosError & { response: { data: { message: string; code: string } } } => {
   return isAxiosError(error) && error.response?.data !== undefined;
 };

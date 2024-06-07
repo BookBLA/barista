@@ -9,7 +9,7 @@ export const getMemberApi = () => Get('members');
 
 export const deleteMemberApi = () => Delete('members');
 
-export const getMemberAllOtherMembersApi = (params: object) => Get(`members/all-other-members/`, params);
+export const getMemberAllOtherMembersApi = (params: object) => Get(`members/all-other-members/?size=2`, params);
 
 export const getMemberPostcardsApi = () => Get(`members/postcards`);
 

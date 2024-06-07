@@ -6,6 +6,8 @@ import { filterOptions } from '../../../HomeStack.constants';
 export const useFetchAllMembers = (filter: TFilterState) => {
   const [data, setData] = useState<IDdata[]>([]);
   const [page, setPage] = useState(0);
+  const [resetPage, setResetPage] = useState(false);
+  const [totalPage, setTotalPage] = useState(0);
 
   const fetchAllMembersBook = useCallback(async () => {
     const params: Record<string, string> = { page: String(page) };
@@ -20,21 +22,29 @@ export const useFetchAllMembers = (filter: TFilterState) => {
     }
 
     try {
-      const response = await getMemberAllOtherMembersApi({ params });
-      setData((prev) => [...prev, ...(response?.result.content ?? [])]);
+      const { result } = await getMemberAllOtherMembersApi({ params });
+      console.log('@@@result@@@', result.totalPages);
+      setTotalPage(result.totalPages);
+      if (page === 0) {
+        setData(result.content ?? []); // 페이지 0에서는 데이터를 초기화
+      } else {
+        setData((prev) => [...prev, ...(result.content ?? [])]);
+      }
+      // setData((prev) => [...prev, ...(response?.result.content ?? [])]);
     } catch (error) {
       console.error('error', error);
     }
   }, [filter, page]);
 
-  useEffect(() => {
+  const onReset = () => {
     setPage(0);
     setData([]);
-  }, [filter]);
+    setResetPage((prev) => !prev);
+  };
 
   useEffect(() => {
     fetchAllMembersBook();
-  }, [page]);
+  }, [page, resetPage]);
 
-  return { data, setPage, setData };
+  return { data, page, totalPage, setPage, setData, onReset };
 };

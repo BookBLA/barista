@@ -49,3 +49,10 @@ export const BookImageStyled = styled.View`
   width: 72;
   margin-right: 14;
 `;
+
+export const ImageWrapper = styled.View`
+  width: 72px;
+  height: 100px;
+  border-radius: 6px;
+  background-color: #e9e9e9;
+`;

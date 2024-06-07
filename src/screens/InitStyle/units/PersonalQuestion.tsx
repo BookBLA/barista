@@ -45,7 +45,7 @@ const PersonalQuestion = () => {
   const nextPage = async () => {
     await callPostStyleApi();
     resetStyleInfo();
-    movePage('initBookStack')();
+    movePage('initBookStack', { screen: 'addBook', params: { isStylePage: true } })();
     console.log('styleInfo', styleInfo);
   };
 

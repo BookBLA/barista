@@ -49,12 +49,7 @@ httpApi.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // TODO: 성진 - 필요 시 사용 예정
-        // 1. const token = newToken();
-        // 2. httpApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // 3. useAuthStore.getState().saveToken();
-        // 4. return httpApi(originalRequest); // api 재요청
-        useErrorMessage.getState().setErrorMessage('토큰이 만료되었습니다.');
+        useErrorMessage.getState().setErrorMessage('일주일이 경과되어 자동 로그아웃 되었습니다.');
         return useAuthStore.getState().removeToken();
       } catch (error) {
         return Promise.reject(error);

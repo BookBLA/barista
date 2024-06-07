@@ -12,13 +12,16 @@ import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
-import { EBook } from './AddBook.types';
+import { EBook, TProps } from './AddBook.types';
+import { useRoute } from '@react-navigation/native';
 
 const AddBook = () => {
   useManageMargin();
+  const route = useRoute<TProps>();
   const { movePage, handleReset } = useMovePage();
   const { data, fetchGetMemberBook } = useFetchMemberBook();
   const dataLength = data.length;
+  const resetParams = route.params?.isStylePage ? { screen: 'Home' } : { screen: 'Library' };
 
   return (
     <S.Wrapper>
@@ -65,7 +68,7 @@ const AddBook = () => {
           </>
         </S.ColumnStyled>
       </ScrollView>
-      <S.NextButtonStyled onPress={() => handleReset('tapScreens')}>
+      <S.NextButtonStyled onPress={() => handleReset('tapScreens', resetParams)}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>완료</Text>
       </S.NextButtonStyled>
     </S.Wrapper>
