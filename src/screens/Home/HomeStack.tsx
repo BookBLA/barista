@@ -17,9 +17,6 @@ const screens = [
 
 const HomeStack = () => {
   usePushNotifications();
-  useHeaderControl({
-    free: <Header />,
-  });
 
   return (
     <Stack.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
