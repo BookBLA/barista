@@ -12,7 +12,9 @@ const Profile = ({ item }: { item: IDdata }) => {
 
   return (
     <S.ProfileWrapper onPress={movePage('library', { memberId: item?.memberId, isYourLibrary: true })}>
-      <S.BookImage source={item.bookImageUrl ? { uri: item.bookImageUrl } : icons.bookCover} />
+      <S.BookImageWrapper>
+        <S.BookImage source={item.bookImageUrl ? { uri: item.bookImageUrl } : icons.bookCover} />
+      </S.BookImageWrapper>
       <CustomText size="12px">{truncateText(item.bookName, 15)}</CustomText>
       <CustomText size="10px">{`${modifiedName} (${item?.memberAge ?? '0'}살)`}</CustomText>
       <CustomText size="10px" color={colors.textGray}>

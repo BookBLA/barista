@@ -4,7 +4,7 @@ import { filterData } from '../../../../HomeStack.constants';
 import * as S from './Bottom.styles';
 import { IProps } from './Bottom.types';
 
-const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler }: IProps) => {
+const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler, setPage, onReset }: IProps) => {
   useBackHandler();
   const defaultOption = filterData[selectedFilter][0];
   const isSelectedDefault = filter[selectedFilter] === defaultOption;
@@ -12,10 +12,12 @@ const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler }: IProps) =
 
   const handleSelectDefault = () => {
     setFilter({ ...filter, [selectedFilter]: defaultOption });
+    onReset();
   };
 
   const handleSelectOption = (option: string) => {
     setFilter({ ...filter, [selectedFilter]: option });
+    onReset();
   };
 
   return (

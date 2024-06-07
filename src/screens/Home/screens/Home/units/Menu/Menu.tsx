@@ -6,7 +6,7 @@ import { TFilterKeys, TFilterState } from '../../../../HomeStack.types';
 import * as S from './Menu.styles';
 import { IProps } from './Menu.types';
 
-const Menu = ({ handlePresentModalPress, filter, setFilter }: IProps) => {
+const Menu = ({ handlePresentModalPress, filter, setFilter, onReset }: IProps) => {
   const isFilterChanged = useMemo(() => {
     return Object.keys(filter).some((key) => {
       const filterKey = key as TFilterKeys;
@@ -19,7 +19,13 @@ const Menu = ({ handlePresentModalPress, filter, setFilter }: IProps) => {
       <CustomText margin="0 0 8px">서재 구경하기</CustomText>
       <S.FilterWrapper horizontal>
         {isFilterChanged && (
-          <S.FilterBox onPress={() => setFilter({ ...initStates })} isSelect>
+          <S.FilterBox
+            onPress={() => {
+              setFilter({ ...initStates });
+              onReset();
+            }}
+            isSelect
+          >
             <S.FilterImage source={icons.reset} />
             <CustomText size="12px" font="fontRegular">
               초기화
