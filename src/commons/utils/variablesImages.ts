@@ -62,6 +62,7 @@ export const icons = {
   woman: require('../../../assets/images/icons/Woman.png'),
   womanSmall: require('../../../assets/images/icons/WomanSmall.png'),
   warning: require('../../../assets/images/icons/Warning.png'),
+  warning02: require('../../../assets/images/icons/Warning02.png'),
 
   leftArrow: require('../../../assets/images/icons/LeftArrow.png'),
   rightArrow: require('../../../assets/images/icons/RightArrow.png'),

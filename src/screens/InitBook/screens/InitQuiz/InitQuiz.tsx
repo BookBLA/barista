@@ -15,18 +15,26 @@ import Dash from 'react-native-dash';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import truncateText from '../../../../commons/utils/truncateText';
+import useInvalid from './hooks/useInvalid';
 
 const InitQuiz = ({ route }: IProps) => {
   const { isRepresentative, selectedBook } = route?.params ?? '';
   useHeaderControl({
     title: truncateText(selectedBook?.title ?? '', 22),
   });
-  const { control, handleSubmit, watch, formState } = useForm({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { isValid },
+  } = useForm({
     defaultValues,
+    mode: 'onChange',
     resolver: yupResolver(initBookSchema),
   });
   const { callPostMemberBook } = usePostMemberBook(isRepresentative, selectedBook);
   const reviewValue = watch('review');
+  const handleFormError = useInvalid();
 
   return (
     <>
@@ -66,20 +74,23 @@ const InitQuiz = ({ route }: IProps) => {
               </Text>
             </S.RowStyled>
           </View>
-          <Dash
-            style={{
-              width: '85%',
-              height: 1,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginBottom: 10,
-              marginTop: 10,
-            }}
-            dashGap={5}
-            dashLength={5}
-            dashThickness={1.5}
-            dashColor={colors.lineDivider}
-          />
+          <U.CenterWrapper>
+            <Dash
+              style={{
+                width: '85%',
+                height: 1,
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginBottom: 10,
+                marginTop: 10,
+              }}
+              dashGap={5}
+              dashLength={5}
+              dashThickness={1.5}
+              dashColor={colors.lineDivider}
+            />
+          </U.CenterWrapper>
+
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>
               객관식 독서퀴즈 출제하기
@@ -156,9 +167,9 @@ const InitQuiz = ({ route }: IProps) => {
         </KeyboardAwareScrollView>
 
         <CustomButton
-          onPress={handleSubmit(callPostMemberBook)}
-          backgroundColor={formState.isValid ? colors.primary : colors.primary02}
-          fontColor={formState.isValid ? colors.primary02 : colors.textGray}
+          onPress={handleSubmit(callPostMemberBook, handleFormError)}
+          backgroundColor={isValid ? colors.primary : colors.primary02}
+          fontColor={isValid ? colors.primary02 : colors.textGray}
           contents="등록하기"
         />
       </U.Wrapper>

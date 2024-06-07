@@ -3,9 +3,7 @@ import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { IProps } from './CustomBottomSheetModal.types';
 
 const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(({ children, snapPoints, index }, ref) => {
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log(`bottom sheet ${index >= 0 ? '열기' : '닫기'}`);
-  }, []);
+  const handleSheetChanges = useCallback((index: number) => {}, []);
 
   const renderBackdrop = useCallback(
     (props: any) => <BottomSheetBackdrop {...props} pressBehavior="close" appearsOnIndex={0} disappearsOnIndex={-1} />,

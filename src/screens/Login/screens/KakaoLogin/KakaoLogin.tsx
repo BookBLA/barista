@@ -12,12 +12,12 @@ import useManageMargin from '../../../../commons/hooks/useManageMargin';
 const KakaoLogin = () => {
   useManageMargin();
   const { movePage } = useMovePage();
-  const { callPostLogin } = useKakaoLogin();
+  const { handleKakaoLogin } = useKakaoLogin();
   const { authCode, getAuthCode } = useAuthCode();
 
   useEffect(() => {
     if (authCode) {
-      callPostLogin(authCode);
+      handleKakaoLogin(authCode);
     }
   }, [authCode]);
 
@@ -55,7 +55,6 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    // zIndex: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },

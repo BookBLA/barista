@@ -1,44 +1,17 @@
-import { postLogin } from '../../../../../commons/api/login.api';
-import { useInitialRouteName } from '../../../../../commons/hooks/useInitialRouteName';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
-import useGetPushToken from '../../../../../commons/hooks/useGetPushToken';
-import useAuthStore from '../../../../../commons/store/useAuthStore';
-import useMemberStore from '../../../../../commons/store/useMemberStore';
-import useToastStore from '../../../../../commons/store/useToastStore';
-import { usePostPushToken } from '../../../../../commons/hooks/usePostPushToken';
+import { useLogin } from '../../../../../commons/hooks/useLogin';
 
 export const useKakaoLogin = () => {
-  const showToast = useToastStore((state) => state.showToast);
-  const setToken = useAuthStore((state) => state.setToken);
-  const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
-  const getInitialRouteName = useInitialRouteName();
-  const { handleReset } = useMovePage();
-  const { getPushToken } = useGetPushToken();
-  const { postPushToken } = usePostPushToken();
+  const { handleLogin } = useLogin();
 
-  const callPostLogin = async (authCode: string) => {
+  const handleKakaoLogin = async (authCode: string) => {
     try {
-      const { result } = await postLogin(authCode, 'kakao');
-      setToken(result.accessToken);
-      if (result.memberStatus !== 'PROFILE') {
-        const pushToken = await getPushToken();
-        await postPushToken(pushToken);
-      }
-
-      await saveMemberInfo();
-      showToast({
-        content: '로그인에 성공하였습니다.',
-      });
-      handleReset(getInitialRouteName(result.memberStatus));
+      await handleLogin(String(authCode), 'kakao');
     } catch (error) {
-      console.log('error', error);
-      showToast({
-        content: '로그인에 실패하였습니다.',
-      });
+      console.error(error);
     }
   };
 
   return {
-    callPostLogin,
+    handleKakaoLogin,
   };
 };

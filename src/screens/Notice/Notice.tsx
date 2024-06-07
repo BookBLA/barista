@@ -7,11 +7,12 @@ import useHeaderControl from '../../commons/hooks/useHeaderControl';
 import useMovePage from '../../commons/hooks/useMovePage';
 import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
+import { Warning } from './units/Warning/Warning';
 
 const Notice = () => {
   const { handleReset } = useMovePage();
   useHeaderControl({
-    title: '설정',
+    title: '알림',
     onPressLeft: () => handleReset('tapScreens'),
   });
   const { data, setData } = useGetAlarms();
@@ -33,29 +34,35 @@ const Notice = () => {
 
   return (
     <S.Wrapper>
-      <TouchableOpacity>
-        <CustomText margin="0 0 10px" onPress={() => onClickDeleteAlarm(null)}>
-          전체 삭제
-        </CustomText>
-      </TouchableOpacity>
-      <S.ScrollWrapper>
-        {data.map((el: IAlarmData, dex) => (
-          <S.NoticeWrapper key={dex}>
-            <CustomText>{el.title}</CustomText>
-            <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
-              {el.body}
+      {data.length > 0 ? (
+        <>
+          <TouchableOpacity>
+            <CustomText margin="0 0 10px" onPress={() => onClickDeleteAlarm(null)}>
+              전체 삭제
             </CustomText>
-            <S.BottomWrapper>
-              <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
-                YY.MM.DD
-              </CustomText>
-              <TouchableOpacity onPress={() => onClickDeleteAlarm(String(el.memberPushAlarmId))}>
-                <Image source={Close} />
-              </TouchableOpacity>
-            </S.BottomWrapper>
-          </S.NoticeWrapper>
-        ))}
-      </S.ScrollWrapper>
+          </TouchableOpacity>
+          <S.ScrollWrapper>
+            {data.map((el: IAlarmData, dex) => (
+              <S.NoticeWrapper key={dex}>
+                <CustomText>{el.title}</CustomText>
+                <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
+                  {el.body}
+                </CustomText>
+                <S.BottomWrapper>
+                  <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
+                    {el.createdAt}
+                  </CustomText>
+                  <TouchableOpacity onPress={() => onClickDeleteAlarm(String(el.memberPushAlarmId))}>
+                    <Image source={Close} />
+                  </TouchableOpacity>
+                </S.BottomWrapper>
+              </S.NoticeWrapper>
+            ))}
+          </S.ScrollWrapper>
+        </>
+      ) : (
+        <Warning />
+      )}
     </S.Wrapper>
   );
 };

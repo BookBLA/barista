@@ -3,8 +3,11 @@ import { useErrorMessage } from '../store/useErrorMessage';
 import useAuthStore from '../store/useAuthStore';
 import useToastStore from '../store/useToastStore';
 import * as Device from 'expo-device';
+import { getAppVersion } from './getAppVersion';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
+
+const appVersion = getAppVersion();
 
 httpApi.interceptors.request.use(async (request) => {
   console.debug('headers: ', request.headers);
@@ -24,6 +27,8 @@ httpApi.interceptors.request.use(
     const osVersion = Device.osVersion;
     config.headers['x-device-type'] = systemName === 'iOS' ? 'ios' : 'android';
     config.headers['x-os-version'] = osVersion;
+    config.headers['x-app-version'] = appVersion;
+
     return config;
   },
   (error) => {
@@ -44,12 +49,7 @@ httpApi.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
-        // TODO: 성진 - 필요 시 사용 예정
-        // 1. const token = newToken();
-        // 2. httpApi.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        // 3. useAuthStore.getState().saveToken();
-        // 4. return httpApi(originalRequest); // api 재요청
-        useErrorMessage.getState().setErrorMessage('토큰이 만료되었습니다.');
+        useErrorMessage.getState().setErrorMessage('일주일이 경과되어 자동 로그아웃 되었습니다.');
         return useAuthStore.getState().removeToken();
       } catch (error) {
         return Promise.reject(error);

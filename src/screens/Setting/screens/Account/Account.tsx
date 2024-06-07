@@ -99,16 +99,16 @@ const Account = () => {
         </CustomText>
         <S.BetweenWrapper>
           <CustomText margin="16px 0">매칭 활성화</CustomText>
-          <Switch
-            value={memberStatus === EMemberStatus.COMPLETED ? true : false}
+          <Switch // TODO: 성진 - 커스텀 스위치 만들예정
+            value={memberStatus === EMemberStatus.COMPLETED}
             onValueChange={onClickEnableMatching}
             circleSize={16}
             barHeight={20}
             circleBorderWidth={0}
             backgroundActive={colors.primary}
             backgroundInactive={colors.buttonAuthToggle}
-            circleActiveColor={'#fff'}
-            circleInActiveColor={'#fff'}
+            circleActiveColor="#fff"
+            circleInActiveColor="#fff"
             renderActiveText={false}
             renderInActiveText={false}
             switchLeftPx={3}
@@ -132,7 +132,7 @@ const Account = () => {
           </CustomText>
         </S.BetweenWrapper>
       </S.BottomWrapper>
-      <CustomModal modalConfig={modalConfig}></CustomModal>
+      <CustomModal modalConfig={modalConfig} />
     </>
   );
 };

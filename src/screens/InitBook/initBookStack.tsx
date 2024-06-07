@@ -13,7 +13,7 @@ const screens = [
   { name: 'initQuiz', component: InitQuiz },
 ];
 
-const InitBookStack = ({ route }: { route: unknown }) => {
+const InitBookStack = () => {
   return (
     <Stack.Navigator initialRouteName="addBook" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (

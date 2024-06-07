@@ -6,16 +6,12 @@ export const usePostPushToken = () => {
 
   const postPushToken = async (token: string) => {
     try {
-      const result = await postPushes({
+      await postPushes({
         token: token.split('[')[1].split(']')[0],
       });
-      showToast({
-        content: `토큰을 보냈습니다. ${token}`,
-      });
-      console.log('result', result);
     } catch (err) {
       showToast({
-        content: `토큰 전송애 실패하였습니다. ${token}`,
+        content: `푸시토큰 전송애 실패하였습니다.`,
       });
       console.error(err);
     }

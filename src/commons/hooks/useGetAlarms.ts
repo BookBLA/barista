@@ -5,6 +5,7 @@ export interface IAlarmData {
   memberPushAlarmId: number;
   title: string;
   body: string;
+  createdAt: string;
 }
 
 export const useGetAlarms = () => {

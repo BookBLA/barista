@@ -141,3 +141,10 @@ export const PageIndexTextStyled = styled.Text`
   margin: 0 10px;
   color: ${(props: { selected: boolean }) => (props.selected ? 'black' : colors.textGray1)};
 `;
+
+export const CenterWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+`;
