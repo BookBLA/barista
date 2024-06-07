@@ -9,8 +9,10 @@ import { ScrollView } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
 import useToastStore from '../../../commons/store/useToastStore';
 import { img } from '../../../commons/utils/variablesImages';
+import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
+  const { handleLimitTextLine } = useLimitTextLine();
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
   const [bookQuizText, onChangeBookQuizText] = useState<string>('한 줄로 독서 퀴즈가 들어갈 자리입니다.');
@@ -116,6 +118,26 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
     fetchBookQuiz(memberBookId);
   }, []);
 
+  const onChangeBookReview = (text: string) => {
+    handleLimitTextLine(text, onChangeBookReviewText, 4);
+  };
+  const onChangeBookQuiz = (text: string) => {
+    handleLimitTextLine(text, onChangeBookQuizText, 2);
+  };
+  const onChangeBookAnswer = (text: string, index: number) => {
+    switch (index) {
+      case 1:
+        handleLimitTextLine(text, onChangeBookQuizFirstAnswerText, 1);
+        break;
+      case 2:
+        handleLimitTextLine(text, onChangeBookQuizSecondAnswerText, 1);
+        break;
+      case 3:
+        handleLimitTextLine(text, onChangeBookQuizThirdAnswerText, 1);
+        break;
+    }
+  };
+
   return (
     <>
       <KeyboardAwareScrollView
@@ -165,13 +187,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               <S.BookReviewInputBox
                 editable
                 multiline
-                numberOfLines={4}
+                // numberOfLines={4}
                 maxLength={100}
                 inputMode="text"
                 placeholder="감상문을 적어주세요!"
                 placeholderTextColor={colors.textGray2}
                 textAlignVertical="top"
-                onChangeText={(text: React.SetStateAction<string>) => onChangeBookReviewText(text)}
+                onChangeText={(text: string) => onChangeBookReview(text)}
                 style={{ backgroundColor: '#F5F0E2' }}
                 value={bookReviewText}
                 scrollEnabled
@@ -213,12 +235,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               <BookQuizQuestionInputBox
                 editable
                 multiline
-                numberOfLines={2}
-                maxLength={50}
+                // numberOfLines={2}
+                maxLength={21}
                 inputMode="text"
                 placeholder="독서 퀴즈가 들어갈 자리입니다."
                 placeholderTextColor={colors.textGray2}
-                onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizText(text)}
+                onChangeText={(text: string) => onChangeBookQuiz(text)}
                 textAlignVertical="top"
                 value={bookQuizText}
                 scrollEnabled
@@ -239,12 +261,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      numberOfLines={1}
-                      maxLength={25}
+                      // numberOfLines={1}
+                      maxLength={21}
                       inputMode="text"
                       placeholder="정답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
-                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizFirstAnswerText(text)}
+                      onChangeText={(text: string) => onChangeBookAnswer(text, 1)}
                       textAlignVertical="center"
                       value={bookQuizFirstAnswerText}
                     />
@@ -265,12 +287,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      numberOfLines={1}
-                      maxLength={25}
+                      // numberOfLines={1}
+                      maxLength={21}
                       inputMode="text"
                       placeholder="오답이 들어갈 자리입니다."
                       placeholderTextColor={colors.textGray2}
-                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizSecondAnswerText(text)}
+                      onChangeText={(text: string) => onChangeBookAnswer(text, 2)}
                       textAlignVertical="center"
                       value={bookQuizSecondAnswerText}
                     />
@@ -291,12 +313,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                   {isModifiableBookQuestion ? (
                     <S.BookQuizAnswerInputBox
                       editable
-                      numberOfLines={1}
-                      maxLength={25}
+                      // numberOfLines={1}
+                      maxLength={21}
                       inputMode="text"
                       placeholder="오답이 들어갈 영역입니다."
                       placeholderTextColor={colors.textGray2}
-                      onChangeText={(text: React.SetStateAction<string>) => onChangeBookQuizThirdAnswerText(text)}
+                      onChangeText={(text: string) => onChangeBookAnswer(text, 3)}
                       textAlignVertical="center"
                       value={bookQuizThirdAnswerText}
                     />

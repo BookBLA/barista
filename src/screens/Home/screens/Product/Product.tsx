@@ -3,8 +3,13 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
+import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+import Header from '../Home/units/Header/Header';
 
 const Product = () => {
+  useHeaderControl({
+    free: <Header />,
+  });
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   useEffect(() => {

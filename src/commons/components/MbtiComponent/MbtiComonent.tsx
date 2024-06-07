@@ -12,7 +12,7 @@ const MbtiComponent = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<Se
     ['T\n사고형', 'F\n감정형'],
     ['J\n판단형', 'P\n인식형'],
   ];
-  console.log('mbti', mbti);
+  // console.log('mbti', mbti);
 
   return (
     <View style={{ height: deviceHeight * 0.52, justifyContent: 'space-between' }}>

@@ -11,7 +11,7 @@ export const useInitialRouteName = () => {
     const routeMap: TRouteMap = {
       PROFILE: 'termsOfService',
       APPROVAL: 'waitConfirm',
-      STYLE: 'initStyleStack',
+      STYLE: 'completePage',
       BOOK: 'initBookStack',
       COMPLETED: 'tapScreens',
       MATCHING_DISABLED: 'tapScreens',

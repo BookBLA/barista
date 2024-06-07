@@ -12,8 +12,13 @@ import Lock from './units/Lock/Lock';
 import useMemberStore from '../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
 import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
+import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+import Header from './units/Header/Header';
 
 const Home = () => {
+  useHeaderControl({
+    free: <Header />,
+  });
   const [filter, setFilter] = useState(initStates);
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const { bottomRef, handleOpenBottomSheet, useBackHandler } = useBottomSheet();

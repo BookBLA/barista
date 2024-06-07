@@ -197,14 +197,14 @@ const EmailAuth = () => {
                 <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>확인</Text>
               </S.ButtonStyled>
             </S.RowStyled>
-            {isSuccess === 'error' && (
+            {isSuccess === IsSuccess.error && (
               <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
                 <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
                   인증 코드가 올바르지 않습니다.
                 </Text>
               </S.RowStyled>
             )}
-            {isSuccess === 'true' && (
+            {isSuccess === IsSuccess.true && (
               <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
                 <Text style={{ color: colors.primary, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
                   인증 코드가 확인되었습니다.

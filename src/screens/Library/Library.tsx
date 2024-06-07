@@ -98,7 +98,7 @@ const Library: React.FC<Props> = ({ route }) => {
       splitBook(result.bookResponses);
 
       if (result.profileImageUrl) {
-        setIsProfileImageModificationStatus(true);
+        if (result.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
       }
     } catch {
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
