@@ -13,12 +13,13 @@ import { useStyleStore } from '../../../commons/store/useStyle';
 import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
 
 const PersonalQuestion = () => {
   useManageMargin();
   const [question, setQuestion] = useState('');
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
+  const { handleLimitTextLine } = useLimitTextLine();
 
   const callPostStyleApi = async () => {
     try {
@@ -60,7 +61,8 @@ const PersonalQuestion = () => {
           </Text>
           <T.TextFiledStyled
             defaultValue={styleInfo.memberAsk}
-            onChangeText={(text: string) => setQuestion(text)}
+            onChangeText={(text: string) => handleLimitTextLine(text, setQuestion, 3)}
+            value={question}
             style={{
               color: colors.primary,
             }}

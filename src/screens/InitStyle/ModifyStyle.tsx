@@ -16,6 +16,7 @@ import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberStyle.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
+import { useLimitTextLine } from '../../commons/hooks/useLimitTextLine';
 
 const buttonList = [
   'MBTI',
@@ -32,6 +33,7 @@ const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는
 const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 
 const ModifyStyle = () => {
+  const { handleLimitTextLine } = useLimitTextLine();
   const [mbti, setMbti] = useState(['', '', '', '']);
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const showToast = useToastStore((state) => state.showToast);
@@ -41,8 +43,10 @@ const ModifyStyle = () => {
   const handleTextChange = (text: string) => {
     if (text.length !== 0) {
       //question이 비어있지 않다면
-      setQuestion(text);
-      updateStyleInfo('memberAsk', text);
+      handleLimitTextLine(text, setQuestion, 4);
+      // console.log('qeustion', question);
+      // setQuestion(text);
+      updateStyleInfo('memberAsk', question);
     }
   };
 
@@ -315,7 +319,8 @@ const ModifyStyle = () => {
               </Text>
               <T.TextFiledStyled
                 defaultValue={question}
-                onChangeText={handleTextChange}
+                value={question}
+                onChangeText={(text: string) => handleTextChange(text)}
                 //onFocus={handleFocus}
                 // onBlur={() => updateStyleInfo('memberAsk', question)}
                 style={{
