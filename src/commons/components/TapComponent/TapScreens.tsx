@@ -63,6 +63,7 @@ const TapScreens = () => {
               style={{ width: 21, height: 21 }}
             />
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
