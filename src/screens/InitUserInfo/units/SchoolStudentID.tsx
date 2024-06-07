@@ -103,12 +103,14 @@ const SchoolStudentID = () => {
           실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
         </Text>
         <S.ButtonStyled onPress={() => uploadeImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
-          <Image
-            source={
-              userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
-            }
-            style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}
-          />
+          <View style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}>
+            <Image
+              source={
+                userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
+              }
+              style={{ objectFit: 'contain', width: '100%', height: '100%', borderRadius: 10 }}
+            />
+          </View>
         </S.ButtonStyled>
 
         <Text

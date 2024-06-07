@@ -1,11 +1,11 @@
 import { View } from 'react-native';
 
-//import * as S from './Example02.styles';
-import MbtiItem from '../../commons/components/MbtiItem/MbtiItem';
-import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
+//import * as S from './MbtiComponent.styles';
+import MbtiItem from '../MbtiItem/MbtiItem';
+import { deviceHeight } from '../../utils/dimensions';
 import { Dispatch, SetStateAction } from 'react';
 
-const Example02 = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<SetStateAction<string[]>> }) => {
+const MbtiComponent = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<SetStateAction<string[]>> }) => {
   const mbtiNames: string[][] = [
     ['E\n외향형', 'I\n내향형'],
     ['S\n감각형', 'N\n직관형'],
@@ -23,4 +23,4 @@ const Example02 = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<SetSta
   );
 };
 
-export default Example02;
+export default MbtiComponent;

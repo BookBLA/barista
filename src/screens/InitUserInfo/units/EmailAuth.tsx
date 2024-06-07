@@ -129,14 +129,16 @@ const EmailAuth = () => {
                   width: 70,
                   marginBottom: 6,
                   backgroundColor:
-                    isSuccess !== IsSuccess.false || email === '' ? colors.buttonAuthToggle : colors.primary,
+                    (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
+                      ? colors.buttonAuthToggle
+                      : colors.primary,
                 }}
               >
                 <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>전송</Text>
               </S.ButtonStyled>
             </S.RowStyled>
             {isSuccess === IsSuccess.done || isSuccess === IsSuccess.error ? (
-              <TouchableOpacity onPress={() => setIsSuccess(IsSuccess.false)}>
+              <TouchableOpacity onPress={() => setIsSuccess(IsSuccess.resend)}>
                 <Text
                   style={{
                     color: colors.textGray,
@@ -168,7 +170,7 @@ const EmailAuth = () => {
                   value={code}
                   placeholder="000000"
                   placeholderTextColor={colors.textGray2}
-                  onChangeText={setCode}
+                  onChangeText={(code: string) => setCode(code)}
                   style={{
                     color: colors.primary,
                     width: '78%',
