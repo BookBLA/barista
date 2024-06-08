@@ -14,15 +14,17 @@ import { EMemberStatus } from '../../../../commons/types/memberStatus';
 import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import Header from './units/Header/Header';
+import { RefreshControl } from 'react-native';
 
 const Home = () => {
   useHeaderControl({
     free: <Header />,
   });
+  usePushNotifications();
   const [filter, setFilter] = useState(initStates);
   const [selectedFilter, setSelectedFilter] = useState<TFilterKeys>('gender');
   const { bottomRef, handleOpenBottomSheet, useBackHandler } = useBottomSheet();
-  const { data, totalPage, page, setPage, onReset } = useFetchAllMembers(filter);
+  const { data, refreshing, setPage, onReset, onRefresh, onNextPage } = useFetchAllMembers(filter);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const dataLength = data.length;
   const snapPoints = useMemo(() => ['40%', '60%'], []);
@@ -30,7 +32,6 @@ const Home = () => {
     setSelectedFilter(filterKey);
     handleOpenBottomSheet();
   };
-  usePushNotifications();
 
   return (
     <>
@@ -42,28 +43,25 @@ const Home = () => {
           setPage={setPage}
           onReset={onReset}
         />
-        {dataLength > 0 && (
-          <S.PositionedWrapper>
-            {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
-            <S.ContentWrapper
-              data={data}
-              renderItem={({ item, index }: { item: IDdata; index: number }) => (
-                <Item item={item} index={index} dataLength={dataLength} data={data} />
-              )}
-              refreshing={onReset}
-              keyExtractor={(item: IDdata, index: number) => `${item.memberId}-${index}`}
-              onEndReached={() => {
-                if (page === totalPage - 1) {
-                  console.log('리턴하였습니다.', page, totalPage);
-                  return;
-                }
-                setPage((prevPage) => prevPage + 1);
-              }}
-              onEndReachedThreshold={0.2}
-              removeClippedSubviews
-            />
-          </S.PositionedWrapper>
-        )}
+        <S.PositionedWrapper>
+          {dataLength > 0 && (
+            <>
+              {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
+              <S.ContentWrapper
+                data={data}
+                renderItem={({ item, index }: { item: IDdata; index: number }) => (
+                  <Item item={item} index={index} dataLength={dataLength} data={data} />
+                )}
+                refreshing={onReset}
+                keyExtractor={(item: IDdata, index: number) => `${item.memberId}-${index}`}
+                onEndReached={onNextPage}
+                onEndReachedThreshold={0.2}
+                removeClippedSubviews
+                refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+              />
+            </>
+          )}
+        </S.PositionedWrapper>
       </S.Wrapper>
 
       <CustomBottomSheetModal

@@ -4,6 +4,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin-top: 10px;
 `;
 

@@ -8,6 +8,7 @@ import useMovePage from '../../commons/hooks/useMovePage';
 import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
+import { formatDate } from '../../commons/utils/dateUtils';
 
 const Notice = () => {
   const { handleReset } = useMovePage();
@@ -50,7 +51,7 @@ const Notice = () => {
                 </CustomText>
                 <S.BottomWrapper>
                   <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
-                    {el.createdAt}
+                    {formatDate(el.createdAt)}
                   </CustomText>
                   <TouchableOpacity onPress={() => onClickDeleteAlarm(String(el.memberPushAlarmId))}>
                     <Image source={Close} />

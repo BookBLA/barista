@@ -5,7 +5,7 @@ import * as S from './Bottom.styles';
 import { IProps } from './Bottom.types';
 
 const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler, setPage, onReset }: IProps) => {
-  useBackHandler();
+  useBackHandler(true);
   const defaultOption = filterData[selectedFilter][0];
   const isSelectedDefault = filter[selectedFilter] === defaultOption;
   const options = filterData[selectedFilter].slice(1);

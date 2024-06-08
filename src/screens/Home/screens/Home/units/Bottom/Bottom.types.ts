@@ -5,7 +5,7 @@ export interface IProps {
   filter: TFilterState;
   setFilter: (filter: TFilterState) => void;
   selectedFilter: TFilterKeys;
-  useBackHandler: () => void;
+  useBackHandler: (enable: boolean) => void;
   setPage: Dispatch<SetStateAction<number>>;
   onReset: () => void;
 }

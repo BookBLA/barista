@@ -55,7 +55,6 @@ export const CustomNavigator = () => {
           marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
         }}
       >
-        {/* <Stack.Navigator initialRouteName="notice" screenOptions={{ headerShown: false }}> */}
         <Stack.Navigator initialRouteName={getInitialRouteName()} screenOptions={{ headerShown: false }}>
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />

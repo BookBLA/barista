@@ -8,6 +8,7 @@ export const useFetchAllMembers = (filter: TFilterState) => {
   const [page, setPage] = useState(0);
   const [resetPage, setResetPage] = useState(false);
   const [totalPage, setTotalPage] = useState(0);
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchAllMembersBook = useCallback(async () => {
     const params: Record<string, string> = { page: String(page) };
@@ -23,7 +24,6 @@ export const useFetchAllMembers = (filter: TFilterState) => {
 
     try {
       const { result } = await getMemberAllOtherMembersApi({ params });
-      console.log('@@@result@@@', result.totalPages);
       setTotalPage(result.totalPages);
       if (page === 0) {
         setData(result.content ?? []); // 페이지 0에서는 데이터를 초기화
@@ -33,6 +33,8 @@ export const useFetchAllMembers = (filter: TFilterState) => {
       // setData((prev) => [...prev, ...(response?.result.content ?? [])]);
     } catch (error) {
       console.error('error', error);
+    } finally {
+      setRefreshing(false);
     }
   }, [filter, page]);
 
@@ -42,9 +44,21 @@ export const useFetchAllMembers = (filter: TFilterState) => {
     setResetPage((prev) => !prev);
   };
 
+  const onRefresh = () => {
+    setRefreshing(true);
+    onReset();
+  };
+
+  const onNextPage = () => {
+    if (page === totalPage - 1) {
+      return;
+    }
+    setPage((prevPage) => prevPage + 1);
+  };
+
   useEffect(() => {
     fetchAllMembersBook();
   }, [page, resetPage]);
 
-  return { data, page, totalPage, setPage, setData, onReset };
+  return { data, page, totalPage, refreshing, setPage, setData, onReset, onRefresh, onNextPage };
 };
