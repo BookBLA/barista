@@ -68,7 +68,19 @@ const OpenChatLink = () => {
         {/* <S.ColumnStyled style={{ height: '80%' }}> */}
         <S.ColumnStyled style={{ height: 'auto' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
+            <S.ContentStyled>오픈채팅방 링크 등록해 주세요.</S.ContentStyled>
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 30,
+              }}
+            >
+              알파벳으로 된 URL 링크만 붙여 넣어주세요.{'\n'}
+              링크만 입력해 주셔야 채팅을 보낼 수 있습니다.
+            </Text>
             <OpenChatTextFiledStyled
               value={userInfo.openKakaoRoomUrl}
               onChangeText={(text: string) => updateUserInfo({ openKakaoRoomUrl: text })}

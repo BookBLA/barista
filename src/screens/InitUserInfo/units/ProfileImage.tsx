@@ -98,7 +98,7 @@ const ProfileImage = () => {
       {/* <S.ColumnStyled style={{ height: '80%' }}> */}
       <S.ColumnStyled style={{ height: 'auto' }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
-          <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
+          <S.ContentStyled>프로필 사진 등록해 주세요.</S.ContentStyled>
           <Text
             style={{
               color: colors.textGray3,
