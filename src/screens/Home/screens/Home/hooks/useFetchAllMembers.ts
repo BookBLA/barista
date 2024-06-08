@@ -26,11 +26,10 @@ export const useFetchAllMembers = (filter: TFilterState) => {
       const { result } = await getMemberAllOtherMembersApi({ params });
       setTotalPage(result.totalPages);
       if (page === 0) {
-        setData(result.content ?? []); // 페이지 0에서는 데이터를 초기화
+        setData(result.content ?? []);
       } else {
         setData((prev) => [...prev, ...(result.content ?? [])]);
       }
-      // setData((prev) => [...prev, ...(response?.result.content ?? [])]);
     } catch (error) {
       console.error('error', error);
     } finally {
