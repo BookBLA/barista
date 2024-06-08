@@ -15,8 +15,12 @@ export const useBottomSheet = () => {
     }
   };
 
-  const useBackHandler = () => {
+  const useBackHandler = (enabled: boolean) => {
     useEffect(() => {
+      if (!enabled) {
+        return;
+      }
+
       const backAction = () => {
         if (bottomRef.current) {
           handleCloseBottomSheet();
@@ -24,11 +28,11 @@ export const useBottomSheet = () => {
         }
         return false;
       };
-
       const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-
-      return () => backHandler.remove();
-    }, []);
+      return () => {
+        backHandler.remove();
+      };
+    }, [enabled]);
   };
 
   return { bottomRef, handleOpenBottomSheet, handleCloseBottomSheet, useBackHandler };
