@@ -10,18 +10,18 @@ export const Wrapper = styled.SafeAreaView`
   background-color: #fff;
 `;
 
-// TODO: 성진 - FlatList로 변경 예정
 export const ContentWrapper = styled.FlatList`
   display: flex;
   flex-wrap: wrap;
   width: ${deviceWidth}px;
-  background-color: ${colors.background};
-  border-radius: 20px 20px 0px 0px;
 `;
 
 export const PositionedWrapper = styled.View`
   position: relative;
+  width: 100%;
   height: 85%;
+  background-color: ${colors.background};
+  border-radius: 20px 20px 0px 0px;
 `;
 
 export const BodyWrapper = styled.View`
