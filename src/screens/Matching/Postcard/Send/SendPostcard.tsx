@@ -72,7 +72,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
               <S.GenderIconStyled source={memberGender === EGender.MALE ? manIcon : womanIcon} />
             </S.UserInfoNameWrapper>
             <S.SchoolNameText>{memberSchoolName}</S.SchoolNameText>
-            <S.BookInfoText>{`${representativeBookTitle} · ${representativeBookAuthor.join(', ')}`}</S.BookInfoText>
+            <S.BookInfoText>{`${representativeBookTitle} · ${representativeBookAuthor?.join(', ')}`}</S.BookInfoText>
           </S.UserInfoWrapper>
         </S.UserInfoViewStyled>
         <S.ButtonContainerViewStyled>

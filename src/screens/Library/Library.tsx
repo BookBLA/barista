@@ -1,4 +1,4 @@
-import { BackHandler, Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
@@ -35,6 +35,8 @@ import useToastStore from '../../commons/store/useToastStore';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 import { useUserStore } from '../../commons/store/useUserinfo';
 import { icons, img } from '../../commons/utils/variablesImages';
+import { isAxiosErrorResponse } from '../../commons/utils/isAxiosErrorResponse';
+import { EStatusCode } from '../../commons/types/statusCode';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -110,6 +112,7 @@ const Library: React.FC<Props> = ({ route }) => {
       const result = await getYourLibraryInfo(targetMemberId);
       setLibraryInfo(result);
       splitBook(result.bookResponses);
+      setIsProfileImageModificationStatus(true);
     } catch {
       console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
     }
@@ -205,8 +208,19 @@ const Library: React.FC<Props> = ({ route }) => {
   };
 
   const deleteBookInBookList = async () => {
-    await deleteBook(selectedBookId);
-    await fetchMyLibraryInfo();
+    try {
+      await deleteBook(selectedBookId);
+      await fetchMyLibraryInfo();
+    } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
+      const { code, message } = error.response.data;
+      if (code === EStatusCode.MEMBER_BOOK_005) {
+        showToast({
+          content: message,
+        });
+      }
+    }
+
     modifyBookModalRef.current?.close();
   };
 
@@ -259,22 +273,6 @@ const Library: React.FC<Props> = ({ route }) => {
     handleCloseBottomSheet();
   };
 
-  useEffect(() => {
-    const onBackPress = () => {
-      if (modifyBookModalRef.current) {
-        modifyBookModalRef.current.close();
-        return true;
-      }
-      return false;
-    };
-
-    BackHandler.addEventListener('hardwareBackPress', onBackPress);
-
-    return () => {
-      BackHandler.removeEventListener('hardwareBackPress', onBackPress);
-    };
-  }, []);
-
   useHeaderControl(
     isYourLibrary
       ? {
@@ -298,7 +296,7 @@ const Library: React.FC<Props> = ({ route }) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
       <S.UserInfoContainerView>
-        {isProfileImageModificationStatus && (
+        {isProfileImageModificationStatus && !isYourLibrary && (
           <S.UserModificationStatusBar>
             <CustomText size="14px" font="fontMedium" color="#F7F4ED">
               사진이 수정되어 승인 대기중입니다.
@@ -310,7 +308,7 @@ const Library: React.FC<Props> = ({ route }) => {
             source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
             blurRadius={platformBlurRadius}
           />
-          {isProfileImageModificationStatus && <S.OverlayImage source={icons.hourGlass} />}
+          {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
           {!isYourLibrary && (
             <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
               <S.ProfileImageModificationImage
