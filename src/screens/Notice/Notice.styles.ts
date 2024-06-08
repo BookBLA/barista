@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 import { colors } from '../../commons/styles/variablesStyles';
-import { Warning } from './units/Warning/Warning';
 
 export const Wrapper = styled.View`
   display: flex;
@@ -39,7 +38,7 @@ export const WarningWrapper = styled.View`
 export const WarningImgWrapper = styled.View`
   width: 51px;
   height: 51px;
-  border-radius: 50%;
+  border-radius: 50px;
 `;
 
 export const WarningImage = styled.Image`
