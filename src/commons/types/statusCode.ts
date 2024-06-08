@@ -8,4 +8,8 @@ export enum EStatusCode {
   회원탈퇴한 뒤에 30일이 지나지 않았습니다.
   */
   LOGIN_002 = 'login_002',
+
+  MEMBER_Email_003 = 'member_email_003',
+
+  MEMBER_BOOK_005 = 'member-book_005',
 }
