@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 enum IsSuccess {
   false = 'false', // 이메일 전송 전

@@ -8,16 +8,24 @@ import React, { useState } from 'react';
 import nextArrow from '../../../assets/images/icons/NextArrow.png';
 import { useAgreementStore } from '../../commons/store/useAgreement';
 import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
-import usePushNotifications from '../../commons/hooks/usePushNotifications';
+import useGetPushToken from '../../commons/hooks/useGetPushToken';
+import { usePostPushToken } from '../../commons/hooks/usePostPushToken';
 
 const TermsOfService = () => {
-  usePushNotifications();
   const { movePage } = useMovePage();
-  const { updateAgreement, agreementInfo } = useAgreementStore();
+  const { updateAgreement } = useAgreementStore();
+  const { getPushToken } = useGetPushToken();
+  const { postPushToken } = usePostPushToken();
 
   const handleAgreementLinkPress = (index: number) => {
     const url = agreementUrls[index - 2]; // index는 1부터 시작하므로 1을 빼줘야 해당 인덱스의 주소에 접근 가능
     Linking.openURL(url);
+  };
+
+  const onClickMovePage = async () => {
+    const pushToken = await getPushToken();
+    await postPushToken(pushToken);
+    movePage('initUserinfoStack')();
   };
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
@@ -25,7 +33,6 @@ const TermsOfService = () => {
   const handleCheckboxChange = (index: number) => {
     const updatedChecked = [...isChecked];
     if (index === 0) {
-      // If the first checkbox is clicked, toggle all other checkboxes accordingly
       const newValue = !updatedChecked[0];
       for (let i = 0; i < updatedChecked.length; i++) {
         updatedChecked[i] = newValue;
@@ -33,7 +40,6 @@ const TermsOfService = () => {
     } else {
       updatedChecked[index] = !updatedChecked[index];
 
-      // If any other checkbox is clicked, and it becomes false, set the first checkbox to false
       if (!updatedChecked[index]) {
         updatedChecked[0] = false;
       }
@@ -87,7 +93,7 @@ const TermsOfService = () => {
         </T.ColumnStyled>
       </View>
       <S.NextButtonStyled
-        onPress={isActive === true ? movePage('initUserinfoStack') : undefined}
+        onPress={isActive === true ? onClickMovePage : undefined}
         style={{ backgroundColor: isActive === true ? colors.primary : colors.buttonAuthToggle }}
       >
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>

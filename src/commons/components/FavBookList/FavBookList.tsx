@@ -2,18 +2,30 @@ import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/memberBook.api';
-import { useErrorMessage } from '../../store/useErrorMessage';
 import { icons, img } from '../../utils/variablesImages';
 import truncateText from '../../utils/truncateText';
+import { EStatusCode } from '../../types/statusCode';
+import { isAxiosErrorResponse } from '../../utils/isAxiosErrorResponse';
+import useToastStore from '../../store/useToastStore';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const callDeleteMemberBook = async () => {
     try {
       await deleteMemberBookApi(item.memberBookId);
       await fetchGetMemberBook();
     } catch (error) {
-      if (error instanceof Error) {
-        useErrorMessage.getState().setErrorMessage(error.message);
+      if (!isAxiosErrorResponse(error)) return;
+      const { code, message } = error.response.data;
+      if (code === EStatusCode.MEMBER_BOOK_005) {
+        showToast({
+          content: message,
+        });
+      } else {
+        showToast({
+          content: '알 수 없는 이유로 삭제에 실패하였습니다.',
+        });
       }
     }
   };

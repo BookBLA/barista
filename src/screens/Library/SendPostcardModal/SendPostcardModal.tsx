@@ -41,11 +41,6 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
 
   const answerAlphabetIndex = ['A', 'B', 'C', 'D', 'E'];
 
-  console.log(bookInfoList[currentQuizIndex].quiz);
-  console.log(bookInfoList[currentQuizIndex].quiz);
-  console.log(bookInfoList[currentQuizIndex].quiz);
-  console.log(bookInfoList[currentQuizIndex].quiz);
-
   const fetchBookInfo = async (memberBookIdList: number[]) => {
     const bookInfoResultList = await Promise.all(memberBookIdList.map((memberBookId) => getBookInfo(memberBookId)));
     const bookQuizInfoResultList = await Promise.all(
