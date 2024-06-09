@@ -3,7 +3,6 @@ import { colors } from '../../commons/styles/variablesStyles';
 
 export const Wrapper = styled.View`
   height: 100%;
-  background-color: red;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -19,8 +18,6 @@ export const InnerWrapper = styled.View`
 export const LogoImage = styled.Image`
   width: 150px;
   height: 108px;
-  /* width: '70%'; */
-  /* height: '50%'; */
   margin-top: 162px;
   margin-bottom: 24px;
 `;

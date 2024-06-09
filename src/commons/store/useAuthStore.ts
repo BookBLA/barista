@@ -4,7 +4,7 @@ import { getToken, saveToken } from './tokenStore';
 interface IAuth {
   token: string;
   setToken: (token: string) => void;
-  removeToken: () => void;
+  removeToken: () => Promise<void>;
   initializeToken: () => Promise<string | null>;
 }
 

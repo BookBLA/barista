@@ -1,31 +1,44 @@
-import { format, parseISO, differenceInHours, addDays, differenceInDays } from 'date-fns';
+import { format, differenceInHours, differenceInMinutes, addDays, differenceInDays } from 'date-fns';
+
+const KST_OFFSET = 9 * 60 * 60 * 1000;
 
 const parseDate = (dateString: string) => {
-  const dateWithoutNano = dateString.substring(0, 23) + 'Z';
-  return parseISO(dateWithoutNano);
+  return new Date(dateString);
+};
+
+const convertToKST = (date: Date) => {
+  const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+  return new Date(utc + KST_OFFSET);
 };
 
 export const formatDate = (dateString: string) => {
   const date = parseDate(dateString);
-  const now = new Date();
-  const differenceHours = differenceInHours(now, date);
+  const kstDate = convertToKST(date);
+  const now = convertToKST(new Date());
+  const differenceHours = differenceInHours(now, kstDate);
+  const differenceMinutes = differenceInMinutes(now, kstDate);
+
+  if (differenceMinutes < 60) {
+    return `${differenceMinutes}분 전`;
+  }
 
   if (differenceHours < 24) {
     return `${differenceHours}시간 전`;
   }
 
-  return format(date, 'yy.MM.dd');
+  return format(kstDate, 'yy.MM.dd');
 };
 
 export const getReLoginInfo = (dateString: string) => {
   const withdrawalDate = parseDate(dateString);
-  const reLoginDate = addDays(withdrawalDate, 30);
-  const now = new Date();
-  const daysUntilReLogin = differenceInDays(reLoginDate, now);
+  const kstWithdrawalDate = convertToKST(withdrawalDate);
+  const kstReLoginDate = addDays(kstWithdrawalDate, 30);
+  const now = convertToKST(new Date());
+  const daysUntilReLogin = differenceInDays(kstReLoginDate, now);
 
   if (daysUntilReLogin <= 0) {
     return '지금 바로 로그인할 수 있습니다.';
   }
 
-  return `${format(reLoginDate, 'yyyy.MM.dd')} (약 ${daysUntilReLogin}일 후에 로그인이 가능합니다.)`;
+  return `${format(kstReLoginDate, 'yyyy.MM.dd')} (약 ${daysUntilReLogin}일 후에 로그인이 가능합니다.)`;
 };
