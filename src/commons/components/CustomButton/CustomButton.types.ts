@@ -8,4 +8,5 @@ export interface IProps extends TouchableWithoutFeedbackProps {
   borderRadius?: string;
   textAlign?: string;
   margin?: string;
+  padding?: string;
 }

@@ -5,6 +5,7 @@ export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  padding: 0 16px;
 `;
 
 export const ScrollWrapper = styled.ScrollView`

@@ -11,19 +11,48 @@ import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
-import { IProps } from './Setting.types';
+import { IProps, ISettingData } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
 import { getAppVersion } from '../../../../commons/utils/getAppVersion';
+import { getVersionApi } from '../../../../commons/api/setting.api';
+import { useEffect, useState } from 'react';
+import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
+import { Platform } from 'react-native';
+
+const initState = {
+  version: '',
+  googlePlayStoreUrl: '',
+  appStoreUrl: '',
+};
 
 const Setting = ({ route }: IProps) => {
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
-  const { handleLinkPress } = useLinkingOpen();
+  const handleLinkPress = useLinkingOpen();
+  const [data, setData] = useState<ISettingData>(initState);
   const appVersion = getAppVersion();
   useHeaderControl({
     title: '설정',
   });
+  const getLatestVersion = async () => {
+    const { result } = await getVersionApi();
+    const { version, googlePlayStoreUrl, appStoreUrl } = result;
+    setData({
+      version,
+      googlePlayStoreUrl,
+      appStoreUrl,
+    });
+  };
+
+  useEffect(() => {
+    getLatestVersion();
+  }, []);
+
+  const onClickUpdateMove = () => {
+    const url = Platform.OS === 'ios' ? data.appStoreUrl : data.googlePlayStoreUrl;
+    handleLinkPress(url);
+  };
 
   return (
     <>
@@ -73,9 +102,13 @@ const Setting = ({ route }: IProps) => {
                 {`V${appVersion}`}
               </CustomText>
             </S.RowWrapper>
-            {/* <CustomText margin="16px 5px 0 0" color={colors.textGray2} size="12px">
-              최신 버전
-            </CustomText> */}
+            {data.version === appVersion ? (
+              <CustomText margin="20px 4px 0 0" color={colors.textGray2} size="12px">
+                최신 버전
+              </CustomText>
+            ) : (
+              <CustomButton contents="업데이트" padding="8px 12px" onPress={onClickUpdateMove} />
+            )}
           </S.BetweenWrapper>
         </S.BottomWrapper>
       </S.Wrapper>

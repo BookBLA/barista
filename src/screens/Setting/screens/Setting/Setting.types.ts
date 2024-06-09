@@ -8,3 +8,9 @@ export interface IProps {
     };
   };
 }
+
+export interface ISettingData {
+  version: string;
+  googlePlayStoreUrl: string;
+  appStoreUrl: string;
+}

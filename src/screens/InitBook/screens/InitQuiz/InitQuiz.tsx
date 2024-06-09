@@ -171,6 +171,7 @@ const InitQuiz = ({ route }: IProps) => {
           backgroundColor={isValid ? colors.primary : colors.primary02}
           fontColor={isValid ? colors.primary02 : colors.textGray}
           contents="등록하기"
+          margin="0 16px"
         />
       </U.Wrapper>
     </>

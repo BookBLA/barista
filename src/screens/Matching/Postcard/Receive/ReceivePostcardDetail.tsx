@@ -1,4 +1,4 @@
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
@@ -27,7 +27,7 @@ type Props = {
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const { postcardId, bookImageUrls, memberOpenKakaoRoomUrl, memberName, memberAge, memberGender, memberSchoolName } =
-    route.params;
+    route.params ?? {};
   const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
   const styleList = [
     postcardDetails?.mbti,
@@ -82,6 +82,11 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     }, [fetchPostcardDetails]),
   );
 
+  const platformBlurRadius = Platform.select({
+    ios: postcardDetails?.postcardStatus === EPostcardStatus.ACCEPT ? 0 : 9,
+    android: postcardDetails?.postcardStatus === EPostcardStatus.ACCEPT ? 0 : 30,
+  });
+
   return (
     <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
       <S.Wrapper>
@@ -97,7 +102,10 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
 
           <S.UserInfoContainerView>
             <S.UserInfoView>
-              <S.CircularImage source={{ uri: postcardDetails?.memberProfileImageUrl }} />
+              <S.CircularImage
+                source={{ uri: postcardDetails?.memberProfileImageUrl }}
+                blurRadius={platformBlurRadius}
+              />
               <S.UserInfoWrapper>
                 <S.UserInfoNameWrapper>
                   <S.UserNameText>
