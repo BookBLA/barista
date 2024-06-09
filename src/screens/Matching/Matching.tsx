@@ -1,8 +1,7 @@
 import { FlatList, TouchableOpacity, View } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
 import * as S from './Matching.styles';
-import GoToTopButton from '../../../assets/images/icons/GoToTop.png';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
@@ -20,13 +19,11 @@ const Matching = () => {
   const sendPostcards = useFetchSendPostcard(isReceivedPostcard);
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
   const { movePage } = useMovePage();
 
   const handleScroll = (event: any) => {
     const currentOffset: number = event.nativeEvent.contentOffset.y;
     const buttonThreshold: number = 100;
-    setScrollPosition(event.nativeEvent.contentOffset.y);
 
     if (currentOffset > buttonThreshold) {
       setShowButton(true);
@@ -34,13 +31,6 @@ const Matching = () => {
       setShowButton(false);
     }
   };
-
-  useEffect(() => {
-    // 화면에 돌아왔을 때 스크롤 위치를 설정
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({ offset: scrollPosition, animated: false });
-    }
-  }, [scrollPosition]);
 
   const scrollToTop = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
@@ -83,7 +73,7 @@ const Matching = () => {
         </View>
       </S.ViewStyled>
       <S.ListWrapper>
-        {isReceivedPostcard && (
+        {isReceivedPostcard ? (
           <>
             <S.InfoViewStyled>
               <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
@@ -98,42 +88,37 @@ const Matching = () => {
             {receivedPostcards.length > 0 && (
               <FlatList
                 ref={flatListRef}
-                onScroll={handleScroll}
                 data={receivedPostcards}
-                renderItem={({ item, index }) => {
-                  return (
-                    <View style={{ height: '100%', width: '50%' }}>
-                      <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
-                        <ReceivePostcard key={item.postcardId} {...item} />
-                      </S.receivedPostcardViewStyled>
-                    </View>
-                  );
-                }}
-                keyExtractor={(item, index) => item.postcardId}
+                renderItem={({ item, index }) => (
+                  <View style={{ height: '100%', width: '50%' }}>
+                    <S.receivedPostcardViewStyled style={S.styles.PostcardShadow} index={index}>
+                      <ReceivePostcard key={item.postcardId} {...item} />
+                    </S.receivedPostcardViewStyled>
+                  </View>
+                )}
+                keyExtractor={(item) => item.postcardId.toString()}
                 numColumns={2}
+                onScroll={handleScroll}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
                 overScrollMode="never"
               />
             )}
           </>
-        )}
-        {!isReceivedPostcard && (
+        ) : (
           <>
             {sendPostcards.length === 0 && <EmptyPostcard type={EType.SEND} />}
             {sendPostcards.length > 0 && (
               <FlatList
                 ref={flatListRef}
-                onScroll={handleScroll}
                 data={sendPostcards}
-                renderItem={({ item, index }) => {
-                  return (
-                    <S.sendPostcardViewStyled>
-                      <SendPostcard key={item.postcardId} {...item} />
-                    </S.sendPostcardViewStyled>
-                  );
-                }}
+                renderItem={({ item, index }) => (
+                  <S.sendPostcardViewStyled>
+                    <SendPostcard key={item.postcardId} {...item} />
+                  </S.sendPostcardViewStyled>
+                )}
                 keyExtractor={(item, index) => index.toString()}
+                onScroll={handleScroll}
                 alwaysBounceVertical={false}
                 ListFooterComponent={<View style={{ height: 100 }} />}
                 overScrollMode="never"
@@ -144,7 +129,7 @@ const Matching = () => {
       </S.ListWrapper>
       {showButton && (
         <TouchableOpacity style={S.styles.GoToTopButton} onPress={scrollToTop}>
-          <S.GoToTopImage source={GoToTopButton} />
+          <S.GoToTopImage source={icons.goToTop} />
         </TouchableOpacity>
       )}
     </S.Wrapper>

@@ -10,4 +10,4 @@ export interface ITestSignUp {
 
 export const postExampleApi = (contents: IExampleApi) => Post('tests', contents, true);
 
-export const postTestSignUp = (contents: ITestSignUp) => Post('tests/sign-up', contents, true);
+export const postTestSignUp = (contents: ITestSignUp) => Post('tests/sign-up/kakao', contents, true);
