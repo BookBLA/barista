@@ -1,4 +1,11 @@
-import { format, differenceInHours, differenceInMinutes, addDays, differenceInDays } from 'date-fns';
+import {
+  format,
+  differenceInHours,
+  differenceInMinutes,
+  addDays,
+  differenceInDays,
+  differenceInSeconds,
+} from 'date-fns';
 
 const KST_OFFSET = 9 * 60 * 60 * 1000;
 
@@ -15,8 +22,13 @@ export const formatDate = (dateString: string) => {
   const date = parseDate(dateString);
   const kstDate = convertToKST(date);
   const now = convertToKST(new Date());
-  const differenceHours = differenceInHours(now, kstDate);
+  const differenceSeconds = differenceInSeconds(now, kstDate);
   const differenceMinutes = differenceInMinutes(now, kstDate);
+  const differenceHours = differenceInHours(now, kstDate);
+
+  if (differenceSeconds < 60) {
+    return `${differenceSeconds}초 전`;
+  }
 
   if (differenceMinutes < 60) {
     return `${differenceMinutes}분 전`;
