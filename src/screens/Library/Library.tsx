@@ -19,6 +19,7 @@ import { useBottomSheet } from '../../commons/hooks/useBottomSheet';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
+import uuid from 'react-native-uuid';
 import useMemberStore from '../../commons/store/useMemberStore';
 import {
   deleteBook,
@@ -265,7 +266,8 @@ const Library: React.FC<Props> = ({ route }) => {
     });
 
     if (!result.canceled) {
-      const imageUrl = await uploadImageToS3(result?.assets[0].uri, memberInfo.id);
+      const randomId = uuid.v4();
+      const imageUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
       setSelectedImage(result?.assets[0].uri);
       await saveUserInfo({ profileImageUrl: imageUrl });
       setIsProfileImageModificationStatus(true);
