@@ -26,8 +26,18 @@ type Props = {
 };
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
-  const { postcardId, bookImageUrls, memberOpenKakaoRoomUrl, memberName, memberAge, memberGender, memberSchoolName } =
-    route.params ?? {};
+  const {
+    postcardId,
+    memberId,
+    bookImageUrls,
+    memberOpenKakaoRoomUrl,
+    memberName,
+    memberAge,
+    memberGender,
+    memberSchoolName,
+    memberProfileImageUrl,
+  } = route.params ?? {};
+
   const [postcardDetails, setPostcardDetails] = useState<IReceivePostcardProps | null>(null);
   const styleList = [
     postcardDetails?.mbti,
@@ -39,7 +49,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   ];
   const quizCircleList = ['A', 'B', 'C', 'D', 'E'];
   const { movePage, movePageNoReference } = useMovePage();
-  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible } = useModalStore();
+  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, setMatchingApproveModalData } =
+    useModalStore();
 
   const fetchPostcardDetails = useCallback(async () => {
     try {
@@ -68,6 +79,16 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const acceptPostcard = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
+      setMatchingApproveModalData({
+        memberId,
+        memberName,
+        memberAge,
+        memberGender,
+        memberSchoolName,
+        memberProfileImageUrl,
+        memberOpenKakaoRoomUrl,
+        bookImageUrls,
+      });
       toggleMatchingApproveModal();
       movePageNoReference();
       useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });

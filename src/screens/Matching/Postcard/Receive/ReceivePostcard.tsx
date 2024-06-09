@@ -58,9 +58,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
-  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible } = useModalStore();
+  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
 
-  console.log(bookImageUrls);
+  // console.log(bookImageUrls);
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
   };
@@ -108,10 +108,10 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handleOpenKakaoRoomUrl = async () => {
-    const supported = await Linking.canOpenURL(memberOpenKakaoRoomUrl);
+    const supported = await Linking.canOpenURL(modalData.memberOpenKakaoRoomUrl);
 
     if (supported) {
-      await Linking.openURL(memberOpenKakaoRoomUrl);
+      await Linking.openURL(modalData.memberOpenKakaoRoomUrl);
     } else {
       useToastStore.getState().showToast({ content: '올바르지 않은 링크입니다! 관리자에게 문의해주세요!' });
     }
@@ -200,17 +200,19 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       <CustomModal modalConfig={matchingApproveModalConfig}>
         <View>
           <ModalUserInfoViewStyled>
-            <CircularImage source={{ uri: memberProfileImageUrl }} resizeMode="cover" />
+            <CircularImage source={{ uri: modalData.memberProfileImageUrl }} resizeMode="cover" />
             <UserInfoWrapper>
               <UserInfoNameWrapper>
-                <UserNameText style={{ fontSize: 16 }}>{`${memberName} | ${memberAge}`}</UserNameText>
-                <GenderIconStyled source={memberGender === EGender.MALE ? manIcon : womanIcon} />
+                <UserNameText
+                  style={{ fontSize: 16 }}
+                >{`${modalData.memberName} | ${modalData.memberAge}`}</UserNameText>
+                <GenderIconStyled source={modalData.memberGender === EGender.MALE ? manIcon : womanIcon} />
               </UserInfoNameWrapper>
-              <ModalSchoolNameText>{memberSchoolName}</ModalSchoolNameText>
+              <ModalSchoolNameText>{modalData.memberSchoolName}</ModalSchoolNameText>
             </UserInfoWrapper>
           </ModalUserInfoViewStyled>
           <ModalBookListContainer>
-            {bookImageUrls?.map((bookImageUrl) => (
+            {modalData.bookImageUrls?.map((bookImageUrl) => (
               <ModalBookWrapper>
                 <ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
               </ModalBookWrapper>

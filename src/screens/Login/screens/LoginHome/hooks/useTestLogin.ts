@@ -15,7 +15,7 @@ export const useTestLogin = () => {
   const handleTestLogin = async () => {
     try {
       const { result } = await postTestSignUp({
-        email: 'test11108@naver.com',
+        email: 'tjdwls6536@naver.com',
       });
       setToken(result.accessToken);
 
