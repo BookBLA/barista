@@ -38,7 +38,7 @@ const StudentID = () => {
       return null; //이미지 업로드 취소시
     }
 
-    const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, memberId);
+    const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
     if (uploadedFileUrl) {
       updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
       // setImageUrl(String(uploadedFileUrl));
