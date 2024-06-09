@@ -10,7 +10,7 @@ const ModalContent = ({ date, setDate }: { date: Date; setDate: (value: Date) =>
           onChange={(value) => setDate(value)}
           format="yyyy-mm-dd"
           startYear={1980}
-          endYear={2024}
+          endYear={2006}
           markWidth={97}
         />
       </View>
