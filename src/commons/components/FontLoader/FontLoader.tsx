@@ -4,6 +4,7 @@ import * as Font from 'expo-font';
 import { IFontLoaderProps } from './FontLoader.types';
 import useAuthStore from '../../store/useAuthStore';
 import useMemberStore from '../../store/useMemberStore';
+import { checkReinstallation } from '../../store/installStatusStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -14,7 +15,16 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   useEffect(() => {
     const loadFonts = async () => {
       try {
-        const token = await initializeToken();
+        let token = '';
+        const isNewInstallation = await checkReinstallation();
+
+        // TODO: 필요 시 if문 조건에 아이폰일 경우에만 넣기
+        if (isNewInstallation) {
+          await removeToken();
+        } else {
+          token = (await initializeToken()) ?? '';
+        }
+
         await Font.loadAsync({
           fontBold: require('../../../../assets/fonts/pretendardBold.ttf'),
           fontExtraLight: require('../../../../assets/fonts/pretendardExtraLight.ttf'),
