@@ -14,7 +14,7 @@ const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [name, setName] = useState(userInfo.name);
-  const [phNum, setPhNum] = useState(userInfo.phoneNumber);
+  // const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
   const isHangul = (text: string) => {
     const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3]+$/;
@@ -27,21 +27,21 @@ const NamePhone = () => {
     }
   };
 
-  const handlePhoneNumberChange = (phNum: string) => {
-    const onlyNums = phNum.replace(/[^0-9]/g, '');
-    let formattedNumber = '';
-    if (onlyNums.length <= 3) {
-      formattedNumber = onlyNums;
-    } else if (onlyNums.length <= 7) {
-      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-    } else {
-      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-    }
-    setPhNum(formattedNumber);
-  };
+  // const handlePhoneNumberChange = (phNum: string) => {
+  //   const onlyNums = phNum.replace(/[^0-9]/g, '');
+  //   let formattedNumber = '';
+  //   if (onlyNums.length <= 3) {
+  //     formattedNumber = onlyNums;
+  //   } else if (onlyNums.length <= 7) {
+  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+  //   } else {
+  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  //   }
+  //   setPhNum(formattedNumber);
+  // };
 
   const nextPage = () => {
-    updateUserInfo({ name: name, phoneNumber: phNum });
+    updateUserInfo({ name, phoneNumber: '000-0000-0000' });
     movePage('schoolStudentID')();
   };
 
@@ -70,7 +70,7 @@ const NamePhone = () => {
             />
           </View>
 
-          <View style={{ width: '100%', alignItems: 'center' }}>
+          {/* <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
               value={phNum}
@@ -81,7 +81,7 @@ const NamePhone = () => {
               placeholder="010-1234-5678"
               placeholderTextColor={colors.textGray2}
             />
-          </View>
+          </View> */}
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       {/* </S.ColumnStyled> */}
@@ -89,7 +89,7 @@ const NamePhone = () => {
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {name.length < 2 || phNum.length !== 13 ? (
+        {name.length < 2 ? (
           <Image source={notYetNextButton} />
         ) : (
           <S.MoveButton onPress={nextPage}>
