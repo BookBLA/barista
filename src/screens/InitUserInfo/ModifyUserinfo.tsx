@@ -19,8 +19,8 @@ const ModifyUserinfo = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [link, setLink] = useState('');
-  const [name, setName] = useState('');
-  const [phNum, setPhNum] = useState('');
+  const [name, setName] = useState(userInfo.name);
+  const [phNum, setPhNum] = useState(userInfo.phoneNumber);
   const showToast = useToastStore((state) => state.showToast);
 
   const isHangul = (text: string) => {
@@ -34,18 +34,19 @@ const ModifyUserinfo = () => {
     }
   };
 
-  const handlePhoneNumberChange = (phNum: string) => {
-    const onlyNums = phNum.replace(/[^0-9]/g, '');
-    let formattedNumber = '';
-    if (onlyNums.length <= 3) {
-      formattedNumber = onlyNums;
-    } else if (onlyNums.length <= 7) {
-      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-    } else {
-      formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-    }
-    setPhNum(formattedNumber);
-  };
+  // const handlePhoneNumberChange = (phNum: string) => {
+  //   const onlyNums = phNum.replace(/[^0-9]/g, '');
+  //   let formattedNumber = '';
+  //   if (onlyNums.length <= 3) {
+  //     formattedNumber = onlyNums;
+  //   } else if (onlyNums.length <= 7) {
+  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
+  //   } else {
+  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
+  //   }
+  //   setPhNum(formattedNumber);
+  // };
+
   const scrollViewRef = useRef<ScrollView>(null); // Create a ref for KeyboardAwareScrollView
 
   const handleMoveTop = () => {
@@ -166,7 +167,7 @@ const ModifyUserinfo = () => {
             </S.ButtonStyled>
           </S.ViewStyled>
           <DashDividerLine />
-          <S.ViewStyled height={320}>
+          <S.ViewStyled>
             <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
               maxLength={10} // 최대 길이 제한
@@ -178,7 +179,7 @@ const ModifyUserinfo = () => {
               value={name}
             />
 
-            <S.ContentStyled style={{ marginTop: 50 }}>전화번호를 입력해 주세요.</S.ContentStyled>
+            {/* <S.ContentStyled style={{ marginTop: 50 }}>전화번호를 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
               defaultValue={userInfo.phoneNumber}
               value={phNum}
@@ -187,7 +188,7 @@ const ModifyUserinfo = () => {
               maxLength={13} // 최대 길이 제한 (하이픈 포함)
               placeholder="010-1234-5678"
               placeholderTextColor={colors.textGray2}
-            />
+            /> */}
           </S.ViewStyled>
           <Dash
             style={{
@@ -203,12 +204,12 @@ const ModifyUserinfo = () => {
             dashThickness={1.5}
             dashColor={colors.lineDivider}
           />
-          <S.ViewStyled height={200}>
+          {/* <S.ViewStyled height={200}>
             <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
             <S.ButtonStyled disabled>
               <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>{userInfo.schoolName}</Text>
             </S.ButtonStyled>
-          </S.ViewStyled>
+          </S.ViewStyled> */}
         </KeyboardAwareScrollView>
         {/* </TouchableWithoutFeedback> */}
       </ScrollView>

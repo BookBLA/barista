@@ -79,12 +79,12 @@ const SchoolStudentID = () => {
     <S.Wrapper>
       <TitleProgress gauge={75} />
       {/* <S.ColumnStyled style={{ height: 'auto', justifyContent: 'space-between' }}> */}
-      <View style={{ width: '100%', alignItems: 'center' }}>
-        <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
+      {/* <View style={{ width: '100%', alignItems: 'center' }}> */}
+      {/* <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
         <S.ButtonStyled disabled>
           <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
-        </S.ButtonStyled>
-        {/* <S.TextFiledStyled
+        </S.ButtonStyled> */}
+      {/* <S.TextFiledStyled
             value={school}
             onChangeText={setSchool}
             onFocus={handleFocus}
@@ -93,7 +93,7 @@ const SchoolStudentID = () => {
               color: school === '학교' ? colors.textGray2 : colors.primary,
             }}
           /> */}
-      </View>
+      {/* </View> */}
       <View style={{ width: '100%', alignItems: 'center' }}>
         <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
