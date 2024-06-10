@@ -48,12 +48,12 @@ const StudentID = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={75} />
-      <View style={{ width: '100%', alignItems: 'center', height: 'auto' }}>
+      {/* <View style={{ width: '100%', alignItems: 'center', height: 'auto' }}>
         <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
         <S.ButtonStyled disabled>
           <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
         </S.ButtonStyled>
-      </View>
+      </View> */}
       <View style={{ width: '100%', alignItems: 'center' }}>
         <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
