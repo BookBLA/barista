@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getMemberProfileApi, putMemberProfileApi } from '../api/memberProfile.api';
+import { getMemberProfileApi, patchMemberProfileImageApi, putMemberProfileApi } from '../api/memberProfile.api';
 
 interface UserInfo {
   gender: string;
@@ -18,6 +18,7 @@ interface UserState {
   updateUserInfo: (newUser: Partial<UserInfo>) => Promise<void>;
   resetUserInfo: () => void;
   saveUserInfo: (newUser: Partial<UserInfo>) => Promise<void>;
+  updateProfileImageUrl: (imageUrl: string) => Promise<void>;
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
@@ -56,6 +57,14 @@ export const useUserStore = create<UserState>((set, get) => ({
       await putMemberProfileApi(get().userInfo);
     } catch (error) {
       console.error('Failed to save user info:', error);
+    }
+  },
+  updateProfileImageUrl: async (imageUrl) => {
+    try {
+      await patchMemberProfileImageApi({ profileImageUrl: imageUrl });
+      set((state) => ({ userInfo: { ...state.userInfo, profileImageUrl: imageUrl } }));
+    } catch (error) {
+      console.error('Failed to update profile image:', error);
     }
   },
 }));

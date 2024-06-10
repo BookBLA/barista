@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
 import useManageMargin from '../../commons/hooks/useManageMargin';
-import { getMemberProfileApi, putMemberProfileApi } from '../../commons/api/memberProfile.api';
+import { getMemberProfileApi, patchMemberProfileApi } from '../../commons/api/memberProfile.api';
 import useToastStore from '../../commons/store/useToastStore';
 
 const ModifyUserinfo = () => {
@@ -83,18 +83,12 @@ const ModifyUserinfo = () => {
 
   const callPutMemberProfileApi = async () => {
     try {
-      const response = await putMemberProfileApi({
+      await patchMemberProfileApi({
         name,
-        birthDate: userInfo.birthDate,
-        gender: userInfo.gender,
-        schoolName: userInfo.schoolName,
-        schoolEmail: userInfo.schoolEmail,
         phoneNumber: phNum,
-        studentIdImageUrl: userInfo.studentIdImageUrl,
-        profileImageUrl: userInfo.profileImageUrl,
+        schoolName: userInfo.schoolName,
         openKakaoRoomUrl: link,
       });
-      console.log('회원 정보 수정', response);
       showToast({
         content: '회원 정보가 수정되었습니다.',
       });
