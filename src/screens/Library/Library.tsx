@@ -248,8 +248,8 @@ const Library: React.FC<Props> = ({ route }) => {
     onClose: toggleEmptyPostcardModal,
   };
 
-  const { memberInfo } = useMemberStore((state) => state);
-  const { saveUserInfo } = useUserStore();
+  const memberInfo = useMemberStore((state) => state.memberInfo);
+  const updateProfileImageUrl = useUserStore((state) => state.updateProfileImageUrl);
 
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -269,7 +269,7 @@ const Library: React.FC<Props> = ({ route }) => {
       const randomId = uuid.v4();
       const imageUrl = await uploadImageToS3(result?.assets[0].uri, randomId);
       setSelectedImage(result?.assets[0].uri);
-      await saveUserInfo({ profileImageUrl: imageUrl });
+      await updateProfileImageUrl(imageUrl ?? '');
       setIsProfileImageModificationStatus(true);
     }
     handleCloseBottomSheet();
