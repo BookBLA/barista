@@ -66,7 +66,7 @@ const Setting = ({ route }: IProps) => {
             />
           </S.LeftWrapper>
           <S.RightWrapper>
-            <CustomText>{`${name ?? '이름을 등록해 주세요.'} | ${age ?? 0}살`}</CustomText>
+            <CustomText>{`${name ?? '닉네임을 등록해 주세요.'} | ${age ?? 0}살`}</CustomText>
             <LightText>{school}</LightText>
           </S.RightWrapper>
         </S.ProfileWrapper>
