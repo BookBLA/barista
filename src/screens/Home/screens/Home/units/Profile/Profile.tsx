@@ -8,7 +8,7 @@ import truncateText from '../../../../../../commons/utils/truncateText';
 
 const Profile = ({ item }: { item: IDdata }) => {
   const { movePage } = useMovePage();
-  const modifiedName = item?.memberName ? `${item.memberName.charAt(0)}0${item.memberName.slice(2)}` : '이름';
+  const modifiedName = item?.memberName ? `${item.memberName.charAt(0)}0${item.memberName.slice(2)}` : '닉네임';
 
   return (
     <S.ProfileWrapper onPress={movePage('library', { memberId: item?.memberId, isYourLibrary: true })}>
