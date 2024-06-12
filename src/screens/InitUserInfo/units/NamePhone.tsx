@@ -58,13 +58,13 @@ const NamePhone = () => {
           }}
         >
           <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>이름을 입력해 주세요.</S.ContentStyled>
+            <S.ContentStyled>닉네임을 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
               maxLength={10} // 최대 길이 제한
               defaultValue={userInfo.name}
               onChangeText={(text: string) => handleChangeName(text)}
               // onBlur={() => updateUserInfo('name', name)}
-              placeholder="이름"
+              placeholder="닉네임"
               placeholderTextColor={colors.textGray2}
               value={name}
             />
