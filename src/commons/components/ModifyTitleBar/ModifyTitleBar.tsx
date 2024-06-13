@@ -6,9 +6,10 @@ import backArrow from '../../../../assets/images/buttons/prevButtonBlack.png';
 import { CustomText } from '../TextComponents/CustomText/CustomText';
 import { colors } from '../../styles/variablesStyles';
 
+const titleList = ['회원정보 수정', '스타일 수정', '내 서재'];
 export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?: () => Promise<void> }) => {
-  const titleList = ['회원정보 수정', '스타일 수정', '내 서재'];
   const { movePage } = useMovePage();
+
   return (
     <View
       style={{

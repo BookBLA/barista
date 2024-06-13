@@ -137,7 +137,18 @@ const ModifyUserinfo = () => {
           }}
         >
           <S.ViewStyled height={150}>
-            <S.ContentStyled>닉네임을 입력해 주세요.</S.ContentStyled>
+            <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 20,
+              }}
+            >
+              한국어로 된 닉네임만 가능합니다.
+            </Text>
             <S.TextFiledStyled
               maxLength={10} // 최대 길이 제한
               defaultValue={name}

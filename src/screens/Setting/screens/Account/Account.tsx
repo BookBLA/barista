@@ -14,6 +14,8 @@ import MatchingContent from './units/MatchingContent/MatchingContent';
 import useMemberStore from '../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
 import { postMemberStatusesApi } from '../../../../commons/api/member.api';
+import { useUserStore } from '../../../../commons/store/useUserinfo';
+import { useStyleStore } from '../../../../commons/store/useStyle';
 
 const Account = () => {
   // TODO: 성진 - 가독성 개선 예정
@@ -25,6 +27,9 @@ const Account = () => {
   const { onClickLogout } = useLogout();
   const [selected, setSelected] = useState('');
   const [reason, setReason] = useState('');
+
+  const { resetUserInfo } = useUserStore();
+  const { resetStyleInfo } = useStyleStore();
 
   // NOTE: 성진 - config 재사용하기 위해 변수로 만듬
   const config = {
@@ -52,6 +57,8 @@ const Account = () => {
           {
             label: '로그아웃',
             action: () => {
+              resetUserInfo();
+              resetStyleInfo();
               modalToggle();
               onClickLogout();
             },
