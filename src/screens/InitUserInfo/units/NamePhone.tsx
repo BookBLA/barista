@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Text } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -58,7 +58,18 @@ const NamePhone = () => {
           }}
         >
           <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>닉네임을 입력해 주세요.</S.ContentStyled>
+            <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 20,
+              }}
+            >
+              한국어로 된 닉네임만 가능합니다.
+            </Text>
             <S.TextFiledStyled
               maxLength={10} // 최대 길이 제한
               defaultValue={userInfo.name}
