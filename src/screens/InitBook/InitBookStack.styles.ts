@@ -6,7 +6,8 @@ export const Wrapper = styled.View`
   justify-content: space-between;
   height: 100%;
   width: 100%;
-  padding-top: 40px;
+  padding-top: 25px;
+  align-items: center;
 `;
 
 export const ButtonStyled = styled.TouchableOpacity`
