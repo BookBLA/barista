@@ -34,7 +34,7 @@ export const ColumnStyled = styled.View`
   width: 65%;
   flex-direction: column;
   align-items: flex-start;
-  /* justify-content: ; */
+  justify-content: space-between;
 `;
 
 export const DeleteTextStyled = styled.Text`
