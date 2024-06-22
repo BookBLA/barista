@@ -1,4 +1,4 @@
-import { Props } from '../InitUserinfo.types';
+import { Props, TProps } from '../InitUserinfo.types';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import RejectedInfo from './components/RejectedInfo/RejectedInfo';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
@@ -9,15 +9,15 @@ import ReProfileImage from './components/RejectedInfo/ReProfileImage';
 import { useCounter } from '../../../commons/store/useCounter';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { getMemberProfileApi, putMemberProfileApi } from '../../../commons/api/memberProfile.api';
+import { useRoute } from '@react-navigation/native';
 
-const FailedSign: React.FC<Props> = ({ route }) => {
+const FailedSign = () => {
+  const route = useRoute<TProps>();
   useManageMargin();
   const { movePage } = useMovePage();
   const { userInfo, updateUserInfo } = useUserStore();
   const rejectCase = route.params?.rejectCase ?? [];
-  console.log('rejectCase', rejectCase);
   const { count } = useCounter();
-  // console.log('count', count);
   useEffect(() => {
     callGetMemberProfileApi();
   }, []);

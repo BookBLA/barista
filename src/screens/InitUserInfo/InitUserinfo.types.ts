@@ -9,3 +9,8 @@ export type FailedSignRouteProp = RouteProp<RootStackParamList, 'FailedSign'>;
 export type Props = {
   route: FailedSignRouteProp;
 };
+
+export type TParamList = {
+  FailedSign: { rejectCase: number[] };
+};
+export type TProps = RouteProp<TParamList, 'FailedSign'>;
