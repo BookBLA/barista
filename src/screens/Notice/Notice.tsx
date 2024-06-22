@@ -9,6 +9,7 @@ import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
 import { formatDate } from '../../commons/utils/dateUtils';
+import useManageMargin from '../../commons/hooks/useManageMargin';
 
 const Notice = () => {
   const { handleReset } = useMovePage();
@@ -38,7 +39,7 @@ const Notice = () => {
       {data.length > 0 ? (
         <>
           <TouchableOpacity>
-            <CustomText margin="0 0 10px" onPress={() => onClickDeleteAlarm(null)}>
+            <CustomText margin="10px 0 10px 16px" onPress={() => onClickDeleteAlarm(null)}>
               전체 삭제
             </CustomText>
           </TouchableOpacity>

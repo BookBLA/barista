@@ -5,7 +5,7 @@ import { Platform, StyleSheet } from 'react-native';
 export const Wrapper = styled.View`
   flex: 1;
   height: 100%;
-  padding: 0 16px;
+  /* padding: 0 16px; */
   background-color: #fff;
 `;
 
@@ -23,6 +23,7 @@ export const InfoViewStyled = styled.View`
   align-items: center;
   padding-top: 5px;
   padding-bottom: 5px;
+  padding: 0 16px;
 `;
 
 export const ViewStyled = styled.View`
@@ -33,6 +34,7 @@ export const ViewStyled = styled.View`
   justify-content: center;
   border-radius: 40px;
   height: 48px;
+  margin: 0 16px;
 `;
 
 export const PressableStyled = styled.Pressable`

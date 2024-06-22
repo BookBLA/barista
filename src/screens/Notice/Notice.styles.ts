@@ -5,12 +5,12 @@ export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   background-color: #fff;
-  padding: 0 16px;
 `;
 
 export const ScrollWrapper = styled.ScrollView`
   display: flex;
   flex-direction: column;
+  padding: 0 16px;
 `;
 
 export const NoticeWrapper = styled.View`
