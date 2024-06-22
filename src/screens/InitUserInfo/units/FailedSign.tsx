@@ -1,13 +1,9 @@
-import { Image, View } from 'react-native';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { Props } from '../InitUserinfo.types';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import RejectedInfo from './components/RejectedInfo/RejectedInfo';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import StudentID from './components/RejectedInfo/StudentID';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import OpenChat from './components/RejectedInfo/OpenChat';
 import ReProfileImage from './components/RejectedInfo/ReProfileImage';
 import { useCounter } from '../../../commons/store/useCounter';
