@@ -3,7 +3,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { ModifyTitleBar } from '../../commons/components/ModifyTitleBar/ModifyTitleBar';
-import { TextFiledStyled } from '../InitStyle/InitStyle.styles';
+import { OpenChatTextFiledStyled, TextFiledStyled } from '../InitStyle/InitStyle.styles';
 import useMovePage from '../../commons/hooks/useMovePage';
 import Dash from 'react-native-dash';
 import { useUserStore } from '../../commons/store/useUserinfo';
@@ -185,11 +185,10 @@ const ModifyUserinfo = () => {
               알파벳으로 된 URL 링크만 붙여 넣어주세요.{'\n'}
               링크만 입력해 주셔야 채팅을 보낼 수 있습니다.
             </Text>
-            <TextFiledStyled
+            <OpenChatTextFiledStyled
               defaultValue={link}
+              value={link}
               onChangeText={setLink}
-              // onFocus={handleFocus}
-              // onBlur={handleBlur}
               style={{
                 color: colors.primary,
               }}
