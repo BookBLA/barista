@@ -18,6 +18,7 @@ import { getVersionApi } from '../../../../commons/api/setting.api';
 import { useEffect, useState } from 'react';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { Platform } from 'react-native';
+import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
 
 const initState = {
   version: '',
@@ -26,9 +27,11 @@ const initState = {
 };
 
 const Setting = ({ route }: IProps) => {
+  const [link, setLink] = useState('');
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
+  const outerLinkModal = useToggle();
   const handleLinkPress = useLinkingOpen();
   const [data, setData] = useState<ISettingData>(initState);
   const appVersion = getAppVersion();
@@ -52,6 +55,17 @@ const Setting = ({ route }: IProps) => {
   const onClickUpdateMove = () => {
     const url = Platform.OS === 'ios' ? data.appStoreUrl : data.googlePlayStoreUrl;
     handleLinkPress(url);
+  };
+
+  const hanldeOuterLinkModal = (url: string) => {
+    setLink(url);
+    outerLinkModal.toggle();
+  };
+
+  const handleMoveOuterLink = () => {
+    console.log('link', link);
+    handleLinkPress(link)();
+    outerLinkModal.toggle();
   };
 
   return (
@@ -89,10 +103,10 @@ const Setting = ({ route }: IProps) => {
           <CustomText onPress={movePage('account')} margin="16px 0">
             계정
           </CustomText>
-          <CustomText margin="16px 0" onPress={handleLinkPress(agreementMainUrl)}>
+          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
-          <CustomText margin="16px 0" onPress={handleLinkPress(noticeUrl)}>
+          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
           <S.BetweenWrapper>
@@ -121,6 +135,18 @@ const Setting = ({ route }: IProps) => {
           buttons: [
             { label: '취소', action: toggle, bgColor: colors.buttonMain, color: 'black' },
             { label: '설정', action: toggle },
+          ],
+        }}
+      />
+      <CustomModal
+        modalConfig={{
+          visible: outerLinkModal.isOpen,
+          onClose: outerLinkModal.toggle,
+          mode: 'round',
+          contents: <OuterLinkModalContent />,
+          buttons: [
+            { label: '돌아가기', action: outerLinkModal.toggle, bgColor: colors.buttonMain, color: 'black' },
+            { label: '이동하기', action: handleMoveOuterLink },
           ],
         }}
       />
