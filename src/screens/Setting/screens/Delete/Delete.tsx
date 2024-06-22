@@ -1,6 +1,6 @@
 import { TouchableOpacity, View } from 'react-native';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { IProps } from './Delete.types';
+import { TProps } from './Delete.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { useToggle } from '../../../../commons/hooks/useToggle';
@@ -9,8 +9,10 @@ import * as S from '../../SettingStack.styles';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import CheckboxOff from '../../../../../assets/images/icons/CheckboxOff.png';
 import CheckboxOn from '../../../../../assets/images/icons/CheckboxOn.png';
+import { useRoute } from '@react-navigation/native';
 
-export const Delete = ({ route }: IProps) => {
+export const Delete = () => {
+  const route = useRoute<TProps>();
   const { config } = route.params;
   const { toggle, isOpen } = useToggle();
   const { callDeleteMember } = useDeleteMember();

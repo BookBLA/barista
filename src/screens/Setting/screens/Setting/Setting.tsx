@@ -11,7 +11,7 @@ import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import ModalContent from './units/ModalContent/ModalContent';
-import { IProps, ISettingData } from './Setting.types';
+import { ISettingData, TProps } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
 import { getAppVersion } from '../../../../commons/utils/getAppVersion';
 import { getVersionApi } from '../../../../commons/api/setting.api';
@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { Platform } from 'react-native';
 import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
+import { useRoute } from '@react-navigation/native';
 
 const initState = {
   version: '',
@@ -26,8 +27,9 @@ const initState = {
   appStoreUrl: '',
 };
 
-const Setting = ({ route }: IProps) => {
+const Setting = () => {
   const [link, setLink] = useState('');
+  const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
   const { toggle, isOpen } = useToggle();
