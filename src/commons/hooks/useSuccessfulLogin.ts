@@ -7,6 +7,11 @@ import { useInitialRouteName } from './useInitialRouteName';
 import useMovePage from './useMovePage';
 import { usePostPushToken } from './usePostPushToken';
 
+interface IResult {
+  accessToken: string;
+  memberStatus: string;
+}
+
 export const useSuccessfulLogin = () => {
   const showToast = useToastStore((state) => state.showToast);
   const setToken = useAuthStore((state) => state.setToken);
@@ -15,11 +20,6 @@ export const useSuccessfulLogin = () => {
   const { handleReset } = useMovePage();
   const { getPushToken } = useGetPushToken();
   const { postPushToken } = usePostPushToken();
-
-  interface IResult {
-    accessToken: string;
-    memberStatus: string;
-  }
 
   const handleSuccessfulLogin = async (result: IResult) => {
     setToken(result.accessToken);
