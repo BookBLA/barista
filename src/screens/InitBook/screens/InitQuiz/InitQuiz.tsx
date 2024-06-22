@@ -40,11 +40,12 @@ const InitQuiz = ({ route }: IProps) => {
     <>
       <U.Wrapper>
         <KeyboardAwareScrollView
+          style={{ width: '100%', marginBottom: 10 }}
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
           extraScrollHeight={100}
         >
-          <View style={{ width: '100%', height: '30%', alignItems: 'center' }}>
+          <View style={{ width: '100%', height: 'auto', alignItems: 'center' }}>
             <S.ContentStyled style={{ marginBottom: 36, fontSize: 18 }}>책 한 줄 감상문 남기기</S.ContentStyled>
             <Controller
               control={control}
@@ -165,13 +166,25 @@ const InitQuiz = ({ route }: IProps) => {
             </U.RowStyled>
           </View>
         </KeyboardAwareScrollView>
+        <S.NextButtonStyled
+          style={{
+            height: 50,
+            bottom: 5,
+            backgroundColor: isValid ? colors.primary : colors.primary02,
+          }}
+          onPress={handleSubmit(callPostMemberBook, handleFormError)}
+        >
+          <Text style={{ color: isValid ? colors.primary02 : colors.textGray, fontFamily: 'fontMedium', fontSize: 16 }}>
+            등록하기
+          </Text>
+        </S.NextButtonStyled>
 
-        <CustomButton
+        {/* <CustomButton
           onPress={handleSubmit(callPostMemberBook, handleFormError)}
           backgroundColor={isValid ? colors.primary : colors.primary02}
           fontColor={isValid ? colors.primary02 : colors.textGray}
           contents="등록하기"
-        />
+        /> */}
       </U.Wrapper>
     </>
   );
