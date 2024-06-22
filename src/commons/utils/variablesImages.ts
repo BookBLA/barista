@@ -51,6 +51,7 @@ export const icons = {
   profileImageSetting: require('../../../assets/images/icons/ProfileImageSetting.png'),
 
   reset: require('../../../assets/images/icons/Reset.png'),
+  report: require('../../../assets/images/icons/ReportIcon.png'),
   rightEndPage: require('../../../assets/images/buttons/RightEndPage.png'),
   rightPage: require('../../../assets/images/buttons/RightPage.png'),
 
