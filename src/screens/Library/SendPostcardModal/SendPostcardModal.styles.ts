@@ -104,7 +104,7 @@ export const PersonalQuestionHeaderWrapper = styled.View`
 `;
 
 export const PersonalQuestionAnswerInputBox = styled.TextInput`
-  width: 100%;
+  width: ${deviceWidth - 64};
   height: 120px;
   padding: 20px;
   border-radius: 10px;

@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { Platform, StyleSheet } from 'react-native';
+import { deviceWidth } from '../../../../commons/utils/dimensions';
 
 export const ContainerViewStyled = styled.View`
   color: white;
@@ -140,3 +141,16 @@ export const styles: any = StyleSheet.create({
     }),
   },
 });
+
+export const ModifyAnswerTextInput = styled.TextInput.attrs({
+  multiline: true,
+  maxLength: 100,
+})`
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  height: 100px;
+  width: ${deviceWidth - 64};
+  background-color: ${colors.buttonMain};
+`;

@@ -39,8 +39,10 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
         />
       </S.ImageWrapper>
       <S.ColumnStyled>
-        <S.BookTitleStyled>{truncateText(item.title, 40)}</S.BookTitleStyled>
-        <S.BookAuthorStyled>{truncateText(item?.authors.join(', '), 30)}</S.BookAuthorStyled>
+        <View>
+          <S.BookTitleStyled>{truncateText(item.title, 40)}</S.BookTitleStyled>
+          <S.BookAuthorStyled>{truncateText(item?.authors.join(', '), 30)}</S.BookAuthorStyled>
+        </View>
         <View
           style={{
             width: '100%',

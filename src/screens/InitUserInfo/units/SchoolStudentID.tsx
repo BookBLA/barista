@@ -63,16 +63,20 @@ const SchoolStudentID = () => {
       return null; //이미지 업로드 취소시
     }
 
-    const uploadedFileUrl = await uploadStudentIdImageToS3(result?.assets[0].uri, uuid.v4());
-    if (uploadedFileUrl) {
-      updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
-      setImageUrl(String(uploadedFileUrl));
-    }
+    //로직 수정 (이미지 선택시 setState로만 유저 속이기)
+    //다음 버튼 누르면 s3 등록
+    setImageUrl(result?.assets[0].uri);
+    updateUserInfo({ studentIdImageUrl: result?.assets[0].uri });
   };
 
-  const moveNext = () => {
+  const moveNext = async () => {
     updateUserInfo({ schoolName: '가천대학교' });
     movePage('emailAuth')();
+
+    const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
+    if (uploadedFileUrl) {
+      updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+    }
   };
 
   return (

@@ -3,11 +3,16 @@ import { EGender, EPostcardStatus, ISendPostcardProps } from './SendPostcard.typ
 import * as S from './SendPostcard.styles';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
+import { Linking, Platform, Image, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import useToastStore from '../../../../commons/store/useToastStore';
 import { img } from '../../../../commons/utils/variablesImages';
+import { useToggle } from '../../../../commons/hooks/useToggle';
+import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText.styles';
+import { useLimitTextLine } from '../../../../commons/hooks/useLimitTextLine';
+import { ModalWrapper } from '../../../Setting/SettingStack.styles';
+import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
@@ -28,6 +33,8 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     ios: postcardStatus === EPostcardStatus.ACCEPT ? 0 : 9,
     android: postcardStatus === EPostcardStatus.ACCEPT ? 0 : 30,
   });
+  const { toggle, isOpen } = useToggle();
+  const showToast = useToastStore((state) => state.showToast);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -58,6 +65,26 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     ],
   };
 
+  const { handleLimitTextLine } = useLimitTextLine();
+  const [answer, setAnswer] = useState('원래답변');
+
+  const handleTextChange = (text: string) => {
+    if (text.length !== 0) {
+      //question이 비어있지 않다면
+      handleLimitTextLine(text, setAnswer, 4);
+
+      // updateStyleInfo('memberAsk', question);
+    } else {
+      setAnswer(text);
+    }
+  };
+
+  const modifyPersonalQuiz = () => {
+    //개인 질문 답변 수정 api 호출
+    showToast({ content: '답변이 수정되었습니다!' });
+    toggle();
+  };
+
   return (
     <>
       <S.ContainerViewStyled>
@@ -78,7 +105,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
         <S.ButtonContainerViewStyled>
           {postcardStatus === EPostcardStatus.PENDING && (
             <>
-              <TouchableWithoutFeedback>
+              <TouchableWithoutFeedback onPress={toggle}>
                 <S.ButtonContainer left backgroundColor="#F5F0E2">
                   <S.ButtonText fontColor={colors.textGray2}>답변 수정</S.ButtonText>
                 </S.ButtonContainer>
@@ -166,6 +193,29 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
           <S.ModalBookShelves style={S.styles.Shadow} />
         </View>
       </CustomModal>
+      <CustomModal
+        modalConfig={{
+          visible: isOpen,
+          onClose: toggle,
+          mode: 'round',
+          close: true,
+          contents: (
+            <ModalWrapper>
+              <CustomText style={{ marginBottom: 15 }}>수정할 내용을 입력해주세요.</CustomText>
+              <S.ModifyAnswerTextInput
+                defaultValue={'원래 답변'}
+                value={answer}
+                onChangeText={(text: string) => handleTextChange(text)}
+              />
+              <Image
+                source={pencilIcon}
+                style={{ width: 14, height: 14, position: 'absolute', right: '10%', top: '45%' }}
+              />
+            </ModalWrapper>
+          ),
+          buttons: [{ label: '수정 완료', action: modifyPersonalQuiz }],
+        }}
+      />
     </>
   );
 };

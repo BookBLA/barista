@@ -1,5 +1,5 @@
 import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
@@ -14,6 +14,11 @@ import { IReceivePostcardProps } from './ReceivePostcard.types';
 import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching.api';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useModalStore from '../../../../commons/store/useModalStore';
+import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+import reportIcon from '../../../../../assets/images/icons/ReportIcon.png';
+import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
+import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -103,6 +108,18 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     }, [fetchPostcardDetails]),
   );
 
+  const reportBottomSheet = useBottomSheet();
+  const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
+
+  useHeaderControl({
+    title: '받은 엽서',
+    left: true,
+    right: {
+      image: reportIcon,
+      onPress: () => reportBottomSheet.handleOpenBottomSheet(),
+    },
+  });
+
   const platformBlurRadius = Platform.select({
     ios: postcardDetails?.postcardStatus === EPostcardStatus.ACCEPT ? 0 : 9,
     android: postcardDetails?.postcardStatus === EPostcardStatus.ACCEPT ? 0 : 30,
@@ -112,14 +129,14 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
     <ScrollView alwaysBounceHorizontal={false} style={{ flex: 1, backgroundColor: 'white' }} overScrollMode="never">
       <S.Wrapper>
         <View style={{ flex: 1, backgroundColor: 'white' }}>
-          <S.HeaderView>
+          {/* <S.HeaderView>
             <TouchableOpacity onPress={movePage()}>
               <S.HeaderImage source={prevButtonBlack} />
             </TouchableOpacity>
             <S.HeaderTextWrapper>
               <S.HeaderText>받은 엽서</S.HeaderText>
             </S.HeaderTextWrapper>
-          </S.HeaderView>
+          </S.HeaderView> */}
 
           <S.UserInfoContainerView>
             <S.UserInfoView>
@@ -229,6 +246,9 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               </S.Button>
             </S.ButtonContainer>
           </S.BodyView>
+          <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
+            <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} />
+          </CustomBottomSheetModal>
         </View>
       </S.Wrapper>
     </ScrollView>

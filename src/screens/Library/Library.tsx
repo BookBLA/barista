@@ -4,6 +4,7 @@ import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
+import reportIcon from '../../../assets/images/icons/ReportIcon.png';
 import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
@@ -38,6 +39,10 @@ import { useUserStore } from '../../commons/store/useUserinfo';
 import { icons, img } from '../../commons/utils/variablesImages';
 import { isAxiosErrorResponse } from '../../commons/utils/isAxiosErrorResponse';
 import { EStatusCode } from '../../commons/types/statusCode';
+import { useToggle } from '../../commons/hooks/useToggle';
+import ReportOption from './utils/ReportOption/ReportOption';
+import BlockModalContent from './utils/BLockModalContent';
+import { postMemberBlock } from '../../commons/api/memberBlock.api';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -50,12 +55,16 @@ type Props = {
 };
 
 const Library: React.FC<Props> = ({ route }) => {
+  const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
+  const reportBlockBottomSheet = useBottomSheet();
+  const reportBottomSheet = useBottomSheet();
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
+  const reportSnapPoints = useMemo(() => ['23%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary;
   // const isYourLibrary = true;
@@ -176,6 +185,29 @@ const Library: React.FC<Props> = ({ route }) => {
     return await validateSendPostcard(targetMemberId);
   };
 
+  const handleReportClose = () => {
+    reportBottomSheet.handleOpenBottomSheet();
+    reportBlockBottomSheet.handleCloseBottomSheet();
+  };
+
+  const CallPostMemberBlock = async () => {
+    try {
+      const response = await postMemberBlock(targetMemberId);
+      console.log('차단 성공');
+      showToast({
+        content: '차단에 성공했습니다. 이제 서로 보이지 않습니다.',
+      });
+    } catch (error) {
+      console.log('차단 실패');
+    }
+  };
+  const handleBlockClick = () => {
+    //차단하기 api 호출
+    CallPostMemberBlock;
+    toggle();
+    reportBlockBottomSheet.handleCloseBottomSheet();
+  };
+
   const handlePostcardClick = async () => {
     const validateResult = await getCurrentPostcardStatus();
 
@@ -281,6 +313,10 @@ const Library: React.FC<Props> = ({ route }) => {
           title: '상대페이지',
           left: true,
           onPressLeft: movePage(),
+          right: {
+            image: reportIcon,
+            onPress: () => reportBlockBottomSheet.handleOpenBottomSheet(),
+          },
         }
       : {
           title: '마이페이지',
@@ -476,6 +512,25 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
 
+      <CustomBottomSheetModal ref={reportBlockBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
+        <S.ProfileImageBottomSheetContainer>
+          <S.ProfileImageModificationButton onPress={handleReportClose} style={{ marginBottom: 13 }}>
+            <CustomText size="16px" font="fontRegular">
+              신고하기
+            </CustomText>
+          </S.ProfileImageModificationButton>
+          <S.ProfileImageModificationButton onPress={toggle}>
+            <CustomText size="16px" font="fontRegular">
+              차단하기
+            </CustomText>
+          </S.ProfileImageModificationButton>
+        </S.ProfileImageBottomSheetContainer>
+      </CustomBottomSheetModal>
+
+      <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
+        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} />
+      </CustomBottomSheetModal>
+
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewStyle
@@ -562,6 +617,18 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
+      <CustomModal
+        modalConfig={{
+          visible: isOpen,
+          onClose: toggle,
+          mode: 'round',
+          contents: <BlockModalContent />,
+          buttons: [
+            { label: '아니오', action: toggle, bgColor: colors.buttonMain, color: 'black' },
+            { label: '차단하기', action: handleBlockClick },
+          ],
+        }}
+      />
     </SafeAreaView>
   );
 };

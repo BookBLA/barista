@@ -4,7 +4,7 @@ import { colors } from '../../../../../commons/styles/variablesStyles';
 import * as S from '../../../InitUserInfo.styles';
 import { TitleProgress2 } from '../../TitleProgress2';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
-import { TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
+import { OpenChatTextFiledStyled, TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useManageMargin from '../../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
@@ -30,11 +30,21 @@ const OpenChat = () => {
         <S.ColumnStyled style={{ height: '80%' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>오픈채팅방 링크 등록</S.ContentStyled>
-            <TextFiledStyled
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 30,
+              }}
+            >
+              알파벳으로 된 URL 링크만 붙여 넣어주세요.{'\n'}
+              링크만 입력해 주셔야 채팅을 보낼 수 있습니다.
+            </Text>
+            <OpenChatTextFiledStyled
               defaultValue={userInfo.openKakaoRoomUrl}
               onChangeText={(text: string) => updateUserInfo({ openKakaoRoomUrl: text })}
-              // onFocus={handleFocus}
-              // onBlur={handleBlur}
               style={{
                 color: colors.primary,
               }}
