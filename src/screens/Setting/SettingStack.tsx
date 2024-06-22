@@ -4,8 +4,9 @@ import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen
 import Setting from './screens/Setting/Setting';
 import Account from './screens/Account/Account';
 import Delete from './screens/Delete/Delete';
-import { IProps } from './SettingStack.types';
+import { TProps } from './SettingStack.types';
 import useManageMargin from '../../commons/hooks/useManageMargin';
+import { useRoute } from '@react-navigation/native';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -14,7 +15,8 @@ const screens = [
   { name: 'delete', component: Delete },
 ];
 
-const SettingStack = ({ route }: IProps) => {
+const SettingStack = () => {
+  const route = useRoute<TProps>();
   useManageMargin();
 
   return (
