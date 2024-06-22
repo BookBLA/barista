@@ -1,7 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 
 export type RootStackParamList = {
-  FailedSign: { rejectCase: [] };
+  FailedSign: { rejectCase: number[] };
 };
 
 export type FailedSignRouteProp = RouteProp<RootStackParamList, 'FailedSign'>;
