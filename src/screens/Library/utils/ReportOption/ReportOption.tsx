@@ -1,7 +1,7 @@
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { reportCases } from '../../../../commons/contents/report/reportCases';
 import Checkbox from 'expo-checkbox';
 import { NextButtonStyled } from '../../../InitUserInfo/InitUserInfo.styles';
@@ -9,10 +9,25 @@ import { useToggle } from '../../../../commons/hooks/useToggle';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import ReportModalContent from '../ReportModalContent';
 import { InputStyled } from './ReportOption.styles';
+import { postMemberReports } from '../../../../commons/api/memberReports';
+import useToastStore from '../../../../commons/store/useToastStore';
 
-const ReportOption = ({ bottomClose }: { bottomClose: () => void }) => {
+const reportStatusKeys = {
+  bookQuizReport: 0,
+  reviewReport: 1,
+  askReport: 2,
+  replyReport: 3,
+  profileImageReport: 4,
+  etcReport: 5,
+};
+
+type TReportStatusKeys = keyof typeof reportStatusKeys;
+
+const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => void; reportedMemberId: number }) => {
   const [isChecked, setIsChecked] = useState(Array(reportCases.length).fill(false));
   const { toggle, isOpen } = useToggle();
+  const [etcContents, setEtcContents] = useState('');
+  const showToast = useToastStore((state) => state.showToast);
 
   const handleCheckboxChange = (index: number) => {
     const updatedChecked = [...isChecked];
@@ -20,11 +35,33 @@ const ReportOption = ({ bottomClose }: { bottomClose: () => void }) => {
     setIsChecked(updatedChecked);
   };
 
-  const handleReportClick = () => {
-    const checkedReportCases = reportCases.filter((_, index) => isChecked[index]);
-    console.log(checkedReportCases);
+  useEffect(() => {}, [isChecked]);
 
-    // 신고하기 API 호출
+  const handleReportClick = async () => {
+    const reportStatuses = Object.keys(reportStatusKeys).reduce(
+      (acc, key) => {
+        const typedKey = key as TReportStatusKeys;
+        acc[typedKey] = isChecked[reportStatusKeys[typedKey]];
+        return acc;
+      },
+      {} as Record<TReportStatusKeys, boolean>,
+    );
+
+    try {
+      await postMemberReports({
+        reportedMemberId,
+        reportStatuses,
+        etcContents,
+      });
+      showToast({
+        content: '신고하셨습니다.',
+      });
+    } catch (err) {
+      showToast({
+        content: '신고하기에 실패하였습니다.',
+      });
+    }
+
     bottomClose();
     toggle();
   };
@@ -56,6 +93,7 @@ const ReportOption = ({ bottomClose }: { bottomClose: () => void }) => {
           '신고 사유를 입력해주세요\n신고 사유에 맞지 않는 신고일 경우,\n해당 신고는 처리되지 않습니다.\n누적 신고횟수 3회 이상인 유저는\n서비스 이용이 불가능하며,\n프로필은 자동으로 차단됩니다.'
         }
         placeholderTextColor={colors.textGray}
+        onChangeText={(text: string) => setEtcContents(text)}
       />
       <NextButtonStyled
         onPress={() => handleReportClick()}

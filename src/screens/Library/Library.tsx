@@ -87,7 +87,7 @@ const Library: React.FC<Props> = ({ route }) => {
     ios: isProfileImageModificationStatus ? 9 : 0,
     android: isProfileImageModificationStatus ? 30 : 0,
   });
-  const { movePage, movePageNoReference, handleReset } = useMovePage();
+  const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -193,17 +193,17 @@ const Library: React.FC<Props> = ({ route }) => {
   const CallPostMemberBlock = async () => {
     try {
       const response = await postMemberBlock(targetMemberId);
-      console.log('차단 성공');
       showToast({
         content: '차단에 성공했습니다. 이제 서로 보이지 않습니다.',
       });
+      goBack();
     } catch (error) {
-      console.log('차단 실패');
+      console.error('차단 실패', error);
     }
   };
   const handleBlockClick = () => {
     //차단하기 api 호출
-    CallPostMemberBlock;
+    CallPostMemberBlock();
     toggle();
     reportBlockBottomSheet.handleCloseBottomSheet();
   };
@@ -528,7 +528,7 @@ const Library: React.FC<Props> = ({ route }) => {
       </CustomBottomSheetModal>
 
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
-        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} />
+        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
       </CustomBottomSheetModal>
 
       <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
