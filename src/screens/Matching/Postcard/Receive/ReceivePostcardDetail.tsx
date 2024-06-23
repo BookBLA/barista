@@ -1,6 +1,5 @@
-import { Platform, ScrollView, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, View } from 'react-native';
 import React, { useCallback, useMemo, useState } from 'react';
-import prevButtonBlack from '../../../../../assets/images/buttons/prevButtonBlack.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
@@ -247,7 +246,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
             </S.ButtonContainer>
           </S.BodyView>
           <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
-            <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} />
+            <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={memberId} />
           </CustomBottomSheetModal>
         </View>
       </S.Wrapper>
