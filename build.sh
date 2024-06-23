@@ -89,16 +89,6 @@ fi
 echo "app.json 파일의 버전을 최신 태그로 업데이트했습니다."
 cat app.json
 
-jq --arg version "$LATEST_TAG" '.expo.version = $version' eas.json > eas_temp.json && mv eas_temp.json eas.json
-if [ $? -ne 0 ]; then
-  echo 'eas.json의 버전 업데이트에 실패했습니다.'
-  exit $EXIT_FILE_UPDATE_EAS_JSON
-fi
-
-echo "eas.json 파일의 버전을 최신 태그로 업데이트했습니다."
-cat eas.json
-
-
 # doppler run --mount .env -- eas secret:push --scope project --env-file .env --force
 # if [ $? -eq 0 ]; then
 #   echo 'EAS secrets 성공적으로 푸시되었습니다.'
@@ -134,15 +124,6 @@ else
   exit $EXIT_DOPPLER_APP_JSON_UPDATE_FALI
 fi
 
-doppler secrets set EAS_JSON="$(cat eas.json)"
-if [ $? -eq 0 ]; then
-  echo 'eas.json을 성공적으로 Doppler에 업데이트했습니다.'
-else
-  echo 'eas.json을 Doppler에 업데이트하는데 실패했습니다.'
-  exit $EXIT_DOPPLER_EAS_JSON_UPDATE_FALI
-fi
-
-
 case $PLATFORM in
   all)
     echo '모든 플랫폼에 대해 제출을 진행합니다.'
@@ -159,6 +140,7 @@ case $PLATFORM in
     ;;
 esac
 
+# NOTE: 불필요하면 삭제하기
 rm eas.json google-services.json app.json ./bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json
 if [ $? -eq 0 ]; then
   echo '생성된 json파일들을 성공적으로 삭제했습니다.'
