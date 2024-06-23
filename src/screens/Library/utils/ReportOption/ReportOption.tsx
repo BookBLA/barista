@@ -18,7 +18,6 @@ const reportStatusKeys = {
   askReport: 2,
   replyReport: 3,
   profileImageReport: 4,
-  etcReport: 5,
 };
 
 type TReportStatusKeys = keyof typeof reportStatusKeys;
