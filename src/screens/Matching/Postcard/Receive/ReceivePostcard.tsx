@@ -1,4 +1,4 @@
-import { Linking, TouchableOpacity, View } from 'react-native';
+import { Linking, TouchableOpacity, View, Image } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
@@ -27,7 +27,8 @@ import {
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
-import { img } from '../../../../commons/utils/variablesImages';
+import { img, icons } from '../../../../commons/utils/variablesImages';
+import { deviceWidth } from '../../../../commons/utils/dimensions';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -212,8 +213,14 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             </UserInfoWrapper>
           </ModalUserInfoViewStyled>
           <ModalBookListContainer>
-            {modalData.bookImageUrls?.map((bookImageUrl) => (
+            {modalData.bookImageUrls?.map((bookImageUrl, index) => (
               <ModalBookWrapper>
+                {index === 0 && (
+                  <Image
+                    style={{ width: 15, height: 30, position: 'absolute', zIndex: 3, left: deviceWidth / 5, top: -3 }}
+                    source={icons.bookmark}
+                  />
+                )}
                 <ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
               </ModalBookWrapper>
             ))}
