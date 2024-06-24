@@ -87,7 +87,7 @@ const Matching = () => {
             {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}
             {receivedPostcards.length > 0 && (
               <FlatList
-                style={{ paddingLeft: 16, paddingRight: 16 }}
+                style={{ paddingLeft: 16, paddingRight: 16, marginTop: 10 }}
                 ref={flatListRef}
                 data={receivedPostcards}
                 renderItem={({ item, index }) => (
