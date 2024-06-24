@@ -18,6 +18,7 @@ import reportIcon from '../../../../../assets/images/icons/ReportIcon.png';
 import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
+import { getYourLibraryInfo } from '../../../../commons/api/library.api';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -83,6 +84,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const acceptPostcard = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId, status: EPostcardStatus.ACCEPT });
+      const response = await getYourLibraryInfo(memberId);
+      const bookImageUrls = response.bookResponses.map((book: { bookImageUrl: string }) => book.bookImageUrl);
       setMatchingApproveModalData({
         memberId,
         memberName,
