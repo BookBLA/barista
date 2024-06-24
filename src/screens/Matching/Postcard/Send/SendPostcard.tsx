@@ -13,9 +13,12 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import { useLimitTextLine } from '../../../../commons/hooks/useLimitTextLine';
 import { ModalWrapper } from '../../../Setting/SettingStack.styles';
 import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
+import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/memberReply.api';
+import { Put } from '../../../../commons/utils/http.api';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
+    postcardId,
     memberId,
     memberName,
     memberAge,
@@ -66,7 +69,24 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   };
 
   const { handleLimitTextLine } = useLimitTextLine();
-  const [answer, setAnswer] = useState('원래답변');
+  const [answer, setAnswer] = useState('');
+  const [question, setQuestion] = useState('');
+
+  const callGetPersonalQuiz = async () => {
+    try {
+      const response = await getMemeberReplyApi(postcardId);
+      console.log('개인 질문, 답변 get 성공', response);
+      setQuestion(response.result.askContent);
+      setAnswer(response.result.replyContent);
+    } catch (error) {
+      console.error('개인 질문, 답변 get 실패', error);
+    }
+  };
+
+  const handleModifyAnswer = () => {
+    callGetPersonalQuiz();
+    toggle();
+  };
 
   const handleTextChange = (text: string) => {
     if (text.length !== 0) {
@@ -79,10 +99,23 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
     }
   };
 
+  const callPutPersonalQuiz = async () => {
+    try {
+      const response = await putMemberReplyApi(postcardId, answer);
+      showToast({ content: '답변이 수정되었습니다!' });
+    } catch (error) {
+      console.error('개인 질문, 답변 put 실패', error);
+    }
+  };
+
   const modifyPersonalQuiz = () => {
-    //개인 질문 답변 수정 api 호출
-    showToast({ content: '답변이 수정되었습니다!' });
-    toggle();
+    if (answer === '') {
+      return;
+    } else {
+      //개인 질문 답변 수정 api 호출
+      callPutPersonalQuiz();
+      toggle();
+    }
   };
 
   return (
@@ -105,7 +138,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
         <S.ButtonContainerViewStyled>
           {postcardStatus === EPostcardStatus.PENDING && (
             <>
-              <TouchableWithoutFeedback onPress={toggle}>
+              <TouchableWithoutFeedback onPress={handleModifyAnswer}>
                 <S.ButtonContainer left backgroundColor="#F5F0E2">
                   <S.ButtonText fontColor={colors.textGray2}>답변 수정</S.ButtonText>
                 </S.ButtonContainer>
@@ -201,9 +234,9 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
           close: true,
           contents: (
             <ModalWrapper>
-              <CustomText style={{ marginBottom: 15 }}>수정할 내용을 입력해주세요.</CustomText>
+              <CustomText style={{ marginBottom: 15 }}>{question}</CustomText>
               <S.ModifyAnswerTextInput
-                defaultValue={'원래 답변'}
+                defaultValue={answer}
                 value={answer}
                 onChangeText={(text: string) => handleTextChange(text)}
               />
