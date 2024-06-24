@@ -64,7 +64,8 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
-  const reportSnapPoints = useMemo(() => ['23%'], []);
+  const reportBlockSnapPoints = useMemo(() => ['24%'], []);
+  const reportSnapPoints = useMemo(() => ['80%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary;
   // const isYourLibrary = true;
@@ -512,7 +513,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
 
-      <CustomBottomSheetModal ref={reportBlockBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
+      <CustomBottomSheetModal ref={reportBlockBottomSheet.bottomRef} index={0} snapPoints={reportBlockSnapPoints}>
         <S.ProfileImageBottomSheetContainer>
           <S.ProfileImageModificationButton onPress={handleReportClose} style={{ marginBottom: 13 }}>
             <CustomText size="16px" font="fontRegular">
@@ -527,7 +528,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
 
-      <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
+      <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
       </CustomBottomSheetModal>
 
