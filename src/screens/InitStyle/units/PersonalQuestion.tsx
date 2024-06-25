@@ -60,6 +60,7 @@ const PersonalQuestion = () => {
             ex) 주로 어디서 책을 읽나요?
           </Text>
           <T.TextFiledStyled
+            placeholder="부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다."
             defaultValue={styleInfo.memberAsk}
             onChangeText={(text: string) => handleLimitTextLine(text, setQuestion, 3)}
             value={question}

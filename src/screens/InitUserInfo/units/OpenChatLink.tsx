@@ -82,6 +82,7 @@ const OpenChatLink = () => {
               링크만 입력해 주셔야 채팅을 보낼 수 있습니다.
             </Text>
             <OpenChatTextFiledStyled
+              placeholder="부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다."
               value={userInfo.openKakaoRoomUrl}
               onChangeText={(text: string) => updateUserInfo({ openKakaoRoomUrl: text })}
               // onFocus={handleFocus}

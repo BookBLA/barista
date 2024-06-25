@@ -190,7 +190,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 // numberOfLines={4}
                 maxLength={100}
                 inputMode="text"
-                placeholder="감상문을 적어주세요!"
+                placeholder={'감상문을 적어주세요!\n부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.'}
                 placeholderTextColor={colors.textGray2}
                 textAlignVertical="top"
                 onChangeText={(text: string) => onChangeBookReview(text)}
