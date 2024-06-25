@@ -46,7 +46,10 @@ const ModifyStyle = () => {
       handleLimitTextLine(text, setQuestion, 4);
       // console.log('qeustion', question);
       // setQuestion(text);
-      updateStyleInfo('memberAsk', question);
+      // updateStyleInfo('memberAsk', question);
+    } else {
+      setQuestion(text);
+      // updateStyleInfo('memberAsk', question);
     }
   };
 
@@ -125,6 +128,13 @@ const ModifyStyle = () => {
 
   const callPutStyleApi = async () => {
     try {
+      if (question.length === 0) {
+        showToast({
+          content: '상대방에게 궁금한 점을 입력해주세요.',
+        });
+        return;
+      }
+      updateStyleInfo('memberAsk', question);
       // console.log('styleInfo', styleInfo);
       const response = await putMemberStyleApi({
         mbti: mbti.join(''),
@@ -134,7 +144,8 @@ const ModifyStyle = () => {
         dateStyleType: styleInfo.dateStyleType,
         dateCostType: styleInfo.dateCostType,
         justFriendType: styleInfo.justFriendType,
-        memberAsk: styleInfo.memberAsk,
+        // memberAsk: styleInfo.memberAsk,
+        memberAsk: question,
       });
       // console.log('putMemberStyleApi Success', response);
       showToast({
@@ -321,8 +332,7 @@ const ModifyStyle = () => {
                 defaultValue={question}
                 value={question}
                 onChangeText={(text: string) => handleTextChange(text)}
-                //onFocus={handleFocus}
-                // onBlur={() => updateStyleInfo('memberAsk', question)}
+                placeholder="부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다."
                 style={{
                   color: colors.primary,
                 }}
