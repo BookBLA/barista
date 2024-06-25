@@ -57,6 +57,8 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, setMatchingApproveModalData } =
     useModalStore();
 
+  const reportSnapPoints = useMemo(() => ['80%'], []);
+
   const fetchPostcardDetails = useCallback(async () => {
     try {
       const responseList = await getReceivePostcardList();
@@ -248,7 +250,7 @@ const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
               </S.Button>
             </S.ButtonContainer>
           </S.BodyView>
-          <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={3} snapPoints={snapPoints}>
+          <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
             <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={memberId} />
           </CustomBottomSheetModal>
         </View>

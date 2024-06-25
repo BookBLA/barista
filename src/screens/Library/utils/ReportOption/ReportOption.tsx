@@ -54,17 +54,12 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
         reportStatuses,
         etcContents,
       });
-      showToast({
-        content: '신고하셨습니다.',
-      });
+      toggle();
     } catch (err) {
       showToast({
-        content: '신고하기에 실패하였습니다.',
+        content: '신고 하기에 실패하였습니다.',
       });
     }
-
-    bottomClose();
-    toggle();
   };
 
   return (
@@ -121,7 +116,7 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
             onClose: toggle,
             mode: 'round',
             contents: <ReportModalContent />,
-            buttons: [{ label: '확인', action: toggle }],
+            buttons: [{ label: '확인', action: bottomClose }],
           }}
         />
       </KeyboardAwareScrollView>
