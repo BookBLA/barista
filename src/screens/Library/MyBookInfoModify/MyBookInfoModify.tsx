@@ -5,7 +5,7 @@ import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoM
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
 import useToastStore from '../../../commons/store/useToastStore';
 import { img } from '../../../commons/utils/variablesImages';
@@ -332,6 +332,13 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
                 </S.BookQuizAnswerWrapper>
               </S.BookQuizInfoView>
             </S.BookQuizAnswerContainer>
+            <View style={{ width: '100%', alignItems: 'center', marginBottom: 5 }}>
+              {isModifiableBookQuestion && (
+                <CustomText font="fontRegular" size="10px" color={colors.textGray2}>
+                  *부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.
+                </CustomText>
+              )}
+            </View>
           </S.BookQuizContainer>
           <S.BookRemoveButton onPress={deleteBookFunc}>
             <CustomText font="fontMedium" size="14px" color="white">
