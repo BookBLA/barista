@@ -189,7 +189,9 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
                 numberOfLines={3}
                 maxLength={100}
                 inputMode="text"
-                placeholder="개인 질문에 대한 답변을 적어주세요👀"
+                placeholder={
+                  '개인 질문에 대한 답변을 적어주세요👀\n부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.'
+                }
                 placeholderTextColor={colors.textGray2}
                 textAlignVertical="top"
                 onChangeText={(text: React.SetStateAction<string>) => onChangePersonalQuestionAnswerText(text)}

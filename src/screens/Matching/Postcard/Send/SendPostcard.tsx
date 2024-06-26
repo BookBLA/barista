@@ -236,6 +236,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
             <ModalWrapper>
               <CustomText style={{ marginBottom: 15 }}>{question}</CustomText>
               <S.ModifyAnswerTextInput
+                placeholder="부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다."
                 defaultValue={answer}
                 value={answer}
                 onChangeText={(text: string) => handleTextChange(text)}
