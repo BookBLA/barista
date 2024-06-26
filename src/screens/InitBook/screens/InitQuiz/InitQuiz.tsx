@@ -165,6 +165,9 @@ const InitQuiz = ({ route }: IProps) => {
                 name="secondWrongChoice"
               />
             </U.RowStyled>
+            <CustomText font="fontRegular" size="10px" color={colors.textGray2}>
+              *부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.
+            </CustomText>
           </View>
         </KeyboardAwareScrollView>
         <S.NextButtonStyled
