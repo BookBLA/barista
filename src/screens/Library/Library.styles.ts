@@ -55,6 +55,7 @@ export const CircularImage = styled.Image`
   height: 60px;
   border-radius: 30px;
   margin-right: 10px;
+  background-color: #e9e9e9;
 `;
 
 export const OverlayImage = styled.Image`
@@ -144,6 +145,7 @@ export const BookImage = styled.Image`
   width: 90%;
   height: ${deviceHeight / 4 - 40}px;
   border-radius: 10px;
+  object-fit: fill;
 `;
 
 export const EmptyBookImage = styled.View`
