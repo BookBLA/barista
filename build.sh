@@ -22,8 +22,6 @@ ENVIRONMENT=${2:-PLATFORM}
 
 LOG_FILE="build.log"
 
-
-{
 echo "=================================================="
 echo "빌드를 진행한 날짜: $(date)"
 echo "빌드를 진행할 환경: $ENVIRONMENT"
@@ -160,4 +158,4 @@ END_TIME=$(date)
 echo "빌드가 완료되었습니다. 종료 시간: $END_TIME"
 
 exit $EXIT_SUCCESS
-} 2>&1 | tee -a "$LOG_FILE"
+
