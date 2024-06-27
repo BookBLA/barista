@@ -20,7 +20,7 @@ const SettingStack = () => {
   useManageMargin();
 
   return (
-    <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false, animationEnabled: false }}>
       {screens.map(({ name, component }, index) =>
         !index ? (
           <Stack.Screen
