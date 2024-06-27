@@ -17,7 +17,7 @@ import { getAppVersion } from '../../../../commons/utils/getAppVersion';
 import { getVersionApi } from '../../../../commons/api/setting.api';
 import { useEffect, useState } from 'react';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
-import { Platform } from 'react-native';
+import { ActivityIndicator, Platform } from 'react-native';
 import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
 import { useRoute } from '@react-navigation/native';
 
@@ -29,6 +29,7 @@ const initState = {
 
 const Setting = () => {
   const [link, setLink] = useState('');
+  const [loading, setLoading] = useState(true);
   const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
@@ -48,6 +49,7 @@ const Setting = () => {
       googlePlayStoreUrl,
       appStoreUrl,
     });
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -118,7 +120,9 @@ const Setting = () => {
                 {`V${appVersion}`}
               </CustomText>
             </S.RowWrapper>
-            {data.version === appVersion ? (
+            {loading ? (
+              <ActivityIndicator size="small" color={colors.primary} />
+            ) : data?.version === appVersion ? (
               <CustomText margin="20px 4px 0 0" color={colors.textGray2} size="12px">
                 최신 버전
               </CustomText>

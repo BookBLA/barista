@@ -20,8 +20,16 @@ EXIT_NPM_INSTALL_FIL=61
 PLATFORM=${1:-android}
 ENVIRONMENT=${2:-PLATFORM}
 
+LOG_FILE="build.log"
+
+
+{
+echo "=================================================="
+echo "빌드를 진행한 날짜: $(date)"
 echo "빌드를 진행할 환경: $ENVIRONMENT"
 echo "빌드를 진행할 플랫폼: $PLATFORM"
+echo "=================================================="
+
 
 read -p "빌드를 진행하기 전에 Git 태그를 작성했습니까? (yes/no): " confirm
 if [ "$confirm" != "yes" ]; then
@@ -140,13 +148,16 @@ case $PLATFORM in
     ;;
 esac
 
-# NOTE: 불필요하면 삭제하기
-rm eas.json google-services.json app.json ./bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json
-if [ $? -eq 0 ]; then
-  echo '생성된 json파일들을 성공적으로 삭제했습니다.'
-else
-  echo '생성된 json파일들을 삭제하는데 실패했습니다.'
-  exit $EXIT_FILE_REMOVE_FAIL
-fi
+# rm eas.json google-services.json app.json ./bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json
+# if [ $? -eq 0 ]; then
+#   echo '생성된 json파일들을 성공적으로 삭제했습니다.'
+# else
+#   echo '생성된 json파일들을 삭제하는데 실패했습니다.'
+#   exit $EXIT_FILE_REMOVE_FAIL
+# fi
+
+END_TIME=$(date)
+echo "빌드가 완료되었습니다. 종료 시간: $END_TIME"
 
 exit $EXIT_SUCCESS
+} 2>&1 | tee -a "$LOG_FILE"

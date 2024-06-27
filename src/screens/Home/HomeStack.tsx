@@ -19,7 +19,7 @@ const HomeStack = () => {
   usePushNotifications();
 
   return (
-    <Stack.Navigator initialRouteName="home" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="home" screenOptions={{ headerShown: false, animationEnabled: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
       ))}
