@@ -1,8 +1,8 @@
 name: build expo via eas
 
 on:
-  pull_request:
-    branches: [ release ]
+  push:
+    branches: [release]
 
 jobs:
   update:
@@ -16,25 +16,25 @@ jobs:
       - name: create firebase.json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json"
+          name: 'bookbla-2024-firebase-adminsdk-qfspu-1dcca92597.json'
           json: ${{ secrets.FIREBASE_JSON }}
 
       - name: create app.json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "app.json"
+          name: 'app.json'
           json: ${{ secrets.APP_JSON }}
 
       - name: create google-services.json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "google-services.json"
+          name: 'google-services.json'
           json: ${{ secrets.GOOGLE_SERVICES_JSON }}
 
       - name: create eas.json
         uses: jsdaniell/create-json@1.1.2
         with:
-          name: "eas.json"
+          name: 'eas.json'
           json: ${{ secrets.EAS_JSON }}
 
       # 노드, 패키지 매니저, 캐시 설정
@@ -64,13 +64,9 @@ jobs:
       - name: update testflight
         run: eas submit --platform ios --latest --profile local --non-interactive
 
-      # submit android
-      - name : update android
-        run: eas submit --platform android --latest --profile local --non-interactive
-
-      # 디스코드 웹훅 알림 전송
-      - name: Discord Webhook Action
-        uses: tsickert/discord-webhook@v5.3.0
-        with:
-          webhook-url: ${{ secrets.WEBHOOK_URL }}
-          content: "따끈따끈한 새 빌드가 완료됐다네~"
+      # # 디스코드 웹훅 알림 전송
+      # - name: Discord Webhook Action
+      #   uses: tsickert/discord-webhook@v5.3.0
+      #   with:
+      #     webhook-url: ${{ secrets.WEBHOOK_URL }}
+      #     content: "따끈따끈한 새 빌드가 완료됐다네~"
