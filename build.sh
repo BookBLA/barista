@@ -38,6 +38,8 @@ fi
 doppler setup --no-interactive --config $ENVIRONMENT
 doppler configure
 
+git tag -l | xargs git tag -d
+
 git fetch --tags
 if [ $? -ne 0 ]; then
   echo '태그 정보를 가져오는데 실패했습니다.'
@@ -153,6 +155,27 @@ esac
 #   echo '생성된 json파일들을 삭제하는데 실패했습니다.'
 #   exit $EXIT_FILE_REMOVE_FAIL
 # fi
+
+EXPO_PUBLIC_BASE_URL=$(doppler run --command 'echo $EXPO_PUBLIC_BASE_URL')
+if [ $? -ne 0 ];then
+  echo 'Doppler에서 EXPO_PUBLIC_BASE_URL을 가져오는데 실패했습니다.'
+  exit $EXIT_DOPPLER_UPDATE_FALI
+fi
+
+curl -X 'POST' \
+  "${EXPO_PUBLIC_BASE_URL}settings/versions" \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d "{
+  \"version\": \"$LATEST_TAG\"
+}"
+
+if [ $? -ne 0 ]; then
+  echo '버전 업데이트 요청이 실패했습니다.'
+  exit 1
+else
+  echo '버전 업데이트 요청이 성공했습니다.'
+fi
 
 END_TIME=$(date)
 echo "빌드가 완료되었습니다. 종료 시간: $END_TIME"
