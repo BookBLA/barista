@@ -24,7 +24,7 @@ const SmokeDrink = () => {
     <S.Wrapper>
       <TitleProgress gauge={32} />
       <S.ColumnStyled style={{ height: '80%' }}>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={{ width: '95%', alignItems: 'center' }}>
           <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%' }}>
             <T.ButtonStyled
@@ -47,7 +47,7 @@ const SmokeDrink = () => {
             </T.ButtonStyled>
           </S.RowStyled>
         </View>
-        <View style={{ width: '100%', alignItems: 'center', height: '30%' }}>
+        <View style={{ width: '95%', alignItems: 'center', height: '30%' }}>
           <S.ContentStyled>음주 여부를 알려주세요.</S.ContentStyled>
           <S.RowStyled style={{ width: '95%', marginBottom: 10 }}>
             {buttonTitles.slice(0, 3).map((title, index) => (
