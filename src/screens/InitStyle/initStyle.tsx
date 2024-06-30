@@ -7,6 +7,7 @@ import OppositeSex from './units/OppositeSex';
 import CommStyle from './units/CommStyle';
 import DateCost from './units/DateCost';
 import PersonalQuestion from './units/PersonalQuestion';
+import MyHeight from './units/MyHeight';
 
 const Stack = createStackNavigator();
 
@@ -16,7 +17,8 @@ const screens = [
   { name: 'oppositeSex', component: OppositeSex },
   { name: 'commStyle', component: CommStyle },
   { name: 'dateCost', component: DateCost },
-  { name: 'personalQeustion', component: PersonalQuestion },
+  { name: 'myHeight', component: MyHeight },
+  { name: 'personalQuestion', component: PersonalQuestion },
 ];
 
 const InitStyleStack = () => {
