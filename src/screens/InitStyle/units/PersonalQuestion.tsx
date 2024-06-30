@@ -56,7 +56,7 @@ const PersonalQuestion = () => {
       <T.InnerWrapper onPress={Keyboard.dismiss} underlayColor="transparent">
         <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
           <S.ContentStyled style={{ marginBottom: 10 }}>상대방에게 궁금한 점을 적어주세요</S.ContentStyled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 10 }}>
+          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 14, marginBottom: 28 }}>
             ex) 주로 어디서 책을 읽나요?
           </Text>
           <T.TextFiledStyled
