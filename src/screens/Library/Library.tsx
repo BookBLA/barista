@@ -598,10 +598,10 @@ const Library: React.FC<Props> = ({ route }) => {
         <S.EmptyPostcardModalWrapper>
           <S.EmptyPostcardModalHeader>
             <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-              엽서가 부족합니다.
+              책갈피가 부족합니다.
             </CustomText>
             <CustomText font="fontRegular" size="12px">
-              엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+              책갈피가 부족합니다. 다음 충전 시간을 확인해 보세요.
             </CustomText>
           </S.EmptyPostcardModalHeader>
           <S.ModalBottomWrapper>
