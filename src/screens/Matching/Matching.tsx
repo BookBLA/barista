@@ -76,7 +76,7 @@ const Matching = () => {
         {isReceivedPostcard ? (
           <>
             <S.InfoViewStyled>
-              <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서가 1개 소모 됩니다</S.InfoTextStyled>
+              <S.InfoTextStyled>받은 엽서 확인 시 소지한 책갈피 35개가 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
                 <IconButton onPress={movePage('product')}>
                   <IconImage source={icons.postcard} />

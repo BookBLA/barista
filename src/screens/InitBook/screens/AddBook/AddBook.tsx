@@ -31,7 +31,7 @@ const AddBook = () => {
 
       <ScrollView style={{ width: '100%' }}>
         <S.ColumnStyled style={{ justifyContent: 'flex-start', height: '100%' }}>
-          <View style={{ height: '13%', alignItems: 'center', margin: '10%' }}>
+          <View style={{ height: '25%', alignItems: 'center', margin: '10%' }}>
             <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16, marginBottom: 14 }}>
               내가 좋아하는 책
             </Text>
@@ -44,6 +44,12 @@ const AddBook = () => {
             <Text style={{ color: colors.textGray, fontFamily: 'fontLight', fontSize: 14 }}>
               책은 최대 3권까지 추가할 수 있습니다.
             </Text>
+            <S.RowStyled style={{ width: 'auto', marginBottom: 7, marginTop: 7 }}>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책 1권당</Text>
+              <LightText> 책갈피를</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 35개씩</Text>
+              <LightText> 드립니다.</LightText>
+            </S.RowStyled>
           </View>
           <>
             {data.map((item: IResponseMemberBook, index) => (
