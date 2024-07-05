@@ -7,18 +7,18 @@ import { icons } from '../../../../../../commons/utils/variablesImages';
 import truncateText from '../../../../../../commons/utils/truncateText';
 
 const Profile = ({ item }: { item: IDdata }) => {
+  const { memberId, bookName, memberName, memberSchoolName, memberAge, bookImageUrl } = item;
   const { movePage } = useMovePage();
-  const modifiedName = item?.memberName ? `${item.memberName.charAt(0)}0${item.memberName.slice(2)}` : '닉네임';
 
   return (
-    <S.ProfileWrapper onPress={movePage('library', { memberId: item?.memberId, isYourLibrary: true })}>
+    <S.ProfileWrapper onPress={movePage('library', { memberId, isYourLibrary: true })}>
       <S.BookImageWrapper>
-        <S.BookImage source={item.bookImageUrl ? { uri: item.bookImageUrl } : icons.bookCover} />
+        <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : icons.bookCover} />
       </S.BookImageWrapper>
-      <CustomText size="12px">{truncateText(item.bookName, 15)}</CustomText>
-      <CustomText size="10px">{`${modifiedName} (${item?.memberAge ?? '0'}살)`}</CustomText>
+      <CustomText size="12px">{truncateText(bookName, 15)}</CustomText>
+      <CustomText size="10px">{`${memberName} (${memberAge ?? '0'}살)`}</CustomText>
       <CustomText size="10px" color={colors.textGray}>
-        {item?.memberSchoolName ?? '?? 대학교'}
+        {memberSchoolName ?? '?? 대학교'}
       </CustomText>
     </S.ProfileWrapper>
   );
