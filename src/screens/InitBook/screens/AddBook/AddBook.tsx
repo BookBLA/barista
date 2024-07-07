@@ -48,8 +48,8 @@ const AddBook = () => {
             </Text>
             <S.RowStyled style={{ width: 'auto', marginBottom: 7, marginTop: 7 }}>
               <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책 1권당</Text>
-              <LightText> 책갈피를</LightText>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 35개씩</Text>
+              <LightText> 엽서를</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 2개씩</Text>
               <LightText> 드립니다.</LightText>
             </S.RowStyled>
           </View>
