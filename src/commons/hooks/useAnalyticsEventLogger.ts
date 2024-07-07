@@ -14,6 +14,15 @@ const useAnalyticsEventLogger = () => {
         status: String(memberStatus),
         gender: String(memberGender),
       });
+      console.debug(
+        `Logged Event ${JSON.stringify({
+          ...eventParams,
+          user_id: String(id),
+          type: String(memberType),
+          status: String(memberStatus),
+          gender: String(memberGender),
+        })}`,
+      );
     } catch (error) {
       console.error(`Failed to log event: ${eventName}`, error);
     }
