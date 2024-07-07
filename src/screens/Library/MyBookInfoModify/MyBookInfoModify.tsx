@@ -10,10 +10,8 @@ import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../.
 import useToastStore from '../../../commons/store/useToastStore';
 import { img } from '../../../commons/utils/variablesImages';
 import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
-  useScreenLogger();
   const { handleLimitTextLine } = useLimitTextLine();
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');

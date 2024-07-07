@@ -4,7 +4,7 @@ import analytics from '@react-native-firebase/analytics';
 
 interface IMemberInfo {
   memberInfo: {
-    id: string;
+    id: number;
     oauthEmail: string;
     oauthProfileImageUrl: string;
     memberType: string;
@@ -17,7 +17,7 @@ interface IMemberInfo {
 
 const useMemberStore = create<IMemberInfo>((set) => ({
   memberInfo: {
-    id: '',
+    id: 0,
     oauthEmail: '',
     oauthProfileImageUrl: '',
     memberType: '',
@@ -27,7 +27,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
   saveMemberInfo: async () => {
     const response = await getMemberApi();
-    const { id, oauthEmail, memberType, memberStatus, memberGender } = response.result;
+    const { id, memberType, memberStatus, memberGender } = response.result;
     await analytics().setUserId(String(id));
     await analytics().setUserProperties({
       user_id: String(id),
