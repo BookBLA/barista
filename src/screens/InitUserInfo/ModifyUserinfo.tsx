@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { colors } from '../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ModifyTitleBar } from '../../commons/components/ModifyTitleBar/ModifyTitleBar';
-import { OpenChatTextFiledStyled, TextFiledStyled } from '../InitStyle/InitStyle.styles';
+import { OpenChatTextFiledStyled } from '../InitStyle/InitStyle.styles';
 import useMovePage from '../../commons/hooks/useMovePage';
 import Dash from 'react-native-dash';
 import { useUserStore } from '../../commons/store/useUserinfo';
@@ -14,8 +14,10 @@ import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDi
 import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberProfileApi, patchMemberProfileApi } from '../../commons/api/memberProfile.api';
 import useToastStore from '../../commons/store/useToastStore';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const ModifyUserinfo = () => {
+  useScreenLogger();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [link, setLink] = useState('');

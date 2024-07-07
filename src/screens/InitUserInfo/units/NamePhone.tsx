@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Text } from 'react-native';
+import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -9,8 +9,10 @@ import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const NamePhone = () => {
+  useScreenLogger();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [name, setName] = useState(userInfo.name);

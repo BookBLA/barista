@@ -1,15 +1,15 @@
 import { create } from 'zustand';
-import { getToken, saveToken } from './tokenStore';
 import { getMemberApi } from '../api/member.api';
-import { Field } from 'react-hook-form';
+import analytics from '@react-native-firebase/analytics';
 
 interface IMemberInfo {
   memberInfo: {
-    id: 0;
+    id: string;
     oauthEmail: string;
     oauthProfileImageUrl: string;
     memberType: string;
     memberStatus: string;
+    memberGender: string;
   };
   saveMemberInfo: () => Promise<void>;
   updateMemberInfo: (field: string, value: string | number) => void;
@@ -17,15 +17,24 @@ interface IMemberInfo {
 
 const useMemberStore = create<IMemberInfo>((set) => ({
   memberInfo: {
-    id: 0,
+    id: '',
     oauthEmail: '',
     oauthProfileImageUrl: '',
     memberType: '',
     memberStatus: '',
+    memberGender: '',
   },
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
   saveMemberInfo: async () => {
     const response = await getMemberApi();
+    const { id, oauthEmail, memberType, memberStatus, memberGender } = response.result;
+    await analytics().setUserId(String(id));
+    await analytics().setUserProperties({
+      user_id: String(id),
+      type: String(memberType),
+      status: String(memberStatus),
+      gender: String(memberGender),
+    });
     const memberInfo = response.result;
     if (memberInfo) {
       set({ memberInfo });

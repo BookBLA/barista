@@ -21,6 +21,7 @@ import {
 import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
 import useToastStore from '../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../commons/hooks/useMemberPostcard';
+import useAnalyticsEventLogger from '../../../commons/hooks/useAnalyticsEventLogger';
 
 export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   targetMemberId,
@@ -38,6 +39,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   const [memberPersonalAsk, setMemberPersonalAsk] = useState<TMemberPersonalAsk>();
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const { memberPostcard } = useFetchMemberPostcard();
+  const logEvent = useAnalyticsEventLogger();
 
   const answerAlphabetIndex = ['A', 'B', 'C', 'D', 'E'];
 
@@ -92,6 +94,7 @@ export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
     try {
       await postPostcard(postcardInfo);
       onClose();
+      logEvent('send_postcard');
       useToastStore.getState().showToast({ content: '엽서 보내기에 성공했습니다.😀' });
     } catch (error) {
       useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.😀' });

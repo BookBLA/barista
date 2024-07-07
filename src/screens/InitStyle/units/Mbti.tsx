@@ -1,15 +1,17 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import MbtiComponent from '../../../commons/components/MbtiComponent/MbtiComonent';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const Mbti = () => {
+  useScreenLogger();
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
 

@@ -8,6 +8,7 @@ import GlobalErrorModal from './src/commons/components/GlobalErrorModal/GlobalEr
 import Toast from 'react-native-toast-message';
 import useToast from './src/commons/hooks/useToast';
 import toastConfig from './src/commons/configs/toastConfig';
+import 'expo-dev-client';
 
 export default function App() {
   useToast();

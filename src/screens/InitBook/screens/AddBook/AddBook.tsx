@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { FavBookList } from '../../../../commons/components/FavBookList/FavBookList';
 import { DashDividerLine } from '../../../../commons/components/DashDividerLine/DashDividerLine';
@@ -14,8 +14,10 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { EBook, TProps } from './AddBook.types';
 import { useRoute } from '@react-navigation/native';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const AddBook = () => {
+  useScreenLogger();
   useManageMargin();
   const route = useRoute<TProps>();
   const { movePage, handleReset } = useMovePage();

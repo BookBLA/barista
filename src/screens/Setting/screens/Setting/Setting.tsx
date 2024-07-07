@@ -20,6 +20,7 @@ import { CustomButton } from '../../../../commons/components/CustomButton/Custom
 import { ActivityIndicator, Platform } from 'react-native';
 import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
 import { useRoute } from '@react-navigation/native';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const initState = {
   version: '',
@@ -28,6 +29,7 @@ const initState = {
 };
 
 const Setting = () => {
+  useScreenLogger();
   const [link, setLink] = useState('');
   const [loading, setLoading] = useState(true);
   const route = useRoute<TProps>();

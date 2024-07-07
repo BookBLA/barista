@@ -17,6 +17,7 @@ import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberSt
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
 import { useLimitTextLine } from '../../commons/hooks/useLimitTextLine';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const buttonList = [
   'MBTI',
@@ -33,6 +34,7 @@ const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는
 const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 
 const ModifyStyle = () => {
+  useScreenLogger();
   const { handleLimitTextLine } = useLimitTextLine();
   const [mbti, setMbti] = useState(['', '', '', '']);
   const { updateStyleInfo, styleInfo } = useStyleStore();

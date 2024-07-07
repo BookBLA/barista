@@ -43,6 +43,7 @@ import { useToggle } from '../../commons/hooks/useToggle';
 import ReportOption from './utils/ReportOption/ReportOption';
 import BlockModalContent from './utils/BLockModalContent';
 import { postMemberBlock } from '../../commons/api/memberBlock.api';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -55,6 +56,7 @@ type Props = {
 };
 
 const Library: React.FC<Props> = ({ route }) => {
+  useScreenLogger();
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();

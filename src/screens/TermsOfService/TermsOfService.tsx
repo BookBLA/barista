@@ -1,7 +1,7 @@
 import useMovePage from '../../commons/hooks/useMovePage';
 import * as S from '../InitUserInfo/InitUserInfo.styles';
 import * as T from './TermsOfService.styles';
-import { Text, TouchableOpacity, Image, View, Linking } from 'react-native';
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
@@ -10,8 +10,10 @@ import { useAgreementStore } from '../../commons/store/useAgreement';
 import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
 import useGetPushToken from '../../commons/hooks/useGetPushToken';
 import { usePostPushToken } from '../../commons/hooks/usePostPushToken';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const TermsOfService = () => {
+  useScreenLogger();
   const { movePage } = useMovePage();
   const { updateAgreement } = useAgreementStore();
   const { getPushToken } = useGetPushToken();

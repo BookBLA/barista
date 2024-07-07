@@ -5,7 +5,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SearchedBookList } from '../../../../commons/components/SearchedBookList/SearchedBookList';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { NoSearch } from './units/NoSearch';
-import { Text, TouchableOpacity, View, Image } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { useHandleMoveTop } from '../../../../commons/hooks/useHandleMoveTop';
 import { useSearchBooks } from './hooks/useSearchBooks';
@@ -18,8 +18,10 @@ import usePagination from '../../../../commons/hooks/usePagination';
 import { IProps } from './SearchBook.types';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useToastStore from '../../../../commons/store/useToastStore';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const SearchBook = ({ route }: IProps) => {
+  useScreenLogger();
   useManageMargin();
   useHeaderControl({
     title: '내 서재',

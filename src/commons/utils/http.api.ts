@@ -11,7 +11,8 @@ const appVersion = getAppVersion();
 
 httpApi.interceptors.request.use(async (request) => {
   console.debug('headers: ', request.headers);
-  console.debug('url: ', request.url);
+  console.debug('method: ', request.method);
+  console.debug(`url: ${process.env.EXPO_PUBLIC_BASE_URL}${request.url}`);
   console.debug('params: ', request.params);
   console.debug('body: ', request.data);
   return request;

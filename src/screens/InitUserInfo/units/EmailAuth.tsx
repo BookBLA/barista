@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -14,9 +14,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/memberEmail';
 import useToastStore from '../../../commons/store/useToastStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
-import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';
+import { IsSuccess, useEmailStatusStore } from '../../../commons/store/useEmailStatusStore';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const EmailAuth = () => {
+  useScreenLogger();
   useManageMargin();
   const showToast = useToastStore((state) => state.showToast);
   const { isSuccess, time, code, isActive, setCode, setIsSuccess, setTime, setIsActive, startTimer, resetTimer } =

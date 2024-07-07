@@ -9,9 +9,10 @@ import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
 import { formatDate } from '../../commons/utils/dateUtils';
-import useManageMargin from '../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const Notice = () => {
+  useScreenLogger();
   const { handleReset } = useMovePage();
   useHeaderControl({
     title: '알림',

@@ -3,11 +3,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { defaultValues } from '../../initBookStack.contents';
 import { initBookSchema } from '../../initBookStack.schema';
 import { icons } from '../../../../commons/utils/variablesImages';
-import { Text, Image, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { usePostMemberBook } from './hooks/usePostMemberBook';
 import { IProps } from './initQuiz.types';
-import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
@@ -16,8 +15,10 @@ import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import truncateText from '../../../../commons/utils/truncateText';
 import useInvalid from './hooks/useInvalid';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const InitQuiz = ({ route }: IProps) => {
+  useScreenLogger();
   const { isRepresentative, selectedBook } = route?.params ?? '';
   useHeaderControl({
     title: truncateText(selectedBook?.title ?? '', 22),

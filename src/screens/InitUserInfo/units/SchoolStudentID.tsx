@@ -1,6 +1,6 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { Image, Text, TouchableOpacity, View, Alert, Linking } from 'react-native';
+import { Alert, Image, Linking, Text, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
@@ -12,8 +12,10 @@ import uuid from 'react-native-uuid';
 // import useMemberStore from '../../../commons/store/useMemberStore';
 import { uploadStudentIdImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const SchoolStudentID = () => {
+  useScreenLogger();
   // const [school, setSchool] = useState('학교');
   // const [isFocused, setIsFocused] = useState(false);
 
