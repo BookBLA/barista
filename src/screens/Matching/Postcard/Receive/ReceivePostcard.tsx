@@ -1,4 +1,4 @@
-import { Linking, TouchableOpacity, View, Image } from 'react-native';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
@@ -27,8 +27,9 @@ import {
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
-import { img, icons } from '../../../../commons/utils/variablesImages';
+import { icons, img } from '../../../../commons/utils/variablesImages';
 import { deviceWidth } from '../../../../commons/utils/dimensions';
+import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -60,6 +61,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
+  const logEvent = useAnalyticsEventLogger();
 
   // console.log(bookImageUrls);
   const toggleNoPostcardModal = () => {
@@ -110,6 +112,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const handleOpenKakaoRoomUrl = async () => {
     const supported = await Linking.canOpenURL(modalData.memberOpenKakaoRoomUrl);
+    logEvent('move_open_kakao_chat', { targetMemberId: memberId });
 
     if (supported) {
       await Linking.openURL(modalData.memberOpenKakaoRoomUrl);

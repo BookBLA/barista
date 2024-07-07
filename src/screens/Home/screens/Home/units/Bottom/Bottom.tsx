@@ -3,12 +3,14 @@ import { icons } from '../../../../../../commons/utils/variablesImages';
 import { filterData } from '../../../../HomeStack.constants';
 import * as S from './Bottom.styles';
 import { IProps } from './Bottom.types';
+import useAnalyticsEventLogger from '../../../../../../commons/hooks/useAnalyticsEventLogger';
 
 const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler, setPage, onReset }: IProps) => {
   useBackHandler(true);
   const defaultOption = filterData[selectedFilter][0];
   const isSelectedDefault = filter[selectedFilter] === defaultOption;
   const options = filterData[selectedFilter].slice(1);
+  const logEvent = useAnalyticsEventLogger();
 
   const handleSelectDefault = () => {
     setFilter({ ...filter, [selectedFilter]: defaultOption });
@@ -17,6 +19,7 @@ const Bottom = ({ filter, setFilter, selectedFilter, useBackHandler, setPage, on
 
   const handleSelectOption = (option: string) => {
     setFilter({ ...filter, [selectedFilter]: option });
+    logEvent('filter_select', { value: option });
     onReset();
   };
 

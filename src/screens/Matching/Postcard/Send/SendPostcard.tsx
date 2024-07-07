@@ -3,7 +3,7 @@ import { EGender, EPostcardStatus, ISendPostcardProps } from './SendPostcard.typ
 import * as S from './SendPostcard.styles';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import { Linking, Platform, Image, TouchableWithoutFeedback, View } from 'react-native';
+import { Image, Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import useToastStore from '../../../../commons/store/useToastStore';
@@ -14,7 +14,7 @@ import { useLimitTextLine } from '../../../../commons/hooks/useLimitTextLine';
 import { ModalWrapper } from '../../../Setting/SettingStack.styles';
 import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
 import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/memberReply.api';
-import { Put } from '../../../../commons/utils/http.api';
+import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
@@ -38,6 +38,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   });
   const { toggle, isOpen } = useToggle();
   const showToast = useToastStore((state) => state.showToast);
+  const logEvent = useAnalyticsEventLogger();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -45,7 +46,7 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
 
   const handleOpenKakaoRoomUrl = async () => {
     const supported = await Linking.canOpenURL(memberOpenKakaoRoomUrl);
-
+    logEvent('move_open_kakao_chat', { targetMemberId: memberId });
     if (supported) {
       await Linking.openURL(memberOpenKakaoRoomUrl);
     } else {

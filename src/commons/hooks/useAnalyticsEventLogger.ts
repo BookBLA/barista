@@ -1,14 +1,19 @@
 import { useCallback } from 'react';
 import analytics from '@react-native-firebase/analytics';
-import { useUserStore } from '../store/useUserinfo';
+import useMemberStore from '../store/useMemberStore';
 
 const useAnalyticsEventLogger = () => {
-  const { userInfo } = useUserStore();
+  const { id, oauthEmail, memberType, memberStatus, memberGender } = useMemberStore((state) => state.memberInfo);
 
   return useCallback(async (eventName: string, eventParams: { [key: string]: any } = {}) => {
     try {
-      await analytics().logEvent(eventName, { ...eventParams, ...userInfo, user_id: userInfo.memberId });
-      console.log(`log_event ${eventName} log`);
+      await analytics().logEvent(eventName, {
+        ...eventParams,
+        user_id: String(id),
+        type: String(memberType),
+        status: String(memberStatus),
+        gender: String(memberGender),
+      });
     } catch (error) {
       console.error(`Failed to log event: ${eventName}`, error);
     }
