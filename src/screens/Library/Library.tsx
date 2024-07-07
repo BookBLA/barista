@@ -418,6 +418,18 @@ const Library: React.FC<Props> = ({ route }) => {
                 )}
               </S.BookTouchableOpacity>
             ))}
+            {topFloorBookList.length === 0 && (
+              <>
+                <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
+                  <S.EmptyBookImage>
+                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                  </S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
+                </S.BookTouchableOpacity>
+              </>
+            )}
             {topFloorBookList.length === 1 &&
               (isYourLibrary ? (
                 <S.BookTouchableOpacity>
