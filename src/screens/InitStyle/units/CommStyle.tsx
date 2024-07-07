@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { colors } from '../../../commons/styles/variablesStyles';
+import React from 'react';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import { IProps } from '../../../commons/components/MbtiItem/MbtiItem.types';
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
-import { TouchableOpacity, View, Image } from 'react-native';
+import { Image, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -11,8 +8,10 @@ import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const CommStyle = () => {
+  useScreenLogger();
   const { updateStyleInfo, styleInfo } = useStyleStore();
   useManageMargin();
   const { movePage } = useMovePage();

@@ -1,19 +1,18 @@
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
-import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
-import { TouchableOpacity, View, Image } from 'react-native';
+import { Image, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const SmokeDrink = () => {
+  useScreenLogger();
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const buttonTitles = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];

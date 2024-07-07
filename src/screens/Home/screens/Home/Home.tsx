@@ -15,8 +15,11 @@ import usePushNotifications from '../../../../commons/hooks/usePushNotifications
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import Header from './units/Header/Header';
 import { RefreshControl } from 'react-native';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
 
 const Home = () => {
+  useScreenLogger();
   useHeaderControl({
     free: <Header />,
   });
@@ -28,8 +31,10 @@ const Home = () => {
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const dataLength = data.length;
   const snapPoints = useMemo(() => ['40%', '60%'], []);
+  const logEvent = useAnalyticsEventLogger();
   const handlePresentModalPress = (filterKey: TFilterKeys) => () => {
     setSelectedFilter(filterKey);
+    logEvent('filter_click', { key: filterKey });
     handleOpenBottomSheet();
   };
 

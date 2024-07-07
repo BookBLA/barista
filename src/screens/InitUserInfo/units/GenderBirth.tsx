@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
@@ -11,8 +11,10 @@ import { TitleProgress } from './TitleProgress';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import ModalTitle from './ModalTitle';
 import ModalContent from './ModalContent';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const GenderBirth = () => {
+  useScreenLogger();
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();

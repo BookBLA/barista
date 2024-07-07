@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { TouchableOpacity, ActivityIndicator, Image, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { icons } from '../../../../commons/utils/variablesImages';
 import { INJECTED_JAVASCRIPT, KAKAO_URL } from '../../LoginStack.constants';
 import { useKakaoLogin } from './hooks/useKakakoLogin';
@@ -8,8 +8,10 @@ import * as S from '../../LoginStack.styles';
 import WebView from 'react-native-webview';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const KakaoLogin = () => {
+  useScreenLogger();
   useManageMargin();
   const { movePage } = useMovePage();
   const { handleKakaoLogin } = useKakaoLogin();

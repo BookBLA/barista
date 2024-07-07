@@ -1,7 +1,6 @@
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
-import { TouchableOpacity, View, Image } from 'react-native';
+import { Image, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
@@ -10,9 +9,11 @@ import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 const OppositeSex = () => {
+  useScreenLogger();
   useManageMargin();
   const [selectedButtonIndex, setSelectedButtonIndex] = useState<null | number>(null);
   const { updateStyleInfo, styleInfo } = useStyleStore();

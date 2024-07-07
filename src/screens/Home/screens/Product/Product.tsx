@@ -5,8 +5,10 @@ import * as S from '../../HomeStack.styles';
 import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import Header from '../Home/units/Header/Header';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const Product = () => {
+  useScreenLogger();
   useHeaderControl({
     free: <Header />,
   });
