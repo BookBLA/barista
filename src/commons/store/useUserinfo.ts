@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { getMemberProfileApi, patchMemberProfileImageApi, putMemberProfileApi } from '../api/memberProfile.api';
+import analytics from '@react-native-firebase/analytics';
 
 interface UserInfo {
-  memberId: number;
+  memberId: string;
   gender: string;
   birthDate: string;
   name: string;
@@ -24,7 +25,7 @@ interface UserState {
 
 export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
-    memberId: 0,
+    memberId: '',
     name: '',
     birthDate: '',
     gender: '',
@@ -41,7 +42,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   resetUserInfo: () =>
     set({
       userInfo: {
-        memberId: 0,
+        memberId: '',
         gender: '',
         birthDate: '',
         name: '',
@@ -57,6 +58,8 @@ export const useUserStore = create<UserState>((set, get) => ({
     try {
       const { result } = await getMemberProfileApi();
       set((state) => ({ userInfo: { ...result, ...newUser } }));
+      await analytics().setUserId(String(get().userInfo.memberId));
+      await analytics().setUserProperties({ ...get().userInfo });
       await putMemberProfileApi(get().userInfo);
     } catch (error) {
       console.error('Failed to save user info:', error);
