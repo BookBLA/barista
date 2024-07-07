@@ -44,6 +44,7 @@ import ReportOption from './utils/ReportOption/ReportOption';
 import BlockModalContent from './utils/BLockModalContent';
 import { postMemberBlock } from '../../commons/api/memberBlock.api';
 import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -91,6 +92,7 @@ const Library: React.FC<Props> = ({ route }) => {
     android: isProfileImageModificationStatus ? 30 : 0,
   });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
+  const logEvent = useAnalyticsEventLogger();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -166,10 +168,16 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const handleViewStyleModalRef = useCallback(() => {
     viewStyleModalRef.current?.present();
+    logEvent('view_member_style');
   }, []);
 
   const handleViewBookInfoModalRef = useCallback(() => {
     viewBookInfoModalRef.current?.present();
+    logEvent('view_book_info', {
+      targetMemberId,
+      memberBookId: bookInfo?.memberBookId,
+      bookTitle: bookInfo?.title,
+    });
   }, []);
 
   const toggleSendPostcardModal = () => {
