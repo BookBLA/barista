@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { getMemberProfileApi, patchMemberProfileImageApi, putMemberProfileApi } from '../api/memberProfile.api';
 
 interface UserInfo {
+  memberId: number;
   gender: string;
   birthDate: string;
   name: string;
@@ -23,6 +24,7 @@ interface UserState {
 
 export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
+    memberId: 0,
     name: '',
     birthDate: '',
     gender: '',
@@ -39,6 +41,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   resetUserInfo: () =>
     set({
       userInfo: {
+        memberId: 0,
         gender: '',
         birthDate: '',
         name: '',
