@@ -37,6 +37,12 @@ jobs:
           name: "eas.json"
           json: ${{ secrets.EAS_JSON }}
 
+      - name: create GoogleService-Info.plist
+        uses: jsdaniell/create-json@1.1.2
+        with:
+          name: "GoogleService-Info.plist"
+          json: ${{ secrets.GOOGLE_SERVICE_INFO_PLIST }}
+
       # 노드, 패키지 매니저, 캐시 설정
       - name: setup node with cache
         uses: actions/setup-node@v3
