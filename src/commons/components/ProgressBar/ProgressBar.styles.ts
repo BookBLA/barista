@@ -5,7 +5,6 @@ export const ProgressBarContainer = styled.View`
   height: 3px;
   width: 90%;
   background-color: ${colors.secondary}; /* Background color */
-  margin-bottom: 30px;
 `;
 
 export const ProgressBarFill = styled.View`
