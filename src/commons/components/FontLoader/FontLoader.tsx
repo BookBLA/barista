@@ -26,6 +26,7 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
         }
 
         await Font.loadAsync({
+          fontExtraBold: require('../../../../assets/fonts/pretendardExtraBold.ttf'),
           fontBold: require('../../../../assets/fonts/pretendardBold.ttf'),
           fontExtraLight: require('../../../../assets/fonts/pretendardExtraLight.ttf'),
           fontLight: require('../../../../assets/fonts/pretendardLight.ttf'),
