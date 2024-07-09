@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TitleProgress2 } from './TitleProgress2';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
@@ -12,17 +11,22 @@ import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postMemberProfileApi } from '../../../commons/api/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { deviceHeight } from '../../../commons/utils/dimensions';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import { TitleProgress } from './TitleProgress';
 
 const OpenChatLink = () => {
   const { movePage } = useMovePage();
   useManageMargin();
-  // const [link, setLink] = useState('');
+  useHeaderControl({
+    title: '채팅방 등록',
+    left: true,
+  });
   const { updateUserInfo, userInfo } = useUserStore();
 
   const moveNext = async () => {
     await callPostPolicyApi();
     await callPostMemberProfileAPi();
-    movePage('waitConfirm')();
+    movePage('inviteFriends')();
   };
   const { agreementInfo } = useAgreementStore();
   // const memberId = useMemberStore((state) => state.memberInfo.id);
@@ -63,7 +67,7 @@ const OpenChatLink = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={50} />
+      <TitleProgress gauge={50} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         {/* <S.ColumnStyled style={{ height: '80%' }}> */}
         <S.ColumnStyled style={{ height: 'auto' }}>

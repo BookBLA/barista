@@ -55,19 +55,19 @@ const CommStyle = () => {
             </S.BooleanButtonStyled>
           </S.RowStyled>
         </View>
-        <S.ButtonArea>
-          <S.MoveButton onPress={movePage()}>
-            <Image source={prevButton} />
-          </S.MoveButton>
-          {styleInfo.contactType === '' || styleInfo.dateStyleType === '' ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <S.MoveButton onPress={movePage('dateCost')}>
-              <Image source={nextButton} />
-            </S.MoveButton>
-          )}
-        </S.ButtonArea>
       </S.ColumnStyled>
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
+          <Image source={prevButton} />
+        </S.MoveButton>
+        {styleInfo.contactType === '' || styleInfo.dateStyleType === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <S.MoveButton onPress={movePage('dateCost')}>
+            <Image source={nextButton} />
+          </S.MoveButton>
+        )}
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

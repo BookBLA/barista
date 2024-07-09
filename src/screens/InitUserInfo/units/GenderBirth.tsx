@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import { TouchableOpacity, View, Image, Text } from 'react-native';
+import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import { useToggle } from '../../../commons/hooks/useToggle';
@@ -9,10 +10,15 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import ModalTitle from './ModalTitle';
-import ModalContent from './ModalContent';
+import ModalTitle from './components/BirthSelect/ModalTitle';
+import ModalContent from './components/BirthSelect/ModalContent';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 
 const GenderBirth = () => {
+  useHeaderControl({
+    title: '정보 입력',
+    left: false,
+  });
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
@@ -43,7 +49,7 @@ const GenderBirth = () => {
     <S.Wrapper>
       <TitleProgress gauge={25} />
       <S.ColumnStyled>
-        <View>
+        <S.ViewStyled>
           <S.ContentStyled style={{ textAlign: 'center' }}>성별을 선택해 주세요.</S.ContentStyled>
           <S.RowStyled>
             <S.BooleanButtonStyled
@@ -59,8 +65,8 @@ const GenderBirth = () => {
               <S.ButtonTextStyled isSelect={userInfo.gender === 'MALE'}>남성</S.ButtonTextStyled>
             </S.BooleanButtonStyled>
           </S.RowStyled>
-        </View>
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        </S.ViewStyled>
+        <S.ViewStyled>
           <S.ContentStyled>생년월일을 선택해 주세요.</S.ContentStyled>
           <S.ButtonStyled onPress={toggle}>
             <Text
@@ -72,27 +78,39 @@ const GenderBirth = () => {
               {userInfo.birthDate === '' ? 'YYYY/MM/DD' : userInfo.birthDate}
             </Text>
           </S.ButtonStyled>
-        </View>
+        </S.ViewStyled>
         <CustomModal modalConfig={modalConfig} />
-        <View
-          style={{
-            flexDirection: 'row',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            width: '85%',
-            height: '7%',
-          }}
-        >
-          {userInfo.gender === '' || userInfo.birthDate === '' ? (
-            <Image source={notYetNextButton} />
-          ) : (
-            <S.MoveButton onPress={movePage('namePhone')}>
-              <Image source={nextButton} />
-            </S.MoveButton>
-          )}
-        </View>
       </S.ColumnStyled>
+      {/* <View
+        style={{
+          flexDirection: 'row',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          width: '85%',
+          height: '7%',
+        }}
+      >
+        {userInfo.gender === '' || userInfo.birthDate === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <S.MoveButton onPress={movePage('namePhone')}>
+            <Image source={nextButton} />
+          </S.MoveButton>
+        )}
+      </View> */}
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
+          <Image source={prevButton} />
+        </S.MoveButton>
+        {userInfo.gender === '' || userInfo.birthDate === '' ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <S.MoveButton onPress={movePage('namePhone')}>
+            <Image source={nextButton} />
+          </S.MoveButton>
+        )}
+      </S.ButtonArea>
     </S.Wrapper>
   );
 };

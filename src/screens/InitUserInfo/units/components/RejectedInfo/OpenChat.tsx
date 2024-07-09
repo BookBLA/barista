@@ -2,16 +2,21 @@ import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import * as S from '../../../InitUserInfo.styles';
-import { TitleProgress2 } from '../../TitleProgress2';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled, TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useManageMargin from '../../../../../commons/hooks/useManageMargin';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
 import { useCounter } from '../../../../../commons/store/useCounter';
+import { TitleProgress } from '../../TitleProgress';
+import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
 
 const OpenChat = () => {
   useManageMargin();
+  useHeaderControl({
+    title: '채팅방 등록',
+    left: false,
+  });
   const { movePage } = useMovePage();
   // const [link, setLink] = useState('');
   const { updateUserInfo, userInfo } = useUserStore();
@@ -25,7 +30,7 @@ const OpenChat = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={50} />
+      <TitleProgress gauge={50} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <S.ColumnStyled style={{ height: '80%' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>

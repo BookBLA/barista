@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View, Linking, ActivityIndicator } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TitleProgress2 } from './TitleProgress2';
 import optionA from '../../../../assets/images/icons/OptionA.png';
 import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
@@ -11,8 +10,16 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { getMemberProfileStatusesApi, postMemberProfileApi } from '../../../commons/api/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useUserStore } from '../../../commons/store/useUserinfo';
+import { TitleProgress } from './TitleProgress';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import useToastStore from '../../../commons/store/useToastStore';
 
 const WaitConfirm = () => {
+  useHeaderControl({
+    title: '프로필',
+    left: false,
+  });
+  const showToast = useToastStore((state) => state.showToast);
   const [loading, setLoading] = useState(true);
   const [rejectList, setRejectList] = useState([]);
 
@@ -57,7 +64,9 @@ const WaitConfirm = () => {
         openKakaoRoomUrlStatus === 'PENDING' ||
         profileImageUrlStatus === 'PENDING'
       ) {
-        console.log('한 개 이상 대기중');
+        showToast({
+          content: '한 개 이상 승인 대기중',
+        });
         return;
       }
 
@@ -75,7 +84,7 @@ const WaitConfirm = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={75} />
+      <TitleProgress gauge={75} />
       <S.ColumnStyled style={{ height: '90%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <Spinner />
@@ -92,7 +101,7 @@ const WaitConfirm = () => {
           >
             <View style={{ alignItems: 'flex-start' }}>
               <LightText size="16" color="black">
-                기다리시는 동안 인스타그램과 카카오 채널 팔로우 부탁드려요!
+                기다리시는 동안 인스타그램과 카카오톡 채널 팔로우 부탁드려요!
               </LightText>
 
               <TouchableOpacity
