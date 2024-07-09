@@ -14,7 +14,7 @@ import { useRoute } from '@react-navigation/native';
 const FailedSign = () => {
   const route = useRoute<TProps>();
   useManageMargin();
-  const { movePage } = useMovePage();
+  const { handleReset } = useMovePage();
   const { userInfo, updateUserInfo } = useUserStore();
   const rejectCase = route.params?.rejectCase ?? [];
   const { count } = useCounter();
@@ -46,7 +46,7 @@ const FailedSign = () => {
     console.log('count, rejectCase', count, rejectCase.length * 2);
     if (count === rejectCase.length * 2) {
       callPutMemberProfileApi();
-      movePage('waitConfirm')();
+      handleReset('waitConfirm');
     }
   }, [count]);
 
