@@ -10,13 +10,17 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
 import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/memberEmail';
 import useToastStore from '../../../commons/store/useToastStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 
 const EmailAuth = () => {
+  useHeaderControl({
+    title: '학교 이메일 인증',
+    left: false,
+  });
   useManageMargin();
   const showToast = useToastStore((state) => state.showToast);
   const { isSuccess, time, code, isActive, setCode, setIsSuccess, setTime, setIsActive, startTimer, resetTimer } =
@@ -46,8 +50,8 @@ const EmailAuth = () => {
   const callPostAuthEmailApi = async () => {
     try {
       const response = await postAuthEmailApi({
-        // schoolEmail: userInfo.schoolEmail,
         schoolEmail: email,
+        schoolName: userInfo.schoolName,
       });
       //타이머 시작
       resetTimer();
@@ -61,10 +65,14 @@ const EmailAuth = () => {
       });
     } catch (error) {
       console.log('callPostAuthApi error', error);
-      setIsSuccess(IsSuccess.error);
+      setIsSuccess(IsSuccess.false);
       if (error.response.data.message === '이메일이 이미 존재합니다.') {
         showToast({
           content: '이메일이 이미 존재합니다.',
+        });
+      } else if (error.response.data.code === 'member_email_011') {
+        showToast({
+          content: '학교 이메일의 도메인 URL이 해당 학교와 맞지 않습니다.',
         });
       }
     }
@@ -74,6 +82,7 @@ const EmailAuth = () => {
       const response = await postAuthVerifyApi({
         schoolEmail: email,
         verifyCode: code,
+        schoolName: userInfo.schoolName,
       });
       setIsSuccess(IsSuccess.true);
 
@@ -113,7 +122,7 @@ const EmailAuth = () => {
                 onChangeText={(text: string) => setEmail(text)}
                 placeholder="example@gachon.ac.kr"
                 placeholderTextColor={colors.textGray2}
-                editable={isSuccess === IsSuccess.false}
+                editable={isSuccess === IsSuccess.false || isSuccess === IsSuccess.resend}
                 style={{
                   color: colors.primary,
                   width: '78%',
