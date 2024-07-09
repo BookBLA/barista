@@ -24,7 +24,7 @@ export const SafeAreaViewStyled = styled.SafeAreaView`
 `;
 export const ColumnStyled = styled.View`
   display: flex;
-  height: 100%;
+  height: 80%;
   width: 100%;
   flex-direction: column;
   align-items: center;
@@ -40,7 +40,7 @@ export const TouchableStyled = styled.TouchableHighlight`
 `;
 
 export const TitleStyled = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   font-family: fontMedium;
 `;
 
@@ -183,3 +183,23 @@ export const ButtonArea = styled.View`
 export const MoveButton = styled.TouchableOpacity.attrs({
   hitSlop: { top: 20, bottom: 20, left: 20, right: 20 },
 })``;
+
+export const InviteCodeContainer = styled.View`
+  width: 295px;
+  height: 88px;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.iconLoadStroke};
+  border-radius: 15px;
+  margin-bottom: 14px;
+`;
+
+export const InviteFriendsContainer = styled.View`
+  width: 90%;
+  height: 315px;
+  padding: 20px;
+  align-items: start;
+  justify-content: center;
+  border-radius: 15px;
+  border: 2px solid #f5f5f5;
+`;
