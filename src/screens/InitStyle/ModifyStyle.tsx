@@ -17,6 +17,7 @@ import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberSt
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
 import { useLimitTextLine } from '../../commons/hooks/useLimitTextLine';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const buttonList = [
   'MBTI',
@@ -45,6 +46,7 @@ const heightOptions = [
 ];
 
 const ModifyStyle = () => {
+  useScreenLogger();
   const { handleLimitTextLine } = useLimitTextLine();
   const [mbti, setMbti] = useState(['', '', '', '']);
   const { updateStyleInfo, styleInfo } = useStyleStore();

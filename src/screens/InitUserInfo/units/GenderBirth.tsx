@@ -13,12 +13,14 @@ import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton
 import ModalTitle from './components/BirthSelect/ModalTitle';
 import ModalContent from './components/BirthSelect/ModalContent';
 import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const GenderBirth = () => {
   useHeaderControl({
     title: '정보 입력',
     left: false,
   });
+  useScreenLogger();
   const { isOpen, toggle } = useToggle();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();

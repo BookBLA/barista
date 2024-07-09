@@ -1,4 +1,4 @@
-import { Linking, TouchableOpacity, View, Image } from 'react-native';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
@@ -27,8 +27,9 @@ import {
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
-import { img, icons } from '../../../../commons/utils/variablesImages';
+import { icons, img } from '../../../../commons/utils/variablesImages';
 import { deviceWidth } from '../../../../commons/utils/dimensions';
+import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -60,6 +61,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
+  const logEvent = useAnalyticsEventLogger();
 
   // console.log(bookImageUrls);
   const toggleNoPostcardModal = () => {
@@ -110,6 +112,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const handleOpenKakaoRoomUrl = async () => {
     const supported = await Linking.canOpenURL(modalData.memberOpenKakaoRoomUrl);
+    logEvent('move_open_kakao_chat', { targetMemberId: memberId });
 
     if (supported) {
       await Linking.openURL(modalData.memberOpenKakaoRoomUrl);
@@ -160,7 +163,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             받은 엽서 열어보기
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            책갈피 35개를 사용해 받은 엽서를 열어보시겠어요?
+            엽서 1개를 사용해 받은 엽서를 열어보시겠어요?
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleCheckBeforeSendPostcardModal} bgColor={colors.buttonMain}>
@@ -179,10 +182,10 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-            책갈피가 부족합니다.
+            엽서가 부족합니다.
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            책갈피가 부족합니다. 다음 충전 시간을 확인해 보세요.
+            엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleNoPostcardModal} bgColor={colors.buttonMain}>

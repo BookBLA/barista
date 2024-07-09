@@ -43,6 +43,8 @@ import { useToggle } from '../../commons/hooks/useToggle';
 import ReportOption from './utils/ReportOption/ReportOption';
 import BlockModalContent from './utils/BLockModalContent';
 import { postMemberBlock } from '../../commons/api/memberBlock.api';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -55,6 +57,7 @@ type Props = {
 };
 
 const Library: React.FC<Props> = ({ route }) => {
+  useScreenLogger();
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -89,6 +92,7 @@ const Library: React.FC<Props> = ({ route }) => {
     android: isProfileImageModificationStatus ? 30 : 0,
   });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
+  const logEvent = useAnalyticsEventLogger();
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -164,10 +168,16 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const handleViewStyleModalRef = useCallback(() => {
     viewStyleModalRef.current?.present();
+    logEvent('view_member_style');
   }, []);
 
   const handleViewBookInfoModalRef = useCallback(() => {
     viewBookInfoModalRef.current?.present();
+    logEvent('view_book_info', {
+      targetMemberId,
+      memberBookId: bookInfo?.memberBookId,
+      bookTitle: bookInfo?.title,
+    });
   }, []);
 
   const toggleSendPostcardModal = () => {
@@ -416,6 +426,18 @@ const Library: React.FC<Props> = ({ route }) => {
                 )}
               </S.BookTouchableOpacity>
             ))}
+            {topFloorBookList.length === 0 && (
+              <>
+                <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
+                  <S.EmptyBookImage>
+                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                  </S.EmptyBookImage>
+                </S.BookTouchableOpacity>
+                <S.BookTouchableOpacity>
+                  <S.EmptyBookImage style={{ backgroundColor: 'transparent' }} />
+                </S.BookTouchableOpacity>
+              </>
+            )}
             {topFloorBookList.length === 1 &&
               (isYourLibrary ? (
                 <S.BookTouchableOpacity>
@@ -598,10 +620,10 @@ const Library: React.FC<Props> = ({ route }) => {
         <S.EmptyPostcardModalWrapper>
           <S.EmptyPostcardModalHeader>
             <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-              책갈피가 부족합니다.
+              엽서가 부족합니다.
             </CustomText>
             <CustomText font="fontRegular" size="12px">
-              책갈피가 부족합니다. 다음 충전 시간을 확인해 보세요.
+              엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
             </CustomText>
           </S.EmptyPostcardModalHeader>
           <S.ModalBottomWrapper>

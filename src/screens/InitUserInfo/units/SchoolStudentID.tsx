@@ -17,6 +17,7 @@ import { useToggle } from '../../../commons/hooks/useToggle';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import ModalTitle from './components/searchSchool/ModalTitle';
 import ModalContent from './components/searchSchool/ModalContent';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const SchoolStudentID = () => {
   useHeaderControl({
@@ -24,6 +25,8 @@ const SchoolStudentID = () => {
     left: false,
   });
   const { isOpen, toggle } = useToggle();
+
+  useScreenLogger();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [school, setSchool] = useState('');

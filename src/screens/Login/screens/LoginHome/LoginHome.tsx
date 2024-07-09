@@ -1,19 +1,23 @@
 import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as S from '../../LoginStack.styles';
-import { Platform, Image } from 'react-native';
+import { Image, Platform } from 'react-native';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { buttons, logos } from '../../../../commons/utils/variablesImages';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import { useTestLogin } from './hooks/useTestLogin';
 
 const LoginHome = () => {
+  useScreenLogger();
   useManageMargin();
   usePushNotifications();
   const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
+  const { handleTestLogin } = useTestLogin();
 
   return (
     <S.Wrapper style={{ justifyContent: 'flex-end' }}>

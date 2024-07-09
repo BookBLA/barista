@@ -1,18 +1,18 @@
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
-import { TouchableOpacity, View, Image } from 'react-native';
+import { Image, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
 const DateCost = () => {
+  useScreenLogger();
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
 
@@ -42,7 +42,7 @@ const DateCost = () => {
         {styleInfo.dateCostType === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <S.MoveButton onPress={movePage('myHeight')}>
+          <S.MoveButton onPress={movePage('personalQuestion')}>
             <Image source={nextButton} />
           </S.MoveButton>
         )}

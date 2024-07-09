@@ -3,8 +3,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
 import Product from './screens/Product/Product';
 import Home from './screens/Home/Home';
-import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import Header from './screens/Home/units/Header/Header';
 import usePushNotifications from '../../commons/hooks/usePushNotifications';
 import Library from '../Library/Library';
 

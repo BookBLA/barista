@@ -11,8 +11,12 @@ import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSen
 import { icons } from '../../commons/utils/variablesImages';
 import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
 import useMovePage from '../../commons/hooks/useMovePage';
+import { useUserStore } from '../../commons/store/useUserinfo';
+import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
+import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const Matching = () => {
+  useScreenLogger();
   const { memberPostcard } = useFetchMemberPostcard();
   const [isReceivedPostcard, setIsReceivedPostcard] = useState<boolean>(true);
   const receivedPostcards = useFetchReceivePostcard(isReceivedPostcard);
@@ -20,6 +24,8 @@ const Matching = () => {
   const [showButton, setShowButton] = useState<boolean>(false);
   const flatListRef = useRef<FlatList>(null);
   const { movePage } = useMovePage();
+  const { userInfo } = useUserStore();
+  const logEvent = useAnalyticsEventLogger();
 
   const handleScroll = (event: any) => {
     const currentOffset: number = event.nativeEvent.contentOffset.y;
@@ -76,7 +82,7 @@ const Matching = () => {
         {isReceivedPostcard ? (
           <>
             <S.InfoViewStyled>
-              <S.InfoTextStyled>받은 엽서 확인 시 소지한 책갈피 35개가 소모 됩니다</S.InfoTextStyled>
+              <S.InfoTextStyled>받은 엽서 확인 시 소지한 엽서 1개가 소모 됩니다</S.InfoTextStyled>
               <S.postcardCountViewStyled>
                 <IconButton onPress={movePage('product')}>
                   <IconImage source={icons.postcard} />

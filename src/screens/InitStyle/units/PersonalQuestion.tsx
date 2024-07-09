@@ -1,21 +1,18 @@
 import { colors } from '../../../commons/styles/variablesStyles';
-import { Text, View, Keyboard } from 'react-native';
+import { Keyboard, Text, View } from 'react-native';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { deviceHeight } from '../../../commons/utils/dimensions';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { TouchableHighlight } from '@gorhom/bottom-sheet';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
-import useMemberStore from '../../../commons/store/useMemberStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const PersonalQuestion = () => {
+  useScreenLogger();
   useManageMargin();
   const [question, setQuestion] = useState('');
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();

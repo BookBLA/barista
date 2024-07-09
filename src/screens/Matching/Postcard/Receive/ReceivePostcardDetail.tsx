@@ -19,6 +19,7 @@ import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
 import { getYourLibraryInfo } from '../../../../commons/api/library.api';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;
@@ -31,6 +32,7 @@ type Props = {
 };
 
 const ReceivePostcardDetail: React.FC<Props> = ({ route }) => {
+  useScreenLogger();
   const {
     postcardId,
     memberId,

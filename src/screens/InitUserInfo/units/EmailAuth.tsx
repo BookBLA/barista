@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -15,12 +15,14 @@ import useToastStore from '../../../commons/store/useToastStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';
 import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const EmailAuth = () => {
   useHeaderControl({
     title: '학교 이메일 인증',
     left: false,
   });
+  useScreenLogger();
   useManageMargin();
   const showToast = useToastStore((state) => state.showToast);
   const { isSuccess, time, code, isActive, setCode, setIsSuccess, setTime, setIsActive, startTimer, resetTimer } =

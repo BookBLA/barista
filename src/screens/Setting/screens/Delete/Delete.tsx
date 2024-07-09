@@ -10,8 +10,10 @@ import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import CheckboxOff from '../../../../../assets/images/icons/CheckboxOff.png';
 import CheckboxOn from '../../../../../assets/images/icons/CheckboxOn.png';
 import { useRoute } from '@react-navigation/native';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 export const Delete = () => {
+  useScreenLogger();
   const route = useRoute<TProps>();
   const { config } = route.params;
   const { toggle, isOpen } = useToggle();

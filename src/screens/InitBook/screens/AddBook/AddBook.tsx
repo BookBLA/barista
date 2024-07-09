@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, Image, View } from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { FavBookList } from '../../../../commons/components/FavBookList/FavBookList';
 import { DashDividerLine } from '../../../../commons/components/DashDividerLine/DashDividerLine';
@@ -14,8 +14,10 @@ import useMovePage from '../../../../commons/hooks/useMovePage';
 import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { EBook, TProps } from './AddBook.types';
 import { useRoute } from '@react-navigation/native';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const AddBook = () => {
+  useScreenLogger();
   useManageMargin();
   const route = useRoute<TProps>();
   const { movePage, handleReset } = useMovePage();
@@ -46,8 +48,8 @@ const AddBook = () => {
             </Text>
             <S.RowStyled style={{ width: 'auto', marginBottom: 7, marginTop: 7 }}>
               <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책 1권당</Text>
-              <LightText> 책갈피를</LightText>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 35개씩</Text>
+              <LightText> 엽서를</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 2개씩</Text>
               <LightText> 드립니다.</LightText>
             </S.RowStyled>
           </View>

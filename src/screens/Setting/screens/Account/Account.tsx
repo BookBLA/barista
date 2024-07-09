@@ -16,8 +16,10 @@ import { EMemberStatus } from '../../../../commons/types/memberStatus';
 import { postMemberStatusesApi } from '../../../../commons/api/member.api';
 import { useUserStore } from '../../../../commons/store/useUserinfo';
 import { useStyleStore } from '../../../../commons/store/useStyle';
+import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const Account = () => {
+  useScreenLogger();
   // TODO: 성진 - 가독성 개선 예정
   const { movePage, handleReset } = useMovePage();
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
