@@ -163,7 +163,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             받은 엽서 열어보기
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            엽서 1개를 사용해 받은 엽서를 열어보시겠어요?
+            책갈피 35개를 사용해 받은 엽서를 열어보시겠어요?
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleCheckBeforeSendPostcardModal} bgColor={colors.buttonMain}>
@@ -182,10 +182,10 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-            엽서가 부족합니다.
+            책갈피가 부족합니다.
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+            책갈피가 부족합니다. 다음 충전 시간을 확인해 보세요.
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleNoPostcardModal} bgColor={colors.buttonMain}>
