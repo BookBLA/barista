@@ -9,6 +9,7 @@ export const icons = {
   bellOff: require('../../../assets/images/icons/BellOff.png'),
   bellOn: require('../../../assets/images/icons/BellOn.png'),
   bookmark: require('../../../assets/images/icons/Bookmark.png'),
+  bookmarkAdd: require('../../../assets/images/icons/BookmarkAdd.png'),
   bookCover: require('../../../assets/images/icons/BookCover.png'),
   bottomArrow: require('../../../assets/images/icons/BottomArrow.png'),
 

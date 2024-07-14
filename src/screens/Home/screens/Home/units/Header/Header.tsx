@@ -18,7 +18,7 @@ const Header = () => {
       </S.LogoWrapper>
       <S.IconWrapper>
         <S.IconButton onPress={movePage('product')}>
-          <S.IconImage source={icons.postcard} />
+          <S.IconImage source={icons.bookmarkAdd} />
         </S.IconButton>
         <S.IconText>{memberPostcard}</S.IconText>
         <S.IconButton onPress={movePage('notice')}>
