@@ -10,58 +10,35 @@ import Support from '../../../../../assets/images/icons/SupportTransparent.png';
 import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import ModalContent from './units/ModalContent/ModalContent';
-import { ISettingData, TProps } from './Setting.types';
+import { TProps } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
 import { getAppVersion } from '../../../../commons/utils/getAppVersion';
-import { getVersionApi } from '../../../../commons/api/setting.api';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { ActivityIndicator, Platform } from 'react-native';
-import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
 import { useRoute } from '@react-navigation/native';
 import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
-import { Switch } from 'react-native-switch';
-
-const initState = {
-  version: '',
-  googlePlayStoreUrl: '',
-  appStoreUrl: '',
-};
+import { useGetLatestVersion } from './hooks/useGetLatestVersion';
+import { getLinkModalConfig } from './configs/linkModalConfig';
+import { CustomSwitch } from '../../../../commons/components/CustomSwitch/CustomSwitch';
 
 const Setting = () => {
   useScreenLogger();
   const [link, setLink] = useState('');
-  const [loading, setLoading] = useState(true);
   const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
-  const { toggle, isOpen } = useToggle();
   const outerLinkModal = useToggle();
   const handleLinkPress = useLinkingOpen();
-  const [data, setData] = useState<ISettingData>(initState);
   const appVersion = getAppVersion();
+  const { data, loading } = useGetLatestVersion();
   useHeaderControl({
     title: '설정',
   });
-  const getLatestVersion = async () => {
-    const { result } = await getVersionApi();
-    const { version, googlePlayStoreUrl, appStoreUrl } = result;
-    setData({
-      version,
-      googlePlayStoreUrl,
-      appStoreUrl,
-    });
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getLatestVersion();
-  }, []);
 
   const onClickUpdateMove = () => {
-    const url = Platform.OS === 'ios' ? data.appStoreUrl : data.googlePlayStoreUrl;
-    handleLinkPress(url);
+    const url = Platform.OS === 'ios' ? data?.appStoreUrl : data?.googlePlayStoreUrl;
+    handleLinkPress(url)();
   };
 
   const hanldeOuterLinkModal = (url: string) => {
@@ -73,6 +50,8 @@ const Setting = () => {
     handleLinkPress(link)();
     outerLinkModal.toggle();
   };
+
+  const linkModalConfig = getLinkModalConfig(outerLinkModal, handleMoveOuterLink);
 
   return (
     <>
@@ -119,22 +98,7 @@ const Setting = () => {
                 알림을 끄시면 매칭 확인이 어려워요!
               </CustomText>
             </S.RowWrapper>
-            <Switch
-              value
-              // onValueChange={}
-              circleSize={16}
-              barHeight={20}
-              circleBorderWidth={0}
-              backgroundActive={colors.primary}
-              backgroundInactive={colors.buttonAuthToggle}
-              circleActiveColor="#fff"
-              circleInActiveColor="#fff"
-              renderActiveText={false}
-              renderInActiveText={false}
-              switchLeftPx={3}
-              switchRightPx={3}
-              switchWidthMultiplier={2}
-            />
+            <CustomSwitch value onValueChange={() => false} />
           </S.BetweenWrapper>
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
@@ -158,30 +122,7 @@ const Setting = () => {
           </S.BetweenWrapper>
         </S.BottomWrapper>
       </S.Wrapper>
-      <CustomModal
-        modalConfig={{
-          visible: isOpen,
-          onClose: toggle,
-          mode: 'round',
-          contents: <ModalContent />,
-          buttons: [
-            { label: '취소', action: toggle, bgColor: colors.buttonMain, color: 'black' },
-            { label: '설정', action: toggle },
-          ],
-        }}
-      />
-      <CustomModal
-        modalConfig={{
-          visible: outerLinkModal.isOpen,
-          onClose: outerLinkModal.toggle,
-          mode: 'round',
-          contents: <OuterLinkModalContent />,
-          buttons: [
-            { label: '돌아가기', action: outerLinkModal.toggle, bgColor: colors.buttonMain, color: 'black' },
-            { label: '이동하기', action: handleMoveOuterLink },
-          ],
-        }}
-      />
+      <CustomModal modalConfig={linkModalConfig} />
     </>
   );
 };
