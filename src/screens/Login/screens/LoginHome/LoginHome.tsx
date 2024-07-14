@@ -25,7 +25,9 @@ const LoginHome = () => {
         <S.LogoImage source={logos.mainLogoDark} />
         <S.SubTitleText>같은 줄을 읽다. 같은 마음을 느끼다.</S.SubTitleText>
       </S.InnerWrapper>
-      <CustomText size="14px">SNS 간편 로그인</CustomText>
+      <CustomText size="14px" onPress={handleTestLogin}>
+        SNS 간편 로그인
+      </CustomText>
 
       <S.LoginButton onPress={movePage('kakaoLogin')}>
         <Image style={{ width: 300, height: 45 }} source={buttons.kakaoLogin} />

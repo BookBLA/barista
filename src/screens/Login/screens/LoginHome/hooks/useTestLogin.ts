@@ -13,6 +13,7 @@ export const useTestLogin = () => {
   const { postPushToken } = usePostPushToken();
 
   const handleTestLogin = async () => {
+    if (process.env.NODE_ENV !== 'development') return;
     try {
       const { result } = await postTestSignUp({
         email: 'tjdwls6536@naver.com',
