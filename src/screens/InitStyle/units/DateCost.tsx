@@ -42,7 +42,7 @@ const DateCost = () => {
         {styleInfo.dateCostType === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <S.MoveButton onPress={movePage('myHeight')}>
+          <S.MoveButton onPress={movePage('personalQuestion')}>
             <Image source={nextButton} />
           </S.MoveButton>
         )}
