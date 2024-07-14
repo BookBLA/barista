@@ -10,6 +10,7 @@ const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(({ children,
   // TODO: 성진 - 타입 오류는 추후에 수정예정
   useImperativeHandle(
     ref,
+    // @ts-ignore
     () => ({
       close: () => bottomSheetRef.current?.close(),
       present: () => bottomSheetRef.current?.present(),
