@@ -21,6 +21,7 @@ import { ActivityIndicator, Platform } from 'react-native';
 import OuterLinkModalContent from './units/ModalContent/OuterLinkModalContent';
 import { useRoute } from '@react-navigation/native';
 import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import { Switch } from 'react-native-switch';
 
 const initState = {
   version: '',
@@ -69,7 +70,6 @@ const Setting = () => {
   };
 
   const handleMoveOuterLink = () => {
-    console.log('link', link);
     handleLinkPress(link)();
     outerLinkModal.toggle();
   };
@@ -112,6 +112,30 @@ const Setting = () => {
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
+          <S.BetweenWrapper>
+            <S.RowWrapper>
+              <CustomText margin="16px 0">알림 켜기</CustomText>
+              <CustomText margin="20px 0px 0 4px" color={colors.textGray2} size="12px">
+                알림을 끄시면 매칭 확인이 어려워요!
+              </CustomText>
+            </S.RowWrapper>
+            <Switch
+              value
+              // onValueChange={}
+              circleSize={16}
+              barHeight={20}
+              circleBorderWidth={0}
+              backgroundActive={colors.primary}
+              backgroundInactive={colors.buttonAuthToggle}
+              circleActiveColor="#fff"
+              circleInActiveColor="#fff"
+              renderActiveText={false}
+              renderInActiveText={false}
+              switchLeftPx={3}
+              switchRightPx={3}
+              switchWidthMultiplier={2}
+            />
+          </S.BetweenWrapper>
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
