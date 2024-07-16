@@ -1,7 +1,9 @@
 import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText';
 import * as S from '../../../../SettingStack.styles';
 
-const ModalContent = () => {
+const AvoidContent = () => {
+  // TODO: 서버에서 아는 사람 피하기 구현 시 사용 예정
+
   return (
     <S.ModalWrapper>
       <CustomText margin="0 0 14px">모든 연락처에 노출하지 않기</CustomText>
@@ -12,4 +14,4 @@ const ModalContent = () => {
   );
 };
 
-export default ModalContent;
+export default AvoidContent;

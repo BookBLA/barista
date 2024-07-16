@@ -69,6 +69,7 @@ export const CircularImage = styled.Image`
   width: 60px;
   height: 60px;
   border-radius: 30px;
+  background-color: #d9d9d9;
 `;
 
 export const ButtonContainerViewStyled = styled.View`
