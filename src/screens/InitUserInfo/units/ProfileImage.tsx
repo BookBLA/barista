@@ -121,7 +121,7 @@ const ProfileImage = () => {
               source={
                 userInfo.profileImageUrl === ''
                   ? require('../../../../assets/images/icons/Circle.png')
-                  : { uri: imageUrl }
+                  : { uri: userInfo.profileImageUrl }
               }
               style={
                 imageUrl === '' ? { height: 190, aspectRatio: 1 } : { height: 190, aspectRatio: 1, borderRadius: 100 }
