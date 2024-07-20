@@ -111,12 +111,12 @@ const EmailAuth = () => {
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
-            height: '85%',
-            justifyContent: 'space-around',
+            height: '100%',
+            justifyContent: 'center',
             alignItems: 'center',
           }}
         >
-          <View>
+          <View style={{ marginBottom: 125 }}>
             <S.ContentStyled style={{ textAlign: 'center' }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
             <S.RowStyled style={{ width: '93%' }}>
               <S.TextFiledStyled

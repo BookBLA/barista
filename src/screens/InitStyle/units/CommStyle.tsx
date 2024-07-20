@@ -19,7 +19,7 @@ const CommStyle = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={66} />
-      <S.ColumnStyled>
+      <S.ColumnStyled style={{ height: '70%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled>연락 스타일을 알려주세요.</S.ContentStyled>
           <S.RowStyled>

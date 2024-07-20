@@ -50,7 +50,7 @@ const GenderBirth = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={25} />
-      <S.ColumnStyled>
+      <S.ColumnStyled style={{ height: '70%' }}>
         <S.ViewStyled>
           <S.ContentStyled style={{ textAlign: 'center' }}>성별을 선택해 주세요.</S.ContentStyled>
           <S.RowStyled>
