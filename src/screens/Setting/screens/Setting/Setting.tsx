@@ -72,15 +72,21 @@ const Setting = () => {
         <S.MenuWrapper>
           <S.MenuButton onPress={() => handleReset('tapScreens', { screen: 'Library' })}>
             <S.MenuImage source={Library} />
-            <CustomText color={colors.primary}>내 서재</CustomText>
+            <CustomText color={colors.primary} size="14px">
+              내 서재
+            </CustomText>
           </S.MenuButton>
           <S.MenuButton onPress={() => handleReset('tapScreens', { screen: 'Matching' })}>
             <S.MenuImage source={Matching} />
-            <CustomText color={colors.primary}>매칭</CustomText>
+            <CustomText color={colors.primary} size="14px">
+              매칭
+            </CustomText>
           </S.MenuButton>
           <S.MenuButton onPress={handleLinkPress(noticeUrl)}>
             <S.MenuImage source={Support} />
-            <CustomText color={colors.primary}>고객센터</CustomText>
+            <CustomText color={colors.primary} size="14px">
+              고객센터
+            </CustomText>
           </S.MenuButton>
         </S.MenuWrapper>
         <S.Line />
