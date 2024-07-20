@@ -95,71 +95,65 @@ const SchoolStudentID = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={75} />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
-        >
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
-            <S.ButtonStyled onPress={toggle}>
-              <Text
-                style={{
-                  color: userInfo.schoolName === '' ? colors.textGray2 : colors.primary,
-                  fontFamily: 'fontMedium',
-                }}
-              >
-                {userInfo.schoolName === '' ? '학교' : userInfo.schoolName}
-              </Text>
-            </S.ButtonStyled>
-            <CustomModal modalConfig={modalConfig} />
-            {/* <S.TextFiledStyled placeholder="학교" value={userInfo.schoolName} onChangeText={updateSearch} />
-            {userInfo.schoolName !== '' && isFlatListVisible && (
-              <View style={{ maxHeight: 120, width: '80%', alignItems: 'center' }}>
-                <FlatList style={{ width: '100%' }} data={searchList} renderItem={renderItem} />
-              </View>
-            )} */}
+        > */}
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
+        <S.ButtonStyled onPress={toggle}>
+          <Text
+            style={{
+              color: userInfo.schoolName === '' ? colors.textGray2 : colors.primary,
+              fontFamily: 'fontMedium',
+            }}
+          >
+            {userInfo.schoolName === '' ? '학교' : userInfo.schoolName}
+          </Text>
+        </S.ButtonStyled>
+        <CustomModal modalConfig={modalConfig} />
+      </View>
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
+          실물 학생증 및 모바일 학생증 모두 가능합니다.
+        </Text>
+        <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
+          실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
+        </Text>
+        <S.ButtonStyled onPress={() => uploadImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
+          <View style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}>
+            <Image
+              source={
+                userInfo.studentIdImageUrl === ''
+                  ? require('../../../../assets/images/photo.png')
+                  : { uri: userInfo.studentIdImageUrl }
+              }
+              style={{ objectFit: 'contain', width: '100%', height: '100%', borderRadius: 10 }}
+            />
           </View>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
-              실물 학생증 및 모바일 학생증 모두 가능합니다.
-            </Text>
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
-              실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
-            </Text>
-            <S.ButtonStyled onPress={() => uploadImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
-              <View style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}>
-                <Image
-                  source={
-                    userInfo.studentIdImageUrl === ''
-                      ? require('../../../../assets/images/photo.png')
-                      : { uri: imageUrl }
-                  }
-                  style={{ objectFit: 'contain', width: '100%', height: '100%', borderRadius: 10 }}
-                />
-              </View>
-            </S.ButtonStyled>
+        </S.ButtonStyled>
 
-            <Text
-              style={{
-                color: colors.textGray,
-                fontFamily: 'fontMedium',
-                fontSize: 12,
-                textAlign: 'right',
-                width: '80%',
-              }}
-            >
-              학생증 도용 시 처벌 대상이 될 수 있습니다.
-            </Text>
-          </View>
-        </KeyboardAwareScrollView>
-      </TouchableWithoutFeedback>
+        <Text
+          style={{
+            color: colors.textGray,
+            fontFamily: 'fontMedium',
+            fontSize: 12,
+            textAlign: 'right',
+            width: '80%',
+          }}
+        >
+          학생증 도용 시 처벌 대상이 될 수 있습니다.
+        </Text>
+      </View>
+      {/* </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback> */}
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {userInfo.studentIdImageUrl === '' && userInfo.schoolName ? (
+        {userInfo.studentIdImageUrl === '' || userInfo.schoolName === '' ? (
           <Image source={notYetNextButton} />
         ) : (
           <S.MoveButton onPress={moveNext}>
