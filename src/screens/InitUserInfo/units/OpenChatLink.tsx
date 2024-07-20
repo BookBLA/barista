@@ -15,7 +15,7 @@ import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import { TitleProgress } from './TitleProgress';
 
 const OpenChatLink = () => {
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
   useManageMargin();
   useHeaderControl({
     title: '채팅방 등록',
@@ -26,7 +26,7 @@ const OpenChatLink = () => {
   const moveNext = async () => {
     await callPostPolicyApi();
     await callPostMemberProfileAPi();
-    movePage('inviteFriends')();
+    handleReset('inviteFriends');
   };
   const { agreementInfo } = useAgreementStore();
   // const memberId = useMemberStore((state) => state.memberInfo.id);
