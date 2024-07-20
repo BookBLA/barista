@@ -29,6 +29,7 @@ const PersonalQuestion = () => {
         dateStyleType: styleInfo.dateStyleType,
         dateCostType: styleInfo.dateCostType,
         justFriendType: styleInfo.justFriendType,
+        heightType: styleInfo.heightType,
         memberAsk: question,
       });
       updateStyleInfo('memberAsk', question);

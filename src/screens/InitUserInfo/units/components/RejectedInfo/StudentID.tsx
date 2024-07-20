@@ -10,8 +10,13 @@ import { uploadStudentIdImageToS3 } from '../../../../../commons/api/imageUpload
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
+import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
 
 const StudentID = () => {
+  useHeaderControl({
+    title: '정보 등록',
+    left: false,
+  });
   const memberId = useMemberStore((state) => state.memberInfo.id);
   const { increment } = useCounter();
   const { updateUserInfo, userInfo } = useUserStore();

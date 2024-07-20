@@ -35,7 +35,7 @@ const Mbti = () => {
       </View>
       <MbtiComponent mbti={mbti} setMbti={setMbti} />
       <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
-        <S.MoveButton onPress={() => nextPage()}>
+        <S.MoveButton onPress={() => mbti.length === 4 && nextPage()}>
           <Image source={nextButton} />
         </S.MoveButton>
       </S.ButtonArea>

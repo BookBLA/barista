@@ -9,7 +9,7 @@ export const useInitialRouteName = () => {
 
   const getInitialRouteName = (memberStatusParam?: string) => {
     const routeMap: TRouteMap = {
-      PROFILE: 'termsOfService',
+      PROFILE: 'initUserinfoStack',
       APPROVAL: 'waitConfirm',
       STYLE: 'completePage',
       BOOK: 'initBookStack',

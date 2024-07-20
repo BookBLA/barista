@@ -21,14 +21,12 @@ import FailedSign from '../../../screens/InitUserInfo/units/FailedSign';
 import OpenChatLink from '../../../screens/InitUserInfo/units/OpenChatLink';
 import LoginStack from '../../../screens/Login/LoginStack';
 import SettingStack from '../../../screens/Setting/SettingStack';
+import InsertInviteCode from '../../../screens/InitUserInfo/units/InsertInviteCode';
 
 const Stack = createNativeStackNavigator();
 const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'initUserinfoStack', component: InitUserInfoStack },
-  { name: 'profileImage', component: ProfileImage },
-  { name: 'openChatLink', component: OpenChatLink },
-  { name: 'waitConfirm', component: WaitConfirm },
   { name: 'completePage', component: CompletePage },
   { name: 'infoOpenChat', component: InfoOpenChat },
   { name: 'failedSign', component: FailedSign },
@@ -36,8 +34,8 @@ const screens = [
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
-  { name: 'termsOfService', component: CustomScreen(TermsOfService) },
   { name: 'notice', component: CustomScreen(Notice) },
+  { name: 'waitConfirm', component: WaitConfirm },
 ];
 
 export const CustomNavigator = () => {

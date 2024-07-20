@@ -5,19 +5,33 @@ import GenderBirth from './units/GenderBirth';
 import NamePhone from './units/NamePhone';
 import SchoolStudentID from './units/SchoolStudentID';
 import EmailAuth from './units/EmailAuth';
+import useManageMargin from '../../commons/hooks/useManageMargin';
+import ProfileImage from './units/ProfileImage';
+import OpenChatLink from './units/OpenChatLink';
+import InfoOpenChat from './units/InfoOpenChat';
+import InviteFriends from './units/InviteFriends';
+import TermsOfService from '../TermsOfService/TermsOfService';
+import InsertInviteCode from './units/InsertInviteCode';
 
 const Stack = createStackNavigator();
 
 const screens = [
+  { name: 'termsOfService', component: TermsOfService },
+  { name: 'insertInviteCode', component: InsertInviteCode },
   { name: 'genderBirth', component: GenderBirth },
   { name: 'namePhone', component: NamePhone },
   { name: 'schoolStudentID', component: SchoolStudentID },
   { name: 'emailAuth', component: EmailAuth },
+  { name: 'profileImage', component: ProfileImage },
+  { name: 'openChatLink', component: OpenChatLink },
+  { name: 'infoOpenChat', component: InfoOpenChat },
+  { name: 'inviteFriends', component: InviteFriends },
 ];
 
 const InitUserInfoStack = () => {
+  useManageMargin();
   return (
-    <Stack.Navigator initialRouteName="genderBirth" screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="termsOfService" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (
         <Stack.Screen key={name} name={name} component={component} />
       ))}

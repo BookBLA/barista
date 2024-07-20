@@ -4,7 +4,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import * as P from '../../Library/Library.styles';
-import { TitleProgress2 } from './TitleProgress2';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -17,6 +16,8 @@ import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import { TitleProgress } from './TitleProgress';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -29,6 +30,10 @@ const profileExList = [
 
 const ProfileImage = () => {
   useManageMargin();
+  useHeaderControl({
+    title: '프로필 등록',
+    left: true,
+  });
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
 
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -94,7 +99,7 @@ const ProfileImage = () => {
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={25} />
+      <TitleProgress gauge={25} />
       {/* <S.ColumnStyled style={{ height: '80%' }}> */}
       <S.ColumnStyled style={{ height: 'auto' }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
@@ -116,7 +121,7 @@ const ProfileImage = () => {
               source={
                 userInfo.profileImageUrl === ''
                   ? require('../../../../assets/images/icons/Circle.png')
-                  : { uri: imageUrl }
+                  : { uri: userInfo.profileImageUrl }
               }
               style={
                 imageUrl === '' ? { height: 190, aspectRatio: 1 } : { height: 190, aspectRatio: 1, borderRadius: 100 }
@@ -125,9 +130,9 @@ const ProfileImage = () => {
           </TouchableOpacity>
           <S.ButtonStyled
             onPress={() => handleProfileGuideModalRef()}
-            style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
+            style={{ height: 44, width: 150, backgroundColor: '#8D96B0', marginTop: 26 }}
           >
-            <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>사진 가이드 보기</Text>
+            <Text style={{ color: 'white', fontFamily: 'fontMedium', fontSize: 14 }}>사진 가이드 보기</Text>
           </S.ButtonStyled>
         </View>
       </S.ColumnStyled>

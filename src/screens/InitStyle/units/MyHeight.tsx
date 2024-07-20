@@ -30,7 +30,7 @@ const MyHeight = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={50} />
+      <TitleProgress gauge={83} />
       <S.ColumnStyled style={{ height: '80%' }}>
         <View style={{ width: '100%', alignItems: 'center' }}>
           <S.ContentStyled style={{ marginBottom: 38, marginTop: 30 }}>본인의 키를 알려주세요</S.ContentStyled>

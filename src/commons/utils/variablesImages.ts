@@ -92,6 +92,14 @@ export const img = {
   profileEx6: require('../../../assets/images/img/profile_ex6.png'),
 
   prepareBookImage: require('../../../assets/images/img/prepareBookImage.png'),
+
+  heartGauge1: require('../../../assets/images/img/heartGauge/heartGauge1.png'),
+  heartGauge2: require('../../../assets/images/img/heartGauge/heartGauge2.png'),
+  heartGauge3: require('../../../assets/images/img/heartGauge/heartGauge3.png'),
+  heartGauge4: require('../../../assets/images/img/heartGauge/heartGauge4.png'),
+  heartGauge5: require('../../../assets/images/img/heartGauge/heartGauge5.png'),
+  heartGauge6: require('../../../assets/images/img/heartGauge/heartGauge6.png'),
+  heartGauge7: require('../../../assets/images/img/heartGauge/heartGauge7.png'),
 };
 
 export const logos = {

@@ -10,6 +10,8 @@ import { useAgreementStore } from '../../commons/store/useAgreement';
 import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
 import useGetPushToken from '../../commons/hooks/useGetPushToken';
 import { usePostPushToken } from '../../commons/hooks/usePostPushToken';
+import notYetNextButton from '../../../assets/images/buttons/NotYetNextButton.png';
+import nextButton from '../../../assets/images/buttons/nextButton.png';
 import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 
 const TermsOfService = () => {
@@ -27,7 +29,7 @@ const TermsOfService = () => {
   const onClickMovePage = async () => {
     const pushToken = await getPushToken();
     await postPushToken(pushToken);
-    movePage('initUserinfoStack')();
+    movePage('insertInviteCode')();
   };
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
@@ -94,12 +96,24 @@ const TermsOfService = () => {
           ))}
         </T.ColumnStyled>
       </View>
-      <S.NextButtonStyled
-        onPress={isActive === true ? onClickMovePage : undefined}
-        style={{ backgroundColor: isActive === true ? colors.primary : colors.buttonAuthToggle }}
+      <View
+        style={{
+          flexDirection: 'row',
+          display: 'flex',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          width: '85%',
+          height: '7%',
+        }}
       >
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>다음</Text>
-      </S.NextButtonStyled>
+        {isActive !== true ? (
+          <Image source={notYetNextButton} />
+        ) : (
+          <S.MoveButton onPress={() => onClickMovePage()}>
+            <Image source={nextButton} />
+          </S.MoveButton>
+        )}
+      </View>
     </S.Wrapper>
   );
 };

@@ -1,6 +1,6 @@
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import { Alert, Image, Linking, Text, View } from 'react-native';
+import { Image, Text, View, Alert, Linking, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
@@ -9,36 +9,32 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
-// import useMemberStore from '../../../commons/store/useMemberStore';
 import { uploadStudentIdImageToS3 } from '../../../commons/api/imageUploadToS3.api';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
+import { useToggle } from '../../../commons/hooks/useToggle';
+import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
+import ModalTitle from './components/searchSchool/ModalTitle';
+import ModalContent from './components/searchSchool/ModalContent';
 import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const SchoolStudentID = () => {
-  useScreenLogger();
-  // const [school, setSchool] = useState('학교');
-  // const [isFocused, setIsFocused] = useState(false);
+  useHeaderControl({
+    title: '정보 입력',
+    left: false,
+  });
+  const { isOpen, toggle } = useToggle();
 
-  // const handleFocus = () => {
-  //   if (!isFocused) {
-  //     setSchool(''); // Clear the text when the TextInput is focused for the first time
-  //     setIsFocused(true);
-  //   }
-  // };
-  // const handleBlur = () => {
-  //   if (school === '') {
-  //     setSchool('학교'); // Restore the initial text if the TextInput is left empty
-  //     setIsFocused(false);
-  //   }
-  // };
+  useScreenLogger();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
-  // const memberId = useMemberStore((state) => state.memberInfo.id);
+  const [school, setSchool] = useState('');
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
   const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  const uploadeImage = async () => {
+  const uploadImage = async () => {
     if (!status?.granted) {
       const permission = await requestPermission();
       if (!permission.granted) {
@@ -72,34 +68,52 @@ const SchoolStudentID = () => {
   };
 
   const moveNext = async () => {
-    updateUserInfo({ schoolName: '가천대학교' });
     movePage('emailAuth')();
-
-    const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
-    if (uploadedFileUrl) {
-      updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+    if (userInfo.studentIdImageUrl !== '') {
+      const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
+      if (uploadedFileUrl) {
+        updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+      }
     }
+  };
+
+  const selectSchool = (school: string) => {
+    updateUserInfo({ schoolName: school });
+    toggle();
+  };
+
+  const modalConfig = {
+    title: <ModalTitle />,
+    visible: isOpen,
+    onClose: toggle,
+    close: true,
+    mode: 'round',
+    contents: <ModalContent school={school} setSchool={setSchool} />,
+    buttons: [{ label: '확인', action: () => selectSchool(school) }],
   };
 
   return (
     <S.Wrapper>
       <TitleProgress gauge={75} />
-      {/* <S.ColumnStyled style={{ height: 'auto', justifyContent: 'space-between' }}> */}
-      {/* <View style={{ width: '100%', alignItems: 'center' }}> */}
-      {/* <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
-        <S.ButtonStyled disabled>
-          <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium' }}>가천대학교</Text>
-        </S.ButtonStyled> */}
-      {/* <S.TextFiledStyled
-            value={school}
-            onChangeText={setSchool}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
+      {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAwareScrollView
+          style={{ width: '100%' }}
+          contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
+        > */}
+      <View style={{ width: '100%', alignItems: 'center' }}>
+        <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
+        <S.ButtonStyled onPress={toggle}>
+          <Text
             style={{
-              color: school === '학교' ? colors.textGray2 : colors.primary,
+              color: userInfo.schoolName === '' ? colors.textGray2 : colors.primary,
+              fontFamily: 'fontMedium',
             }}
-          /> */}
-      {/* </View> */}
+          >
+            {userInfo.schoolName === '' ? '학교' : userInfo.schoolName}
+          </Text>
+        </S.ButtonStyled>
+        <CustomModal modalConfig={modalConfig} />
+      </View>
       <View style={{ width: '100%', alignItems: 'center' }}>
         <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
@@ -108,11 +122,13 @@ const SchoolStudentID = () => {
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, marginBottom: 16 }}>
           실물 학생증의 경우 카드번호를 가리고 업로드해 주세요.
         </Text>
-        <S.ButtonStyled onPress={() => uploadeImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
+        <S.ButtonStyled onPress={() => uploadImage()} style={{ height: 132, marginBottom: 6 }} borderRadius={10}>
           <View style={imageUrl === '' ? { width: 40, height: 40.52 } : { width: 160, height: 120 }}>
             <Image
               source={
-                userInfo.studentIdImageUrl === '' ? require('../../../../assets/images/photo.png') : { uri: imageUrl }
+                userInfo.studentIdImageUrl === ''
+                  ? require('../../../../assets/images/photo.png')
+                  : { uri: userInfo.studentIdImageUrl }
               }
               style={{ objectFit: 'contain', width: '100%', height: '100%', borderRadius: 10 }}
             />
@@ -131,12 +147,13 @@ const SchoolStudentID = () => {
           학생증 도용 시 처벌 대상이 될 수 있습니다.
         </Text>
       </View>
-      {/* </S.ColumnStyled> */}
+      {/* </KeyboardAwareScrollView>
+      </TouchableWithoutFeedback> */}
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {userInfo.studentIdImageUrl === '' ? (
+        {userInfo.studentIdImageUrl === '' || userInfo.schoolName === '' ? (
           <Image source={notYetNextButton} />
         ) : (
           <S.MoveButton onPress={moveNext}>

@@ -1,10 +1,11 @@
 import * as S from '../../../InitUserInfo.styles';
-import { TitleProgress2 } from '../../TitleProgress2';
 import { Image, View } from 'react-native';
 import { icons } from '../../../../../commons/utils/variablesImages';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { useCounter } from '../../../../../commons/store/useCounter';
+import { TitleProgress } from '../../TitleProgress';
+import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
 
 const Case = [
   ['학생증 확인이 불가능합니다', '학생증을 다시 업로드해 주세요'],
@@ -14,11 +15,14 @@ const Case = [
 ];
 
 const RejectedInfo = ({ rejectCase }: { rejectCase: number }) => {
-  console.log('rejectCase', rejectCase);
+  useHeaderControl({
+    title: '프로필',
+    left: false,
+  });
   const { increment } = useCounter();
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={100} />
+      <TitleProgress gauge={100} />
       <S.ColumnStyled style={{ justifyContent: 'start' }}>
         <S.ColumnStyled style={{ height: '50%', marginTop: '25%' }}>
           <View style={{ width: '100%', alignItems: 'center' }}>

@@ -4,7 +4,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../../..//../../commons/styles/variablesStyles';
 import * as S from '../../../InitUserInfo.styles';
 import * as P from '../../../../Library/Library.styles';
-import { TitleProgress2 } from '../..//TitleProgress2';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -17,6 +16,8 @@ import { img } from '../../../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../../../commons/api/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import { useCounter } from '../../../../../commons/store/useCounter';
+import { TitleProgress } from '../../TitleProgress';
+import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],
@@ -28,6 +29,10 @@ const profileExList = [
 ];
 
 const ReProfileImage = () => {
+  useHeaderControl({
+    title: '프로필',
+    left: false,
+  });
   const [hasRunProfileGuide, setHasRunProfileGuide] = useState(false);
 
   const { increment } = useCounter();
@@ -89,7 +94,7 @@ const ReProfileImage = () => {
   // console.log('status.granted:', status?.granted, 'status.status:', status?.status);
   return (
     <S.Wrapper>
-      <TitleProgress2 gauge={25} />
+      <TitleProgress gauge={25} />
       <S.ColumnStyled style={{ height: '80%' }}>
         <View style={{ width: '100%', alignItems: 'center', marginBottom: '15%' }}>
           <S.ContentStyled>프로필 사진 등록</S.ContentStyled>
