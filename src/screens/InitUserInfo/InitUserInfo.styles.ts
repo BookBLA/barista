@@ -196,7 +196,7 @@ export const InviteCodeContainer = styled.View`
 
 export const InviteFriendsContainer = styled.View`
   width: 90%;
-  height: 315px;
+  /* height: 370px; */
   padding: 20px;
   align-items: start;
   justify-content: center;

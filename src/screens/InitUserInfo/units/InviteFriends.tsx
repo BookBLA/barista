@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/useMovePage';
@@ -11,13 +11,25 @@ import { TitleProgress } from './TitleProgress';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import HeartGuage from './components/HeartGuage/HeartGuage';
 import { getSchoolMembers } from '../../../commons/api/school.api';
+import * as Clipboard from 'expo-clipboard';
+import { img } from '../../../commons/utils/variablesImages';
+
+const imgUrl = {
+  1: img.heartGauge1,
+  2: img.heartGauge2,
+  3: img.heartGauge3,
+  4: img.heartGauge4,
+  5: img.heartGauge5,
+  6: img.heartGauge6,
+  7: img.heartGauge7,
+};
 
 const InviteFriends = () => {
   const { movePage } = useMovePage();
   useManageMargin();
   useHeaderControl({
     title: '친구 초대',
-    left: true,
+    left: false,
   });
 
   const [code, setCode] = useState('');
@@ -25,6 +37,11 @@ const InviteFriends = () => {
   const [goalMemberCount, setGoalMemberCount] = useState(30);
   const [percentage, setPercentage] = useState(0);
   const [schoolName, setSchoolName] = useState('');
+  const [heartImage, setHeartImage] = useState(1);
+
+  const setHeartGauge = (currentMemberCount: number) => {
+    setHeartImage(Math.floor(currentMemberCount / 5 + 1));
+  };
 
   const callGetSchoolMembersApi = async () => {
     try {
@@ -34,6 +51,7 @@ const InviteFriends = () => {
       setPercentage(response.result.percentage);
       setSchoolName(response.result.schoolName);
       setCode(response.result.invitationCode || 'undefined');
+      setHeartGauge(response.result.currentMemberCount);
     } catch (error) {
       console.log(error);
     }
@@ -41,6 +59,10 @@ const InviteFriends = () => {
   useEffect(() => {
     callGetSchoolMembersApi();
   }, []);
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(code);
+  };
 
   return (
     <S.Wrapper>
@@ -77,7 +99,7 @@ const InviteFriends = () => {
                 </CustomText>
               </View>
             </View>
-            <HeartGuage percentage={16} />
+            <Image source={imgUrl[heartImage]} style={{ width: 86, height: 86 }} />
           </View>
           <CustomText size="12px" font="fontMedium" color={colors.textGray3} style={{ marginBottom: 6 }}>
             아래 코드를 공유하고 친구를 초대하세요
@@ -94,19 +116,16 @@ const InviteFriends = () => {
             </CustomText>
             지급!{'\n'}책갈피는 매칭 신청과 수락할 때 사용됩니다
           </CustomText>
-          {/* <View style={{ width: '100%', alignItems: 'center' }}>
-              <S.ButtonStyled
-                onPress={movePage('infoOpenChat')}
-                style={{ height: 44, width: 150, backgroundColor: colors.primary, marginTop: 26 }}
-              >
-                <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
-              </S.ButtonStyled>
-            </View> */}
+          <View style={{ width: '100%', alignItems: 'center' }}>
+            <S.ButtonStyled
+              onPress={copyToClipboard}
+              style={{ height: 44, width: 208, backgroundColor: colors.primary, marginTop: 26 }}
+            >
+              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
+            </S.ButtonStyled>
+          </View>
         </S.InviteFriendsContainer>
       </S.ColumnStyled>
-      <S.NextButtonStyled>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>코드 복사하기</Text>
-      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };
