@@ -159,7 +159,7 @@ const ModifyStyle = () => {
         dateStyleType: styleInfo.dateStyleType,
         dateCostType: styleInfo.dateCostType,
         justFriendType: styleInfo.justFriendType,
-        // memberAsk: styleInfo.memberAsk,
+        heightType: styleInfo.heightType,
         memberAsk: question,
       });
       // console.log('putMemberStyleApi Success', response);
