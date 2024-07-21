@@ -23,15 +23,27 @@ const buttonList = [
   'MBTI',
   '흡연 여부',
   '음주 여부',
-  '연락\n스타일',
-  '데이트\n스타일',
+  '연락 및 데이트\n스타일',
   '데이트\n비용',
   '이성친구\n범위',
+  '키',
   '개인 질문',
 ];
 const drinkOptions = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
 const costOptions = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
 const sexOptions = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
+const heightOptions = [
+  '150cm 미만',
+  '150cm 이상 ~ 155cm 미만',
+  '155cm 이상 ~ 160cm 미만',
+  '160cm 이상 ~ 165cm 미만',
+  '165cm 이상 ~ 170cm 미만',
+  '170cm 이상 ~ 175cm 미만',
+  '175cm 이상 ~ 180cm 미만',
+  '180cm 이상 ~ 185cm 미만',
+  '185cm 이상 ~ 190cm 미만',
+  '190cm 이상 ~',
+];
 
 const ModifyStyle = () => {
   useScreenLogger();
@@ -80,14 +92,14 @@ const ModifyStyle = () => {
       case 3: // 연락 스타일 섹션
         yOffset = 1050; // 연락 스타일 섹션의 시작 위치
         break;
-      case 4: // 데이트 스타일 섹션
-        yOffset = 1210; // 데이트 스타일 섹션의 시작 위치
-        break;
-      case 5: // 데이트 비용 섹션
+      case 4: // 데이트 비용  섹션
         yOffset = 1560; // 데이트 비용 섹션의 시작 위치
         break;
-      case 6: // 이성 친구 섹션
+      case 5: // 이성 친구 섹션
         yOffset = 2030; // 이성 친구 섹션의 시작 위치
+        break;
+      case 6: //  키 섹션
+        yOffset = 2580; // 키 섹션의 시작 위치
         break;
 
       default:
@@ -115,6 +127,7 @@ const ModifyStyle = () => {
       await updateStyleInfo('dateStyleType', response.result.dateStyleType);
       await updateStyleInfo('dateCostType', response.result.dateCostType);
       await updateStyleInfo('justFriendType', response.result.justFriendType);
+      await updateStyleInfo('heightType', response.result.heightType);
       await updateStyleInfo('memberAsk', response.result.memberAsk);
       const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
       setMbti([...newMbti]); // Update the mbti array with the newMbti array
@@ -146,7 +159,7 @@ const ModifyStyle = () => {
         dateStyleType: styleInfo.dateStyleType,
         dateCostType: styleInfo.dateCostType,
         justFriendType: styleInfo.justFriendType,
-        // memberAsk: styleInfo.memberAsk,
+        heightType: styleInfo.heightType,
         memberAsk: question,
       });
       // console.log('putMemberStyleApi Success', response);
@@ -180,7 +193,7 @@ const ModifyStyle = () => {
             alignItems: 'center',
           }}
         >
-          <S.ColumnStyled style={{ padding: '0 16' }}>
+          <S.ColumnStyled style={{ padding: '0 16', height: '100%' }}>
             <S.ViewStyled height={200}>
               <S.RowStyled style={{ width: '95%' }}>
                 <CustomText font="fontRegular" size="12" style={{ marginBottom: 14 }}>
@@ -323,6 +336,28 @@ const ModifyStyle = () => {
                   <S.ButtonTextStyled isSelect={styleInfo.justFriendType === title}>{title}</S.ButtonTextStyled>
                 </T.LongButtonStyled>
               ))}
+            </S.ViewStyled>
+            <DashDividerLine />
+            <S.ViewStyled height={700}>
+              <S.ContentStyled style={{ marginBottom: 38, marginTop: 30 }}>본인의 키를 알려주세요</S.ContentStyled>
+              <View
+                style={{
+                  width: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'space-around',
+                  height: '75%',
+                }}
+              >
+                {heightOptions.map((title, index) => (
+                  <T.LongButtonStyled
+                    key={index}
+                    isSelect={styleInfo.heightType === title}
+                    onPress={() => updateStyleInfo('heightType', title)}
+                  >
+                    <S.ButtonTextStyled isSelect={styleInfo.heightType === title}>{title}</S.ButtonTextStyled>
+                  </T.LongButtonStyled>
+                ))}
+              </View>
             </S.ViewStyled>
             <DashDividerLine />
             <S.ViewStyled height={300}>

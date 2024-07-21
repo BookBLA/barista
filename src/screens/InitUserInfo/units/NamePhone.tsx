@@ -9,9 +9,14 @@ import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
 
 const NamePhone = () => {
+  useHeaderControl({
+    title: '정보 입력',
+    left: false,
+  });
   useScreenLogger();
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
@@ -19,7 +24,7 @@ const NamePhone = () => {
   // const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
   const isHangul = (text: string) => {
-    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3]+$/;
+    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3\u00B7\u11A2]+$/;
     return hangulRegex.test(text);
   };
 
@@ -50,7 +55,6 @@ const NamePhone = () => {
   return (
     <S.Wrapper>
       <TitleProgress gauge={50} />
-      {/* <S.ColumnStyled style={{ height: '80%' }}> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
@@ -97,7 +101,6 @@ const NamePhone = () => {
           </View> */}
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
-      {/* </S.ColumnStyled> */}
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
