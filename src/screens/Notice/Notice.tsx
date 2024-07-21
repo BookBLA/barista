@@ -46,7 +46,7 @@ const Notice = () => {
           </TouchableOpacity>
           <S.ScrollWrapper>
             {data.map((el: IAlarmData, dex) => (
-              <S.NoticeWrapper key={dex}>
+              <S.NoticeWrapper key={el.title + el.body}>
                 <CustomText>{el.title}</CustomText>
                 <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
                   {el.body}

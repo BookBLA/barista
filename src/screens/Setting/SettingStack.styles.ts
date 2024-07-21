@@ -43,7 +43,7 @@ export const MenuWrapper = styled.View`
   align-items: center;
   height: 84px;
   margin: 0 20px;
-  padding: 0 14px;
+  padding: 0 25px;
   border-radius: 10px;
   background-color: ${colors.background};
 `;
