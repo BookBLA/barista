@@ -403,11 +403,13 @@ const Library: React.FC<Props> = ({ route }) => {
             <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
           </S.UserInfoWrapper>
 
-          <S.InviteFriendButtonWrapper>
-            <TouchableOpacity onPress={toggleInviteFriendModal}>
-              <S.InviteFriendButtonImage source={icons.inviteFriend} />
-            </TouchableOpacity>
-          </S.InviteFriendButtonWrapper>
+          {!isYourLibrary && (
+            <S.InviteFriendButtonWrapper>
+              <TouchableOpacity onPress={toggleInviteFriendModal}>
+                <S.InviteFriendButtonImage source={icons.inviteFriend} />
+              </TouchableOpacity>
+            </S.InviteFriendButtonWrapper>
+          )}
         </S.UserInfoView>
 
         <S.ProfileHeaderButtonContainer>
