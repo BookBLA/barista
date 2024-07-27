@@ -72,6 +72,7 @@ export const icons = {
   checkPostcard: require('../../../assets/images/icons/PostcardCheck.png'),
 
   hourGlass: require('../../../assets/images/icons/Hourglass.png'),
+  inviteFriend: require('../../../assets/images/icons/InviteFriend.png'),
 };
 
 export const img = {
