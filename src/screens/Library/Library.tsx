@@ -1,4 +1,4 @@
-import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
@@ -672,31 +672,36 @@ const Library: React.FC<Props> = ({ route }) => {
       />
 
       <CustomModal modalConfig={inviteFriendModalConfig}>
-        <S.EmptyPostcardModalWrapper>
-          <S.EmptyPostcardModalHeader>
+        <S.InviteFriendModalWrapper>
+          <S.InviteFriendModalHeader>
             <CustomText font="fontMedium" size="18px" style={{ marginBottom: 12 }}>
               친구를 초대하고 무료 책갈피를 받으세요!
             </CustomText>
-            <CustomText font="fontSemiBold" size="30px">
+            <CustomText font="fontSemiBold" size="30px" style={{ marginBottom: 22 }}>
               엽서코드
             </CustomText>
-            <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
-              여자인 친구 초대하면 친구도 나도{' '}
-              <CustomText font="fontMedium" size="14px" color={colors.errorMessageRed}>
-                책갈피 100개
-              </CustomText>{' '}
-              지급!
-            </CustomText>
-          </S.EmptyPostcardModalHeader>
-          <S.ModalBottomWrapper>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+                여자인 친구 초대하면
+              </CustomText>
+              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+                친구도 나도
+                <CustomText font="fontMedium" size="14px" color={colors.errorMessageRed}>
+                  책갈피 150개
+                </CustomText>{' '}
+                지급!
+              </CustomText>
+            </View>
+          </S.InviteFriendModalHeader>
+          <S.CopyCodeButtonWrapper>
             {/*todo 복사하기 기능 버튼 추가*/}
-            <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
+            <S.CopyCodeButton bgColor={colors.buttonPrimary}>
               <CustomText size="14px" color={colors.textYellow}>
                 코드 복사하기
               </CustomText>
-            </S.RoundButton>
-          </S.ModalBottomWrapper>
-        </S.EmptyPostcardModalWrapper>
+            </S.CopyCodeButton>
+          </S.CopyCodeButtonWrapper>
+        </S.InviteFriendModalWrapper>
       </CustomModal>
     </SafeAreaView>
   );
