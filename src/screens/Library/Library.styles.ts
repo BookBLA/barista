@@ -27,6 +27,15 @@ export const UserInfoWrapper = styled.View`
   flex: 4;
 `;
 
+export const InviteFriendButtonWrapper = styled.View`
+  flex: 0.8;
+`;
+
+export const InviteFriendButtonImage = styled.Image`
+  width: 38px;
+  height: 38px;
+`;
+
 export const UserInfoNameWrapper = styled.View`
   flex-direction: row;
   align-items: center;
@@ -199,6 +208,18 @@ export const EmptyPostcardModalHeader = styled.View`
   margin-bottom: 20px;
 `;
 
+export const InviteFriendModalWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding: 16px 14px;
+`;
+
+export const InviteFriendModalHeader = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
 export const ModalBottomWrapper = styled.View`
   width: 100%;
   display: flex;
@@ -213,6 +234,20 @@ export const RoundButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
   padding: 14px 20px;
+  border-radius: 60px;
+  background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+`;
+
+export const CopyCodeButtonWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin: 12px 0;
+`;
+
+export const CopyCodeButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  padding: 14px 66px;
   border-radius: 60px;
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
 `;

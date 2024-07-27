@@ -1,4 +1,4 @@
-import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
@@ -25,6 +25,7 @@ import useMemberStore from '../../commons/store/useMemberStore';
 import {
   deleteBook,
   getBookInfo,
+  getInvitationCode,
   getMemberStyle,
   getMyLibraryInfo,
   getYourLibraryInfo,
@@ -45,6 +46,7 @@ import BlockModalContent from './utils/BLockModalContent';
 import { postMemberBlock } from '../../commons/api/memberBlock.api';
 import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
+import * as Clipboard from 'expo-clipboard';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -78,6 +80,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
+  const [isInviteFriendModalVisible, setInviteFriendModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [topFloorBookList, setTopFloorBookList] = useState<TBookResponses[]>([]);
@@ -93,6 +96,14 @@ const Library: React.FC<Props> = ({ route }) => {
   });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
+  const [invitationCode, setInvitationCode] = React.useState('');
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(invitationCode);
+    showToast({
+      content: '친구 초대 코드가 복사되었습니다!',
+    });
+  };
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -190,6 +201,11 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const toggleEmptyPostcardModal = () => {
     setEmptyPostcardVisible(!isEmptyPostcardModalVisible);
+  };
+
+  const toggleInviteFriendModal = async () => {
+    await fetchInvitationCode();
+    setInviteFriendModalVisible(!isInviteFriendModalVisible);
   };
 
   const getCurrentPostcardStatus = async () => {
@@ -291,6 +307,12 @@ const Library: React.FC<Props> = ({ route }) => {
     onClose: toggleEmptyPostcardModal,
   };
 
+  const inviteFriendModalConfig = {
+    visible: isInviteFriendModalVisible,
+    onClose: toggleInviteFriendModal,
+    close: true,
+  };
+
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const updateProfileImageUrl = useUserStore((state) => state.updateProfileImageUrl);
 
@@ -316,6 +338,11 @@ const Library: React.FC<Props> = ({ route }) => {
       setIsProfileImageModificationStatus(true);
     }
     handleCloseBottomSheet();
+  };
+
+  const fetchInvitationCode = async () => {
+    const result = await getInvitationCode();
+    setInvitationCode(result.invitationCode);
   };
 
   useHeaderControl(
@@ -375,6 +402,14 @@ const Library: React.FC<Props> = ({ route }) => {
             </S.UserInfoNameWrapper>
             <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
           </S.UserInfoWrapper>
+
+          {!isYourLibrary && (
+            <S.InviteFriendButtonWrapper>
+              <TouchableOpacity onPress={toggleInviteFriendModal}>
+                <S.InviteFriendButtonImage source={icons.inviteFriend} />
+              </TouchableOpacity>
+            </S.InviteFriendButtonWrapper>
+          )}
         </S.UserInfoView>
 
         <S.ProfileHeaderButtonContainer>
@@ -640,6 +675,7 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
+
       <CustomModal
         modalConfig={{
           visible: isOpen,
@@ -652,6 +688,39 @@ const Library: React.FC<Props> = ({ route }) => {
           ],
         }}
       />
+
+      <CustomModal modalConfig={inviteFriendModalConfig}>
+        <S.InviteFriendModalWrapper>
+          <S.InviteFriendModalHeader>
+            <CustomText font="fontMedium" size="18px" style={{ marginBottom: 12 }}>
+              친구를 초대하고 무료 책갈피를 받으세요!
+            </CustomText>
+            <CustomText font="fontSemiBold" size="30px" style={{ marginBottom: 22 }}>
+              {invitationCode}
+            </CustomText>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+                여자인 친구 초대하면
+              </CustomText>
+              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+                친구도 나도
+                <CustomText font="fontMedium" size="14px" color={colors.errorMessageRed}>
+                  {' '}
+                  책갈피 150개
+                </CustomText>{' '}
+                지급!
+              </CustomText>
+            </View>
+          </S.InviteFriendModalHeader>
+          <S.CopyCodeButtonWrapper>
+            <S.CopyCodeButton onPress={copyToClipboard} bgColor={colors.buttonPrimary}>
+              <CustomText size="14px" color={colors.textYellow}>
+                코드 복사하기
+              </CustomText>
+            </S.CopyCodeButton>
+          </S.CopyCodeButtonWrapper>
+        </S.InviteFriendModalWrapper>
+      </CustomModal>
     </SafeAreaView>
   );
 };

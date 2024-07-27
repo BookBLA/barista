@@ -2,6 +2,7 @@ import { Delete, Get, Patch, Post } from '../utils/http.api';
 import {
   TBookInfo,
   TBookQuizInfo,
+  TInvitationCode,
   TMemberStyleInfo,
 } from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '../../screens/Library/Library.types';
@@ -36,6 +37,11 @@ export const getBookInfo = async (memberBookId: number) => {
 export const getMemberStyle = async (targetMemberId: number) => {
   const { result } = await Get(`members/styles/${targetMemberId}`);
   return result as TMemberStyleInfo;
+};
+
+export const getInvitationCode = async () => {
+  const { result } = await Get(`invitation-code`);
+  return result as TInvitationCode;
 };
 
 export const validateSendPostcard = async (targetMemberId: number) => {
