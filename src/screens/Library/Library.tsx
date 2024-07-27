@@ -25,6 +25,7 @@ import useMemberStore from '../../commons/store/useMemberStore';
 import {
   deleteBook,
   getBookInfo,
+  getInvitationCode,
   getMemberStyle,
   getMyLibraryInfo,
   getYourLibraryInfo,
@@ -95,10 +96,10 @@ const Library: React.FC<Props> = ({ route }) => {
   });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
-  const [copiedText, setCopiedText] = React.useState('');
+  const [invitationCode, setInvitationCode] = React.useState('');
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync('hello world');
+    await Clipboard.setStringAsync(invitationCode);
     showToast({
       content: '친구 초대 코드가 복사되었습니다!',
     });
@@ -202,7 +203,8 @@ const Library: React.FC<Props> = ({ route }) => {
     setEmptyPostcardVisible(!isEmptyPostcardModalVisible);
   };
 
-  const toggleInviteFriendModal = () => {
+  const toggleInviteFriendModal = async () => {
+    await fetchInvitationCode();
     setInviteFriendModalVisible(!isInviteFriendModalVisible);
   };
 
@@ -336,6 +338,11 @@ const Library: React.FC<Props> = ({ route }) => {
       setIsProfileImageModificationStatus(true);
     }
     handleCloseBottomSheet();
+  };
+
+  const fetchInvitationCode = async () => {
+    const result = await getInvitationCode();
+    setInvitationCode(result.invitationCode);
   };
 
   useHeaderControl(
@@ -687,7 +694,7 @@ const Library: React.FC<Props> = ({ route }) => {
               친구를 초대하고 무료 책갈피를 받으세요!
             </CustomText>
             <CustomText font="fontSemiBold" size="30px" style={{ marginBottom: 22 }}>
-              엽서코드
+              {invitationCode}
             </CustomText>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <CustomText font="fontMedium" size="14px" color={colors.textGray4}>

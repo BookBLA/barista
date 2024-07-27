@@ -40,3 +40,7 @@ export type TMemberStyleInfo = {
   memberAsk?: string;
   memberAskId?: number;
 };
+
+export type TInvitationCode = {
+  invitationCode: string;
+};
