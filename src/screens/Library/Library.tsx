@@ -45,6 +45,7 @@ import BlockModalContent from './utils/BLockModalContent';
 import { postMemberBlock } from '../../commons/api/memberBlock.api';
 import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
+import * as Clipboard from 'expo-clipboard';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -94,6 +95,14 @@ const Library: React.FC<Props> = ({ route }) => {
   });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
+  const [copiedText, setCopiedText] = React.useState('');
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync('hello world');
+    showToast({
+      content: '친구 초대 코드가 복사되었습니다!',
+    });
+  };
 
   const splitBook = (bookResponseList: TBookResponses[]) => {
     const newTopFloorList: TBookResponses[] = bookResponseList.filter((bookResponse) => bookResponse.representative);
@@ -694,8 +703,7 @@ const Library: React.FC<Props> = ({ route }) => {
             </View>
           </S.InviteFriendModalHeader>
           <S.CopyCodeButtonWrapper>
-            {/*todo 복사하기 기능 버튼 추가*/}
-            <S.CopyCodeButton bgColor={colors.buttonPrimary}>
+            <S.CopyCodeButton onPress={copyToClipboard} bgColor={colors.buttonPrimary}>
               <CustomText size="14px" color={colors.textYellow}>
                 코드 복사하기
               </CustomText>

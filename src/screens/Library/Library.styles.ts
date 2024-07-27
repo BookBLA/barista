@@ -241,7 +241,7 @@ export const RoundButton = styled.TouchableOpacity`
 export const CopyCodeButtonWrapper = styled.View`
   justify-content: center;
   align-items: center;
-  margin: 16px 0;
+  margin: 12px 0;
 `;
 
 export const CopyCodeButton = styled.TouchableOpacity`
