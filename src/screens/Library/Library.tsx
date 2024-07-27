@@ -705,6 +705,7 @@ const Library: React.FC<Props> = ({ route }) => {
               <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
                 친구도 나도
                 <CustomText font="fontMedium" size="14px" color={colors.errorMessageRed}>
+                  {' '}
                   책갈피 150개
                 </CustomText>{' '}
                 지급!
