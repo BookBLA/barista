@@ -1,4 +1,4 @@
-import { Platform, SafeAreaView, TouchableWithoutFeedback } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as S from './Library.styles';
 import settingIcon from '../../../assets/images/icons/Setting.png';
@@ -375,6 +375,12 @@ const Library: React.FC<Props> = ({ route }) => {
             </S.UserInfoNameWrapper>
             <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
           </S.UserInfoWrapper>
+
+          <S.InviteFriendButtonWrapper>
+            <TouchableOpacity>
+              <S.InviteFriendButtonImage source={icons.inviteFriend}></S.InviteFriendButtonImage>
+            </TouchableOpacity>
+          </S.InviteFriendButtonWrapper>
         </S.UserInfoView>
 
         <S.ProfileHeaderButtonContainer>

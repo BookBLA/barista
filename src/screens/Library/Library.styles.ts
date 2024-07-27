@@ -27,6 +27,15 @@ export const UserInfoWrapper = styled.View`
   flex: 4;
 `;
 
+export const InviteFriendButtonWrapper = styled.View`
+  flex: 0.8;
+`;
+
+export const InviteFriendButtonImage = styled.Image`
+  width: 38px;
+  height: 38px;
+`;
+
 export const UserInfoNameWrapper = styled.View`
   flex-direction: row;
   align-items: center;
