@@ -28,6 +28,7 @@ export const BodyWrapper = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-top: 3%;
   align-items: center;
   width: 100%;
   height: 100%;
