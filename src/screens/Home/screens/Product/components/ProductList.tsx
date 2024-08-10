@@ -1,11 +1,11 @@
 import { View, Image } from 'react-native';
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
-import { ProductProps } from './ProductListContent.types';
+import { ProductProps } from './ProductList.types';
 import { CustomButton } from '../../../../../commons/components/CustomButton/CustomButton';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import adMask from '../../../../../../assets/images/icons/ADMask.png';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import ProductListContent from './ProductListContent';
 
 const ProductList: React.FC<ProductProps> = ({ props, index }) => {
@@ -19,7 +19,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
           style={{ width: '100%', height: 86, zIndex: 5, position: 'absolute', top: 0, left: 0 }}
         />
       )}
-      {/* {index === 0 ? (
+      {index === 0 ? (
         <LinearGradient
           colors={['#AFDFF8', '#1BCEDF']}
           start={{ x: 0, y: 0 }}
@@ -36,7 +36,9 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
         >
           <ProductListContent props={props} index={index} />
         </LinearGradient>
-      ) : <ProductListContent props={props} index={index} />} */}
+      ) : (
+        <ProductListContent props={props} index={index} />
+      )}
     </View>
   );
 };

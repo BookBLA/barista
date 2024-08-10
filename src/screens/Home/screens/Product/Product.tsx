@@ -8,12 +8,10 @@ import Header from '../Home/units/Header/Header';
 import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 import ProductList from './components/ProductList';
 
-const adCount = 1;
 const SalesList = [
   {
     product: '무료 책갈피 받기',
     price: '광고 시청 후\n책갈피 10개 받기',
-    buttonName: `무료 ${adCount}/2`,
     buttonAction: () => {},
   },
   {
