@@ -10,7 +10,7 @@ import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/memberEmail';
+import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/members/email/memberEmail';
 import useToastStore from '../../../commons/store/useToastStore';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';

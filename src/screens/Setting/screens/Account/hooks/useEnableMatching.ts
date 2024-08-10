@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { postMemberStatusesApi } from '../../../../../commons/api/member.api';
+import { postMemberStatusesApi } from '../../../../../commons/api/members/default/member.api';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../../commons/types/memberStatus';
 

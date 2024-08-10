@@ -6,7 +6,7 @@ import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useStyleStore } from '../../../commons/store/useStyle';
-import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
+import { postMemberStyleApi } from '../../../commons/api/members/styles/memberStyle.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
 import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';

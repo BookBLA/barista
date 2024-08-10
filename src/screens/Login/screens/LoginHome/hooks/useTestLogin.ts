@@ -1,4 +1,4 @@
-import { postTestSignUp } from '../../../../../commons/api/example.api';
+import { postTestSignUp } from '../../../../../commons/api/example/example.api';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
 import useGetPushToken from '../../../../../commons/hooks/useGetPushToken';
 import useAuthStore from '../../../../../commons/store/useAuthStore';
@@ -16,7 +16,7 @@ export const useTestLogin = () => {
     if (process.env.NODE_ENV !== 'development') return;
     try {
       const { result } = await postTestSignUp({
-        email: 'tjdwls6536@naver.com',
+        email: 'junhee043@naver.com',
       });
       setToken(result.accessToken);
 

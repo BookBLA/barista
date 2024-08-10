@@ -1,4 +1,4 @@
-import { Post, Get, Put } from '../utils/http.api';
+import { Post, Get, Put } from '../../../utils/http.api';
 
 export const postMemberStyleApi = (contents) => Post(`members/styles`, contents);
 

@@ -9,7 +9,7 @@ import useToastStore from '../../../../../commons/store/useToastStore';
 import { icons } from '../../../../../commons/utils/variablesImages';
 import checkBlack from '../../../../../../assets/images/icons/CheckBlack.png';
 import { ModalWrapper } from '../../../../Setting/SettingStack.styles';
-import { getSchools } from '../../../../../commons/api/school.api';
+import { getSchools } from '../../../../../commons/api/schools/school.api';
 
 const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value: string) => void }) => {
   const showToast = useToastStore((state) => state.showToast);

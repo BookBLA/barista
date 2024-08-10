@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getMemberBookApi } from '../../../../../commons/api/memberBook.api';
+import { getMemberBookApi } from '../../../../../commons/api/members/book/memberBook.api';
 import { useErrorMessage } from '../../../../../commons/store/useErrorMessage';
 
 export const useFetchMemberBook = () => {

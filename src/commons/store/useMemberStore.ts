@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { getMemberApi } from '../api/member.api';
+import { getMemberApi } from '../api/members/default/member.api';
 import analytics from '@react-native-firebase/analytics';
 
 interface IMemberInfo {

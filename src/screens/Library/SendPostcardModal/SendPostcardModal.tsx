@@ -17,7 +17,7 @@ import {
   getMemberStyle,
   getPostcardTypeList,
   postPostcard,
-} from '../../../commons/api/library.api';
+} from '../../../commons/api/postcard/library.api';
 import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
 import useToastStore from '../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../commons/hooks/useMemberPostcard';

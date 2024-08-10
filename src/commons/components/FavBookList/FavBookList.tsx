@@ -1,7 +1,7 @@
 import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
-import { deleteMemberBookApi } from '../../api/memberBook.api';
+import { deleteMemberBookApi } from '../../api/members/book/memberBook.api';
 import { icons, img } from '../../utils/variablesImages';
 import truncateText from '../../utils/truncateText';
 import { EStatusCode } from '../../types/statusCode';

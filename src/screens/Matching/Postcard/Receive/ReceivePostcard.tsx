@@ -7,7 +7,7 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
-import { readPostcard } from '../../../../commons/api/matching.api';
+import { readPostcard } from '../../../../commons/api/matching/matching.api';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import useMovePage from '../../../../commons/hooks/useMovePage';
 import {

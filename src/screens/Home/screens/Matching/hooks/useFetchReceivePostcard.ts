@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getReceivePostcardList } from '../../../../../commons/api/matching.api';
+import { getReceivePostcardList } from '../../../../../commons/api/matching/matching.api';
 import { IReceivePostcardProps } from '../../../../Matching/Postcard/Receive/ReceivePostcard.types';
 import { useFocusEffect } from '@react-navigation/native';
 

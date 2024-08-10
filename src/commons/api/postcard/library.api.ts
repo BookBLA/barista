@@ -1,12 +1,15 @@
-import { Delete, Get, Patch, Post } from '../utils/http.api';
+import { Delete, Get, Patch, Post } from '../../utils/http.api';
 import {
   TBookInfo,
   TBookQuizInfo,
   TInvitationCode,
   TMemberStyleInfo,
-} from '../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
-import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '../../screens/Library/Library.types';
-import { ISendPostcardRequest, TPostcardInfo } from '../../screens/Library/SendPostcardModal/SendPostcardModal.types';
+} from '../../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
+import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '../../../screens/Library/Library.types';
+import {
+  ISendPostcardRequest,
+  TPostcardInfo,
+} from '../../../screens/Library/SendPostcardModal/SendPostcardModal.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 

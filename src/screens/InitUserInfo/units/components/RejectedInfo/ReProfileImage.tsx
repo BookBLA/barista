@@ -13,7 +13,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
 import { useBottomSheet } from '../../../../../commons/hooks/useBottomSheet';
 import { img } from '../../../../../commons/utils/variablesImages';
-import { uploadImageToS3 } from '../../../../../commons/api/imageUploadToS3.api';
+import { uploadImageToS3 } from '../../../../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import { TitleProgress } from '../../TitleProgress';

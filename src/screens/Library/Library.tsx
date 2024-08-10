@@ -19,7 +19,7 @@ import useMovePage from '../../commons/hooks/useMovePage';
 import { useBottomSheet } from '../../commons/hooks/useBottomSheet';
 import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
-import { uploadImageToS3 } from '../../commons/api/imageUploadToS3.api';
+import { uploadImageToS3 } from '../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import useMemberStore from '../../commons/store/useMemberStore';
 import {
@@ -30,7 +30,7 @@ import {
   getMyLibraryInfo,
   getYourLibraryInfo,
   validateSendPostcard,
-} from '../../commons/api/library.api';
+} from '../../commons/api/postcard/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
@@ -43,7 +43,7 @@ import { EStatusCode } from '../../commons/types/statusCode';
 import { useToggle } from '../../commons/hooks/useToggle';
 import ReportOption from './utils/ReportOption/ReportOption';
 import BlockModalContent from './utils/BLockModalContent';
-import { postMemberBlock } from '../../commons/api/memberBlock.api';
+import { postMemberBlock } from '../../commons/api/members/block/memberBlock.api';
 import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
 import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
 import * as Clipboard from 'expo-clipboard';

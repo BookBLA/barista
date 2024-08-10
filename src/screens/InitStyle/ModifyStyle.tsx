@@ -13,7 +13,7 @@ import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
 import useManageMargin from '../../commons/hooks/useManageMargin';
-import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/memberStyle.api';
+import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/members/styles/memberStyle.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
 import { useLimitTextLine } from '../../commons/hooks/useLimitTextLine';

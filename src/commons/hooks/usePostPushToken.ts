@@ -1,4 +1,4 @@
-import { postPushes } from '../api/memberToken.api';
+import { postPushes } from '../api/members/token/memberToken.api';
 import useToastStore from '../store/useToastStore';
 
 export const usePostPushToken = () => {

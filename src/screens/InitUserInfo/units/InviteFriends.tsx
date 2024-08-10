@@ -10,7 +10,7 @@ import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import { TitleProgress } from './TitleProgress';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import HeartGuage from './components/HeartGuage/HeartGuage';
-import { getSchoolMembers } from '../../../commons/api/school.api';
+import { getSchoolMembers } from '../../../commons/api/schools/school.api';
 import * as Clipboard from 'expo-clipboard';
 import { img } from '../../../commons/utils/variablesImages';
 

@@ -6,7 +6,7 @@ import { CustomText } from '../../../commons/components/TextComponents/CustomTex
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView, View } from 'react-native';
-import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
+import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/postcard/library.api';
 import useToastStore from '../../../commons/store/useToastStore';
 import { img } from '../../../commons/utils/variablesImages';
 import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';

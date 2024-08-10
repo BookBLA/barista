@@ -10,7 +10,7 @@ import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
-import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching.api';
+import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching/matching.api';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useModalStore from '../../../../commons/store/useModalStore';
 import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
@@ -18,8 +18,8 @@ import reportIcon from '../../../../../assets/images/icons/ReportIcon.png';
 import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
-import { getYourLibraryInfo } from '../../../../commons/api/library.api';
 import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import { getYourLibraryInfo } from '../../../../commons/api/postcard/library.api';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;

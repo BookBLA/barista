@@ -14,7 +14,7 @@ import useManageMargin from '../../../commons/hooks/useManageMargin';
 import checkCircle from '../../../../assets/images/icons/CheckCircle.png';
 import warningCircle from '../../../../assets/images/icons/WarningCircle.png';
 import { deviceWidth } from '../../../commons/utils/dimensions';
-import { postInviteCodeVerifyApi } from '../../../commons/api/invitation.api';
+import { postInviteCodeVerifyApi } from '../../../commons/api/invitation/invitation.api';
 
 const InsertInviteCode = () => {
   useManageMargin();

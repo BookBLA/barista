@@ -6,13 +6,13 @@ import useMovePage from '../../../commons/hooks/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../commons/store/useMemberStore';
-import { postPolicyApi } from '../../../commons/api/memberPolicy';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
-import { postMemberProfileApi } from '../../../commons/api/memberProfile.api';
+import { postMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { deviceHeight } from '../../../commons/utils/dimensions';
 import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import { TitleProgress } from './TitleProgress';
+import { postPolicyApi } from '../../../commons/api/members/policy/memberPolicy';
 
 const OpenChatLink = () => {
   const { movePage, handleReset } = useMovePage();

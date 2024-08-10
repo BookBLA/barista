@@ -1,10 +1,10 @@
-import { Get } from '../utils/http.api';
+import { Get } from '../../utils/http.api';
 import axios from 'axios';
 import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { SaveFormat } from 'expo-image-manipulator';
-import { useErrorMessage } from '../store/useErrorMessage';
+import { useErrorMessage } from '../../store/useErrorMessage';
 
 export const enum EUploadImageType {
   IMAGE = 'image',

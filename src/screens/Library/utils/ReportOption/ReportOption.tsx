@@ -9,7 +9,7 @@ import { useToggle } from '../../../../commons/hooks/useToggle';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import ReportModalContent from '../ReportModalContent';
 import { InputStyled } from './ReportOption.styles';
-import { postMemberReports } from '../../../../commons/api/memberReports';
+import { postMemberReports } from '../../../../commons/api/members/report/memberReports';
 import useToastStore from '../../../../commons/store/useToastStore';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { deviceHeight } from '../../../../commons/utils/dimensions';

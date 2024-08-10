@@ -1,4 +1,4 @@
-import { Post, Get, Put, Patch } from '../utils/http.api';
+import { Post, Get, Put, Patch } from '../../../utils/http.api';
 
 interface IPatchMemberProfile {
   openKakaoRoomUrl: string;

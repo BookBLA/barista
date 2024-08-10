@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { TitleProgress } from '../../TitleProgress';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
-import { uploadStudentIdImageToS3 } from '../../../../../commons/api/imageUploadToS3.api';
+import { uploadStudentIdImageToS3 } from '../../../../../commons/api/image/imageUploadToS3.api';
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import useMemberStore from '../../../../../commons/store/useMemberStore';

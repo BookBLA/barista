@@ -7,7 +7,10 @@ import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
 import useMovePage from '../../../commons/hooks/useMovePage';
-import { getMemberProfileStatusesApi, postMemberProfileApi } from '../../../commons/api/memberProfile.api';
+import {
+  getMemberProfileStatusesApi,
+  postMemberProfileApi,
+} from '../../../commons/api/members/profile/memberProfile.api';
 import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { TitleProgress } from './TitleProgress';

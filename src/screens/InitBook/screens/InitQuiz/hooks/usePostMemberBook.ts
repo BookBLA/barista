@@ -1,4 +1,4 @@
-import { postMemberBookApi } from '../../../../../commons/api/memberBook.api';
+import { postMemberBookApi } from '../../../../../commons/api/members/book/memberBook.api';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
 import useToastStore from '../../../../../commons/store/useToastStore';
 import { IBookData, IRequestQuizzes } from '../../../InitBookStack.types';

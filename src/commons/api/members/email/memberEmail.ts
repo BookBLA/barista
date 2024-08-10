@@ -1,4 +1,4 @@
-import { Post, Put } from '../utils/http.api';
+import { Post, Put } from '../../../utils/http.api';
 
 //이메일 인증 코드 전송
 export const postAuthEmailApi = (contents) => Post(`members/emails/sends`, contents);

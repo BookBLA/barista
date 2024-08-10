@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import { getSearchBookApi } from '../../../../../commons/api/searchBook';
+import { getSearchBookApi } from '../../../../../commons/api/search/searchBook';
 
 export const useSearchBooks = (setTotalPage: Dispatch<SetStateAction<number>>) => {
   const [bookList, setBookList] = useState([]);

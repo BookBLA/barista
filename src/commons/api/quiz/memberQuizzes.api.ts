@@ -1,5 +1,5 @@
-import { IRequestQuizzes } from '../../screens/InitBook/InitBookStack.types';
-import { Get, Post } from '../utils/http.api';
+import { IRequestQuizzes } from '../../../screens/InitBook/InitBookStack.types';
+import { Get, Post } from '../../utils/http.api';
 
 export const getMemberQuizzesApi = (memberBookId: string) => Get(`quizzes/${memberBookId}`);
 

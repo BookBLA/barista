@@ -1,4 +1,4 @@
-import { Get, Put } from '../utils/http.api';
+import { Get, Put } from '../../../utils/http.api';
 
 export const getMemeberReplyApi = (postcardId: number) => Get(`members/member-reply/${postcardId}`);
 

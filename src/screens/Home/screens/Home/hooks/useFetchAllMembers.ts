@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getMemberAllOtherMembersApi } from '../../../../../commons/api/member.api';
+import { getMemberAllOtherMembersApi } from '../../../../../commons/api/members/default/member.api';
 import { IDdata, TFilterKeys, TFilterState } from '../../../HomeStack.types';
 import { filterOptions } from '../../../HomeStack.constants';
 

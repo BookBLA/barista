@@ -13,7 +13,7 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import { useLimitTextLine } from '../../../../commons/hooks/useLimitTextLine';
 import { ModalWrapper } from '../../../Setting/SettingStack.styles';
 import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
-import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/memberReply.api';
+import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/members/reply/memberReply.api';
 import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {

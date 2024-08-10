@@ -1,4 +1,4 @@
-import { postMemberQuizzesApi } from '../../../../../commons/api/memberQuizzes.api';
+import { postMemberQuizzesApi } from '../../../../../commons/api/quiz/memberQuizzes.api';
 import useMovePage from '../../../../../commons/hooks/useMovePage';
 import useToastStore from '../../../../../commons/store/useToastStore';
 import { IRequestQuizzes } from '../../../InitBookStack.types';
