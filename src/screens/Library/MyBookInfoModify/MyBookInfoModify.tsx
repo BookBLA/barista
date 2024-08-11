@@ -7,7 +7,7 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView, View } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/postcard/library.api';
-import useToastStore from '../../../commons/store/useToastStore';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
 import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 import { useLimitTextLine } from '../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 

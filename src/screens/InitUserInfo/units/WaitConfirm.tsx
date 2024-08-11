@@ -11,11 +11,11 @@ import {
   getMemberProfileStatusesApi,
   postMemberProfileApi,
 } from '../../../commons/api/members/profile/memberProfile.api';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import { TitleProgress } from './TitleProgress';
-import useToastStore from '../../../commons/store/useToastStore';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const WaitConfirm = () => {
   useHeaderControl({

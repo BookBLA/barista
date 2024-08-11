@@ -5,7 +5,6 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import * as P from '../../Library/Library.styles';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import CustomBottomSheetModal from '../../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
@@ -18,6 +17,7 @@ import uuid from 'react-native-uuid';
 import { TitleProgress } from './TitleProgress';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],

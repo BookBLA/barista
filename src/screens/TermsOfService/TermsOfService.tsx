@@ -6,7 +6,7 @@ import { colors } from '../../commons/styles/variablesStyles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
 import nextArrow from '../../../assets/images/icons/NextArrow.png';
-import { useAgreementStore } from '../../commons/store/useAgreement';
+import { useAgreementStore } from '../../commons/store/appStatus/agreement/useAgreement';
 import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
 
 import notYetNextButton from '../../../assets/images/buttons/NotYetNextButton.png';

@@ -5,11 +5,11 @@ import StudentID from './components/RejectedInfo/StudentID';
 import { useEffect } from 'react';
 import OpenChat from './components/RejectedInfo/OpenChat';
 import ReProfileImage from './components/RejectedInfo/ReProfileImage';
-import { useCounter } from '../../../commons/store/useCounter';
-import { useUserStore } from '../../../commons/store/useUserinfo';
+import { useCounter } from '../../../commons/store/features/counter/useCounter';
 import { getMemberProfileApi, putMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
 import { useRoute } from '@react-navigation/native';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const FailedSign = () => {
   const route = useRoute<TProps>();

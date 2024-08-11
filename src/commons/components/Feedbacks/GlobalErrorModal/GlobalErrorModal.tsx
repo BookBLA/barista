@@ -1,7 +1,7 @@
 import { Text } from 'react-native';
 
 import { Wrapper } from './GlobalErrorModal.styles';
-import { useErrorMessage } from '../../../store/useErrorMessage';
+import { useErrorMessage } from '../../../store/appStatus/errorMessage/useErrorMessage';
 import { CustomModal } from '../../Layouts/CustomModal/CustomModal';
 
 const GlobalErrorModal = () => {

@@ -18,7 +18,7 @@ import {
   postPostcard,
 } from '../../../commons/api/postcard/library.api';
 import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
-import useToastStore from '../../../commons/store/useToastStore';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
 import useFetchMemberPostcard from '../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import { CustomButton } from '../../../commons/components/Inputs/CustomButton/CustomButton';

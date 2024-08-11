@@ -13,7 +13,7 @@ import * as T from '../../InitBookStack.styles';
 import usePagination from '../../../../commons/hooks/ui/pagination/usePagination';
 import { IProps } from './SearchBook.types';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import useToastStore from '../../../../commons/store/useToastStore';
+import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useHandleMoveTop } from '../../../../commons/hooks/ui/handleMoveTop/useHandleMoveTop';
 import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';

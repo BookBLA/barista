@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import * as S from '../../../InitUserInfo.styles';
-import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled, TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
-import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
-import { useCounter } from '../../../../../commons/store/useCounter';
+import { useCounter } from '../../../../../commons/store/features/counter/useCounter';
 import { TitleProgress } from '../../TitleProgress';
 import useManageMargin from '../../../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { useUserStore } from '../../../../../commons/store/members/userinfo/useUserinfo';
 
 const OpenChat = () => {
   useManageMargin();

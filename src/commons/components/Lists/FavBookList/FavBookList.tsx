@@ -1,7 +1,7 @@
 import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
-import useToastStore from '../../../store/useToastStore';
+import useToastStore from '../../../store/ui/toast/useToastStore';
 import { deleteMemberBookApi } from '../../../api/members/book/memberBook.api';
 import { isAxiosErrorResponse } from '../../../utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { EStatusCode } from '../../../types/statusCode';

@@ -3,7 +3,6 @@ import { Text, View, Image } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { TitleProgress } from './TitleProgress';
 import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';

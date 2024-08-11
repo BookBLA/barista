@@ -1,4 +1,4 @@
-import useMemberStore from '../../../store/useMemberStore';
+import useMemberStore from '../../../store/members/member/useMemberStore';
 
 type TRouteMap = {
   [key: string]: string;

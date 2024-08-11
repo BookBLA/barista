@@ -6,16 +6,16 @@ import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { deviceWidth } from '../../../commons/utils/ui/dimensions/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/members/email/memberEmail';
-import useToastStore from '../../../commons/store/useToastStore';
-import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
+import { useEmailStatusStore, IsSuccess } from '../../../commons/store/members/emailStatus/useEmailStatusStore';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const EmailAuth = () => {
   useHeaderControl({

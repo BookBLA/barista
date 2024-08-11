@@ -4,7 +4,7 @@ import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import useToastStore from '../../../../commons/store/useToastStore';
+import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
 import { readPostcard } from '../../../../commons/api/matching/matching.api';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
@@ -24,7 +24,7 @@ import {
 } from '../Send/SendPostcard.styles';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import useModalStore from '../../../../commons/store/useModalStore';
+import useModalStore from '../../../../commons/store/ui/modal/useModalStore';
 import { icons, img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
 import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';

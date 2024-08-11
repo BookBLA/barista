@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import * as Font from 'expo-font';
 import { IFontLoaderProps } from './FontLoader.types';
-import useAuthStore from '../../../store/useAuthStore';
-import useMemberStore from '../../../store/useMemberStore';
-import { checkReinstallation } from '../../../store/installStatusStore';
+import useAuthStore from '../../../store/auth/auth/useAuthStore';
+import { checkReinstallation } from '../../../store/appStatus/installStatus/installStatusStore';
+import useMemberStore from '../../../store/members/member/useMemberStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);

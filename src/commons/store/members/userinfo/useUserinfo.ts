@@ -3,7 +3,7 @@ import {
   getMemberProfileApi,
   patchMemberProfileImageApi,
   putMemberProfileApi,
-} from '../api/members/profile/memberProfile.api';
+} from '../../../api/members/profile/memberProfile.api';
 
 interface UserInfo {
   gender: string;

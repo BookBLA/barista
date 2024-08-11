@@ -19,7 +19,6 @@ import { useBottomSheet } from '../../commons/hooks/ui/bottomSheet/useBottomShee
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { uploadImageToS3 } from '../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
-import useMemberStore from '../../commons/store/useMemberStore';
 import {
   deleteBook,
   getBookInfo,
@@ -31,9 +30,8 @@ import {
 } from '../../commons/api/postcard/library.api';
 import { TBookResponses, TLibrary } from './Library.types';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
-import useToastStore from '../../commons/store/useToastStore';
+import useToastStore from '../../commons/store/ui/toast/useToastStore';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
-import { useUserStore } from '../../commons/store/useUserinfo';
 import { icons, img } from '../../commons/utils/ui/variablesImages/variablesImages';
 import { isAxiosErrorResponse } from '../../commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { EStatusCode } from '../../commons/types/statusCode';
@@ -47,6 +45,8 @@ import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/use
 import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
 import { CustomModal } from '../../commons/components/Layouts/CustomModal/CustomModal';
+import useMemberStore from '../../commons/store/members/member/useMemberStore';
+import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };

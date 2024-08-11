@@ -5,7 +5,7 @@ import * as T from '../InitStyle.styles';
 import { useState } from 'react';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/useStyle';
+import { useStyleStore } from '../../../commons/store/members/style/useStyle';
 import { postMemberStyleApi } from '../../../commons/api/members/styles/memberStyle.api';
 import { useLimitTextLine } from '../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';

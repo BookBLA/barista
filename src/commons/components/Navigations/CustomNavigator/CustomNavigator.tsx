@@ -15,7 +15,7 @@ import LoginStack from '../../../../screens/Login/LoginStack';
 import { CustomScreen } from '../../Layouts/CustomScreen/CustomScreen';
 import Notice from '../../../../screens/Notice/Notice';
 import WaitConfirm from '../../../../screens/InitUserInfo/units/WaitConfirm';
-import { useHasMargin } from '../../../store/useHasMargin';
+import { useHasMargin } from '../../../store/ui/hasMargin/useHasMargin';
 import { useAuthNavigation } from '../../../hooks/navigations/authNavigation/useAuthNavigation';
 import { useInitialRouteName } from '../../../hooks/navigations/initialRouteName/useInitialRouteName';
 

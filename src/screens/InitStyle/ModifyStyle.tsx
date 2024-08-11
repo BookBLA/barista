@@ -8,16 +8,16 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { DashDividerLine } from '../../commons/components/Utils/DashDividerLine/DashDividerLine';
-import { useStyleStore } from '../../commons/store/useStyle';
+import { useStyleStore } from '../../commons/store/members/style/useStyle';
 import { deviceWidth } from '../../commons/utils/ui/dimensions/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/Specific/ModifyMBTI/ModifyMBTI';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/members/styles/memberStyle.api';
-import useMemberStore from '../../commons/store/useMemberStore';
-import useToastStore from '../../commons/store/useToastStore';
+import useToastStore from '../../commons/store/ui/toast/useToastStore';
 import { useLimitTextLine } from '../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useManageMargin from '../../commons/hooks/ui/manageMargin/useManageMargin';
+import useMemberStore from '../../commons/store/members/member/useMemberStore';
 
 const buttonList = [
   'MBTI',

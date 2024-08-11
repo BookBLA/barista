@@ -1,11 +1,10 @@
 import { FlatList, TouchableOpacity, View, Text, Image } from 'react-native';
 import * as S from '../../../InitUserInfo.styles';
 import * as T from '../../../../InitBook/InitBookStack.styles';
-import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { useEffect, useState } from 'react';
 import { universityList } from '../../../../../commons/contents/universityList/universityList';
 import { colors } from '../../../../../commons/styles/variablesStyles';
-import useToastStore from '../../../../../commons/store/useToastStore';
+import useToastStore from '../../../../../commons/store/ui/toast/useToastStore';
 import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
 import checkBlack from '../../../../../../assets/images/icons/CheckBlack.png';
 import { ModalWrapper } from '../../../../Setting/SettingStack.styles';

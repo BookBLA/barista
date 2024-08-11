@@ -3,7 +3,7 @@ import { Image, Text, View } from 'react-native';
 import logo from '../../../../assets/images/logos/logoDark.png';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '../../../commons/store/useUserinfo';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const CompletePage = () => {
   const { movePage } = useMovePage();

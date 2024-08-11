@@ -3,7 +3,7 @@ import { Image } from 'react-native';
 import { ICustomHeader } from './CustomHeader.types';
 import * as S from './CustomHeader.styles';
 import useMovePage from '../../../hooks/navigations/movePage/useMovePage';
-import { useHasMargin } from '../../../store/useHasMargin';
+import { useHasMargin } from '../../../store/ui/hasMargin/useHasMargin';
 import { CustomText } from '../../Utils/TextComponents/CustomText/CustomText.styles';
 
 export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPressLeft, right, free }) => {

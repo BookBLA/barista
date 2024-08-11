@@ -9,7 +9,6 @@ import CustomBottomSheetModal from '../../../../commons/components/Layouts/Custo
 import Menu from './units/Menu/Menu';
 import Item from './units/Item/Item';
 import Lock from './units/Lock/Lock';
-import useMemberStore from '../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
 
 import Header from './units/Header/Header';
@@ -18,6 +17,7 @@ import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreen
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 import usePushNotifications from '../../../../commons/hooks/notifications/pushNotifications/usePushNotifications';
 import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useMemberStore from '../../../../commons/store/members/member/useMemberStore';
 
 const Home = () => {
   useScreenLogger();

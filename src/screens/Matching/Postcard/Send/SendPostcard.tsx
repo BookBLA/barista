@@ -5,7 +5,7 @@ import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { Image, Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import useToastStore from '../../../../commons/store/useToastStore';
+import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
 import { img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
 import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';

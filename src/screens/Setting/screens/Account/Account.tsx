@@ -3,7 +3,6 @@ import { colors } from '../../../../commons/styles/variablesStyles';
 import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
 import * as S from '../../SettingStack.styles';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import useMemberStore from '../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useEnableMatching } from './hooks/useEnableMatching';
@@ -14,6 +13,7 @@ import { useLogout } from '../../../../commons/hooks/auths/logout/useLogout';
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
 import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import useMemberStore from '../../../../commons/store/members/member/useMemberStore';
 
 const Account = () => {
   useScreenLogger();

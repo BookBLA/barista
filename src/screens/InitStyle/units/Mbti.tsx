@@ -6,7 +6,7 @@ import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useState } from 'react';
-import { useStyleStore } from '../../../commons/store/useStyle';
+import { useStyleStore } from '../../../commons/store/members/style/useStyle';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 

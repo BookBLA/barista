@@ -3,7 +3,7 @@ import * as FileSystem from 'expo-file-system';
 import { Buffer } from 'buffer';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { SaveFormat } from 'expo-image-manipulator';
-import { useErrorMessage } from '../../store/useErrorMessage';
+import { useErrorMessage } from '../../store/appStatus/errorMessage/useErrorMessage';
 import { Get } from '../../configs/axios/http.api';
 
 export const enum EUploadImageType {

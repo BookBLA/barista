@@ -1,5 +1,5 @@
 import { postLogin } from '../../../api/auth/login.api';
-import useToastStore from '../../../store/useToastStore';
+import useToastStore from '../../../store/ui/toast/useToastStore';
 import { EMemberStatus } from '../../../types/memberStatus';
 import { getReLoginInfo } from '../../../utils/dates/dateUtils/dateUtils';
 import { useSuccessfulLogin } from '../successfulLogin/useSuccessfulLogin';

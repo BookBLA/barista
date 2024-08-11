@@ -1,6 +1,6 @@
-import useAuthStore from '../../../store/useAuthStore';
-import useMemberStore from '../../../store/useMemberStore';
-import useToastStore from '../../../store/useToastStore';
+import useAuthStore from '../../../store/auth/auth/useAuthStore';
+import useMemberStore from '../../../store/members/member/useMemberStore';
+import useToastStore from '../../../store/ui/toast/useToastStore';
 import { EMemberStatus } from '../../../types/memberStatus';
 import { useInitialRouteName } from '../../navigations/initialRouteName/useInitialRouteName';
 import useMovePage from '../../navigations/movePage/useMovePage';

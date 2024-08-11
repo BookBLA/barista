@@ -1,7 +1,7 @@
-import useAuthStore from '../../../store/useAuthStore';
-import { useStyleStore } from '../../../store/useStyle';
-import useToastStore from '../../../store/useToastStore';
-import { useUserStore } from '../../../store/useUserinfo';
+import useAuthStore from '../../../store/auth/auth/useAuthStore';
+import { useStyleStore } from '../../../store/members/style/useStyle';
+import { useUserStore } from '../../../store/members/userinfo/useUserinfo';
+import useToastStore from '../../../store/ui/toast/useToastStore';
 
 export const useLogout = (logoutToggle: () => void) => {
   const removeToken = useAuthStore((state) => state.removeToken);

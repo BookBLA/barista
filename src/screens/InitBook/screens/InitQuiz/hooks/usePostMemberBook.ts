@@ -1,6 +1,6 @@
 import { postMemberBookApi } from '../../../../../commons/api/members/book/memberBook.api';
 import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
-import useToastStore from '../../../../../commons/store/useToastStore';
+import useToastStore from '../../../../../commons/store/ui/toast/useToastStore';
 import { IBookData, IRequestQuizzes } from '../../../InitBookStack.types';
 import { isAxiosErrorResponse } from '../../../../../commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { EErrorMessage } from '../../../../../commons/types/errorMessage';

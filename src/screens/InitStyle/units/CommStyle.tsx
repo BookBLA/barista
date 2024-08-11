@@ -5,7 +5,7 @@ import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/useStyle';
+import { useStyleStore } from '../../../commons/store/members/style/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';

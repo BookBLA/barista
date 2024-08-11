@@ -3,7 +3,7 @@ import { Image, View } from 'react-native';
 import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { useCounter } from '../../../../../commons/store/useCounter';
+import { useCounter } from '../../../../../commons/store/features/counter/useCounter';
 import { TitleProgress } from '../../TitleProgress';
 import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
 

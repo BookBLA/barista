@@ -3,16 +3,15 @@ import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-nat
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
-import useMemberStore from '../../../commons/store/useMemberStore';
-import { useAgreementStore } from '../../../commons/store/useAgreement';
+import { useAgreementStore } from '../../../commons/store/appStatus/agreement/useAgreement';
 import { postMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
 import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { TitleProgress } from './TitleProgress';
 import { postPolicyApi } from '../../../commons/api/members/policy/memberPolicy';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const OpenChatLink = () => {
   const { movePage, handleReset } = useMovePage();

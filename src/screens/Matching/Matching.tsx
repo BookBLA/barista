@@ -10,10 +10,10 @@ import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSen
 import { icons } from '../../commons/utils/ui/variablesImages/variablesImages';
 import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
 import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '../../commons/store/useUserinfo';
 import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
 
 const Matching = () => {
   useScreenLogger();

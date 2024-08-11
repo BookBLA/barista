@@ -7,7 +7,6 @@ import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useUserStore } from '../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
 import { uploadStudentIdImageToS3 } from '../../../commons/api/image/imageUploadToS3.api';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
@@ -18,6 +17,7 @@ import ModalContent from './components/searchSchool/ModalContent';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 import { CustomModal } from '../../../commons/components/Layouts/CustomModal/CustomModal';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const SchoolStudentID = () => {
   useHeaderControl({
