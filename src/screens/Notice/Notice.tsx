@@ -1,15 +1,15 @@
 import { Image, TouchableOpacity } from 'react-native';
-import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import * as S from './Notice.styles';
 import { colors } from '../../commons/styles/variablesStyles';
 import Close from '../../../assets/images/icons/close.png';
-import useHeaderControl from '../../commons/hooks/useHeaderControl';
-import useMovePage from '../../commons/hooks/useMovePage';
-import { IAlarmData, useGetAlarms } from '../../commons/hooks/useGetAlarms';
+import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
-import { formatDate } from '../../commons/utils/dateUtils';
-import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import { formatDate } from '../../commons/utils/dates/dateUtils/dateUtils';
+import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { IAlarmData, useGetAlarms } from '../../commons/hooks/notifications/getAlarms/useGetAlarms';
+import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const Notice = () => {
   useScreenLogger();

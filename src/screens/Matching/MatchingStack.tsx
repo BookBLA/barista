@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
 import Matching from './Matching';
 import ReceivePostcardDetail from './Postcard/Receive/ReceivePostcardDetail';
 import Product from '../Home/screens/Product/Product';

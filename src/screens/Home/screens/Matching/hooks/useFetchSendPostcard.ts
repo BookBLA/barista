@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { getSendPostcardList } from '../../../../../commons/api/matching.api';
+import { getSendPostcardList } from '../../../../../commons/api/matching/matching.api';
 import { ISendPostcardProps } from '../../../../Matching/Postcard/Send/SendPostcard.types';
 import { useFocusEffect } from '@react-navigation/native';
 

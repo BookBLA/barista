@@ -2,14 +2,12 @@ import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useToastStore from '../../../../commons/store/useToastStore';
-import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
-import { readPostcard } from '../../../../commons/api/matching.api';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
+import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
+import { readPostcard } from '../../../../commons/api/matching/matching.api';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import {
   CircularImage,
   GenderIconStyled,
@@ -26,10 +24,12 @@ import {
 } from '../Send/SendPostcard.styles';
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import useModalStore from '../../../../commons/store/useModalStore';
-import { icons, img } from '../../../../commons/utils/variablesImages';
-import { deviceWidth } from '../../../../commons/utils/dimensions';
-import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
+import useModalStore from '../../../../commons/store/ui/modal/useModalStore';
+import { icons, img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
+import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
+import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {

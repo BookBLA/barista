@@ -5,16 +5,16 @@ import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import { Image, Linking, Platform, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
-import useToastStore from '../../../../commons/store/useToastStore';
-import { img } from '../../../../commons/utils/variablesImages';
-import { useToggle } from '../../../../commons/hooks/useToggle';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { useLimitTextLine } from '../../../../commons/hooks/useLimitTextLine';
+import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
+import { img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
+import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { useLimitTextLine } from '../../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 import { ModalWrapper } from '../../../Setting/SettingStack.styles';
 import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
-import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/memberReply.api';
-import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
+import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/members/reply/memberReply.api';
+import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {
@@ -111,7 +111,6 @@ export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
 
   const modifyPersonalQuiz = () => {
     if (answer === '') {
-      return;
     } else {
       //개인 질문 답변 수정 api 호출
       callPutPersonalQuiz();

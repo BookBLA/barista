@@ -6,22 +6,22 @@ import {
   TPostcardInfo,
 } from './SendPostcardModal.types';
 import * as S from './SendPostcardModal.styles';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { icons, img } from '../../../commons/utils/variablesImages';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
+import { icons, img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
-import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';
 import {
   getBookInfo,
   getBookQuizInfo,
   getMemberStyle,
   getPostcardTypeList,
   postPostcard,
-} from '../../../commons/api/library.api';
+} from '../../../commons/api/postcard/library.api';
 import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
-import useToastStore from '../../../commons/store/useToastStore';
-import useFetchMemberPostcard from '../../../commons/hooks/useMemberPostcard';
-import useAnalyticsEventLogger from '../../../commons/hooks/useAnalyticsEventLogger';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
+import useFetchMemberPostcard from '../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useAnalyticsEventLogger from '../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { CustomButton } from '../../../commons/components/Inputs/CustomButton/CustomButton';
 
 export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   targetMemberId,

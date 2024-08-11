@@ -1,20 +1,20 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { FavBookList } from '../../../../commons/components/FavBookList/FavBookList';
-import { DashDividerLine } from '../../../../commons/components/DashDividerLine/DashDividerLine';
+import { DashDividerLine } from '../../../../commons/components/Utils/DashDividerLine/DashDividerLine';
 import { ScrollView } from 'react-native-gesture-handler';
 import { IResponseMemberBook } from '../../InitBookStack.types';
-import { icons } from '../../../../commons/utils/variablesImages';
+import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useFetchMemberBook } from './hooks/useFetchMemberBook';
-import { LightText } from '../../../../commons/components/TextComponents/LightText/LightText';
+import { LightText } from '../../../../commons/components/Utils/TextComponents/LightText/LightText';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { EBook, TProps } from './AddBook.types';
 import { useRoute } from '@react-navigation/native';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
+import { FavBookList } from '../../../../commons/components/Lists/FavBookList/FavBookList';
 
 const AddBook = () => {
   useScreenLogger();

@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { deviceHeight } from '../../../commons/utils/dimensions';
+import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { colors } from '../../../commons/styles/variablesStyles';
 
 export const BookInfoContainer = styled.View`

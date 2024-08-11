@@ -1,4 +1,4 @@
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import * as S from '../../Setting/SettingStack.styles';
 
 const ReportModalContent = () => {

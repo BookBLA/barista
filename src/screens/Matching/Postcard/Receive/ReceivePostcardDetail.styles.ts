@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { deviceWidth } from '../../../../commons/utils/dimensions';
+import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
 
 export const Wrapper = styled.View`
   flex: 1;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
 import AddBook from './screens/AddBook/AddBook';
 import SearchBook from './screens/SearchBook/SearchBook';
 import InitQuiz from './screens/InitQuiz/InitQuiz';

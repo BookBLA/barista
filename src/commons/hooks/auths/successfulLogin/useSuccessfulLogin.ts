@@ -1,0 +1,40 @@
+import useAuthStore from '../../../store/auth/auth/useAuthStore';
+import useMemberStore from '../../../store/members/member/useMemberStore';
+import useToastStore from '../../../store/ui/toast/useToastStore';
+import { EMemberStatus } from '../../../types/memberStatus';
+import { useInitialRouteName } from '../../navigations/initialRouteName/useInitialRouteName';
+import useMovePage from '../../navigations/movePage/useMovePage';
+import useGetPushToken from '../../notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '../../notifications/postPushToken/usePostPushToken';
+
+interface IResult {
+  accessToken: string;
+  memberStatus: string;
+}
+
+export const useSuccessfulLogin = () => {
+  const showToast = useToastStore((state) => state.showToast);
+  const setToken = useAuthStore((state) => state.setToken);
+  const updateMemberInfo = useMemberStore((state) => state.updateMemberInfo);
+  const getInitialRouteName = useInitialRouteName();
+  const { handleReset } = useMovePage();
+  const { getPushToken } = useGetPushToken();
+  const { postPushToken } = usePostPushToken();
+
+  const handleSuccessfulLogin = async (result: IResult) => {
+    setToken(result.accessToken);
+    updateMemberInfo('memberStatus', result.memberStatus);
+
+    if (result.memberStatus !== EMemberStatus.PROFILE) {
+      const pushToken = await getPushToken();
+      await postPushToken(pushToken);
+    }
+
+    showToast({
+      content: '로그인에 성공하였습니다.',
+    });
+    handleReset(getInitialRouteName(result.memberStatus));
+  };
+
+  return handleSuccessfulLogin;
+};

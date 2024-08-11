@@ -1,4 +1,4 @@
-import useToastStore from '../../../../../commons/store/useToastStore';
+import useToastStore from '../../../../../commons/store/ui/toast/useToastStore';
 
 const useInvalid = () => {
   const showToast = useToastStore((state) => state.showToast);

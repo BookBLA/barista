@@ -1,19 +1,19 @@
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { useToggle } from '../../../../commons/hooks/useToggle';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
-import { useLogout } from '../../../../commons/hooks/useLogout';
+import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
 import * as S from '../../SettingStack.styles';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useMemberStore from '../../../../commons/store/useMemberStore';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useEnableMatching } from './hooks/useEnableMatching';
 import { getHeaderConfig } from './configs/headerConfig';
 import { getMatchingConfig } from './configs/matchingconfig';
-import { CustomSwitch } from '../../../../commons/components/CustomSwitch/CustomSwitch';
 import { getLogoutConfig } from './configs/logoutConfig';
+import { useLogout } from '../../../../commons/hooks/auths/logout/useLogout';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
+import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import useMemberStore from '../../../../commons/store/members/member/useMemberStore';
 
 const Account = () => {
   useScreenLogger();

@@ -3,13 +3,13 @@ import { Keyboard, Text, View } from 'react-native';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
 import { useState } from 'react';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/useStyle';
-import { postMemberStyleApi } from '../../../commons/api/memberStyle.api';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
-import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import { useStyleStore } from '../../../commons/store/members/style/useStyle';
+import { postMemberStyleApi } from '../../../commons/api/members/styles/memberStyle.api';
+import { useLimitTextLine } from '../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const PersonalQuestion = () => {
   useScreenLogger();

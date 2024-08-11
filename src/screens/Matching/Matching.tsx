@@ -5,15 +5,15 @@ import * as S from './Matching.styles';
 import { SendPostcard } from './Postcard/Send/SendPostcard';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
-import useFetchMemberPostcard from '../../commons/hooks/useMemberPostcard';
 import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
 import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
-import { icons } from '../../commons/utils/variablesImages';
+import { icons } from '../../commons/utils/ui/variablesImages/variablesImages';
 import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
-import useMovePage from '../../commons/hooks/useMovePage';
-import { useUserStore } from '../../commons/store/useUserinfo';
-import useAnalyticsEventLogger from '../../commons/hooks/useAnalyticsEventLogger';
-import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
+import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
 
 const Matching = () => {
   useScreenLogger();

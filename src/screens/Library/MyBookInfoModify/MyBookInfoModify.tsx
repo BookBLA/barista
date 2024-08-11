@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView, View } from 'react-native';
-import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/library.api';
-import useToastStore from '../../../commons/store/useToastStore';
-import { img } from '../../../commons/utils/variablesImages';
-import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
+import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/postcard/library.api';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
+import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
+import { useLimitTextLine } from '../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   const { handleLimitTextLine } = useLimitTextLine();

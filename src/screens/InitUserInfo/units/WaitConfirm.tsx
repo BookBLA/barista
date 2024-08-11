@@ -4,15 +4,18 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import optionA from '../../../../assets/images/icons/OptionA.png';
 import optionB from '../../../../assets/images/icons/OptionB.png';
-import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
-import Spinner from '../../../commons/components/Spinner/Spinner';
-import useMovePage from '../../../commons/hooks/useMovePage';
-import { getMemberProfileStatusesApi, postMemberProfileApi } from '../../../commons/api/memberProfile.api';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
-import { useUserStore } from '../../../commons/store/useUserinfo';
+import { LightText } from '../../../commons/components/Utils/TextComponents/LightText/LightText';
+import Spinner from '../../../commons/components/Layouts/Spinner/Spinner';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
+import {
+  getMemberProfileStatusesApi,
+  postMemberProfileApi,
+} from '../../../commons/api/members/profile/memberProfile.api';
 import { TitleProgress } from './TitleProgress';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
-import useToastStore from '../../../commons/store/useToastStore';
+import useToastStore from '../../../commons/store/ui/toast/useToastStore';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const WaitConfirm = () => {
   useHeaderControl({

@@ -1,15 +1,14 @@
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
 import { TouchableOpacity, View, Image } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/useStyle';
+import { useStyleStore } from '../../../commons/store/members/style/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const buttonTitles = [
   '150cm 미만',

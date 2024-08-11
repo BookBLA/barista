@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { getMemberBookApi } from '../../../../../commons/api/memberBook.api';
-import { useErrorMessage } from '../../../../../commons/store/useErrorMessage';
+import { getMemberBookApi } from '../../../../../commons/api/members/book/memberBook.api';
+import { useErrorMessage } from '../../../../../commons/store/appStatus/errorMessage/useErrorMessage';
 
 export const useFetchMemberBook = () => {
   const [data, setData] = useState([]);

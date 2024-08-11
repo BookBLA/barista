@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
-import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+import { calculateTimeLeft } from '../../../../commons/utils/dates/calculateTimeLeft/calculateTimeLeft';
+
 import Header from '../Home/units/Header/Header';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const Product = () => {
   useScreenLogger();

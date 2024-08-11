@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { postMemberStatusesApi } from '../../../../../commons/api/member.api';
-import useMemberStore from '../../../../../commons/store/useMemberStore';
+import { postMemberStatusesApi } from '../../../../../commons/api/members/default/member.api';
 import { EMemberStatus } from '../../../../../commons/types/memberStatus';
+import useMemberStore from '../../../../../commons/store/members/member/useMemberStore';
 
 export const useEnableMatching = (toggle: () => void) => {
   const updateMemberInfo = useMemberStore((state) => state.updateMemberInfo);

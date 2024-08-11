@@ -1,7 +1,7 @@
-import { deleteMemberApi } from '../../../../../commons/api/member.api';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
-import useAuthStore from '../../../../../commons/store/useAuthStore';
-import useToastStore from '../../../../../commons/store/useToastStore';
+import { deleteMemberApi } from '../../../../../commons/api/members/default/member.api';
+import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
+import useAuthStore from '../../../../../commons/store/auth/auth/useAuthStore';
+import useToastStore from '../../../../../commons/store/ui/toast/useToastStore';
 
 export const useDeleteMember = () => {
   const { movePage } = useMovePage();
