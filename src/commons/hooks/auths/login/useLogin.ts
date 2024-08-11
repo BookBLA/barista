@@ -1,7 +1,7 @@
 import { postLogin } from '../../../api/auth/login.api';
 import useToastStore from '../../../store/useToastStore';
 import { EMemberStatus } from '../../../types/memberStatus';
-import { getReLoginInfo } from '../../../utils/dateUtils';
+import { getReLoginInfo } from '../../../utils/dates/dateUtils/dateUtils';
 import { useSuccessfulLogin } from '../successfulLogin/useSuccessfulLogin';
 
 export const useLogin = () => {

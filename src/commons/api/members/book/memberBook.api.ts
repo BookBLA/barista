@@ -1,4 +1,4 @@
-import { Delete, Get, Post, Put } from '../../../utils/http.api';
+import { Delete, Get, Post, Put } from '../../../configs/axios/http.api';
 
 export interface IContents {
   isRepresentative: boolean;

@@ -1,6 +1,6 @@
 import * as S from '../../../InitUserInfo.styles';
 import { Image, View } from 'react-native';
-import { icons } from '../../../../../commons/utils/variablesImages';
+import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
 import { colors } from '../../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { useCounter } from '../../../../../commons/store/useCounter';

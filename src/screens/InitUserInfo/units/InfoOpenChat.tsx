@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 // import useManageMargin from '../../../commons/hooks/useManageMargin';
 // import Page from '../units/components/openChatPage/Page';
 import Carousel from '../units/Carousel';
-import { img } from '../../../commons/utils/variablesImages';
+import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 

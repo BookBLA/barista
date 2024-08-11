@@ -1,7 +1,7 @@
 import * as S from './Header.styles';
 import LogoDarkBg from '../../../../../../../assets/images/logos/logoDarkBg.png';
 import useMovePage from '../../../../../../commons/hooks/navigations/movePage/useMovePage';
-import { icons, logos } from '../../../../../../commons/utils/variablesImages';
+import { icons, logos } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
 import useFetchMemberPostcard from '../../../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import { useGetAlarms } from '../../../../../../commons/hooks/notifications/getAlarms/useGetAlarms';
 

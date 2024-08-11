@@ -1,7 +1,7 @@
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import { icons } from '../../../../commons/utils/variablesImages';
+import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import * as S from '../../Notice.styles';
 
 export const Warning = () => {

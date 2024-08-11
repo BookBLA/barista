@@ -5,7 +5,7 @@ import { FavBookList } from '../../../../commons/components/FavBookList/FavBookL
 import { DashDividerLine } from '../../../../commons/components/DashDividerLine/DashDividerLine';
 import { ScrollView } from 'react-native-gesture-handler';
 import { IResponseMemberBook } from '../../InitBookStack.types';
-import { icons } from '../../../../commons/utils/variablesImages';
+import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useFetchMemberBook } from './hooks/useFetchMemberBook';
 import { LightText } from '../../../../commons/components/TextComponents/LightText/LightText';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';

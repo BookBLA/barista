@@ -4,7 +4,7 @@ import * as S from '../../LoginStack.styles';
 import { Image, Platform } from 'react-native';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { buttons, logos } from '../../../../commons/utils/variablesImages';
+import { buttons, logos } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useTestLogin } from './hooks/useTestLogin';

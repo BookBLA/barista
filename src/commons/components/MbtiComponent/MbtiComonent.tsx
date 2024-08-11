@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 //import * as S from './MbtiComponent.styles';
 import MbtiItem from '../MbtiItem/MbtiItem';
-import { deviceHeight } from '../../utils/dimensions';
+import { deviceHeight } from '../../utils/ui/dimensions/dimensions';
 import { Dispatch, SetStateAction } from 'react';
 
 const MbtiComponent = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<SetStateAction<string[]>> }) => {

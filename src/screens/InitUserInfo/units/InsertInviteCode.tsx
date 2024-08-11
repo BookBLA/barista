@@ -12,7 +12,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import checkCircle from '../../../../assets/images/icons/CheckCircle.png';
 import warningCircle from '../../../../assets/images/icons/WarningCircle.png';
-import { deviceWidth } from '../../../commons/utils/dimensions';
+import { deviceWidth } from '../../../commons/utils/ui/dimensions/dimensions';
 import { postInviteCodeVerifyApi } from '../../../commons/api/invitation/invitation.api';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';

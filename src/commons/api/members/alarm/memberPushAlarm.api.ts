@@ -1,4 +1,4 @@
-import { Delete, Get } from '../../../utils/http.api';
+import { Delete, Get } from '../../../configs/axios/http.api';
 
 export const getAlarms = () => Get(`members/push-alarms`);
 

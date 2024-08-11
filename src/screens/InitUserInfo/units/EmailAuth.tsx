@@ -8,7 +8,7 @@ import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import { deviceWidth } from '../../../commons/utils/dimensions';
+import { deviceWidth } from '../../../commons/utils/ui/dimensions/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/members/email/memberEmail';
 import useToastStore from '../../../commons/store/useToastStore';

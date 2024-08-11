@@ -1,6 +1,6 @@
 import { View, Image } from 'react-native';
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { icons } from '../../../../../commons/utils/variablesImages';
+import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
 
 export const NoSearch = ({ search }: { search: string }) => {
   return (

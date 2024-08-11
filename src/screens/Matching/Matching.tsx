@@ -7,7 +7,7 @@ import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
 import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
-import { icons } from '../../commons/utils/variablesImages';
+import { icons } from '../../commons/utils/ui/variablesImages/variablesImages';
 import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
 import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '../../commons/store/useUserinfo';

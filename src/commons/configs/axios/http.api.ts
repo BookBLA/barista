@@ -1,9 +1,9 @@
 import axios from 'axios';
-import { useErrorMessage } from '../store/useErrorMessage';
-import useAuthStore from '../store/useAuthStore';
-import useToastStore from '../store/useToastStore';
 import * as Device from 'expo-device';
-import { getAppVersion } from './getAppVersion';
+import { getAppVersion } from '../../utils/data/getAppVersion/getAppVersion';
+import useToastStore from '../../store/useToastStore';
+import useAuthStore from '../../store/useAuthStore';
+import { useErrorMessage } from '../../store/useErrorMessage';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 

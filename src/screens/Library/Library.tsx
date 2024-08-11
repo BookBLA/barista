@@ -35,8 +35,8 @@ import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify
 import useToastStore from '../../commons/store/useToastStore';
 import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
 import { useUserStore } from '../../commons/store/useUserinfo';
-import { icons, img } from '../../commons/utils/variablesImages';
-import { isAxiosErrorResponse } from '../../commons/utils/isAxiosErrorResponse';
+import { icons, img } from '../../commons/utils/ui/variablesImages/variablesImages';
+import { isAxiosErrorResponse } from '../../commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { EStatusCode } from '../../commons/types/statusCode';
 import { useToggle } from '../../commons/hooks/utils/toggle/useToggle';
 import ReportOption from './utils/ReportOption/ReportOption';

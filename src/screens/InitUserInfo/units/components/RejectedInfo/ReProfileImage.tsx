@@ -12,7 +12,7 @@ import { CustomText } from '../../../../../commons/components/TextComponents/Cus
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
 import { useBottomSheet } from '../../../../../commons/hooks/ui/bottomSheet/useBottomSheet';
-import { img } from '../../../../../commons/utils/variablesImages';
+import { img } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
 import { uploadImageToS3 } from '../../../../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
 import { useCounter } from '../../../../../commons/store/useCounter';

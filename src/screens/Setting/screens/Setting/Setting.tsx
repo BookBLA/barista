@@ -10,7 +10,7 @@ import Library from '../../../../../assets/images/icons/LibraryTransparent.png';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { TProps } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
-import { getAppVersion } from '../../../../commons/utils/getAppVersion';
+import { getAppVersion } from '../../../../commons/utils/data/getAppVersion/getAppVersion';
 import { useState } from 'react';
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { ActivityIndicator, Platform } from 'react-native';

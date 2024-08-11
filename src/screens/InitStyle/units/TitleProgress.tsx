@@ -1,5 +1,5 @@
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import { deviceHeight } from '../../../commons/utils/dimensions';
+import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { ProgressBarContainer, ProgressBarFill } from '../../../commons/components/ProgressBar/ProgressBar.styles';
 import { View } from 'react-native';
 

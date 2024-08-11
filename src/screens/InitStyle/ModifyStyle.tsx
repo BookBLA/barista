@@ -9,7 +9,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
 import { useStyleStore } from '../../commons/store/useStyle';
-import { deviceWidth } from '../../commons/utils/dimensions';
+import { deviceWidth } from '../../commons/utils/ui/dimensions/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/members/styles/memberStyle.api';

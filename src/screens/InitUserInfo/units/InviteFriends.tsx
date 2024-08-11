@@ -4,13 +4,13 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import { deviceHeight } from '../../../commons/utils/dimensions';
+import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { TitleProgress } from './TitleProgress';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import HeartGuage from './components/HeartGuage/HeartGuage';
 import { getSchoolMembers } from '../../../commons/api/schools/school.api';
 import * as Clipboard from 'expo-clipboard';
-import { img } from '../../../commons/utils/variablesImages';
+import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 

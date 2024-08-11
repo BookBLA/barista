@@ -1,10 +1,10 @@
-import { Post } from '../../../utils/http.api';
-
 // export interface ResponseData<T> {
 //   status: number;
 //   message: string;
 //   body: T;
 // }
+
+import { Post } from '../../../configs/axios/http.api';
 
 // export interface policyRequest {
 //   adAgreementPolicy: boolean;

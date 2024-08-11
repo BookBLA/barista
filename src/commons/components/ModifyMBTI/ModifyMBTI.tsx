@@ -1,7 +1,7 @@
 import { Text, View } from 'react-native';
 
 import ModifyMbtiItem from './ModifyMbtiItem';
-import { deviceHeight, deviceWidth } from '../../utils/dimensions';
+import { deviceHeight, deviceWidth } from '../../utils/ui/dimensions/dimensions';
 import { Dispatch, SetStateAction, useState } from 'react';
 
 const ModifyMBTI = ({ setMbti, mbti }: { setMbti: Dispatch<SetStateAction<string[]>>; mbti: string[] }) => {

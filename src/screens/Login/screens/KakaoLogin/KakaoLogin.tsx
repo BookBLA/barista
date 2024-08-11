@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { icons } from '../../../../commons/utils/variablesImages';
+import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { INJECTED_JAVASCRIPT, KAKAO_URL } from '../../LoginStack.constants';
 import { useKakaoLogin } from './hooks/useKakakoLogin';
 import { useAuthCode } from './hooks/useAuthCode';

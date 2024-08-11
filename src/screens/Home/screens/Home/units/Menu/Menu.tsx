@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { icons } from '../../../../../../commons/utils/variablesImages';
+import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
 import { initStates } from '../../../../HomeStack.constants';
 import { TFilterKeys, TFilterState } from '../../../../HomeStack.types';
 import * as S from './Menu.styles';

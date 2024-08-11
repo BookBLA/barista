@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
-import { calculateTimeLeft } from '../../../../commons/utils/calculateTimeLeft';
+import { calculateTimeLeft } from '../../../../commons/utils/dates/calculateTimeLeft/calculateTimeLeft';
 
 import Header from '../Home/units/Header/Header';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';

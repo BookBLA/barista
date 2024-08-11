@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { deviceWidth } from '../../utils/dimensions';
+import { deviceWidth } from '../../utils/ui/dimensions/dimensions';
 
 export const Wrapper = styled.View`
   display: flex;

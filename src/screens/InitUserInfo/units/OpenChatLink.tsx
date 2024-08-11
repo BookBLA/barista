@@ -8,7 +8,7 @@ import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
-import { deviceHeight } from '../../../commons/utils/dimensions';
+import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { TitleProgress } from './TitleProgress';
 import { postPolicyApi } from '../../../commons/api/members/policy/memberPolicy';
 import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';

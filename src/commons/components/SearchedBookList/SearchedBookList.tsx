@@ -1,4 +1,4 @@
-import { icons, img } from '../../utils/variablesImages';
+import { icons, img } from '../../utils/ui/variablesImages/variablesImages';
 import * as S from './SearchedBookList.styles';
 import { Image, View } from 'react-native';
 import { IProps } from './SearchedBookList.types';

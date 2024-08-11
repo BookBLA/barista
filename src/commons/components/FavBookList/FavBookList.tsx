@@ -2,10 +2,10 @@ import * as S from './FavBookList.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
 import { FavBookListProps } from './FavBookList.types';
 import { deleteMemberBookApi } from '../../api/members/book/memberBook.api';
-import { icons, img } from '../../utils/variablesImages';
-import truncateText from '../../utils/truncateText';
+import { icons, img } from '../../utils/ui/variablesImages/variablesImages';
+import truncateText from '../../utils/ui/truncateText/truncateText';
 import { EStatusCode } from '../../types/statusCode';
-import { isAxiosErrorResponse } from '../../utils/isAxiosErrorResponse';
+import { isAxiosErrorResponse } from '../../utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import useToastStore from '../../store/useToastStore';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {

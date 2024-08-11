@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { buttons, icons } from '../../../../commons/utils/variablesImages';
+import { buttons, icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { IBookData } from '../../InitBookStack.types';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SearchedBookList } from '../../../../commons/components/SearchedBookList/SearchedBookList';

@@ -7,7 +7,7 @@ import {
 } from './SendPostcardModal.types';
 import * as S from './SendPostcardModal.styles';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { icons, img } from '../../../commons/utils/variablesImages';
+import { icons, img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';

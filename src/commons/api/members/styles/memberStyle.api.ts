@@ -1,4 +1,4 @@
-import { Post, Get, Put } from '../../../utils/http.api';
+import { Get, Post, Put } from '../../../configs/axios/http.api';
 
 export const postMemberStyleApi = (contents) => Post(`members/styles`, contents);
 

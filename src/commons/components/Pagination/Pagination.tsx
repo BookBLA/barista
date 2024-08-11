@@ -1,5 +1,5 @@
 import { TouchableOpacity } from 'react-native';
-import { icons } from '../../../commons/utils/variablesImages';
+import { icons } from '../../utils/ui/variablesImages/variablesImages';
 import * as S from './Pagination.style';
 import { IProps } from './Pagination.types';
 

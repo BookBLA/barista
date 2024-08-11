@@ -7,7 +7,7 @@ import { Image, Linking, Platform, TouchableWithoutFeedback, View } from 'react-
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import useToastStore from '../../../../commons/store/useToastStore';
-import { img } from '../../../../commons/utils/variablesImages';
+import { img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { useLimitTextLine } from '../../../../commons/hooks/utils/limitTextLine/useLimitTextLine';

@@ -1,4 +1,4 @@
-import { Post } from '../../utils/http.api';
+import { Post } from '../../configs/axios/http.api';
 
 export interface IExampleApi {
   contents: string;

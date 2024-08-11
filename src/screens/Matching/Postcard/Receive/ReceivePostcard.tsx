@@ -26,8 +26,8 @@ import {
 import manIcon from '../../../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
-import { icons, img } from '../../../../commons/utils/variablesImages';
-import { deviceWidth } from '../../../../commons/utils/dimensions';
+import { icons, img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
+import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
 import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 

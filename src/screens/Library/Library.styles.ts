@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { Platform, StyleSheet } from 'react-native';
 import { colors } from '../../commons/styles/variablesStyles';
-import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
+import { deviceHeight, deviceWidth } from '../../commons/utils/ui/dimensions/dimensions';
 
 export const UserInfoContainerView = styled.View`
   margin: 8px 16px;

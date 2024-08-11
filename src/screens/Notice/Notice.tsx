@@ -6,7 +6,7 @@ import Close from '../../../assets/images/icons/close.png';
 import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
-import { formatDate } from '../../commons/utils/dateUtils';
+import { formatDate } from '../../commons/utils/dates/dateUtils/dateUtils';
 import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { IAlarmData, useGetAlarms } from '../../commons/hooks/notifications/getAlarms/useGetAlarms';
 import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';

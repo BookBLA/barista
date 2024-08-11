@@ -1,4 +1,3 @@
-import { Delete, Get, Patch, Post } from '../../utils/http.api';
 import {
   TBookInfo,
   TBookQuizInfo,
@@ -10,6 +9,7 @@ import {
   ISendPostcardRequest,
   TPostcardInfo,
 } from '../../../screens/Library/SendPostcardModal/SendPostcardModal.types';
+import { Delete, Get, Patch, Post } from '../../configs/axios/http.api';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
