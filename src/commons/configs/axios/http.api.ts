@@ -94,7 +94,11 @@ export const Get = async <T>(url: string, params = {}, showToast: boolean = fals
   }
 };
 
-export const Post = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
+export const Post = async <T, D = unknown>(
+  url: string,
+  data?: D,
+  showToast: boolean = false,
+): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.post(url, data, config);
     return response.data;
@@ -104,7 +108,11 @@ export const Post = async <T, D>(url: string, data?: D, showToast: boolean = fal
   }
 };
 
-export const Put = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
+export const Put = async <T, D = unknown>(
+  url: string,
+  data?: D,
+  showToast: boolean = false,
+): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.put(url, data, config);
     return response.data;
@@ -124,7 +132,11 @@ export const Delete = async <T>(url: string, showToast: boolean = false): Promis
   }
 };
 
-export const Patch = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
+export const Patch = async <T, D = unknown>(
+  url: string,
+  data?: D,
+  showToast: boolean = false,
+): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.patch(url, data, config);
     return response.data;
