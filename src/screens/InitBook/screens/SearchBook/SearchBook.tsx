@@ -2,15 +2,14 @@ import { useEffect, useState } from 'react';
 import { buttons, icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { IBookData } from '../../InitBookStack.types';
 import { ScrollView } from 'react-native-gesture-handler';
-import { SearchedBookList } from '../../../../commons/components/SearchedBookList/SearchedBookList';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { SearchedBookList } from '../../../../commons/components/Lists/SearchedBookList/SearchedBookList';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { NoSearch } from './units/NoSearch';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
-import Pagination from '../../../../commons/components/Pagination/Pagination';
 import usePagination from '../../../../commons/hooks/ui/pagination/usePagination';
 import { IProps } from './SearchBook.types';
 import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
@@ -19,6 +18,7 @@ import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreen
 import { useHandleMoveTop } from '../../../../commons/hooks/ui/handleMoveTop/useHandleMoveTop';
 import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
+import Pagination from '../../../../commons/components/Layouts/Pagination/Pagination';
 
 const SearchBook = ({ route }: IProps) => {
   useScreenLogger();

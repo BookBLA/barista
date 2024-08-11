@@ -4,8 +4,8 @@ import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import optionA from '../../../../assets/images/icons/OptionA.png';
 import optionB from '../../../../assets/images/icons/OptionB.png';
-import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
-import Spinner from '../../../commons/components/Spinner/Spinner';
+import { LightText } from '../../../commons/components/Utils/TextComponents/LightText/LightText';
+import Spinner from '../../../commons/components/Layouts/Spinner/Spinner';
 import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import {
   getMemberProfileStatusesApi,

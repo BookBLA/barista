@@ -6,7 +6,7 @@ import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
 import { TitleProgress } from './TitleProgress';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
 import HeartGuage from './components/HeartGuage/HeartGuage';
 import { getSchoolMembers } from '../../../commons/api/schools/school.api';
 import * as Clipboard from 'expo-clipboard';

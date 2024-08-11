@@ -11,7 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import truncateText from '../../../../commons/utils/ui/truncateText/truncateText';
 import useInvalid from './hooks/useInvalid';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';

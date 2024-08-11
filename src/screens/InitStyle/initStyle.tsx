@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
 import Mbti from './units/Mbti';
 import SmokeDrink from './units/SmokeDrink';
 import OppositeSex from './units/OppositeSex';

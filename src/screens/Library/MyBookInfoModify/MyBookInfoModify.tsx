@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../commons/styles/variablesStyles';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { ScrollView, View } from 'react-native';

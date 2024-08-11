@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import { calculateTimeLeft } from '../../../../commons/utils/dates/calculateTimeLeft/calculateTimeLeft';

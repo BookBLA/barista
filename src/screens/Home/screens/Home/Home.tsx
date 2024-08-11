@@ -5,7 +5,7 @@ import { useBottomSheet } from '../../../../commons/hooks/ui/bottomSheet/useBott
 import { useFetchAllMembers } from './hooks/useFetchAllMembers';
 import * as S from '../../HomeStack.styles';
 import Bottom from './units/Bottom/Bottom';
-import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import CustomBottomSheetModal from '../../../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
 import Menu from './units/Menu/Menu';
 import Item from './units/Item/Item';
 import Lock from './units/Lock/Lock';

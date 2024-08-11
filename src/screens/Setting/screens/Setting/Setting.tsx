@@ -1,8 +1,7 @@
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { LightText } from '../../../../commons/components/TextComponents/LightText/LightText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
+import { LightText } from '../../../../commons/components/Utils/TextComponents/LightText/LightText';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import * as S from '../../SettingStack.styles';
 import Matching from '../../../../../assets/images/icons/MatchingTransparent.png';
 import Support from '../../../../../assets/images/icons/SupportTransparent.png';
@@ -12,15 +11,16 @@ import { TProps } from './Setting.types';
 import { agreementMainUrl, noticeUrl } from '../../../../commons/contents/agreement/agreementUrls';
 import { getAppVersion } from '../../../../commons/utils/data/getAppVersion/getAppVersion';
 import { useState } from 'react';
-import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { ActivityIndicator, Platform } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useGetLatestVersion } from './hooks/useGetLatestVersion';
 import { getLinkModalConfig } from './configs/linkModalConfig';
-import { CustomSwitch } from '../../../../commons/components/CustomSwitch/CustomSwitch';
 import { useLinkingOpen } from '../../../../commons/hooks/navigations/linkingOpen/useLinkingOpen';
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
+import { CustomButton } from '../../../../commons/components/Inputs/CustomButton/CustomButton';
+import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
 
 const Setting = () => {
   useScreenLogger();

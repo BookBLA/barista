@@ -1,11 +1,11 @@
-import { CustomButton } from '../../../../../../commons/components/CustomButton/CustomButton';
-import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '../../../../../../commons/styles/variablesStyles';
 import { IProps } from './MatchingContent.types';
 import * as S from '../../../../SettingStack.styles';
 import { TextBox } from './MatchingContent.styles';
 import { matchingContents } from './MachingContent.contents';
 import { useEffect } from 'react';
+import { CustomButton } from '../../../../../../commons/components/Inputs/CustomButton/CustomButton';
 
 const MatchingContent = ({ reason, selected, setSelected, setReason }: IProps) => {
   useEffect(() => {

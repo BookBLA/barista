@@ -7,7 +7,7 @@ import { TitleProgress } from '../../TitleProgress';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
 import { uploadStudentIdImageToS3 } from '../../../../../commons/api/image/imageUploadToS3.api';
-import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
 import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';

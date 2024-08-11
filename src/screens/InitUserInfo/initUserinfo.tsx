@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
 import GenderBirth from './units/GenderBirth';
 import NamePhone from './units/NamePhone';
 import SchoolStudentID from './units/SchoolStudentID';

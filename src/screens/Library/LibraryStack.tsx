@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
 import Library from '../Library/Library';
 import ModifyUserinfo from '../InitUserInfo/ModifyUserinfo';
 import ModifyStyle from '../InitStyle/ModifyStyle';

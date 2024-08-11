@@ -5,10 +5,10 @@ import settingIcon from '../../../assets/images/icons/Setting.png';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
 import reportIcon from '../../../assets/images/icons/ReportIcon.png';
-import CustomBottomSheetModal from '../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
+import CustomBottomSheetModal from '../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
-import { CustomText } from '../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { colors } from '../../commons/styles/variablesStyles';
@@ -16,7 +16,6 @@ import ViewStyle from './ViewStyle/ViewStyle';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import { useBottomSheet } from '../../commons/hooks/ui/bottomSheet/useBottomSheet';
-import { CustomModal } from '../../commons/components/CustomModal/CustomModal';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { uploadImageToS3 } from '../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
@@ -47,6 +46,7 @@ import * as Clipboard from 'expo-clipboard';
 import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
+import { CustomModal } from '../../commons/components/Layouts/CustomModal/CustomModal';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };

@@ -1,4 +1,4 @@
-import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
 import * as S from './Lock.styles';
 

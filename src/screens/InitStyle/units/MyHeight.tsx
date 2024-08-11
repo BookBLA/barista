@@ -1,4 +1,3 @@
-import ProgressBar from '../../../commons/components/ProgressBar/ProgressBar';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../InitStyle.styles';
 import { TouchableOpacity, View, Image } from 'react-native';

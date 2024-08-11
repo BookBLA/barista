@@ -13,11 +13,11 @@ import { uploadStudentIdImageToS3 } from '../../../commons/api/image/imageUpload
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useToggle } from '../../../commons/hooks/utils/toggle/useToggle';
-import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import ModalTitle from './components/searchSchool/ModalTitle';
 import ModalContent from './components/searchSchool/ModalContent';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { CustomModal } from '../../../commons/components/Layouts/CustomModal/CustomModal';
 
 const SchoolStudentID = () => {
   useHeaderControl({

@@ -1,5 +1,5 @@
 import { colors } from '../../../commons/styles/variablesStyles';
-import MbtiComponent from '../../../commons/components/MbtiComponent/MbtiComonent';
+import MbtiComponent from '../../../commons/components/Specific/MbtiComponent/MbtiComonent';
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import { Image, Text, View } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';

@@ -2,9 +2,8 @@ import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 import * as S from './ReceivePostcard.styles';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
 import { readPostcard } from '../../../../commons/api/matching/matching.api';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
@@ -30,6 +29,7 @@ import { icons, img } from '../../../../commons/utils/ui/variablesImages/variabl
 import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
 import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {

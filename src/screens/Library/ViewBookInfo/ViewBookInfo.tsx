@@ -1,7 +1,7 @@
 import React from 'react';
 import { IViewBookInfoProps } from './ViewBookInfo.types';
 import * as S from './ViewBookInfo.styles';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
+import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
 
 export const ViewBookInfo: React.FC<IViewBookInfoProps> = ({ bookImageUrl, bookAuthors, bookName, bookReview }) => {

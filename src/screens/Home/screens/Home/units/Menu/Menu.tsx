@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { CustomText } from '../../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
+import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
 import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
 import { initStates } from '../../../../HomeStack.constants';
 import { TFilterKeys, TFilterState } from '../../../../HomeStack.types';
