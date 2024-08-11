@@ -78,11 +78,10 @@ const handleError = (error: unknown, showToast: boolean) => {
     if (showToast) {
       useToastStore.getState().showToast({ content: error.message });
     }
-    return Promise.reject(error);
   }
 };
 
-export const Get = async (url: string, params = {}, showToast: boolean = false) => {
+export const Get = async <T>(url: string, params = {}, showToast: boolean = false): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.get(url, {
       ...config,
@@ -90,42 +89,47 @@ export const Get = async (url: string, params = {}, showToast: boolean = false) 
     });
     return response.data;
   } catch (error) {
-    return handleError(error, showToast);
+    handleError(error, showToast);
+    return Promise.reject(error);
   }
 };
 
-export const Post = async <D>(url: string, data?: D, showToast: boolean = false) => {
+export const Post = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.post(url, data, config);
     return response.data;
   } catch (error) {
-    return handleError(error, showToast);
+    handleError(error, showToast);
+    return Promise.reject(error);
   }
 };
 
-export const Put = async <D>(url: string, data?: D, showToast: boolean = false) => {
+export const Put = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.put(url, data, config);
     return response.data;
   } catch (error) {
-    return handleError(error, showToast);
+    handleError(error, showToast);
+    return Promise.reject(error);
   }
 };
 
-export const Delete = async (url: string, showToast: boolean = false) => {
+export const Delete = async <T>(url: string, showToast: boolean = false): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.delete(url, config);
     return response.data;
   } catch (error) {
-    return handleError(error, showToast);
+    handleError(error, showToast);
+    return Promise.reject(error);
   }
 };
 
-export const Patch = async <D>(url: string, data?: D, showToast: boolean = false) => {
+export const Patch = async <T, D>(url: string, data?: D, showToast: boolean = false): Promise<ResponseData<T>> => {
   try {
     const response = await httpApi.patch(url, data, config);
     return response.data;
   } catch (error) {
-    return handleError(error, showToast);
+    handleError(error, showToast);
+    return Promise.reject(error);
   }
 };
