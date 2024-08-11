@@ -4,17 +4,17 @@ import * as S from '../InitUserInfo/InitUserInfo.styles';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ModifyTitleBar } from '../../commons/components/ModifyTitleBar/ModifyTitleBar';
 import { OpenChatTextFiledStyled } from '../InitStyle/InitStyle.styles';
-import useMovePage from '../../commons/hooks/useMovePage';
+import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import Dash from 'react-native-dash';
 import { useUserStore } from '../../commons/store/useUserinfo';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MoveTop from '../../../assets/images/buttons/MoveTop.png';
 import { DashDividerLine } from '../../commons/components/DashDividerLine/DashDividerLine';
-import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberProfileApi, patchMemberProfileApi } from '../../commons/api/members/profile/memberProfile.api';
 import useToastStore from '../../commons/store/useToastStore';
-import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const ModifyUserinfo = () => {
   useScreenLogger();

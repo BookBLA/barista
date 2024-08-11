@@ -10,7 +10,7 @@ import { uploadStudentIdImageToS3 } from '../../../../../commons/api/image/image
 import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
-import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
+import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const StudentID = () => {
   useHeaderControl({

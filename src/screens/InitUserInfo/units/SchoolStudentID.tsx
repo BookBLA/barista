@@ -5,19 +5,19 @@ import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { useState } from 'react';
 import * as ImagePicker from 'expo-image-picker';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import uuid from 'react-native-uuid';
 import { uploadStudentIdImageToS3 } from '../../../commons/api/image/imageUploadToS3.api';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
-import { useToggle } from '../../../commons/hooks/useToggle';
+import { useToggle } from '../../../commons/hooks/utils/toggle/useToggle';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
 import ModalTitle from './components/searchSchool/ModalTitle';
 import ModalContent from './components/searchSchool/ModalContent';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const SchoolStudentID = () => {
   useHeaderControl({

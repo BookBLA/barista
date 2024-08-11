@@ -9,7 +9,7 @@ import { ScrollView, View } from 'react-native';
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '../../../commons/api/postcard/library.api';
 import useToastStore from '../../../commons/store/useToastStore';
 import { img } from '../../../commons/utils/variablesImages';
-import { useLimitTextLine } from '../../../commons/hooks/useLimitTextLine';
+import { useLimitTextLine } from '../../../commons/hooks/utils/limitTextLine/useLimitTextLine';
 
 export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
   const { handleLimitTextLine } = useLimitTextLine();

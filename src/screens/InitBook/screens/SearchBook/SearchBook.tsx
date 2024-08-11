@@ -7,18 +7,18 @@ import { CustomText } from '../../../../commons/components/TextComponents/Custom
 import { NoSearch } from './units/NoSearch';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { colors } from '../../../../commons/styles/variablesStyles';
-import { useHandleMoveTop } from '../../../../commons/hooks/useHandleMoveTop';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import Pagination from '../../../../commons/components/Pagination/Pagination';
-import usePagination from '../../../../commons/hooks/usePagination';
+import usePagination from '../../../../commons/hooks/ui/pagination/usePagination';
 import { IProps } from './SearchBook.types';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import useToastStore from '../../../../commons/store/useToastStore';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { useHandleMoveTop } from '../../../../commons/hooks/ui/handleMoveTop/useHandleMoveTop';
+import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const SearchBook = ({ route }: IProps) => {
   useScreenLogger();

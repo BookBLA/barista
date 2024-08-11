@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { initStates } from '../../HomeStack.constants';
 import { IDdata, TFilterKeys } from '../../HomeStack.types';
-import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
+import { useBottomSheet } from '../../../../commons/hooks/ui/bottomSheet/useBottomSheet';
 import { useFetchAllMembers } from './hooks/useFetchAllMembers';
 import * as S from '../../HomeStack.styles';
 import Bottom from './units/Bottom/Bottom';
@@ -11,12 +11,13 @@ import Item from './units/Item/Item';
 import Lock from './units/Lock/Lock';
 import useMemberStore from '../../../../commons/store/useMemberStore';
 import { EMemberStatus } from '../../../../commons/types/memberStatus';
-import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
+
 import Header from './units/Header/Header';
 import { RefreshControl } from 'react-native';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
-import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
+import usePushNotifications from '../../../../commons/hooks/notifications/pushNotifications/usePushNotifications';
+import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 
 const Home = () => {
   useScreenLogger();

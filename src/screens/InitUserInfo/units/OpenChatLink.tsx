@@ -2,17 +2,17 @@ import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled } from '../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../commons/store/useMemberStore';
 import { useAgreementStore } from '../../../commons/store/useAgreement';
 import { postMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { deviceHeight } from '../../../commons/utils/dimensions';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import { TitleProgress } from './TitleProgress';
 import { postPolicyApi } from '../../../commons/api/members/policy/memberPolicy';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const OpenChatLink = () => {
   const { movePage, handleReset } = useMovePage();

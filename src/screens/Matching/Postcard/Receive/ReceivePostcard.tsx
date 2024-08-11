@@ -6,10 +6,9 @@ import { CustomModal } from '../../../../commons/components/CustomModal/CustomMo
 import { colors } from '../../../../commons/styles/variablesStyles';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import useToastStore from '../../../../commons/store/useToastStore';
-import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
 import { readPostcard } from '../../../../commons/api/matching/matching.api';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import {
   CircularImage,
   GenderIconStyled,
@@ -29,7 +28,8 @@ import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
 import useModalStore from '../../../../commons/store/useModalStore';
 import { icons, img } from '../../../../commons/utils/variablesImages';
 import { deviceWidth } from '../../../../commons/utils/dimensions';
-import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
+import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {

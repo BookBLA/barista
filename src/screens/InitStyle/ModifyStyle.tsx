@@ -12,12 +12,12 @@ import { useStyleStore } from '../../commons/store/useStyle';
 import { deviceWidth } from '../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ModifyMBTI from '../../commons/components/ModifyMBTI/ModifyMBTI';
-import useManageMargin from '../../commons/hooks/useManageMargin';
 import { getMemberStyleApi, putMemberStyleApi } from '../../commons/api/members/styles/memberStyle.api';
 import useMemberStore from '../../commons/store/useMemberStore';
 import useToastStore from '../../commons/store/useToastStore';
-import { useLimitTextLine } from '../../commons/hooks/useLimitTextLine';
-import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import { useLimitTextLine } from '../../commons/hooks/utils/limitTextLine/useLimitTextLine';
+import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const buttonList = [
   'MBTI',

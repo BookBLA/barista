@@ -10,11 +10,11 @@ import { useFetchMemberBook } from './hooks/useFetchMemberBook';
 import { LightText } from '../../../../commons/components/TextComponents/LightText/LightText';
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as T from '../../InitBookStack.styles';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { EBook, TProps } from './AddBook.types';
 import { useRoute } from '@react-navigation/native';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const AddBook = () => {
   useScreenLogger();

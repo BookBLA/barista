@@ -1,10 +1,7 @@
 import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
-import useMovePage from './useMovePage';
 
 const usePushNotifications = () => {
-  // const { handleReset } = useMovePage();
-
   useEffect(() => {
     Notifications.setNotificationHandler({
       handleNotification: async () => ({

@@ -1,5 +1,5 @@
 import backArrow from '../../../../assets/images/icons/Back.png';
-import useMovePage from '../../hooks/useMovePage';
+import useMovePage from '../../hooks/navigations/movePage/useMovePage';
 import { Image } from 'react-native';
 import { CustomText } from '../TextComponents/CustomText/CustomText';
 import { ICustomHeader } from './CustomHeader.types';

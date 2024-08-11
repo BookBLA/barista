@@ -7,9 +7,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 // import useManageMargin from '../../../commons/hooks/useManageMargin';
 // import Page from '../units/components/openChatPage/Page';
 import Carousel from '../units/Carousel';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { img } from '../../../commons/utils/variablesImages';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const PAGES = [

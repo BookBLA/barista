@@ -1,9 +1,9 @@
 import { postTestSignUp } from '../../../../../commons/api/example/example.api';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
-import useGetPushToken from '../../../../../commons/hooks/useGetPushToken';
+import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
+import useGetPushToken from '../../../../../commons/hooks/notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '../../../../../commons/hooks/notifications/postPushToken/usePostPushToken';
 import useAuthStore from '../../../../../commons/store/useAuthStore';
 import useToastStore from '../../../../../commons/store/useToastStore';
-import { usePostPushToken } from '../../../../../commons/hooks/usePostPushToken';
 
 export const useTestLogin = () => {
   const setToken = useAuthStore((state) => state.setToken);

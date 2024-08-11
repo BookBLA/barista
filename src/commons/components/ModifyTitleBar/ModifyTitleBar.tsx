@@ -1,4 +1,4 @@
-import useMovePage from '../../hooks/useMovePage';
+import useMovePage from '../../hooks/navigations/movePage/useMovePage';
 import * as T from '../../../screens/InitBook/InitBookStack.styles';
 import * as S from '../../../screens/InitUserInfo/InitUserInfo.styles';
 import { Image, TouchableOpacity, View } from 'react-native';

@@ -1,5 +1,5 @@
 import { deleteMemberApi } from '../../../../../commons/api/members/default/member.api';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
 import useAuthStore from '../../../../../commons/store/useAuthStore';
 import useToastStore from '../../../../../commons/store/useToastStore';
 

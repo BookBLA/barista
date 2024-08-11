@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import useAuthStore from '../store/useAuthStore';
-import { TRootStackParamList } from '../components/CustomNavigator/CustomNavigator.types';
 import { NavigationContainerRef } from '@react-navigation/native';
+import { TRootStackParamList } from '../../../components/CustomNavigator/CustomNavigator.types';
+import useAuthStore from '../../../store/useAuthStore';
 
 export const useAuthNavigation = () => {
   const navigationRef = useRef<NavigationContainerRef<TRootStackParamList>>(null);

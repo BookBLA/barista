@@ -5,8 +5,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { Platform, SafeAreaView } from 'react-native';
 import { CustomScreen } from '../CustomScreen/CustomScreen';
 import { NavigationContainer } from '@react-navigation/native';
-import { useAuthNavigation } from '../../hooks/useAuthNavigation';
-import { useInitialRouteName } from '../../hooks/useInitialRouteName';
+
 import TapScreens from '../TapComponent/TapScreens';
 import InitStyleStack from '../../../screens/InitStyle/initStyle';
 import InitUserInfoStack from '../../../screens/InitUserInfo/initUserinfo';
@@ -22,6 +21,8 @@ import OpenChatLink from '../../../screens/InitUserInfo/units/OpenChatLink';
 import LoginStack from '../../../screens/Login/LoginStack';
 import SettingStack from '../../../screens/Setting/SettingStack';
 import InsertInviteCode from '../../../screens/InitUserInfo/units/InsertInviteCode';
+import { useInitialRouteName } from '../../hooks/navigations/initialRouteName/useInitialRouteName';
+import { useAuthNavigation } from '../../hooks/navigations/authNavigation/useAuthNavigation';
 
 const Stack = createNativeStackNavigator();
 const screens = [

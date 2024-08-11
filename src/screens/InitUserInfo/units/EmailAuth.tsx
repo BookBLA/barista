@@ -4,7 +4,7 @@ import * as S from '../InitUserInfo.styles';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
@@ -12,10 +12,10 @@ import { deviceWidth } from '../../../commons/utils/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/members/email/memberEmail';
 import useToastStore from '../../../commons/store/useToastStore';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useEmailStatusStore, IsSuccess } from '../../../commons/store/useEmailStatusStore';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const EmailAuth = () => {
   useHeaderControl({

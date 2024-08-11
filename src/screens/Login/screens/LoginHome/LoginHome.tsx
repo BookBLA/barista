@@ -2,14 +2,14 @@ import React from 'react';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import * as S from '../../LoginStack.styles';
 import { Image, Platform } from 'react-native';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
 import { buttons, logos } from '../../../../commons/utils/variablesImages';
 import { useAppleLogin } from './hooks/useAppleLogin';
-import usePushNotifications from '../../../../commons/hooks/usePushNotifications';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useTestLogin } from './hooks/useTestLogin';
+import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
+import usePushNotifications from '../../../../commons/hooks/notifications/pushNotifications/usePushNotifications';
 
 const LoginHome = () => {
   useScreenLogger();

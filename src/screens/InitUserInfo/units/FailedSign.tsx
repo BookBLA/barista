@@ -1,7 +1,6 @@
 import { Props, TProps } from '../InitUserinfo.types';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import RejectedInfo from './components/RejectedInfo/RejectedInfo';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
 import StudentID from './components/RejectedInfo/StudentID';
 import { useEffect } from 'react';
 import OpenChat from './components/RejectedInfo/OpenChat';
@@ -10,6 +9,7 @@ import { useCounter } from '../../../commons/store/useCounter';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { getMemberProfileApi, putMemberProfileApi } from '../../../commons/api/members/profile/memberProfile.api';
 import { useRoute } from '@react-navigation/native';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const FailedSign = () => {
   const route = useRoute<TProps>();

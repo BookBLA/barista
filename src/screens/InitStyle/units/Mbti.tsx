@@ -3,12 +3,12 @@ import MbtiComponent from '../../../commons/components/MbtiComponent/MbtiComonen
 import * as S from '../../InitUserInfo/InitUserInfo.styles';
 import { Image, Text, View } from 'react-native';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { useState } from 'react';
 import { useStyleStore } from '../../../commons/store/useStyle';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const Mbti = () => {
   useScreenLogger();

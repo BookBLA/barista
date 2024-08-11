@@ -4,7 +4,7 @@ import emptyPostcardIcon from '../../../../assets/images/icons/EmptyPostcard.png
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
 import { EType, IPostcardProps } from './EmptyPostcard.types';
 import { CustomButton } from '../../../commons/components/CustomButton/CustomButton';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 
 export const EmptyPostcard: React.FC<IPostcardProps> = ({ type }) => {
   const { movePage } = useMovePage();

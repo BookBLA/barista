@@ -1,6 +1,6 @@
 import { Platform, ScrollView, View } from 'react-native';
 import React, { useCallback, useMemo, useState } from 'react';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import * as S from './ReceivePostcardDetail.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ReceivePostcardDetail.styles';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
@@ -13,13 +13,13 @@ import { IReceivePostcardProps } from './ReceivePostcard.types';
 import { getReceivePostcardList, postPostcardStatusUpdate } from '../../../../commons/api/matching/matching.api';
 import useToastStore from '../../../../commons/store/useToastStore';
 import useModalStore from '../../../../commons/store/useModalStore';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import reportIcon from '../../../../../assets/images/icons/ReportIcon.png';
-import { useBottomSheet } from '../../../../commons/hooks/useBottomSheet';
+import { useBottomSheet } from '../../../../commons/hooks/ui/bottomSheet/useBottomSheet';
 import CustomBottomSheetModal from '../../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { getYourLibraryInfo } from '../../../../commons/api/postcard/library.api';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 type RootStackParamList = {
   ReceivePostcardDetail: IReceivePostcardProps;

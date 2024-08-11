@@ -6,9 +6,9 @@ import { useKakaoLogin } from './hooks/useKakakoLogin';
 import { useAuthCode } from './hooks/useAuthCode';
 import * as S from '../../LoginStack.styles';
 import WebView from 'react-native-webview';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const KakaoLogin = () => {
   useScreenLogger();

@@ -20,8 +20,8 @@ import {
 } from '../../../commons/api/postcard/library.api';
 import { TBookInfo } from '../MyBookInfoModify/MyBookInfoModify.types';
 import useToastStore from '../../../commons/store/useToastStore';
-import useFetchMemberPostcard from '../../../commons/hooks/useMemberPostcard';
-import useAnalyticsEventLogger from '../../../commons/hooks/useAnalyticsEventLogger';
+import useFetchMemberPostcard from '../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useAnalyticsEventLogger from '../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 
 export const SendPostcardModal: React.FC<ISendPostcardModalProps> = ({
   targetMemberId,

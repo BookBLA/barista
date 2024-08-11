@@ -5,11 +5,11 @@ import * as S from '../../../InitUserInfo.styles';
 import { useUserStore } from '../../../../../commons/store/useUserinfo';
 import { OpenChatTextFiledStyled, TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
 import useMemberStore from '../../../../../commons/store/useMemberStore';
-import useManageMargin from '../../../../../commons/hooks/useManageMargin';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
 import { useCounter } from '../../../../../commons/store/useCounter';
 import { TitleProgress } from '../../TitleProgress';
-import useHeaderControl from '../../../../../commons/hooks/useHeaderControl';
+import useManageMargin from '../../../../../commons/hooks/ui/manageMargin/useManageMargin';
+import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const OpenChat = () => {
   useManageMargin();

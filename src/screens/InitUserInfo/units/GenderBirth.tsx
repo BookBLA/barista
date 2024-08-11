@@ -5,15 +5,15 @@ import { TouchableOpacity, View, Image, Text } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
 import { CustomModal } from '../../../commons/components/CustomModal/CustomModal';
-import { useToggle } from '../../../commons/hooks/useToggle';
+import { useToggle } from '../../../commons/hooks/utils/toggle/useToggle';
 import { useUserStore } from '../../../commons/store/useUserinfo';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
 import ModalTitle from './components/BirthSelect/ModalTitle';
 import ModalContent from './components/BirthSelect/ModalContent';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const GenderBirth = () => {
   useHeaderControl({

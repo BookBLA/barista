@@ -5,8 +5,8 @@ import Setting from './screens/Setting/Setting';
 import Account from './screens/Account/Account';
 import Delete from './screens/Delete/Delete';
 import { TProps } from './SettingStack.types';
-import useManageMargin from '../../commons/hooks/useManageMargin';
 import { useRoute } from '@react-navigation/native';
+import useManageMargin from '../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const Stack = createStackNavigator();
 const screens = [

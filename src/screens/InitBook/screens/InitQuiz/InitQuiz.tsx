@@ -11,11 +11,11 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import * as S from '../../../InitUserInfo/InitUserInfo.styles';
 import * as U from '../../InitBookStack.styles';
 import Dash from 'react-native-dash';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
 import truncateText from '../../../../commons/utils/truncateText';
 import useInvalid from './hooks/useInvalid';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const InitQuiz = ({ route }: IProps) => {
   useScreenLogger();

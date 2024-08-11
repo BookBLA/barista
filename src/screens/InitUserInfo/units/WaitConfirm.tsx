@@ -6,16 +6,16 @@ import optionA from '../../../../assets/images/icons/OptionA.png';
 import optionB from '../../../../assets/images/icons/OptionB.png';
 import { LightText } from '../../../commons/components/TextComponents/LightText/LightText';
 import Spinner from '../../../commons/components/Spinner/Spinner';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import {
   getMemberProfileStatusesApi,
   postMemberProfileApi,
 } from '../../../commons/api/members/profile/memberProfile.api';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { TitleProgress } from './TitleProgress';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import useToastStore from '../../../commons/store/useToastStore';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const WaitConfirm = () => {
   useHeaderControl({

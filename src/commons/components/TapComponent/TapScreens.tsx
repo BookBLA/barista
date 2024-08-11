@@ -8,9 +8,9 @@ import libraryDark from '../../../../assets/images/icons/LibraryDark.png';
 import libraryBright from '../../../../assets/images/icons/LibraryBright.png';
 import { colors } from '../../styles/variablesStyles';
 import HomeStack from '../../../screens/Home/HomeStack';
-import useManageMargin from '../../hooks/useManageMargin';
 import MatchingStack from '../../../screens/Matching/MatchingStack';
 import LibraryStack from '../../../screens/Library/LibraryStack';
+import useManageMargin from '../../hooks/ui/manageMargin/useManageMargin';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();

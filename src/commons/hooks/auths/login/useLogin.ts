@@ -1,8 +1,8 @@
-import { postLogin } from '../api/auth/login.api';
-import useToastStore from '../store/useToastStore';
-import { EMemberStatus } from '../types/memberStatus';
-import { getReLoginInfo } from '../utils/dateUtils';
-import { useSuccessfulLogin } from './useSuccessfulLogin';
+import { postLogin } from '../../../api/auth/login.api';
+import useToastStore from '../../../store/useToastStore';
+import { EMemberStatus } from '../../../types/memberStatus';
+import { getReLoginInfo } from '../../../utils/dateUtils';
+import { useSuccessfulLogin } from '../successfulLogin/useSuccessfulLogin';
 
 export const useLogin = () => {
   const showToast = useToastStore((state) => state.showToast);

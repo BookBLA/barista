@@ -4,20 +4,20 @@ import * as ImagePicker from 'expo-image-picker';
 import { colors } from '../../../commons/styles/variablesStyles';
 import * as S from '../InitUserInfo.styles';
 import * as P from '../../Library/Library.styles';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '../../../commons/store/useUserinfo';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import CustomBottomSheetModal from '../../../commons/components/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText.styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
-import { useBottomSheet } from '../../../commons/hooks/useBottomSheet';
+import { useBottomSheet } from '../../../commons/hooks/ui/bottomSheet/useBottomSheet';
 import { img } from '../../../commons/utils/variablesImages';
 import { uploadImageToS3 } from '../../../commons/api/image/imageUploadToS3.api';
 import uuid from 'react-native-uuid';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
-import useHeaderControl from '../../../commons/hooks/useHeaderControl';
 import { TitleProgress } from './TitleProgress';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
+import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],

@@ -3,13 +3,13 @@ import * as T from '../InitStyle.styles';
 import { Image, View } from 'react-native';
 import prevButton from '../../../../assets/images/buttons/prevButton.png';
 import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/useMovePage';
+import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
 import { TitleProgress } from './TitleProgress';
 import { deviceWidth } from '../../../commons/utils/dimensions';
 import { useStyleStore } from '../../../commons/store/useStyle';
 import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import useManageMargin from '../../../commons/hooks/useManageMargin';
-import useScreenLogger from '../../../commons/hooks/useAnalyticsScreenLogger';
+import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const SmokeDrink = () => {
   useScreenLogger();

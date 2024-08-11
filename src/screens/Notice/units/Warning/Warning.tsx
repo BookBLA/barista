@@ -1,6 +1,6 @@
 import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
 import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { icons } from '../../../../commons/utils/variablesImages';
 import * as S from '../../Notice.styles';
 

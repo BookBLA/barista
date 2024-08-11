@@ -1,11 +1,11 @@
-import useAuthStore from '../store/useAuthStore';
-import useMemberStore from '../store/useMemberStore';
-import useToastStore from '../store/useToastStore';
-import { EMemberStatus } from '../types/memberStatus';
-import useGetPushToken from './useGetPushToken';
-import { useInitialRouteName } from './useInitialRouteName';
-import useMovePage from './useMovePage';
-import { usePostPushToken } from './usePostPushToken';
+import useAuthStore from '../../../store/useAuthStore';
+import useMemberStore from '../../../store/useMemberStore';
+import useToastStore from '../../../store/useToastStore';
+import { EMemberStatus } from '../../../types/memberStatus';
+import { useInitialRouteName } from '../../navigations/initialRouteName/useInitialRouteName';
+import useMovePage from '../../navigations/movePage/useMovePage';
+import useGetPushToken from '../../notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '../../notifications/postPushToken/usePostPushToken';
 
 interface IResult {
   accessToken: string;

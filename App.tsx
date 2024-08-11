@@ -6,9 +6,9 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import GlobalErrorModal from './src/commons/components/GlobalErrorModal/GlobalErrorModal';
 import Toast from 'react-native-toast-message';
-import useToast from './src/commons/hooks/useToast';
 import toastConfig from './src/commons/configs/toastConfig';
 import 'expo-dev-client';
+import useToast from './src/commons/hooks/utils/toast/useToast';
 
 export default function App() {
   useToast();
