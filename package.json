@@ -12,7 +12,9 @@
     "build:dev:android": "./build.sh android development",
     "build:prod": "./build.sh all production",
     "build:prod:ios": "./build.sh ios production",
-    "build:prod:android": "./build.sh android production"
+    "build:prod:android": "./build.sh android production",
+    "android": "expo run:android",
+    "ios": "expo run:ios"
   },
   "dependencies": {
     "@dietime/react-native-date-picker": "github:bamb14/react-native-date-picker",
