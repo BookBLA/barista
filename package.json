@@ -15,7 +15,8 @@
     "build:prod:android": "./build.sh android production",
     "build:json": "./create_json.sh",
     "openapi:dev": "./generate_openapi_types.sh development",
-    "openapi:prod": "./generate_openapi_types.sh production"
+    "openapi:prod": "./generate_openapi_types.sh production",
+    "lint": "eslint src --ext .ts,.tsx,.js,.jsx"
   },
   "dependencies": {
     "@dietime/react-native-date-picker": "github:bamb14/react-native-date-picker",
