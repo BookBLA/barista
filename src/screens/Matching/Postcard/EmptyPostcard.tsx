@@ -1,10 +1,10 @@
+import emptyPostcardIcon from '@assets/images/icons/EmptyPostcard.png';
+import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import React from 'react';
 import * as S from './EmptyPostcard.styles';
-import emptyPostcardIcon from '../../../../assets/images/icons/EmptyPostcard.png';
-import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText';
 import { EType, IPostcardProps } from './EmptyPostcard.types';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { CustomButton } from '../../../commons/components/Inputs/CustomButton/CustomButton';
 
 export const EmptyPostcard: React.FC<IPostcardProps> = ({ type }) => {
   const { movePage } = useMovePage();

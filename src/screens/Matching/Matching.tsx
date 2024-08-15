@@ -1,19 +1,19 @@
-import { FlatList, TouchableOpacity, View } from 'react-native';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { IconButton, IconImage } from '@screens/Home/screens/Home/units/Header/Header.styles';
+import { useFetchReceivePostcard } from '@screens/Home/screens/Matching/hooks/useFetchReceivePostcard';
+import { useFetchSendPostcard } from '@screens/Home/screens/Matching/hooks/useFetchSendPostcard';
 import React, { useRef, useState } from 'react';
-import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
+import { FlatList, TouchableOpacity, View } from 'react-native';
 import * as S from './Matching.styles';
-import { SendPostcard } from './Postcard/Send/SendPostcard';
-import { EType } from './Postcard/EmptyPostcard.types';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
-import { useFetchReceivePostcard } from '../Home/screens/Matching/hooks/useFetchReceivePostcard';
-import { useFetchSendPostcard } from '../Home/screens/Matching/hooks/useFetchSendPostcard';
-import { icons } from '../../commons/utils/ui/variablesImages/variablesImages';
-import { IconButton, IconImage } from '../Home/screens/Home/units/Header/Header.styles';
-import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
-import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
-import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
+import { EType } from './Postcard/EmptyPostcard.types';
+import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
+import { SendPostcard } from './Postcard/Send/SendPostcard';
 
 const Matching = () => {
   useScreenLogger();

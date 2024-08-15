@@ -1,13 +1,18 @@
-import { Image, Linking, TouchableOpacity, View } from 'react-native';
+import manIcon from '@assets/images/icons/ManSmall.png';
+import womanIcon from '@assets/images/icons/WomanSmall.png';
+import { readPostcard } from '@commons/api/matching/matching.api';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useModalStore from '@commons/store/ui/modal/useModalStore';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useState } from 'react';
-import { IReceivePostcardProps } from './ReceivePostcard.types';
-import * as S from './ReceivePostcard.styles';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
-import { readPostcard } from '../../../../commons/api/matching/matching.api';
-import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
-import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import {
   CircularImage,
   GenderIconStyled,
@@ -22,14 +27,9 @@ import {
   UserInfoWrapper,
   UserNameText,
 } from '../Send/SendPostcard.styles';
-import manIcon from '../../../../../assets/images/icons/ManSmall.png';
-import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import useModalStore from '../../../../commons/store/ui/modal/useModalStore';
-import { icons, img } from '../../../../commons/utils/ui/variablesImages/variablesImages';
-import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
-import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
-import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
+import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
+import * as S from './ReceivePostcard.styles';
+import { IReceivePostcardProps } from './ReceivePostcard.types';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
