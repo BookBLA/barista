@@ -1,4 +1,4 @@
-import { Get, Put } from '../../../configs/axios/http.api';
+import { Get, Put } from '@commons/configs/axios/http.api';
 
 export const getMemeberReplyApi = (postcardId: number) => Get(`members/member-reply/${postcardId}`);
 

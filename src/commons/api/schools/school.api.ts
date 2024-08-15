@@ -1,4 +1,4 @@
-import { Get } from '../../configs/axios/http.api';
+import { Get } from '@commons/configs/axios/http.api';
 
 export const getSchools = () => Get(`schools`);
 

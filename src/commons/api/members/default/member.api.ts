@@ -1,4 +1,4 @@
-import { Delete, Get, Post } from '../../../configs/axios/http.api';
+import { Delete, Get, Post } from '@commons/configs/axios/http.api';
 
 export interface IMemberStatusContents {
   memberStatus: string;

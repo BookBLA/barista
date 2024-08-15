@@ -1,4 +1,4 @@
-import { Get, Post } from '../../configs/axios/http.api';
+import { Get, Post } from '@commons/configs/axios/http.api';
 
 // 초대 코드 확인
 export const postInviteCodeVerifyApi = (code: string) =>

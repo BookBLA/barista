@@ -1,4 +1,4 @@
-import { Post } from '../../../configs/axios/http.api';
+import { Post } from '@commons/configs/axios/http.api';
 
 export interface IContents {
   reportedMemberId: number;

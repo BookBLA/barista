@@ -1,6 +1,6 @@
-import { IReceivePostcardProps } from '../../../screens/Matching/Postcard/Receive/ReceivePostcard.types';
-import { ISendPostcardProps, IUpdatePostcardRequest } from '../../../screens/Matching/Postcard/Send/SendPostcard.types';
-import { Get, Post } from '../../configs/axios/http.api';
+import { Get, Post } from '@commons/configs/axios/http.api';
+import { IReceivePostcardProps } from '@screens/Matching/Postcard/Receive/ReceivePostcard.types';
+import { ISendPostcardProps, IUpdatePostcardRequest } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 
 export const getReceivePostcardList = async () => {
   const { result } = await Get('postcard/to', {}, true);

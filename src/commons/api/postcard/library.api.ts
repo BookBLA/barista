@@ -1,15 +1,12 @@
+import { Delete, Get, Patch, Post } from '@commons/configs/axios/http.api';
+import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '@screens/Library/Library.types';
 import {
   TBookInfo,
   TBookQuizInfo,
   TInvitationCode,
   TMemberStyleInfo,
-} from '../../../screens/Library/MyBookInfoModify/MyBookInfoModify.types';
-import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '../../../screens/Library/Library.types';
-import {
-  ISendPostcardRequest,
-  TPostcardInfo,
-} from '../../../screens/Library/SendPostcardModal/SendPostcardModal.types';
-import { Delete, Get, Patch, Post } from '../../configs/axios/http.api';
+} from '@screens/Library/MyBookInfoModify/MyBookInfoModify.types';
+import { ISendPostcardRequest, TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 
 export const getMyLibraryInfo = () => Get('members/library', {}, true);
 
