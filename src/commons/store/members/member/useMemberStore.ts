@@ -1,6 +1,6 @@
-import { create } from 'zustand';
+import { getMemberApi } from '@commons/api/members/default/member.api';
 import analytics from '@react-native-firebase/analytics';
-import { getMemberApi } from '../../../api/members/default/member.api';
+import { create } from 'zustand';
 
 interface IMemberInfo {
   memberInfo: {

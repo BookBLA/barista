@@ -1,9 +1,9 @@
-import { create } from 'zustand';
 import {
   getMemberProfileApi,
   patchMemberProfileImageApi,
   putMemberProfileApi,
-} from '../../../api/members/profile/memberProfile.api';
+} from '@commons/api/members/profile/memberProfile.api';
+import { create } from 'zustand';
 
 interface UserInfo {
   gender: string;

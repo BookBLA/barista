@@ -1,5 +1,5 @@
+import { getToken, saveToken } from '@commons/store/auth/token/tokenStore';
 import { create } from 'zustand';
-import { getToken, saveToken } from '../token/tokenStore';
 
 interface IAuth {
   token: string;

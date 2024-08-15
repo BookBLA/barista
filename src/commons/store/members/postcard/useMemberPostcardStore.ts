@@ -1,5 +1,5 @@
+import { getMemberPostcardsApi } from '@commons/api/members/default/member.api';
 import { create } from 'zustand';
-import { getMemberPostcardsApi } from '../../../api/members/default/member.api';
 
 interface IMemberPostcardState {
   memberPostcard: number;
