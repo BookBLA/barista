@@ -1,16 +1,16 @@
+import homeBright from '@assets/images/icons/HomeBright.png';
+import homeDark from '@assets/images/icons/HomeDark.png';
+import libraryBright from '@assets/images/icons/LibraryBright.png';
+import libraryDark from '@assets/images/icons/LibraryDark.png';
+import matchingBright from '@assets/images/icons/MatchingBright.png';
+import matchingDark from '@assets/images/icons/MatchingDark.png';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { colors } from '@commons/styles/variablesStyles';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import HomeStack from '@screens/Home/HomeStack';
+import LibraryStack from '@screens/Library/LibraryStack';
+import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
-import homeBright from '../../../../../assets/images/icons/HomeBright.png';
-import homeDark from '../../../../../assets/images/icons/HomeDark.png';
-import matchingDark from '../../../../../assets/images/icons/MatchingDark.png';
-import matchingBright from '../../../../../assets/images/icons/MatchingBright.png';
-import libraryDark from '../../../../../assets/images/icons/LibraryDark.png';
-import libraryBright from '../../../../../assets/images/icons/LibraryBright.png';
-import useManageMargin from '../../../hooks/ui/manageMargin/useManageMargin';
-import { colors } from '../../../styles/variablesStyles';
-import HomeStack from '../../../../screens/Home/HomeStack';
-import MatchingStack from '../../../../screens/Matching/MatchingStack';
-import LibraryStack from '../../../../screens/Library/LibraryStack';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();

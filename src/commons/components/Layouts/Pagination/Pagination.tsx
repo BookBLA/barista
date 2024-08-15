@@ -1,7 +1,7 @@
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { TouchableOpacity } from 'react-native';
 import * as S from './Pagination.style';
 import { IProps } from './Pagination.types';
-import { icons } from '../../../utils/ui/variablesImages/variablesImages';
 
 const Pagination = ({
   size = 5,

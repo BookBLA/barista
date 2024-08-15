@@ -1,6 +1,6 @@
-import { icons, img } from '../../../utils/ui/variablesImages/variablesImages';
-import * as S from './SearchedBookList.styles';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { Image, View } from 'react-native';
+import * as S from './SearchedBookList.styles';
 import { IProps } from './SearchedBookList.types';
 
 export const SearchedBookList = ({ item, isSelected = false, onSelectBook }: IProps) => {

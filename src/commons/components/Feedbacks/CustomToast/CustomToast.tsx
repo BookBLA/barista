@@ -1,4 +1,4 @@
-import { CustomText } from '../../Utils/TextComponents/CustomText/CustomText';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import * as S from './CustomToast.styles';
 
 const CustomToast = ({ text = '' }: { text?: string }) => {

@@ -1,12 +1,12 @@
-import * as S from './FavBookList.styles';
+import { deleteMemberBookApi } from '@commons/api/members/book/memberBook.api';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EStatusCode } from '@commons/types/statusCode';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
+import truncateText from '@commons/utils/ui/truncateText/truncateText';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { Image, TouchableOpacity, View } from 'react-native';
+import * as S from './FavBookList.styles';
 import { FavBookListProps } from './FavBookList.types';
-import useToastStore from '../../../store/ui/toast/useToastStore';
-import { deleteMemberBookApi } from '../../../api/members/book/memberBook.api';
-import { isAxiosErrorResponse } from '../../../utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
-import { EStatusCode } from '../../../types/statusCode';
-import truncateText from '../../../utils/ui/truncateText/truncateText';
-import { icons, img } from '../../../utils/ui/variablesImages/variablesImages';
 
 export const FavBookList: React.FC<FavBookListProps> = ({ representative = false, fetchGetMemberBook, item }) => {
   const showToast = useToastStore((state) => state.showToast);

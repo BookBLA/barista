@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
 import { Switch } from 'react-native-switch';
 import { IProps } from './CustomSwitch.types';
-import { colors } from '../../../styles/variablesStyles';
 
 export const CustomSwitch = ({ value, onValueChange }: IProps) => {
   return (

@@ -1,5 +1,5 @@
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
-import { colors } from '../../../styles/variablesStyles';
 
 export const ButtonStyled = styled.TouchableOpacity`
   background: ${(props: any) => props.backgroundColor || colors.buttonPrimary};

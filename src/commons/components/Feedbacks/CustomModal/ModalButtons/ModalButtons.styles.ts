@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
 import { IStyledProps } from './ModalButtons.types';
-import { colors } from '../../../../styles/variablesStyles';
 
 export const BottomWrapper = styled.View`
   width: 100%;

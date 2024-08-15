@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
-import { colors } from '../../../styles/variablesStyles';
-import { deviceHeight, deviceWidth } from '../../../utils/ui/dimensions/dimensions';
 
 export const BookListStyled = styled.View`
   width: 86%;

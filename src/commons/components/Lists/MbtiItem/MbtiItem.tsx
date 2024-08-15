@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import * as S from './MbtiItem.styles';
 import { IProps } from './MbtiItem.types';
-import { set } from 'react-hook-form';
-// import { useStyleStore } from '../../store/useStyle';
 
 const MbtiItem = ({ name, setMbti, index, char }: IProps) => {
   const [isSelect, setSelect] = useState<boolean>(name[0][0] === char);

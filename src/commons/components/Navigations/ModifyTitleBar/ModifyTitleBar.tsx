@@ -1,10 +1,10 @@
-import useMovePage from '../../../hooks/navigations/movePage/useMovePage';
-import * as T from '../../../../screens/InitBook/InitBookStack.styles';
-import * as S from '../../../../screens/InitUserInfo/InitUserInfo.styles';
+import backArrow from '@assets/images/buttons/prevButtonBlack.png';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { colors } from '@commons/styles/variablesStyles';
+import * as T from '@screens/InitBook/InitBookStack.styles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Image, TouchableOpacity, View } from 'react-native';
-import backArrow from '../../../../../assets/images/buttons/prevButtonBlack.png';
-import { CustomText } from '../../Utils/TextComponents/CustomText/CustomText';
-import { colors } from '../../../styles/variablesStyles';
 
 const titleList = ['회원정보 수정', '스타일 수정', '내 서재'];
 export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?: () => Promise<void> }) => {

@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
 import { IProps } from './LightText.types';
-import { colors } from '../../../../styles/variablesStyles';
 
 export const LightText = styled.Text(
   (props: IProps) => `

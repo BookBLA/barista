@@ -1,4 +1,4 @@
-import { IResponseMemberBook } from '../../../../screens/InitBook/InitBookStack.types';
+import { IResponseMemberBook } from '@screens/InitBook/InitBookStack.types';
 
 export interface FavBookListProps {
   representative?: boolean;

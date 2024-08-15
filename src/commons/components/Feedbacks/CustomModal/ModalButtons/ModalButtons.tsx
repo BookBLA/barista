@@ -1,9 +1,9 @@
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { colors } from '@commons/styles/variablesStyles';
 import React from 'react';
 import { Image } from 'react-native';
 import * as S from './ModalButtons.styles';
 import { IProps } from './ModalButtons.types';
-import { CustomText } from '../../../Utils/TextComponents/CustomText/CustomText.styles';
-import { colors } from '../../../../styles/variablesStyles';
 
 export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
   if (!buttons || !mode) return null;

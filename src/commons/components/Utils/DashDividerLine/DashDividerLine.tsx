@@ -1,5 +1,5 @@
+import { colors } from '@commons/styles/variablesStyles';
 import Dash from 'react-native-dash';
-import { colors } from '../../../styles/variablesStyles';
 
 export const DashDividerLine = () => {
   return (

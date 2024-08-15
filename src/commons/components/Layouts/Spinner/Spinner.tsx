@@ -1,6 +1,6 @@
+import loading from '@assets/images/icons/loading.png';
 import React, { useCallback, useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
-import loading from '../../../../../assets/images/icons/loading.png';
+import { Animated } from 'react-native';
 import * as S from './Spinner.styles';
 
 const Spinner = () => {
