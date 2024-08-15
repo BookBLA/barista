@@ -1,7 +1,7 @@
+import { getVersionApi } from '@commons/api/setting/setting.api';
 import { useEffect, useState } from 'react';
-import { getVersionApi } from '../../../../../commons/api/setting/setting.api';
-import { initDataState } from '../contents/initDataState';
 import { ISettingData } from '../Setting.types';
+import { initDataState } from '../contents/initDataState';
 
 export const useGetLatestVersion = () => {
   const [loading, setLoading] = useState(true);

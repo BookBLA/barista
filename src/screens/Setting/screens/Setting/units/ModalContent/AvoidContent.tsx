@@ -1,5 +1,5 @@
-import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import * as S from '../../../../SettingStack.styles';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import * as S from '@screens/Setting/SettingStack.styles';
 
 const AvoidContent = () => {
   // TODO: 서버에서 아는 사람 피하기 구현 시 사용 예정

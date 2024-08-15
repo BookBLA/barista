@@ -1,12 +1,12 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
-import Setting from './screens/Setting/Setting';
+import React from 'react';
 import Account from './screens/Account/Account';
 import Delete from './screens/Delete/Delete';
+import Setting from './screens/Setting/Setting';
 import { TProps } from './SettingStack.types';
-import { useRoute } from '@react-navigation/native';
-import useManageMargin from '../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const Stack = createStackNavigator();
 const screens = [

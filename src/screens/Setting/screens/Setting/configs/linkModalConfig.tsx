@@ -1,4 +1,4 @@
-import { colors } from '../../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import OuterLinkModalContent from '../units/ModalContent/OuterLinkModalContent';
 
 interface IState {

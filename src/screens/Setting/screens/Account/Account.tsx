@@ -1,19 +1,19 @@
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
-import * as S from '../../SettingStack.styles';
-import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import { EMemberStatus } from '../../../../commons/types/memberStatus';
-import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import { useEnableMatching } from './hooks/useEnableMatching';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomSwitch } from '@commons/components/Inputs/CustomSwitch/CustomSwitch';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { useLogout } from '@commons/hooks/auths/logout/useLogout';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import * as S from '@screens/Setting/SettingStack.styles';
 import { getHeaderConfig } from './configs/headerConfig';
-import { getMatchingConfig } from './configs/matchingconfig';
 import { getLogoutConfig } from './configs/logoutConfig';
-import { useLogout } from '../../../../commons/hooks/auths/logout/useLogout';
-import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
-import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
-import useMemberStore from '../../../../commons/store/members/member/useMemberStore';
+import { getMatchingConfig } from './configs/matchingconfig';
+import { useEnableMatching } from './hooks/useEnableMatching';
 
 const Account = () => {
   useScreenLogger();

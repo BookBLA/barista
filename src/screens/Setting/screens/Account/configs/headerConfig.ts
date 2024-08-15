@@ -1,4 +1,4 @@
-import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 
 export const getHeaderConfig = (handleReset: (path: string) => void) => {
   return {

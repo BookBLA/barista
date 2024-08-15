@@ -1,5 +1,5 @@
+import { EMemberStatus } from '@commons/types/memberStatus';
 import { Dispatch, SetStateAction } from 'react';
-import { EMemberStatus } from '../../../../../commons/types/memberStatus';
 import MatchingContent from '../units/MatchingContent/MatchingContent';
 
 interface IModal {
