@@ -1,7 +1,7 @@
+import { CustomHeader } from '@commons/components/Navigations/CustomHeader/CustomHeader';
+import { ICustomHeader } from '@commons/components/Navigations/CustomHeader/CustomHeader.types';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
-import { ICustomHeader } from '../../../components/Navigations/CustomHeader/CustomHeader.types';
-import { CustomHeader } from '../../../components/Navigations/CustomHeader/CustomHeader';
 
 const useHeaderControl = ({ title, left, right, onPressLeft, free }: ICustomHeader, dependencies: unknown[] = []) => {
   const navigation = useNavigation();

@@ -1,5 +1,5 @@
+import { useHasMargin } from '@commons/store/ui/hasMargin/useHasMargin';
 import { useEffect } from 'react';
-import { useHasMargin } from '../../../store/ui/hasMargin/useHasMargin';
 
 const useManageMargin = () => {
   const { setHasMargin, hasMargin } = useHasMargin();

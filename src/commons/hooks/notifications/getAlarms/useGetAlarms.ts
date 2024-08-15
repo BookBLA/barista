@@ -1,5 +1,5 @@
+import { getAlarms } from '@commons/api/members/alarm/memberPushAlarm.api';
 import { useEffect, useState } from 'react';
-import { getAlarms } from '../../../api/members/alarm/memberPushAlarm.api';
 
 export interface IAlarmData {
   memberPushAlarmId: number;

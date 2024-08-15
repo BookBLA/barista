@@ -1,6 +1,6 @@
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { useEffect } from 'react';
 import Toast from 'react-native-toast-message';
-import useToastStore from '../../../store/ui/toast/useToastStore';
 
 const useToast = () => {
   // const hideToast = useToastStore((state) => state.hideToast);

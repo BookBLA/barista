@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import analytics from '@react-native-firebase/analytics';
-import useMemberStore from '../../../store/members/member/useMemberStore';
+import { useCallback } from 'react';
 
 const useAnalyticsEventLogger = () => {
   const { id, oauthEmail, memberType, memberStatus, memberGender } = useMemberStore((state) => state.memberInfo);

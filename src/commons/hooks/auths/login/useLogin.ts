@@ -1,8 +1,8 @@
-import { postLogin } from '../../../api/auth/login.api';
-import useToastStore from '../../../store/ui/toast/useToastStore';
-import { EMemberStatus } from '../../../types/memberStatus';
-import { getReLoginInfo } from '../../../utils/dates/dateUtils/dateUtils';
-import { useSuccessfulLogin } from '../successfulLogin/useSuccessfulLogin';
+import { postLogin } from '@commons/api/auth/login.api';
+import { useSuccessfulLogin } from '@commons/hooks/auths/successfulLogin/useSuccessfulLogin';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import { getReLoginInfo } from '@commons/utils/dates/dateUtils/dateUtils';
 
 export const useLogin = () => {
   const showToast = useToastStore((state) => state.showToast);

@@ -1,7 +1,7 @@
-import { Platform } from 'react-native';
-import * as Notifications from 'expo-notifications';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import Constants from 'expo-constants';
-import useToastStore from '../../../store/ui/toast/useToastStore';
+import * as Notifications from 'expo-notifications';
+import { Platform } from 'react-native';
 
 const useGetPushToken = () => {
   const showToast = useToastStore((state) => state.showToast);

@@ -1,5 +1,5 @@
-import { postPushes } from '../../../api/members/token/memberToken.api';
-import useToastStore from '../../../store/ui/toast/useToastStore';
+import { postPushes } from '@commons/api/members/token/memberToken.api';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 export const usePostPushToken = () => {
   const showToast = useToastStore((state) => state.showToast);

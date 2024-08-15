@@ -1,11 +1,11 @@
-import useAuthStore from '../../../store/auth/auth/useAuthStore';
-import useMemberStore from '../../../store/members/member/useMemberStore';
-import useToastStore from '../../../store/ui/toast/useToastStore';
-import { EMemberStatus } from '../../../types/memberStatus';
-import { useInitialRouteName } from '../../navigations/initialRouteName/useInitialRouteName';
-import useMovePage from '../../navigations/movePage/useMovePage';
-import useGetPushToken from '../../notifications/getPushToken/useGetPushToken';
-import { usePostPushToken } from '../../notifications/postPushToken/usePostPushToken';
+import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName/useInitialRouteName';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useGetPushToken from '@commons/hooks/notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '@commons/hooks/notifications/postPushToken/usePostPushToken';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EMemberStatus } from '@commons/types/memberStatus';
 
 interface IResult {
   accessToken: string;
