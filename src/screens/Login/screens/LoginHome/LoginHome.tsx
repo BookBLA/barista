@@ -1,15 +1,14 @@
-import React from 'react';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import usePushNotifications from '@commons/hooks/notifications/pushNotifications/usePushNotifications';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { buttons, logos } from '@commons/utils/ui/variablesImages/variablesImages';
+import * as S from '@screens/Login/LoginStack.styles';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import * as S from '../../LoginStack.styles';
+import React from 'react';
 import { Image, Platform } from 'react-native';
-import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import { buttons, logos } from '../../../../commons/utils/ui/variablesImages/variablesImages';
 import { useAppleLogin } from './hooks/useAppleLogin';
-import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import { useTestLogin } from './hooks/useTestLogin';
-import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
-import usePushNotifications from '../../../../commons/hooks/notifications/pushNotifications/usePushNotifications';
 
 const LoginHome = () => {
   useScreenLogger();

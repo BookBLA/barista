@@ -1,5 +1,5 @@
-import useAnalyticsEventLogger from '../../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { useLogin } from '../../../../../commons/hooks/auths/login/useLogin';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { useLogin } from '@commons/hooks/auths/login/useLogin';
 
 export const useKakaoLogin = () => {
   const { handleLogin } = useLogin();

@@ -1,6 +1,6 @@
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { useLogin } from '@commons/hooks/auths/login/useLogin';
 import * as AppleAuthentication from 'expo-apple-authentication';
-import { useLogin } from '../../../../../commons/hooks/auths/login/useLogin';
-import useAnalyticsEventLogger from '../../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 
 export const useAppleLogin = () => {
   const { handleLogin } = useLogin();
