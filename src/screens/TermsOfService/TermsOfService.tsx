@@ -1,19 +1,18 @@
-import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
-import * as T from './TermsOfService.styles';
-import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../commons/styles/variablesStyles';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
+import nextArrow from '@assets/images/icons/NextArrow.png';
+import { agreementTitles, agreementUrls } from '@commons/contents/agreement/agreementUrls';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useGetPushToken from '@commons/hooks/notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '@commons/hooks/notifications/postPushToken/usePostPushToken';
+import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
+import { colors } from '@commons/styles/variablesStyles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
-import nextArrow from '../../../assets/images/icons/NextArrow.png';
-import { useAgreementStore } from '../../commons/store/appStatus/agreement/useAgreement';
-import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
-
-import notYetNextButton from '../../../assets/images/buttons/NotYetNextButton.png';
-import nextButton from '../../../assets/images/buttons/nextButton.png';
-import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useGetPushToken from '../../commons/hooks/notifications/getPushToken/useGetPushToken';
-import { usePostPushToken } from '../../commons/hooks/notifications/postPushToken/usePostPushToken';
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import * as T from './TermsOfService.styles';
 
 const TermsOfService = () => {
   useScreenLogger();
