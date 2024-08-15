@@ -1,15 +1,15 @@
+import Close from '@assets/images/icons/close.png';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { IAlarmData, useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { colors } from '@commons/styles/variablesStyles';
+import { formatDate } from '@commons/utils/dates/dateUtils/dateUtils';
 import { Image, TouchableOpacity } from 'react-native';
-import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import * as S from './Notice.styles';
-import { colors } from '../../commons/styles/variablesStyles';
-import Close from '../../../assets/images/icons/close.png';
-import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
+import * as S from './Notice.styles';
 import { Warning } from './units/Warning/Warning';
-import { formatDate } from '../../commons/utils/dates/dateUtils/dateUtils';
-import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import { IAlarmData, useGetAlarms } from '../../commons/hooks/notifications/getAlarms/useGetAlarms';
-import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const Notice = () => {
   useScreenLogger();

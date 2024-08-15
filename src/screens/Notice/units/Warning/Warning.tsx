@@ -1,8 +1,8 @@
-import { CustomButton } from '../../../../commons/components/Inputs/CustomButton/CustomButton';
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
-import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
-import * as S from '../../Notice.styles';
+import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import * as S from '@screens/Notice/Notice.styles';
 
 export const Warning = () => {
   const { handleReset } = useMovePage();
