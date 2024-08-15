@@ -1,18 +1,17 @@
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { Keyboard, TouchableWithoutFeedback, View } from 'react-native';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import React, { useEffect, useState } from 'react';
-import { reportCases } from '../../../../commons/contents/report/reportCases';
+import { postMemberReports } from '@commons/api/members/report/memberReports';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { reportCases } from '@commons/contents/report/reportCases';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { NextButtonStyled } from '@screens/InitUserInfo/InitUserInfo.styles';
 import Checkbox from 'expo-checkbox';
-import { NextButtonStyled } from '../../../InitUserInfo/InitUserInfo.styles';
-import { useToggle } from '../../../../commons/hooks/utils/toggle/useToggle';
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import ReportModalContent from '../ReportModalContent';
 import { InputStyled } from './ReportOption.styles';
-import { postMemberReports } from '../../../../commons/api/members/report/memberReports';
-import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { deviceHeight } from '../../../../commons/utils/ui/dimensions/dimensions';
-import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 
 const reportStatusKeys = {
   bookQuizReport: 0,

@@ -1,4 +1,4 @@
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
 
 export const InputStyled = styled.TextInput.attrs({

@@ -1,24 +1,9 @@
-import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import * as S from './Library.styles';
-import settingIcon from '../../../assets/images/icons/Setting.png';
-import manIcon from '../../../assets/images/icons/ManSmall.png';
-import womanIcon from '../../../assets/images/icons/WomanSmall.png';
-import reportIcon from '../../../assets/images/icons/ReportIcon.png';
-import CustomBottomSheetModal from '../../commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import * as ImagePicker from 'expo-image-picker';
-import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
-import { RouteProp, useFocusEffect } from '@react-navigation/native';
-import { colors } from '../../commons/styles/variablesStyles';
-import ViewStyle from './ViewStyle/ViewStyle';
-import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
-import useMovePage from '../../commons/hooks/navigations/movePage/useMovePage';
-import { useBottomSheet } from '../../commons/hooks/ui/bottomSheet/useBottomSheet';
-import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
-import { uploadImageToS3 } from '../../commons/api/image/imageUploadToS3.api';
-import uuid from 'react-native-uuid';
+import manIcon from '@assets/images/icons/ManSmall.png';
+import reportIcon from '@assets/images/icons/ReportIcon.png';
+import settingIcon from '@assets/images/icons/Setting.png';
+import womanIcon from '@assets/images/icons/WomanSmall.png';
+import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
+import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
 import {
   deleteBook,
   getBookInfo,
@@ -27,26 +12,41 @@ import {
   getMyLibraryInfo,
   getYourLibraryInfo,
   validateSendPostcard,
-} from '../../commons/api/postcard/library.api';
-import { TBookResponses, TLibrary } from './Library.types';
-import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
-import useToastStore from '../../commons/store/ui/toast/useToastStore';
-import { EGender } from '../Matching/Postcard/Send/SendPostcard.types';
-import { icons, img } from '../../commons/utils/ui/variablesImages/variablesImages';
-import { isAxiosErrorResponse } from '../../commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
-import { EStatusCode } from '../../commons/types/statusCode';
-import { useToggle } from '../../commons/hooks/utils/toggle/useToggle';
-import ReportOption from './utils/ReportOption/ReportOption';
-import BlockModalContent from './utils/BLockModalContent';
-import { postMemberBlock } from '../../commons/api/members/block/memberBlock.api';
-import useScreenLogger from '../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+} from '@commons/api/postcard/library.api';
+import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { EStatusCode } from '@commons/types/statusCode';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
-import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
-import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomModal } from '../../commons/components/Feedbacks/CustomModal/CustomModal';
-import useMemberStore from '../../commons/store/members/member/useMemberStore';
-import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
+import * as ImagePicker from 'expo-image-picker';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import uuid from 'react-native-uuid';
+import * as S from './Library.styles';
+import { TBookResponses, TLibrary } from './Library.types';
+import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
+import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
+import BlockModalContent from './utils/BLockModalContent';
+import ReportOption from './utils/ReportOption/ReportOption';
+import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
+import ViewStyle from './ViewStyle/ViewStyle';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -387,9 +387,7 @@ const Library: React.FC<Props> = ({ route }) => {
           {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
           {!isYourLibrary && (
             <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
-              <S.ProfileImageModificationImage
-                source={require('../../../assets/images/icons/ProfileImageSetting.png')}
-              />
+              <S.ProfileImageModificationImage source={require('@assets/images/icons/ProfileImageSetting.png')} />
             </TouchableWithoutFeedback>
           )}
 
@@ -456,16 +454,14 @@ const Library: React.FC<Props> = ({ route }) => {
                 }}
               >
                 <S.BookImage source={book.bookImageUrl ? { uri: book.bookImageUrl } : img.prepareBookImage} />
-                {book.representative && (
-                  <S.BookMarkIconImage source={require('../../../assets/images/icons/Bookmark.png')} />
-                )}
+                {book.representative && <S.BookMarkIconImage source={require('@assets/images/icons/Bookmark.png')} />}
               </S.BookTouchableOpacity>
             ))}
             {topFloorBookList.length === 0 && (
               <>
                 <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
                   <S.EmptyBookImage>
-                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                    <S.EmptyBookPlusImage source={require('@assets/images/icons/PlusBook.png')} />
                   </S.EmptyBookImage>
                 </S.BookTouchableOpacity>
                 <S.BookTouchableOpacity>
@@ -481,7 +477,7 @@ const Library: React.FC<Props> = ({ route }) => {
               ) : (
                 <S.BookTouchableOpacity onPress={() => handleReset('initBookStack')}>
                   <S.EmptyBookImage>
-                    <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                    <S.EmptyBookPlusImage source={require('@assets/images/icons/PlusBook.png')} />
                   </S.EmptyBookImage>
                 </S.BookTouchableOpacity>
               ))}
@@ -519,7 +515,7 @@ const Library: React.FC<Props> = ({ route }) => {
                     }
                   >
                     <S.EmptyBookImage>
-                      <S.EmptyBookPlusImage source={require('../../../assets/images/icons/PlusBook.png')} />
+                      <S.EmptyBookPlusImage source={require('@assets/images/icons/PlusBook.png')} />
                     </S.EmptyBookImage>
                   </S.BookTouchableOpacity>
                 )}

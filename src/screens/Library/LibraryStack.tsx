@@ -1,10 +1,10 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
-import Library from '../Library/Library';
-import ModifyUserinfo from '../InitUserInfo/ModifyUserinfo';
-import ModifyStyle from '../InitStyle/ModifyStyle';
-import Product from '../Home/screens/Product/Product';
+import Product from '@screens/Home/screens/Product/Product';
+import ModifyStyle from '@screens/InitStyle/ModifyStyle';
+import ModifyUserinfo from '@screens/InitUserInfo/ModifyUserinfo';
+import Library from '@screens/Library/Library';
+import React from 'react';
 
 const Stack = createStackNavigator();
 const screens = [
