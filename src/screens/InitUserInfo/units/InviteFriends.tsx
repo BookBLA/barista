@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Text, View, Image } from 'react-native';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { deviceHeight } from '../../../commons/utils/ui/dimensions/dimensions';
-import { TitleProgress } from './TitleProgress';
-import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import HeartGuage from './components/HeartGuage/HeartGuage';
-import { getSchoolMembers } from '../../../commons/api/schools/school.api';
+import { getSchoolMembers } from '@commons/api/schools/school.api';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { colors } from '@commons/styles/variablesStyles';
+import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as Clipboard from 'expo-clipboard';
-import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import { useEffect, useState } from 'react';
+import { Image, Text, View } from 'react-native';
+import * as S from '../InitUserInfo.styles';
+import { TitleProgress } from './TitleProgress';
 
 const imgUrl = {
   1: img.heartGauge1,

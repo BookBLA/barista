@@ -1,15 +1,11 @@
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-
-import { Image, ScrollView, Dimensions, Text, View, FlatList } from 'react-native';
-// import styled from 'styled-components/native';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { colors } from '@commons/styles/variablesStyles';
+import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { LinearGradient } from 'expo-linear-gradient';
-// import useManageMargin from '../../../commons/hooks/useManageMargin';
-// import Page from '../units/components/openChatPage/Page';
+import { Dimensions, Text } from 'react-native';
+import * as S from '../InitUserInfo.styles';
 import Carousel from '../units/Carousel';
-import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const PAGES = [

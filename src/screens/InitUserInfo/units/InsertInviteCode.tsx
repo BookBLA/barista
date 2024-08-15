@@ -1,20 +1,17 @@
+import nextButton from '@assets/images/buttons/nextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import checkCircle from '@assets/images/icons/CheckCircle.png';
+import warningCircle from '@assets/images/icons/WarningCircle.png';
+import { postInviteCodeVerifyApi } from '@commons/api/invitation/invitation.api';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useState } from 'react';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Text } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { TitleProgress } from './TitleProgress';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
+import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-
-import checkCircle from '../../../../assets/images/icons/CheckCircle.png';
-import warningCircle from '../../../../assets/images/icons/WarningCircle.png';
-import { deviceWidth } from '../../../commons/utils/ui/dimensions/dimensions';
-import { postInviteCodeVerifyApi } from '../../../commons/api/invitation/invitation.api';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
+import * as S from '../InitUserInfo.styles';
 
 const InsertInviteCode = () => {
   useManageMargin();

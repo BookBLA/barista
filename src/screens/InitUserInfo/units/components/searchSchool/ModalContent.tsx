@@ -1,14 +1,12 @@
-import { FlatList, TouchableOpacity, View, Text, Image } from 'react-native';
-import * as S from '../../../InitUserInfo.styles';
-import * as T from '../../../../InitBook/InitBookStack.styles';
+import checkBlack from '@assets/images/icons/CheckBlack.png';
+import { getSchools } from '@commons/api/schools/school.api';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import * as T from '@screens/InitBook/InitBookStack.styles';
+import { ModalWrapper } from '@screens/Setting/SettingStack.styles';
 import { useEffect, useState } from 'react';
-import { universityList } from '../../../../../commons/contents/universityList/universityList';
-import { colors } from '../../../../../commons/styles/variablesStyles';
-import useToastStore from '../../../../../commons/store/ui/toast/useToastStore';
-import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
-import checkBlack from '../../../../../../assets/images/icons/CheckBlack.png';
-import { ModalWrapper } from '../../../../Setting/SettingStack.styles';
-import { getSchools } from '../../../../../commons/api/schools/school.api';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 
 const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value: string) => void }) => {
   const showToast = useToastStore((state) => state.showToast);

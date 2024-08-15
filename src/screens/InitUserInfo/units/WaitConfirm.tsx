@@ -1,21 +1,18 @@
+import optionA from '@assets/images/icons/OptionA.png';
+import optionB from '@assets/images/icons/OptionB.png';
+import { getMemberProfileStatusesApi } from '@commons/api/members/profile/memberProfile.api';
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
 import { useEffect, useState } from 'react';
-import { Image, Text, TouchableOpacity, View, Linking, ActivityIndicator } from 'react-native';
-import { colors } from '../../../commons/styles/variablesStyles';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import * as S from '../InitUserInfo.styles';
-import optionA from '../../../../assets/images/icons/OptionA.png';
-import optionB from '../../../../assets/images/icons/OptionB.png';
-import { LightText } from '../../../commons/components/Utils/TextComponents/LightText/LightText';
-import Spinner from '../../../commons/components/Layouts/Spinner/Spinner';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import {
-  getMemberProfileStatusesApi,
-  postMemberProfileApi,
-} from '../../../commons/api/members/profile/memberProfile.api';
 import { TitleProgress } from './TitleProgress';
-import useToastStore from '../../../commons/store/ui/toast/useToastStore';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
-import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const WaitConfirm = () => {
   useHeaderControl({

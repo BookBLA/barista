@@ -1,23 +1,22 @@
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import { Image, Text, View, Alert, Linking, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useState } from 'react';
+import nextButton from '@assets/images/buttons/nextButton.png';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import { uploadStudentIdImageToS3 } from '@commons/api/image/imageUploadToS3.api';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { colors } from '@commons/styles/variablesStyles';
 import * as ImagePicker from 'expo-image-picker';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { TitleProgress } from './TitleProgress';
+import { useState } from 'react';
+import { Alert, Image, Linking, Text, View } from 'react-native';
 import uuid from 'react-native-uuid';
-import { uploadStudentIdImageToS3 } from '../../../commons/api/image/imageUploadToS3.api';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { useToggle } from '../../../commons/hooks/utils/toggle/useToggle';
-import ModalTitle from './components/searchSchool/ModalTitle';
+import * as S from '../InitUserInfo.styles';
 import ModalContent from './components/searchSchool/ModalContent';
-import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomModal } from '../../../commons/components/Feedbacks/CustomModal/CustomModal';
-import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
+import ModalTitle from './components/searchSchool/ModalTitle';
+import { TitleProgress } from './TitleProgress';
 
 const SchoolStudentID = () => {
   useHeaderControl({
@@ -127,7 +126,7 @@ const SchoolStudentID = () => {
             <Image
               source={
                 userInfo.studentIdImageUrl === ''
-                  ? require('../../../../assets/images/photo.png')
+                  ? require('@assets/images/photo.png')
                   : { uri: userInfo.studentIdImageUrl }
               }
               style={{ objectFit: 'contain', width: '100%', height: '100%', borderRadius: 10 }}

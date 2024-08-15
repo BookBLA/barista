@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
-import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { colors } from '../../../../../commons/styles/variablesStyles';
-import * as S from '../../../InitUserInfo.styles';
-import { OpenChatTextFiledStyled, TextFiledStyled } from '../../../../InitStyle/InitStyle.styles';
-import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
-import { useCounter } from '../../../../../commons/store/features/counter/useCounter';
-import { TitleProgress } from '../../TitleProgress';
-import useManageMargin from '../../../../../commons/hooks/ui/manageMargin/useManageMargin';
-import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { useUserStore } from '../../../../../commons/store/members/userinfo/useUserinfo';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useCounter } from '@commons/store/features/counter/useCounter';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { colors } from '@commons/styles/variablesStyles';
+import { OpenChatTextFiledStyled } from '@screens/InitStyle/InitStyle.styles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
+import { TitleProgress } from '@screens/InitUserInfo/units/TitleProgress';
+import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 const OpenChat = () => {
   useManageMargin();

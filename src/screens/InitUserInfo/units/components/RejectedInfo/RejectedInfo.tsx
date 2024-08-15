@@ -1,11 +1,11 @@
-import * as S from '../../../InitUserInfo.styles';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useCounter } from '@commons/store/features/counter/useCounter';
+import { colors } from '@commons/styles/variablesStyles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { TitleProgress } from '@screens/InitStyle/units/TitleProgress';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Image, View } from 'react-native';
-import { icons } from '../../../../../commons/utils/ui/variablesImages/variablesImages';
-import { colors } from '../../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { useCounter } from '../../../../../commons/store/features/counter/useCounter';
-import { TitleProgress } from '../../TitleProgress';
-import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const Case = [
   ['학생증 확인이 불가능합니다', '학생증을 다시 업로드해 주세요'],

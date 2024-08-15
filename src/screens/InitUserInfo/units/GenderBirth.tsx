@@ -1,19 +1,19 @@
+import nextButton from '@assets/images/buttons/nextButton.png';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { colors } from '@commons/styles/variablesStyles';
 import React, { useState } from 'react';
-import { colors } from '../../../commons/styles/variablesStyles';
+import { Image, Text } from 'react-native';
 import * as S from '../InitUserInfo.styles';
-import { TouchableOpacity, View, Image, Text } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import { useToggle } from '../../../commons/hooks/utils/toggle/useToggle';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { TitleProgress } from './TitleProgress';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import ModalTitle from './components/BirthSelect/ModalTitle';
 import ModalContent from './components/BirthSelect/ModalContent';
-import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomModal } from '../../../commons/components/Feedbacks/CustomModal/CustomModal';
-import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
+import ModalTitle from './components/BirthSelect/ModalTitle';
+import { TitleProgress } from './TitleProgress';
 
 const GenderBirth = () => {
   useHeaderControl({

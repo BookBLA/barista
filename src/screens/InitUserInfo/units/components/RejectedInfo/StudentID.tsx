@@ -1,16 +1,16 @@
-import { colors } from '../../../../../commons/styles/variablesStyles';
-import * as S from '../../../InitUserInfo.styles';
-import { Image, Text, View } from 'react-native';
-import { useEffect, useState } from 'react';
+import { uploadStudentIdImageToS3 } from '@commons/api/image/imageUploadToS3.api';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useCounter } from '@commons/store/features/counter/useCounter';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { colors } from '@commons/styles/variablesStyles';
+import { TitleProgress } from '@screens/InitStyle/units/TitleProgress';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import * as ImagePicker from 'expo-image-picker';
-import { TitleProgress } from '../../TitleProgress';
+import { useState } from 'react';
+import { Image, Text, View } from 'react-native';
 import uuid from 'react-native-uuid';
-import { uploadStudentIdImageToS3 } from '../../../../../commons/api/image/imageUploadToS3.api';
-import { CustomText } from '../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import { useCounter } from '../../../../../commons/store/features/counter/useCounter';
-import useHeaderControl from '../../../../../commons/hooks/ui/headerControl/useHeaderControl';
-import useMemberStore from '../../../../../commons/store/members/member/useMemberStore';
-import { useUserStore } from '../../../../../commons/store/members/userinfo/useUserinfo';
 
 const StudentID = () => {
   useHeaderControl({

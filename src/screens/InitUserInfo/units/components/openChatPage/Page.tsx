@@ -1,8 +1,8 @@
+import { colors } from '@commons/styles/variablesStyles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import React from 'react';
+import { Image, Text, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
-import { ViewStyle, Image, Text } from 'react-native';
-import * as S from '../../../InitUserInfo.styles';
-import { colors } from '../../../../../commons/styles/variablesStyles';
 
 interface IPage {
   item: { content: string; img: any; index: number };

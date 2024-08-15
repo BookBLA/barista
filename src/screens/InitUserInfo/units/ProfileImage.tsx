@@ -1,23 +1,23 @@
+import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
+import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { colors } from '@commons/styles/variablesStyles';
+import { img } from '@commons/utils/ui/variablesImages/variablesImages';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import * as P from '@screens/Library/Library.styles';
+import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
-import * as P from '../../Library/Library.styles';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import CustomBottomSheetModal from '../../../commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
-import { CustomText } from '../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';
-import { useBottomSheet } from '../../../commons/hooks/ui/bottomSheet/useBottomSheet';
-import { img } from '../../../commons/utils/ui/variablesImages/variablesImages';
-import { uploadImageToS3 } from '../../../commons/api/image/imageUploadToS3.api';
+import { ScrollView } from 'react-native-gesture-handler';
 import uuid from 'react-native-uuid';
+import * as S from '../InitUserInfo.styles';
 import { TitleProgress } from './TitleProgress';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const profileExList = [
   [img.profileEx1, '얼굴이 잘 보이는 사진'],

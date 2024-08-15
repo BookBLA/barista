@@ -1,21 +1,21 @@
+import nextButton from '@assets/images/buttons/nextButton.png';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import { postAuthEmailApi, postAuthVerifyApi } from '@commons/api/members/email/memberEmail';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { IsSuccess, useEmailStatusStore } from '@commons/store/members/emailStatus/useEmailStatusStore';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useEffect, useState } from 'react';
-import { colors } from '../../../commons/styles/variablesStyles';
-import * as S from '../InitUserInfo.styles';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
-import { TitleProgress } from './TitleProgress';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import { deviceWidth } from '../../../commons/utils/ui/dimensions/dimensions';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { postAuthEmailApi, postAuthVerifyApi } from '../../../commons/api/members/email/memberEmail';
-import useToastStore from '../../../commons/store/ui/toast/useToastStore';
-import { useEmailStatusStore, IsSuccess } from '../../../commons/store/members/emailStatus/useEmailStatusStore';
-import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
-import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
+import * as S from '../InitUserInfo.styles';
+import { TitleProgress } from './TitleProgress';
 
 const EmailAuth = () => {
   useHeaderControl({
