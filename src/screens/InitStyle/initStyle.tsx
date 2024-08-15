@@ -1,13 +1,13 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/Layouts/CustomScreen/CustomScreen';
-import Mbti from './units/Mbti';
-import SmokeDrink from './units/SmokeDrink';
-import OppositeSex from './units/OppositeSex';
+import React from 'react';
 import CommStyle from './units/CommStyle';
 import DateCost from './units/DateCost';
-import PersonalQuestion from './units/PersonalQuestion';
+import Mbti from './units/Mbti';
 import MyHeight from './units/MyHeight';
+import OppositeSex from './units/OppositeSex';
+import PersonalQuestion from './units/PersonalQuestion';
+import SmokeDrink from './units/SmokeDrink';
 
 const Stack = createStackNavigator();
 

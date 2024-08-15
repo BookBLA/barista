@@ -1,14 +1,14 @@
-import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../InitStyle.styles';
+import nextButton from '@assets/images/buttons/nextButton.png';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useStyleStore } from '@commons/store/members/style/useStyle';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Image, View } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
+import * as T from '../InitStyle.styles';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/members/style/useStyle';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const buttonTitles = ['더치페이', '번갈아가면서 사기', '여유 있는 사람이 좀 더', '데이트 통장'];
 const DateCost = () => {

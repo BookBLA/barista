@@ -1,15 +1,15 @@
-import * as S from '../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../InitStyle.styles';
-import { Image, View } from 'react-native';
-import prevButton from '../../../../assets/images/buttons/prevButton.png';
-import nextButton from '../../../../assets/images/buttons/nextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { useStyleStore } from '@commons/store/members/style/useStyle';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { useState } from 'react';
-import useMovePage from '../../../commons/hooks/navigations/movePage/useMovePage';
+import { Image, View } from 'react-native';
+import * as T from '../InitStyle.styles';
 import { TitleProgress } from './TitleProgress';
-import { useStyleStore } from '../../../commons/store/members/style/useStyle';
-import notYetNextButton from '../../../../assets/images/buttons/NotYetNextButton.png';
-import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useManageMargin from '../../../commons/hooks/ui/manageMargin/useManageMargin';
 
 const buttonTitles = ['허용 X', '단둘이 밥 먹기', '단둘이 술 먹기', '단둘이 여행 가기', '상관 없음'];
 const OppositeSex = () => {
