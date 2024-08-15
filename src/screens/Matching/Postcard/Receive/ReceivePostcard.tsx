@@ -29,7 +29,7 @@ import { icons, img } from '../../../../commons/utils/ui/variablesImages/variabl
 import { deviceWidth } from '../../../../commons/utils/ui/dimensions/dimensions';
 import useFetchMemberPostcard from '../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {

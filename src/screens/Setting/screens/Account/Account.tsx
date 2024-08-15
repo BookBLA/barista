@@ -12,7 +12,7 @@ import { getLogoutConfig } from './configs/logoutConfig';
 import { useLogout } from '../../../../commons/hooks/auths/logout/useLogout';
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
-import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 import useMemberStore from '../../../../commons/store/members/member/useMemberStore';
 
 const Account = () => {

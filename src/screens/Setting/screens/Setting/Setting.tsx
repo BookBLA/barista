@@ -20,7 +20,7 @@ import { useLinkingOpen } from '../../../../commons/hooks/navigations/linkingOpe
 import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 import { CustomSwitch } from '../../../../commons/components/Inputs/CustomSwitch/CustomSwitch';
 import { CustomButton } from '../../../../commons/components/Inputs/CustomButton/CustomButton';
-import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 
 const Setting = () => {
   useScreenLogger();

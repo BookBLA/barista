@@ -14,7 +14,7 @@ import { ModalWrapper } from '../../../Setting/SettingStack.styles';
 import pencilIcon from '../../../../../assets/images/icons/Pencil.png';
 import { getMemeberReplyApi, putMemberReplyApi } from '../../../../commons/api/members/reply/memberReply.api';
 import useAnalyticsEventLogger from '../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 
 export const SendPostcard: React.FC<ISendPostcardProps> = ({ ...rest }) => {
   const {

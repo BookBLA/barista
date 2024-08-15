@@ -6,7 +6,7 @@ import * as S from '../../../InitUserInfo.styles';
 import * as P from '../../../../Library/Library.styles';
 import useMovePage from '../../../../../commons/hooks/navigations/movePage/useMovePage';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import CustomBottomSheetModal from '../../../../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
+import CustomBottomSheetModal from '../../../../../commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomText } from '../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
 import { ScrollView } from 'react-native-gesture-handler';
 import Dash from 'react-native-dash';

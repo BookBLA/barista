@@ -15,7 +15,7 @@ import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
 import useModalStore from '../../../../commons/store/ui/modal/useModalStore';
 import reportIcon from '../../../../../assets/images/icons/ReportIcon.png';
 import { useBottomSheet } from '../../../../commons/hooks/ui/bottomSheet/useBottomSheet';
-import CustomBottomSheetModal from '../../../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
+import CustomBottomSheetModal from '../../../../commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import ReportOption from '../../../Library/utils/ReportOption/ReportOption';
 import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { getYourLibraryInfo } from '../../../../commons/api/postcard/library.api';

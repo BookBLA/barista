@@ -12,7 +12,7 @@ import ModalTitle from './components/BirthSelect/ModalTitle';
 import ModalContent from './components/BirthSelect/ModalContent';
 import useScreenLogger from '../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useHeaderControl from '../../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomModal } from '../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../commons/components/Feedbacks/CustomModal/CustomModal';
 import { useUserStore } from '../../../commons/store/members/userinfo/useUserinfo';
 
 const GenderBirth = () => {

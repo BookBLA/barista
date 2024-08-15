@@ -12,7 +12,7 @@ import { postMemberReports } from '../../../../commons/api/members/report/member
 import useToastStore from '../../../../commons/store/ui/toast/useToastStore';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { deviceHeight } from '../../../../commons/utils/ui/dimensions/dimensions';
-import { CustomModal } from '../../../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../../../commons/components/Feedbacks/CustomModal/CustomModal';
 
 const reportStatusKeys = {
   bookQuizReport: 0,

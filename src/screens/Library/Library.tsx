@@ -5,7 +5,7 @@ import settingIcon from '../../../assets/images/icons/Setting.png';
 import manIcon from '../../../assets/images/icons/ManSmall.png';
 import womanIcon from '../../../assets/images/icons/WomanSmall.png';
 import reportIcon from '../../../assets/images/icons/ReportIcon.png';
-import CustomBottomSheetModal from '../../commons/components/Layouts/CustomBottomSheetModal/CustomBottomSheetModal';
+import CustomBottomSheetModal from '../../commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import * as ImagePicker from 'expo-image-picker';
 import { CustomText } from '../../commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -44,7 +44,7 @@ import * as Clipboard from 'expo-clipboard';
 import useFetchMemberPostcard from '../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useAnalyticsEventLogger from '../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useHeaderControl from '../../commons/hooks/ui/headerControl/useHeaderControl';
-import { CustomModal } from '../../commons/components/Layouts/CustomModal/CustomModal';
+import { CustomModal } from '../../commons/components/Feedbacks/CustomModal/CustomModal';
 import useMemberStore from '../../commons/store/members/member/useMemberStore';
 import { useUserStore } from '../../commons/store/members/userinfo/useUserinfo';
 
