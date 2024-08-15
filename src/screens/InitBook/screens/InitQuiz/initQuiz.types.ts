@@ -1,4 +1,4 @@
-import { IBookData } from '../../InitBookStack.types';
+import { IBookData } from '@screens/InitBook/InitBookStack.types';
 
 export interface IProps {
   route: {

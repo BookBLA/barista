@@ -1,20 +1,20 @@
+import { FavBookList } from '@commons/components/Lists/FavBookList/FavBookList';
+import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
+import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { colors } from '@commons/styles/variablesStyles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { useRoute } from '@react-navigation/native';
+import * as T from '@screens/InitBook/InitBookStack.styles';
+import { IResponseMemberBook } from '@screens/InitBook/InitBookStack.types';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import React from 'react';
 import { Image, Text, View } from 'react-native';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { DashDividerLine } from '../../../../commons/components/Utils/DashDividerLine/DashDividerLine';
 import { ScrollView } from 'react-native-gesture-handler';
-import { IResponseMemberBook } from '../../InitBookStack.types';
-import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
-import { useFetchMemberBook } from './hooks/useFetchMemberBook';
-import { LightText } from '../../../../commons/components/Utils/TextComponents/LightText/LightText';
-import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../../InitBookStack.styles';
-import useMovePage from '../../../../commons/hooks/navigations/movePage/useMovePage';
 import { EBook, TProps } from './AddBook.types';
-import { useRoute } from '@react-navigation/native';
-import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useManageMargin from '../../../../commons/hooks/ui/manageMargin/useManageMargin';
-import { FavBookList } from '../../../../commons/components/Lists/FavBookList/FavBookList';
+import { useFetchMemberBook } from './hooks/useFetchMemberBook';
 
 const AddBook = () => {
   useScreenLogger();

@@ -1,21 +1,21 @@
-import { Controller, useForm } from 'react-hook-form';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { colors } from '@commons/styles/variablesStyles';
+import truncateText from '@commons/utils/ui/truncateText/truncateText';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { defaultValues } from '../../initBookStack.contents';
-import { initBookSchema } from '../../initBookStack.schema';
-import { icons } from '../../../../commons/utils/ui/variablesImages/variablesImages';
+import { defaultValues } from '@screens/InitBook/initBookStack.contents';
+import { initBookSchema } from '@screens/InitBook/initBookStack.schema';
+import * as U from '@screens/InitBook/InitBookStack.styles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
+import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, View } from 'react-native';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import Dash from 'react-native-dash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useInvalid from './hooks/useInvalid';
 import { usePostMemberBook } from './hooks/usePostMemberBook';
 import { IProps } from './initQuiz.types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as U from '../../InitBookStack.styles';
-import Dash from 'react-native-dash';
-import { CustomText } from '../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import truncateText from '../../../../commons/utils/ui/truncateText/truncateText';
-import useInvalid from './hooks/useInvalid';
-import useScreenLogger from '../../../../commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useHeaderControl from '../../../../commons/hooks/ui/headerControl/useHeaderControl';
 
 const InitQuiz = ({ route }: IProps) => {
   useScreenLogger();
