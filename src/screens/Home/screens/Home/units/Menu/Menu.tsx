@@ -1,8 +1,8 @@
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { initStates } from '@screens/Home/HomeStack.constants';
+import { TFilterKeys, TFilterState } from '@screens/Home/HomeStack.types';
 import { useMemo } from 'react';
-import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
-import { initStates } from '../../../../HomeStack.constants';
-import { TFilterKeys, TFilterState } from '../../../../HomeStack.types';
 import * as S from './Menu.styles';
 import { IProps } from './Menu.types';
 

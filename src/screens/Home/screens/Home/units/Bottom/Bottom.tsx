@@ -1,7 +1,7 @@
-import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import useAnalyticsEventLogger from '../../../../../../commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
-import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
-import { filterData } from '../../../../HomeStack.constants';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { filterData } from '@screens/Home/HomeStack.constants';
 import * as S from './Bottom.styles';
 import { IProps } from './Bottom.types';
 

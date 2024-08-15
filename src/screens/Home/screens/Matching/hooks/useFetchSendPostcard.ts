@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
-import { getSendPostcardList } from '../../../../../commons/api/matching/matching.api';
-import { ISendPostcardProps } from '../../../../Matching/Postcard/Send/SendPostcard.types';
+import { getSendPostcardList } from '@commons/api/matching/matching.api';
 import { useFocusEffect } from '@react-navigation/native';
+import { ISendPostcardProps } from '@screens/Matching/Postcard/Send/SendPostcard.types';
+import { useCallback, useState } from 'react';
 
 export const useFetchSendPostcard = (isReceivePostcard: boolean) => {
   const [data, setData] = useState<ISendPostcardProps[]>([]);

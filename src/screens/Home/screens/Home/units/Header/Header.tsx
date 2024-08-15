@@ -1,9 +1,9 @@
+import LogoDarkBg from '@assets/images/logos/logoDarkBg.png';
+import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
+import { icons, logos } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './Header.styles';
-import LogoDarkBg from '../../../../../../../assets/images/logos/logoDarkBg.png';
-import useMovePage from '../../../../../../commons/hooks/navigations/movePage/useMovePage';
-import { icons, logos } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
-import useFetchMemberPostcard from '../../../../../../commons/hooks/datas/MemberPostcard/useMemberPostcard';
-import { useGetAlarms } from '../../../../../../commons/hooks/notifications/getAlarms/useGetAlarms';
 
 const Header = () => {
   const { movePage } = useMovePage();

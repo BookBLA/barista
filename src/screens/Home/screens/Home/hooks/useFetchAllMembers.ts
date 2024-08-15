@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import { getMemberAllOtherMembersApi } from '../../../../../commons/api/members/default/member.api';
-import { IDdata, TFilterKeys, TFilterState } from '../../../HomeStack.types';
-import { filterOptions } from '../../../HomeStack.constants';
+import { getMemberAllOtherMembersApi } from '@commons/api/members/default/member.api';
+import { filterOptions } from '@screens/Home/HomeStack.constants';
+import { IDdata, TFilterKeys, TFilterState } from '@screens/Home/HomeStack.types';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useFetchAllMembers = (filter: TFilterState) => {
   const [data, setData] = useState<IDdata[]>([]);

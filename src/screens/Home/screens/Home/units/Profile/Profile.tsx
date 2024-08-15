@@ -1,10 +1,10 @@
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { colors } from '@commons/styles/variablesStyles';
+import truncateText from '@commons/utils/ui/truncateText/truncateText';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { IDdata } from '@screens/Home/HomeStack.types';
 import * as S from './Profile.styles';
-import useMovePage from '../../../../../../commons/hooks/navigations/movePage/useMovePage';
-import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText';
-import { colors } from '../../../../../../commons/styles/variablesStyles';
-import { IDdata } from '../../../../HomeStack.types';
-import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
-import truncateText from '../../../../../../commons/utils/ui/truncateText/truncateText';
 
 const Profile = ({ item }: { item: IDdata }) => {
   const { memberId, bookName, memberName, memberSchoolName, memberAge, bookImageUrl } = item;

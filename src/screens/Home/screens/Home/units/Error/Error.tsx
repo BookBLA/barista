@@ -1,6 +1,6 @@
-import { CustomText } from '../../../../../../commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import { colors } from '../../../../../../commons/styles/variablesStyles';
-import { icons } from '../../../../../../commons/utils/ui/variablesImages/variablesImages';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { colors } from '@commons/styles/variablesStyles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './Error.styles';
 
 const Error = () => {

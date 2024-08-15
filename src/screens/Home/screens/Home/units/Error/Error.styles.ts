@@ -1,5 +1,5 @@
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
-import { colors } from '../../../../../../commons/styles/variablesStyles';
 
 export const ErrorWrapper = styled.View`
   display: flex;
