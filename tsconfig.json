@@ -1,6 +1,12 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@screens/*": ["src/screens/*"],
+      "@commons/*": ["src/commons/*"],
+      "@assets/*": ["assets/*"],
+    },
     "allowJs": true,
     "esModuleInterop": true,
     "strict": true,
