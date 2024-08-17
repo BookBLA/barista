@@ -1,9 +1,10 @@
+import { TAuthCode } from '@commons/api/auth/login.types';
 import { useState } from 'react';
 
 export const useAuthCode = () => {
   const [authCode, setAuthCode] = useState('');
 
-  const getAuthCode = (data: string) => {
+  const getAuthCode = (data: TAuthCode) => {
     const exp = 'code=';
     const condition = data.indexOf(exp);
     if (condition !== -1) {
