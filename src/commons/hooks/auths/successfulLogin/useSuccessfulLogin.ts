@@ -5,12 +5,9 @@ import { usePostPushToken } from '@commons/hooks/notifications/postPushToken/use
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EErrorMessage } from '@commons/types/errorMessage';
 import { EMemberStatus } from '@commons/types/memberStatus';
-
-interface IResult {
-  accessToken: string;
-  memberStatus: string;
-}
+import { LoginResponse } from '@commons/types/openapiGenerator';
 
 export const useSuccessfulLogin = () => {
   const showToast = useToastStore((state) => state.showToast);
@@ -21,7 +18,11 @@ export const useSuccessfulLogin = () => {
   const { getPushToken } = useGetPushToken();
   const { postPushToken } = usePostPushToken();
 
-  const handleSuccessfulLogin = async (result: IResult) => {
+  const handleSuccessfulLogin = async (result: LoginResponse) => {
+    if (!result.accessToken || !result.memberStatus) {
+      throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
+    }
+
     setToken(result.accessToken);
     updateMemberInfo('memberStatus', result.memberStatus);
 

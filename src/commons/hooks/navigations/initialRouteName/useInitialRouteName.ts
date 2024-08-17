@@ -15,8 +15,9 @@ export const useInitialRouteName = () => {
       BOOK: 'initBookStack',
       COMPLETED: 'tapScreens',
       MATCHING_DISABLED: 'tapScreens',
+      DEFAULT: 'loginStack',
     };
-    return routeMap[memberStatusParam ?? memberStatus] || 'loginStack';
+    return routeMap[memberStatusParam ?? memberStatus ?? 'DEFAULT'];
   };
 
   return getInitialRouteName;

@@ -1,16 +1,17 @@
+import { TDeletedAt } from '@commons/api/auth/login.types';
 import {
-  format,
-  differenceInHours,
-  differenceInMinutes,
   addDays,
   differenceInDays,
+  differenceInHours,
+  differenceInMinutes,
   differenceInSeconds,
+  format,
 } from 'date-fns';
 
 const KST_OFFSET = 9 * 60 * 60 * 1000;
 
-const parseDate = (dateString: string) => {
-  return new Date(dateString);
+const parseDate = (dateString: TDeletedAt) => {
+  return new Date(dateString ?? '');
 };
 
 const convertToKST = (date: Date) => {
@@ -18,7 +19,7 @@ const convertToKST = (date: Date) => {
   return new Date(utc + KST_OFFSET);
 };
 
-export const formatDate = (dateString: string) => {
+export const formatDate = (dateString: TDeletedAt) => {
   const date = parseDate(dateString);
   const kstDate = convertToKST(date);
   const now = convertToKST(new Date());
@@ -41,7 +42,7 @@ export const formatDate = (dateString: string) => {
   return format(kstDate, 'yy.MM.dd');
 };
 
-export const getReLoginInfo = (dateString: string) => {
+export const getReLoginInfo = (dateString: TDeletedAt) => {
   const withdrawalDate = parseDate(dateString);
   const kstWithdrawalDate = convertToKST(withdrawalDate);
   const kstReLoginDate = addDays(kstWithdrawalDate, 30);

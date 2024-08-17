@@ -1,16 +1,10 @@
 import { getMemberApi } from '@commons/api/members/default/member.api';
+import { MemberResponse } from '@commons/types/openapiGenerator';
 import analytics from '@react-native-firebase/analytics';
 import { create } from 'zustand';
 
 interface IMemberInfo {
-  memberInfo: {
-    id: number;
-    oauthEmail: string;
-    oauthProfileImageUrl: string;
-    memberType: string;
-    memberStatus: string;
-    memberGender: string;
-  };
+  memberInfo: MemberResponse;
   saveMemberInfo: () => Promise<void>;
   updateMemberInfo: (field: string, value: string | number) => void;
 }

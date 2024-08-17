@@ -1,4 +1,5 @@
 import { Delete, Get, Post } from '@commons/configs/axios/http.api';
+import { MemberResponse } from '@commons/types/openapiGenerator';
 
 export interface IMemberStatusContents {
   memberStatus: string;
@@ -14,7 +15,7 @@ export interface IMember {
   memberGender: string;
 }
 
-export const getMemberApi = () => Get('members');
+export const getMemberApi = () => Get<MemberResponse>('members');
 
 export const deleteMemberApi = () => Delete('members');
 
