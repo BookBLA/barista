@@ -9,6 +9,7 @@ import Toast from 'react-native-toast-message';
 import useToast from './src/commons/hooks/useToast';
 import toastConfig from './src/commons/configs/toastConfig';
 import 'expo-dev-client';
+import 'react-native-purchases';
 
 export default function App() {
   useToast();
