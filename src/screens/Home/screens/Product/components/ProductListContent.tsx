@@ -10,12 +10,13 @@ import { CustomGradientButton } from '../../../../../commons/components/CustomGr
 const adCount = 1;
 
 const ProductListContent: React.FC<ProductProps> = ({ props, index }) => {
-  const { product, price, originalPrice, discount, buttonName, buttonAction } = props;
+  const { product, price, originalPrice, discount, buttonAction } = props;
 
   return (
     <View
       style={{
-        flex: 1,
+        width: '100%',
+        height: '100%',
         backgroundColor: 'white',
         flexDirection: 'row',
         justifyContent: 'space-around',

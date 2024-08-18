@@ -6,20 +6,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export const CustomGradientButton: React.FC<IProps> = ({ contents, onPress, ...rest }) => {
   return (
-    <ButtonStyled {...rest} onPress={onPress} backgroundColor={'transparent'}>
+    <ButtonStyled {...rest} onPress={onPress} padding={'0'}>
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         colors={['#5B247A', '#1BCEDF']}
         style={{
-          flex: 1,
+          // flex: 1,
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 60,
-          // paddingTop: 6,
-          // paddingBottom: 6,
-          // paddingLeft: 12,
-          // paddingRight: 12,
+          paddingTop: 12,
+          paddingBottom: 12,
+          paddingLeft: 24,
+          paddingRight: 24,
         }}
       >
         <ButtonTextStyled {...rest}>

@@ -9,8 +9,6 @@ import { LinearGradient } from 'expo-linear-gradient';
 import ProductListContent from './ProductListContent';
 
 const ProductList: React.FC<ProductProps> = ({ props, index }) => {
-  //   const { product, price, originalPrice, discount, buttonName, buttonAction } = props;
-
   return (
     <View style={{ width: '90%', height: 86, marginBottom: 10 }}>
       {index === 0 && (
