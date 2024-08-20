@@ -13,7 +13,7 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
 
   const callDeleteMemberBook = async () => {
     try {
-      await deleteMemberBookApi(item.memberBookId);
+      await deleteMemberBookApi(String(item?.memberBookId));
       await fetchGetMemberBook();
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
@@ -40,8 +40,8 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
       </S.ImageWrapper>
       <S.ColumnStyled>
         <View>
-          <S.BookTitleStyled>{truncateText(item.title, 40)}</S.BookTitleStyled>
-          <S.BookAuthorStyled>{truncateText(item?.authors.join(', '), 30)}</S.BookAuthorStyled>
+          <S.BookTitleStyled>{truncateText(item?.title ?? '', 40)}</S.BookTitleStyled>
+          <S.BookAuthorStyled>{truncateText(item?.authors?.join(', ') ?? '', 30)}</S.BookAuthorStyled>
         </View>
         <View
           style={{
