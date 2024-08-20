@@ -9,9 +9,9 @@ import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import usePagination from '@commons/hooks/ui/pagination/usePagination';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { BookSearchResponse } from '@commons/types/openapiGenerator';
 import { buttons, icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as T from '@screens/InitBook/InitBookStack.styles';
-import { IBookData } from '@screens/InitBook/InitBookStack.types';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
@@ -34,7 +34,7 @@ const SearchBook = ({ route }: IProps) => {
     usePagination();
   const { bookList, resultSearch, callGetSearchBookApi } = useSearchBooks(setTotalPage);
   const [search, setSearch] = useState('');
-  const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
+  const [selectedBook, setSelectedBook] = useState<BookSearchResponse>({});
   const showToast = useToastStore((state) => state.showToast);
 
   const SearchBook = () => {
@@ -80,7 +80,7 @@ const SearchBook = ({ route }: IProps) => {
               <CustomText font="fontRegular" size="12px">
                 검색결과 {totalPage}건
               </CustomText>
-              {bookList.map((item: IBookData, index) => (
+              {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
                   key={index}
                   item={item}
