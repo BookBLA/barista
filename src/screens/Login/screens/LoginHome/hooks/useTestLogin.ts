@@ -18,6 +18,8 @@ export const useTestLogin = () => {
       const { result } = await postTestSignUp({
         email: 'junhee043@naver.com',
       });
+
+      if (!result.accessToken) return;
       setToken(result.accessToken);
 
       const pushToken = await getPushToken();
