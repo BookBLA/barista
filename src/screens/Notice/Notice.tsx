@@ -2,9 +2,10 @@ import Close from '@assets/images/icons/close.png';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { IAlarmData, useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
+import { useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { colors } from '@commons/styles/variablesStyles';
+import { PushAlarmInfo } from '@commons/types/openapiGenerator';
 import { formatDate } from '@commons/utils/dates/dateUtils/dateUtils';
 import { Image, TouchableOpacity } from 'react-native';
 import { useDeleteAlarm } from './hooks/useDeleteAlarm';
@@ -45,8 +46,8 @@ const Notice = () => {
             </CustomText>
           </TouchableOpacity>
           <S.ScrollWrapper>
-            {data.map((el: IAlarmData, dex) => (
-              <S.NoticeWrapper key={el.title + el.body}>
+            {data.map((el: PushAlarmInfo, dex) => (
+              <S.NoticeWrapper key={el.title ?? '' + el.body}>
                 <CustomText>{el.title}</CustomText>
                 <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
                   {el.body}
