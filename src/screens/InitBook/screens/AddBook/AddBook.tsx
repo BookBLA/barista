@@ -5,10 +5,10 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { colors } from '@commons/styles/variablesStyles';
+import { MemberBookReadResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { useRoute } from '@react-navigation/native';
 import * as T from '@screens/InitBook/InitBookStack.styles';
-import { IResponseMemberBook } from '@screens/InitBook/InitBookStack.types';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import React from 'react';
 import { Image, Text, View } from 'react-native';
@@ -54,7 +54,7 @@ const AddBook = () => {
             </S.RowStyled>
           </View>
           <>
-            {data.map((item: IResponseMemberBook, index) => (
+            {data.map((item: MemberBookReadResponse, index) => (
               <React.Fragment key={index}>
                 {index === EBook.FirstBookIndex ? (
                   <>
