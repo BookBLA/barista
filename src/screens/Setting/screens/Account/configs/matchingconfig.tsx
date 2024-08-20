@@ -1,4 +1,5 @@
 import { EMemberStatus } from '@commons/types/memberStatus';
+import { MemberStatusUpdateRequestMemberStatusEnum } from '@commons/types/openapiGenerator';
 import { Dispatch, SetStateAction } from 'react';
 import MatchingContent from '../units/MatchingContent/MatchingContent';
 
@@ -15,7 +16,7 @@ interface IState {
 }
 
 export const getMatchingConfig = (
-  handleEnableMatching: (memberStatus: string) => void,
+  handleEnableMatching: (memberStatus: MemberStatusUpdateRequestMemberStatusEnum) => void,
   modal: IModal,
   state: IState,
 ) => {

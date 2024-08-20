@@ -1,6 +1,7 @@
 import { postMemberStatusesApi } from '@commons/api/members/default/member.api';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
+import { MemberStatusUpdateRequestMemberStatusEnum } from '@commons/types/openapiGenerator';
 import { useState } from 'react';
 
 export const useEnableMatching = (toggle: () => void) => {
@@ -9,7 +10,7 @@ export const useEnableMatching = (toggle: () => void) => {
   const [selected, setSelected] = useState('');
   const [reason, setReason] = useState('');
 
-  const handleEnableMatching = async (memberStatus: string) => {
+  const handleEnableMatching = async (memberStatus: MemberStatusUpdateRequestMemberStatusEnum) => {
     try {
       await postMemberStatusesApi({
         memberStatus,
