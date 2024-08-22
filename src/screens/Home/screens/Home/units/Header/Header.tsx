@@ -13,7 +13,10 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
       <S.LogoWrapper>
-        <S.LogoImage source={LogoDarkBg} />
+        <S.IconButton onPress={movePage('quiz')}>
+          {/* 홈페이지 변경 전까지 독서퀴즈 페이지 접근용으로 만든 임시 버튼 */}
+          <S.LogoImage source={LogoDarkBg} />
+        </S.IconButton>
         <S.LogoTitleImage source={logos.mainLogo} />
       </S.LogoWrapper>
       <S.IconWrapper>
