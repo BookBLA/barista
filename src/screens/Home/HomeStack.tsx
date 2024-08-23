@@ -5,14 +5,12 @@ import Library from '@screens/Library/Library';
 import React from 'react';
 import Home from './screens/Home/Home';
 import Product from './screens/Product/Product';
-import Quiz from '@screens/Home/screens/Quiz/Quiz';
 
 const Stack = createStackNavigator();
 const screens = [
   { name: 'home', component: Home },
   { name: 'product', component: Product },
   { name: 'library', component: Library },
-  { name: 'quiz', component: Quiz },
 ];
 
 const HomeStack = () => {

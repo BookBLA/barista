@@ -18,6 +18,7 @@ import React from 'react';
 import { Platform, SafeAreaView } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
+import QuizStack from '@screens/Quiz/QuizStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -32,6 +33,7 @@ const screens = [
   { name: 'loginStack', component: LoginStack },
   { name: 'notice', component: CustomScreen(Notice) },
   { name: 'waitConfirm', component: WaitConfirm },
+  { name: 'quizStack', component: QuizStack },
 ];
 
 export const CustomNavigator = () => {
