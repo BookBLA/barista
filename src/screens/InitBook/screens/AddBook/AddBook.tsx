@@ -28,7 +28,7 @@ const AddBook = () => {
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
-        <S.TitleStyled>내 서재</S.TitleStyled>
+        <S.TitleStyled>책 추가</S.TitleStyled>
       </S.SafeAreaViewStyled>
 
       <ScrollView style={{ width: '100%' }}>

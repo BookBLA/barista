@@ -24,7 +24,7 @@ const SearchBook = ({ route }: IProps) => {
   useScreenLogger();
   useManageMargin();
   useHeaderControl({
-    title: '내 서재',
+    title: '책 검색',
     left: true,
   });
   const { movePage } = useMovePage();
