@@ -486,7 +486,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookContainer>
       </S.BookListContainerView>
-      <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook')}>
+      <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook', { isRepresentative: false })}>
         <S.AddBookButton source={icons.addBook} />
       </TouchableOpacity>
 
