@@ -63,7 +63,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
 
-  // console.log(bookImageUrls);
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
   };
