@@ -79,6 +79,8 @@ export const icons = {
 
   chatBright: require('@assets/images/icons/ChatBright.png'),
   chatDark: require('@assets/images/icons/ChatDark.png'),
+
+  addBook: require('@assets/images/icons/AddBook.png'),
 };
 
 export const img = {

@@ -155,6 +155,27 @@ export const styles: any = StyleSheet.create({
       },
     }),
   },
+  AddBookButton: {
+    position: 'absolute',
+    bottom: 12,
+    right: 5,
+    margin: 0,
+    padding: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 5,
+          height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
 });
 
 export const ModalBookListContainer = styled.View`
@@ -272,4 +293,11 @@ export const CopyCodeButton = styled.TouchableOpacity`
   padding: 14px 66px;
   border-radius: 60px;
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+`;
+
+export const AddBookButton = styled.Image`
+  width: 54px;
+  height: 54px;
+  align-content: center;
+  justify-content: center;
 `;

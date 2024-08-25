@@ -499,7 +499,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.ProfileHeaderButtonContainer>
       </S.UserInfoContainerView>
       <S.BookListContainerView>
-        <CustomText style={{ marginTop: 24 }} color={'rgba(0, 0, 0, 0.5)'} size={'12px'}>
+        <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
           책을 누르면 한 줄 감상문과 독서퀴즈를 수정할 수 있습니다.
         </CustomText>
         <S.BookContainer>
@@ -514,6 +514,9 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookContainer>
       </S.BookListContainerView>
+      <TouchableOpacity style={S.styles.AddBookButton} onPress={() => console.log('책 추가!')}>
+        <S.AddBookButton source={icons.addBook} />
+      </TouchableOpacity>
 
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
