@@ -220,7 +220,10 @@ const Library: React.FC<Props> = ({ route }) => {
   };
 
   const toggleInviteFriendModal = async () => {
-    await fetchInvitationCode();
+    if (!isInviteFriendModalVisible) {
+      await fetchInvitationCode();
+    }
+
     setInviteFriendModalVisible(!isInviteFriendModalVisible);
   };
 
@@ -326,7 +329,6 @@ const Library: React.FC<Props> = ({ route }) => {
   const inviteFriendModalConfig = {
     visible: isInviteFriendModalVisible,
     onClose: toggleInviteFriendModal,
-    close: true,
   };
 
   const memberInfo = useMemberStore((state) => state.memberInfo);
@@ -386,7 +388,6 @@ const Library: React.FC<Props> = ({ route }) => {
   );
 
   const renderRow = ({ item }: { item: BookItemList }): JSX.Element => {
-    console.log(item);
     return (
       <View style={{ marginBottom: 36, backgroundColor: '#f0f0f0' }}>
         <S.BookFloorWrapper style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -650,21 +651,26 @@ const Library: React.FC<Props> = ({ route }) => {
       <CustomModal modalConfig={inviteFriendModalConfig}>
         <S.InviteFriendModalWrapper>
           <S.InviteFriendModalHeader>
-            <CustomText font="fontMedium" size="18px" style={{ marginBottom: 12 }}>
-              친구를 초대하고 무료 책갈피를 받으세요!
+            <CustomText font="fontSemiBold" size="18px">
+              친구를 초대하고
             </CustomText>
-            <CustomText font="fontSemiBold" size="30px" style={{ marginBottom: 22 }}>
-              {invitationCode}
+            <CustomText font="fontSemiBold" size="18px" style={{ marginBottom: 16 }}>
+              무료 책갈피를 받으세요!
             </CustomText>
+            <S.FriendInvitationCode>
+              <CustomText font="fontBold" size="32px" color="#1D2E61">
+                {invitationCode}
+              </CustomText>
+            </S.FriendInvitationCode>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)">
                 여자인 친구 초대하면
               </CustomText>
-              <CustomText font="fontMedium" size="14px" color={colors.textGray4}>
+              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)">
                 친구도 나도
-                <CustomText font="fontMedium" size="14px" color={colors.errorMessageRed}>
+                <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0)">
                   {' '}
-                  책갈피 150개
+                  책갈피 70개
                 </CustomText>{' '}
                 지급!
               </CustomText>
@@ -672,11 +678,16 @@ const Library: React.FC<Props> = ({ route }) => {
           </S.InviteFriendModalHeader>
           <S.CopyCodeButtonWrapper>
             <S.CopyCodeButton onPress={copyToClipboard} bgColor={colors.buttonPrimary}>
-              <CustomText size="14px" color={colors.textYellow}>
+              <CustomText size="14px" color={colors.textWhite}>
                 코드 복사하기
               </CustomText>
             </S.CopyCodeButton>
           </S.CopyCodeButtonWrapper>
+          <TouchableOpacity onPress={toggleInviteFriendModal}>
+            <CustomText size="14px" color="rgba(0, 0, 0, 0.4)" style={{ textDecorationLine: 'underline' }}>
+              다음에 하기
+            </CustomText>
+          </TouchableOpacity>
         </S.InviteFriendModalWrapper>
       </CustomModal>
     </SafeAreaView>

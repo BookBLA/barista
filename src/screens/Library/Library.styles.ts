@@ -254,7 +254,7 @@ export const EmptyPostcardModalHeader = styled.View`
 export const InviteFriendModalWrapper = styled.View`
   justify-content: center;
   align-items: center;
-  padding: 16px 14px;
+  padding: 30px 20px;
 `;
 
 export const InviteFriendModalHeader = styled.View`
@@ -281,18 +281,29 @@ export const RoundButton = styled.TouchableOpacity`
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
 `;
 
+export const FriendInvitationCode = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 260px;
+  height: 96px;
+  background-color: #ecf0f9;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  //padding: 69px 31px;
+`;
+
 export const CopyCodeButtonWrapper = styled.View`
   justify-content: center;
   align-items: center;
-  margin: 12px 0;
 `;
 
 export const CopyCodeButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  padding: 14px 66px;
-  border-radius: 60px;
+  padding: 14px 109px;
+  border-radius: 4px;
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+  margin-bottom: 20px;
 `;
 
 export const AddBookButton = styled.Image`
