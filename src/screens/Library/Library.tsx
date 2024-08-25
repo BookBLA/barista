@@ -36,7 +36,7 @@ import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Platform, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { TBookResponses, TLibrary } from './Library.types';
@@ -122,8 +122,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const fetchMyLibraryInfo = useCallback(async () => {
     try {
       const { result } = await getMyLibraryInfo();
+      // const memberStyle = await getMemberStyle(result.memberId);
       setLibraryInfo(result);
       splitBook(result.bookResponses);
+      // setMemberStyle(memberStyle);
 
       if (result.profileImageUrl) {
         if (result.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
@@ -370,44 +372,59 @@ const Library: React.FC<Props> = ({ route }) => {
   );
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white', height: '100%' }}>
+    <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
       <S.UserInfoContainerView>
-        {isProfileImageModificationStatus && !isYourLibrary && (
-          <S.UserModificationStatusBar>
-            <CustomText size="14px" font="fontMedium" color="#F7F4ED">
-              사진이 수정되어 승인 대기중입니다.
-            </CustomText>
-          </S.UserModificationStatusBar>
-        )}
+        {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
+        {/*  <S.UserModificationStatusBar>*/}
+        {/*    <CustomText size="14px" font="fontMedium" color="#F7F4ED">*/}
+        {/*      사진이 수정되어 승인 대기중입니다.*/}
+        {/*    </CustomText>*/}
+        {/*  </S.UserModificationStatusBar>*/}
+        {/*)}*/}
         <S.UserInfoView>
           <S.CircularImage
             source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
             blurRadius={platformBlurRadius}
           />
           {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
-          {!isYourLibrary && (
-            <TouchableWithoutFeedback onPress={handleOpenBottomSheet}>
-              <S.ProfileImageModificationImage source={require('@assets/images/icons/ProfileImageSetting.png')} />
-            </TouchableWithoutFeedback>
-          )}
 
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>
               <S.UserNameText>
                 {libraryInfo?.name} | {libraryInfo?.age}
+                <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
               </S.UserNameText>
-              <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
-            </S.UserInfoNameWrapper>
-            <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
-          </S.UserInfoWrapper>
 
-          {!isYourLibrary && (
-            <S.InviteFriendButtonWrapper>
-              <TouchableOpacity onPress={toggleInviteFriendModal}>
-                <S.InviteFriendButtonImage source={icons.inviteFriend} />
-              </TouchableOpacity>
-            </S.InviteFriendButtonWrapper>
-          )}
+              {!isYourLibrary && (
+                <S.InviteFriendButtonWrapper>
+                  <TouchableOpacity onPress={toggleInviteFriendModal}>
+                    <S.InviteFriendButtonImage source={icons.inviteFriend} />
+                  </TouchableOpacity>
+                </S.InviteFriendButtonWrapper>
+              )}
+            </S.UserInfoNameWrapper>
+
+            <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
+
+            {/*//todo 추후 멤버 스타일 api 연동*/}
+            <S.MemberStyleList>
+              <S.MemberStyleView>
+                <CustomText color={colors.textWhite} size={'12px'}>
+                  비흡연자
+                </CustomText>
+              </S.MemberStyleView>
+              <S.MemberStyleView>
+                <CustomText color={colors.textWhite} size={'12px'}>
+                  ENEJ
+                </CustomText>
+              </S.MemberStyleView>
+              <S.MemberStyleView>
+                <CustomText color={colors.textWhite} size={'12px'}>
+                  176cm
+                </CustomText>
+              </S.MemberStyleView>
+            </S.MemberStyleList>
+          </S.UserInfoWrapper>
         </S.UserInfoView>
 
         <S.ProfileHeaderButtonContainer>
@@ -435,6 +452,9 @@ const Library: React.FC<Props> = ({ route }) => {
       </S.UserInfoContainerView>
 
       <S.BookListContainerView>
+        <CustomText style={{ marginTop: 24 }} color={'rgba(0, 0, 0, 0.5)'} size={'12px'}>
+          책을 누르면 한 줄 감상문과 독서퀴즈를 수정할 수 있습니다.
+        </CustomText>
         <S.BookContainer>
           <S.ModalBookListContainer>
             {topFloorBookList.map((book) => (

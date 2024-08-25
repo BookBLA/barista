@@ -4,7 +4,7 @@ import { Platform, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 
 export const UserInfoContainerView = styled.View`
-  margin: 8px 16px;
+  margin: 24px 16px;
 `;
 
 export const UserModificationStatusBar = styled.View`
@@ -19,26 +19,23 @@ export const UserModificationStatusBar = styled.View`
 export const UserInfoView = styled.View`
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 12px;
 `;
 
 export const UserInfoWrapper = styled.View`
   flex: 4;
 `;
 
-export const InviteFriendButtonWrapper = styled.View`
-  flex: 0.8;
-`;
+export const InviteFriendButtonWrapper = styled.View``;
 
 export const InviteFriendButtonImage = styled.Image`
-  width: 38px;
-  height: 38px;
+  width: 29px;
+  height: 29px;
 `;
 
 export const UserInfoNameWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const GenderIconStyled = styled.Image`
@@ -47,22 +44,35 @@ export const GenderIconStyled = styled.Image`
 `;
 
 export const UserNameText = styled.Text`
-  font-size: 20px;
-  color: ${colors.textBlack};
-  margin-bottom: 4px;
+  font-size: 22px;
+  color: ${colors.textWhite};
   font-family: fontMedium;
 `;
 
 export const SchoolNameText = styled.Text`
   font-size: 14px;
-  color: #858585;
+  margin-top: 8px;
+  color: ${colors.textWhite};
   font-family: fontLight;
 `;
 
+export const MemberStyleList = styled.View`
+  margin-top: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const MemberStyleView = styled.View`
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 8px 16px;
+`;
+
 export const CircularImage = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
   margin-right: 10px;
   background-color: #e9e9e9;
 `;
@@ -71,17 +81,17 @@ export const OverlayImage = styled.Image`
   width: 32px;
   height: 32px;
   position: absolute;
-  left: 15px;
-  top: 15px;
+  left: 18px;
+  top: 20px;
 `;
 
-export const ProfileImageModificationImage = styled.Image`
-  width: 30px;
-  height: 30px;
-  position: absolute;
-  left: 38px;
-  top: 40px;
-`;
+// export const ProfileImageModificationImage = styled.Image`
+//   width: 30px;
+//   height: 30px;
+//   position: absolute;
+//   left: 40px;
+//   top: 60px;
+// `;
 
 export const ProfileHeaderButtonContainer = styled.View`
   flex-direction: row;
@@ -103,8 +113,9 @@ export const ProfileModifyButtonText = styled.Text`
 `;
 
 export const BookListContainerView = styled.View`
+  align-items: center;
   height: 100%;
-  background-color: #f7f4ed;
+  background-color: #f0f0f0;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 `;
@@ -138,7 +149,7 @@ export const styles: any = StyleSheet.create({
 export const ModalBookListContainer = styled.View`
   flex-direction: row;
   justify-content: center;
-  padding-top: 45px;
+  padding-top: 20px;
   padding-right: 40px;
   padding-left: 40px;
   gap: 40px;
