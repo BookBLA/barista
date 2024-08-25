@@ -120,7 +120,18 @@ export const BookListContainerView = styled.View`
   border-top-right-radius: 30px;
 `;
 
-export const BookContainer = styled.View``;
+export const BookContainer = styled.View`
+  flex: 1;
+  margin-top: 20px;
+  color: #f0f0f0;
+`;
+
+export const BookFloorWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 20px;
+`;
 
 export const BookShelves = styled.View`
   width: ${deviceWidth}px;
@@ -162,7 +173,7 @@ export const BookTouchableOpacity = styled.TouchableOpacity`
 `;
 
 export const BookImage = styled.Image`
-  width: 90%;
+  width: 80%;
   height: ${deviceHeight / 4 - 40}px;
   border-radius: 10px;
   object-fit: fill;
