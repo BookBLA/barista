@@ -2,8 +2,6 @@ import homeBright from '@assets/images/icons/HomeBright.png';
 import homeDark from '@assets/images/icons/HomeDark.png';
 import libraryBright from '@assets/images/icons/LibraryBright.png';
 import libraryDark from '@assets/images/icons/LibraryDark.png';
-import matchingBright from '@assets/images/icons/MatchingBright.png';
-import matchingDark from '@assets/images/icons/MatchingDark.png';
 import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { colors } from '@commons/styles/variablesStyles';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -11,6 +9,7 @@ import HomeStack from '@screens/Home/HomeStack';
 import LibraryStack from '@screens/Library/LibraryStack';
 import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -55,10 +54,25 @@ const TapScreens = () => {
         name="Matching"
         component={MatchingStack}
         options={{
-          tabBarLabel: '매칭',
+          tabBarLabel: '우편함',
           tabBarIcon: ({ focused }) => (
             <Image
-              source={focused ? matchingDark : matchingBright}
+              source={focused ? icons.postboxDark : icons.postboxBright}
+              resizeMode="contain"
+              style={{ width: 21, height: 21 }}
+            />
+          ),
+          unmountOnBlur: true,
+        }}
+      />
+      <Tab.Screen
+        name="Chatting"
+        component={MatchingStack}
+        options={{
+          tabBarLabel: '채팅',
+          tabBarIcon: ({ focused }) => (
+            <Image
+              source={focused ? icons.chatDark : icons.chatBright}
               resizeMode="contain"
               style={{ width: 21, height: 21 }}
             />
