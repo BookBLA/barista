@@ -411,7 +411,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </S.UserInfoView>
 
         <S.ProfileHeaderButtonContainer>
-          {isYourLibrary ? (
+          {isYourLibrary && (
             <>
               <S.ProfileModifyButtonWrapper
                 onPress={async () => {
@@ -430,10 +430,6 @@ const Library: React.FC<Props> = ({ route }) => {
                 <S.ProfileModifyButtonText style={{ color: colors.textYellow }}>엽서 보내기</S.ProfileModifyButtonText>
               </S.ProfileModifyButtonWrapper>
             </>
-          ) : (
-            <S.ProfileModifyButtonWrapper onPress={movePage('modifyStyle')}>
-              <S.ProfileModifyButtonText>프로필 수정</S.ProfileModifyButtonText>
-            </S.ProfileModifyButtonWrapper>
           )}
         </S.ProfileHeaderButtonContainer>
       </S.UserInfoContainerView>
