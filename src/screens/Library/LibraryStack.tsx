@@ -5,6 +5,8 @@ import ModifyStyle from '@screens/InitStyle/ModifyStyle';
 import ModifyUserinfo from '@screens/InitUserInfo/ModifyUserinfo';
 import Library from '@screens/Library/Library';
 import React from 'react';
+import AddBook from '@screens/InitBook/screens/AddBook/AddBook';
+import SearchBook from '@screens/InitBook/screens/SearchBook/SearchBook';
 
 const Stack = createStackNavigator();
 const screens = [
@@ -12,6 +14,8 @@ const screens = [
   { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: ModifyStyle },
   { name: 'product', component: Product },
+  { name: 'addBook', component: AddBook },
+  { name: 'searchBook', component: SearchBook },
 ];
 
 const LibraryStack = () => {

@@ -9,8 +9,6 @@ import {
   getBookInfo,
   getInvitationCode,
   getMemberStyle,
-  getMyLibraryInfo,
-  getYourLibraryInfo,
   validateSendPostcard,
 } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -35,11 +33,11 @@ import { RouteProp, useFocusEffect } from '@react-navigation/native';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
-import { BookItemList, TBookResponses, TLibrary } from './Library.types';
+import { BookItemList, TBookResponses } from './Library.types';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
@@ -47,6 +45,7 @@ import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import ViewStyle from './ViewStyle/ViewStyle';
+import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -72,7 +71,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
   const reportSnapPoints = useMemo(() => ['80%'], []);
   //todo 추후 삭제
-  const isYourLibrary = route.params?.isYourLibrary;
+  const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;
   const targetMemberId = route.params?.memberId;
   // const targetMemberId = 4;
@@ -82,7 +81,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const [isInviteFriendModalVisible, setInviteFriendModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
+  // const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfoList, setBookInfoList] = useState<TBookResponses[]>([]);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
@@ -96,7 +95,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
   const [invitationCode, setInvitationCode] = useState('');
-  const [rows, setRows] = useState<BookItemList[]>([]);
+  const { libraryInfo, bookRows } = useFetchLibraryInfo(isYourLibrary);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(invitationCode);
@@ -107,56 +106,28 @@ const Library: React.FC<Props> = ({ route }) => {
 
   const fetchMyLibraryInfo = useCallback(async () => {
     try {
-      const { result } = await getMyLibraryInfo();
       // const memberStyle = await getMemberStyle(result.memberId);
-      setLibraryInfo(result);
-      setBookInfoList(result.bookResponses);
+      setBookInfoList(libraryInfo?.bookResponses ?? []);
 
-      const totalBooks = bookInfoList.length;
-      const minimumItems = 4;
-      // 책 데이터와 비어있는 책 데이터를 합쳐 한 줄씩 나눔
-
-      const combinedBooks = [
-        ...bookInfoList.map((book) => ({ isEmpty: false, book })),
-        ...Array.from({ length: 2 }).map(() => ({ isEmpty: true })),
-      ];
-
-      const rows: BookItemList[] = [];
-
-      for (let i = 0; i < Math.max(minimumItems, totalBooks); i += 2) {
-        rows.push({
-          books: combinedBooks.slice(i, i + 2),
-        });
-      }
-
-      setRows(rows);
       // setMemberStyle(memberStyle);
 
-      if (result.profileImageUrl) {
-        if (result.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
+      if (libraryInfo?.profileImageUrl) {
+        if (libraryInfo.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
       }
-    } catch {
+    } catch (err) {
+      console.error(err);
       console.error('내 서재 정보를 불러오는데 실패하였습니다.');
     }
   }, []);
 
   const fetchYourLibraryInfo = useCallback(async () => {
     try {
-      const result = await getYourLibraryInfo(targetMemberId);
-      setLibraryInfo(result);
+      // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
     } catch {
       console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
     }
   }, [targetMemberId]);
-
-  useEffect(() => {
-    if (isYourLibrary) {
-      fetchYourLibraryInfo();
-    } else {
-      fetchMyLibraryInfo();
-    }
-  }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]);
 
   useFocusEffect(
     useCallback(() => {
@@ -505,7 +476,7 @@ const Library: React.FC<Props> = ({ route }) => {
         </CustomText>
         <S.BookContainer>
           <FlatList
-            data={rows}
+            data={bookRows}
             renderItem={renderRow}
             keyExtractor={(_, index) => `row-${index}`}
             showsVerticalScrollIndicator
@@ -515,7 +486,7 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookContainer>
       </S.BookListContainerView>
-      <TouchableOpacity style={S.styles.AddBookButton} onPress={() => console.log('책 추가!')}>
+      <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook')}>
         <S.AddBookButton source={icons.addBook} />
       </TouchableOpacity>
 
@@ -608,7 +579,7 @@ const Library: React.FC<Props> = ({ route }) => {
         <SendPostcardModal
           isVisible={isSendPostcardModalVisible}
           targetMemberId={targetMemberId}
-          memberBookIdList={libraryInfo?.bookResponses.map((bookResponse) => bookResponse.memberBookId) || []}
+          memberBookIdList={libraryInfo?.bookResponses?.map((bookResponse) => bookResponse.memberBookId) || []}
           onClose={toggleSendPostcardModal}
         />
       </CustomModal>
