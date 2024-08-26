@@ -1,15 +1,14 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import Product from '@screens/Home/screens/Product/Product';
-import ModifyStyle from '@screens/InitStyle/ModifyStyle';
-import ModifyUserinfo from '@screens/InitUserInfo/ModifyUserinfo';
+import ModifyStyle from '@screens/InitStyle/screens/ModifyStyle/ModifyStyle';
 import Library from '@screens/Library/Library';
 import React from 'react';
 
 const Stack = createStackNavigator();
 const screens = [
   { name: 'library', component: Library },
-  { name: 'modifyUserinfo', component: ModifyUserinfo },
+  // { name: 'modifyUserinfo', component: ModifyUserinfo },
   { name: 'modifyStyle', component: ModifyStyle },
   { name: 'product', component: Product },
 ];
