@@ -18,7 +18,7 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       const { code, message } = error.response.data;
-      if (code === EStatusCode.MEMBER_BOOK_005) {
+      if (code === EStatusCode.MEMBER_BOOK_005 || code === EStatusCode.MEMBER_BOOK_004) {
         showToast({
           content: message,
         });
@@ -34,7 +34,7 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
     <S.BookListStyled>
       <S.ImageWrapper>
         <Image
-          style={{ height: 62, width: 62, borderRadius: 10, objectFit: 'fill' }}
+          style={{ height: 62, width: 62, borderRadius: 10, objectFit: 'cover' }}
           source={item.thumbnail ? { uri: item.thumbnail } : img.prepareBookImage}
         />
       </S.ImageWrapper>
