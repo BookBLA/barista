@@ -5,12 +5,16 @@ import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
+import { useRoute } from '@react-navigation/native';
+import { Props } from '@screens/InitStyle/InitStyle.types';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const ModifyProfile = () => {
+  const route = useRoute<Props>();
+  const profileId = route.params?.profileId;
   const showToast = useToastStore((state) => state.showToast);
   useHeaderControl({
     title: '프로필 사진 수정',
@@ -18,11 +22,12 @@ const ModifyProfile = () => {
   });
   useManageMargin();
   const { updateStyleInfo, styleInfo } = useStyleStore();
-  const [profile, setProfile] = useState(styleInfo.profileImageTypeId);
+  const [profile, setProfile] = useState(styleInfo.profileImageTypeId || profileId);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
 
   useEffect(() => {
     callGetProfileImage();
+    setProfile(profileId);
   }, []);
 
   const handleModifyProfile = async () => {
@@ -36,8 +41,6 @@ const ModifyProfile = () => {
         profileImageId: item.profileImageTypeId,
         profileImageUrl: item.profileImageUrl,
       }));
-      styleInfo.profileImageTypeId === 0 && setProfile(profiles[0].profileImageId);
-      updateStyleInfo('profileImageTypeId', profiles[0].profileImageId);
       setProfileList(profiles);
     } catch (error) {
       console.log('ERROR) getProfileImageType', error);
