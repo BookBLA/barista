@@ -1,3 +1,4 @@
+import { postMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { FavBookList } from '@commons/components/Lists/FavBookList/FavBookList';
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
@@ -25,6 +26,16 @@ const AddBook = () => {
   const dataLength = data.length;
   const resetParams = route.params?.isStylePage ? { screen: 'Home' } : { screen: 'Library' };
 
+  const nextPage = () => {
+    postMemberStatusesApi({ memberStatus: 'COMPLETED' })
+      .then(() => {
+        handleReset('tapScreens', resetParams);
+      })
+      .catch((error) => {
+        console.log('ERROR) postMemberStatusesApi', error);
+      });
+  };
+
   return (
     <S.Wrapper>
       <S.SafeAreaViewStyled>
@@ -33,50 +44,40 @@ const AddBook = () => {
 
       <ScrollView style={{ width: '100%' }}>
         <S.ColumnStyled style={{ justifyContent: 'flex-start', height: '100%' }}>
-          <View style={{ height: '25%', alignItems: 'center', margin: '10%' }}>
+          <View style={{ height: '25%', alignItems: 'center', marginTop: '10%' }}>
             <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16, marginBottom: 14 }}>
               내가 좋아하는 책
             </Text>
+            <LightText margin={'7px'}> 좋아하는 책들을 등록해주세요!</LightText>
             <S.RowStyled style={{ width: 'auto', marginBottom: 7 }}>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>첫 번째 책</Text>
-              <LightText>이 나의</LightText>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 대표 책</Text>
-              <LightText>으로 등록됩니다.</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>첫 4권</Text>
+              <LightText>을 등록하시면</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>매칭에 필요한</Text>
             </S.RowStyled>
-            <Text style={{ color: colors.textGray, fontFamily: 'fontLight', fontSize: 14 }}>
-              책은 최대 3권까지 추가할 수 있습니다.
-            </Text>
-            <S.RowStyled style={{ width: 'auto', marginBottom: 7, marginTop: 7 }}>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책 1권당</Text>
-              <LightText> 엽서를</LightText>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 2개씩</Text>
-              <LightText> 드립니다.</LightText>
+            <S.RowStyled style={{ width: 'auto' }}>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책갈피</Text>
+              <LightText>를 드려요! (</LightText>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>15,000원</Text>
+              <LightText>상당)</LightText>
             </S.RowStyled>
           </View>
           <>
             {data.map((item: IResponseMemberBook, index) => (
               <React.Fragment key={index}>
-                {index === EBook.FirstBookIndex ? (
-                  <>
-                    <FavBookList representative fetchGetMemberBook={fetchGetMemberBook} item={item} />
-                    <DashDividerLine />
-                  </>
-                ) : (
-                  <FavBookList fetchGetMemberBook={fetchGetMemberBook} item={item} />
-                )}
+                <FavBookList fetchGetMemberBook={fetchGetMemberBook} item={item} />
               </React.Fragment>
             ))}
 
             {!dataLength && <DashDividerLine />}
             {dataLength < EBook.MaxBooks && (
-              <T.ButtonStyled onPress={movePage('searchBook', { isRepresentative: !dataLength })}>
+              <T.ButtonStyled onPress={movePage('searchBook')}>
                 <Image source={icons.plusCircle} style={{ width: 29, height: 28 }} />
               </T.ButtonStyled>
             )}
           </>
         </S.ColumnStyled>
       </ScrollView>
-      <S.NextButtonStyled onPress={() => handleReset('tapScreens', resetParams)}>
+      <S.NextButtonStyled onPress={nextPage}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>완료</Text>
       </S.NextButtonStyled>
     </S.Wrapper>
