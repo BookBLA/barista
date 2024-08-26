@@ -17,10 +17,9 @@ import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
-import { IProps } from './SearchBook.types';
 import { NoSearch } from './units/NoSearch';
 
-const SearchBook = ({ route }: IProps) => {
+const SearchBook = () => {
   useScreenLogger();
   useManageMargin();
   useHeaderControl({
@@ -28,7 +27,6 @@ const SearchBook = ({ route }: IProps) => {
     left: true,
   });
   const { movePage } = useMovePage();
-  const { isRepresentative } = route.params;
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
@@ -105,10 +103,10 @@ const SearchBook = ({ route }: IProps) => {
               nextEndPage={nextEndPage}
             />
             <S.NextButtonStyled
-              style={{ height: 50, position: 'absolute', bottom: 10, zIndex: 1 }}
-              onPress={movePage('initQuiz', { isRepresentative, selectedBook })}
+              style={{ height: 44, position: 'absolute', bottom: 10, zIndex: 1 }}
+              onPress={movePage('initQuiz', { selectedBook })}
             >
-              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
+              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>등록하기</Text>
             </S.NextButtonStyled>
           </>
         ) : null}
