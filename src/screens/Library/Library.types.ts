@@ -46,3 +46,18 @@ export type TValidatePostcardStatus = {
   isSuccess?: boolean;
   rejectMessage?: string;
 };
+
+export interface Book {
+  memberBookId: number;
+  bookImageUrl?: string;
+  representative?: boolean;
+}
+
+export interface BookItem {
+  isEmpty: boolean;
+  book?: Book;
+}
+
+export interface BookItemList {
+  books: BookItem[];
+}

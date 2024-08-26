@@ -1,7 +1,10 @@
+import { BookSearchResponse } from '@commons/types/openapiGenerator';
+import { Dispatch, SetStateAction } from 'react';
+
 export interface IProps {
-  item: IItem;
+  item: BookSearchResponse;
   isSelected: boolean;
-  onSelectBook: (item: IItem) => void;
+  onSelectBook: Dispatch<SetStateAction<BookSearchResponse>>;
 }
 
 export interface IItem {

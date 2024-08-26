@@ -73,6 +73,14 @@ export const icons = {
 
   hourGlass: require('@assets/images/icons/Hourglass.png'),
   inviteFriend: require('@assets/images/icons/InviteFriend.png'),
+
+  postboxBright: require('@assets/images/icons/PostboxBright.png'),
+  postboxDark: require('@assets/images/icons/PostboxDark.png'),
+
+  chatBright: require('@assets/images/icons/ChatBright.png'),
+  chatDark: require('@assets/images/icons/ChatDark.png'),
+
+  addBook: require('@assets/images/icons/AddBook.png'),
 };
 
 export const img = {
