@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InitBookStack from '@screens/InitBook/initBookStack';
 import InitStyleStack from '@screens/InitStyle/initStyle';
+import ModifyProfile from '@screens/InitStyle/screens/ModifyProfile/ModifyProfile';
 import InitUserInfoStack from '@screens/InitUserInfo/initUserinfo';
 import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePage';
 import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
@@ -31,6 +32,7 @@ const screens = [
   { name: 'notice', component: CustomScreen(Notice) },
   // { name: 'waitConfirm', component: WaitConfirm },
   { name: 'inviteFriends', component: InviteFriends },
+  { name: 'modifyProfile', component: ModifyProfile },
 ];
 
 export const CustomNavigator = () => {
