@@ -29,7 +29,7 @@ const TermsOfService = () => {
   const onClickMovePage = async () => {
     const pushToken = await getPushToken();
     await postPushToken(pushToken);
-    movePage('insertInviteCode')();
+    movePage('schoolStudentID')();
   };
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
