@@ -32,7 +32,7 @@ export const TextFiledStyled = styled.TextInput.attrs({
   maxLength: 100, // 최대 글자 수
 })`
   width: 88%;
-  height: 78px;
+  height: 93px;
   padding: 5px;
   border-radius: 10px;
   font-size: 14px;
@@ -76,9 +76,9 @@ export const QuizStyled = styled.View`
 `;
 
 export const QuizTextInput = styled.TextInput.attrs({
-  maxLength: 21,
+  maxLength: 31,
 })`
-  width: 80%;
+  width: 90%;
   height: 38px;
   font-size: 12px;
   font-family: 'fontMedium';
