@@ -7,10 +7,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import InitBookStack from '@screens/InitBook/initBookStack';
 import InitStyleStack from '@screens/InitStyle/initStyle';
 import InitUserInfoStack from '@screens/InitUserInfo/initUserinfo';
-import CompletePage from '@screens/InitUserInfo/units/CompletePage';
-import FailedSign from '@screens/InitUserInfo/units/FailedSign';
-import InfoOpenChat from '@screens/InitUserInfo/units/InfoOpenChat';
-import WaitConfirm from '@screens/InitUserInfo/units/WaitConfirm';
+import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePage';
+import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
 import LoginStack from '@screens/Login/LoginStack';
 import Notice from '@screens/Notice/Notice';
 import SettingStack from '@screens/Setting/SettingStack';
@@ -24,14 +22,15 @@ const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'initUserinfoStack', component: InitUserInfoStack },
   { name: 'completePage', component: CompletePage },
-  { name: 'infoOpenChat', component: InfoOpenChat },
-  { name: 'failedSign', component: FailedSign },
+  // { name: 'infoOpenChat', component: InfoOpenChat },
+  // { name: 'failedSign', component: FailedSign },
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
   { name: 'notice', component: CustomScreen(Notice) },
-  { name: 'waitConfirm', component: WaitConfirm },
+  // { name: 'waitConfirm', component: WaitConfirm },
+  { name: 'inviteFriends', component: InviteFriends },
 ];
 
 export const CustomNavigator = () => {
