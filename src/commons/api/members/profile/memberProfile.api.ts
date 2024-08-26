@@ -17,7 +17,7 @@ export const putMemberProfileApi = (contents: MemberProfileCreateRequest) => Put
 export const getMemberProfileStatusesApi = () => Get(`member-profiles/statuses`);
 
 export const patchMemberProfileImageApi = (contents: MemberProfileImageTypeUpdateRequest) =>
-  Patch(`members/me/profile/profile-image`, contents);
+  Patch(`members/styles/profile-image-type`, contents);
 
 export const patchMemberProfileApi = (contents: IPatchMemberProfile) => Patch(`members/me/member-profile`, contents);
 
