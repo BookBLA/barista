@@ -25,39 +25,37 @@ const MbtiItem = ({ name, setMbti, index, char }: IProps) => {
   };
 
   return (
-    <>
-      <S.RowStyled>
-        <S.ButtonStyled isSelect={isSelect}>
-          <S.TextStyled
-            isSelect={isSelect}
-            isSmall={false}
-            onPress={handleSelect(name[0][0])}
-            style={{ marginBottom: 5 }}
-          >
-            {/* {name[0]} */}
-            {firstPart}
-          </S.TextStyled>
-          <S.TextStyled isSelect={isSelect} isSmall onPress={handleSelect(name[0][0])}>
-            {/* {name[0]} */}
-            {secondPart}
-          </S.TextStyled>
-        </S.ButtonStyled>
-        <S.ButtonStyled isSelect={isSelect === false} onPress={handleSelect(name[1][0])}>
-          {/* <S.TextStyled isSelect={isSelect === false}>{name[1]}</S.TextStyled> */}
-          <S.TextStyled
-            isSelect={isSelect === false}
-            isSmall={false}
-            onPress={handleSelect(name[1][0])}
-            style={{ marginBottom: 5 }}
-          >
-            {firstPart2}
-          </S.TextStyled>
-          <S.TextStyled isSelect={isSelect === false} isSmall onPress={handleSelect(name[1][0])}>
-            {secondPart2}
-          </S.TextStyled>
-        </S.ButtonStyled>
-      </S.RowStyled>
-    </>
+    <S.RowStyled>
+      <S.ButtonStyled isSelect={isSelect}>
+        <S.TextStyled
+          isSelect={isSelect}
+          isSmall={false}
+          onPress={handleSelect(name[0][0])}
+          style={{ marginBottom: 5 }}
+        >
+          {/* {name[0]} */}
+          {firstPart}
+        </S.TextStyled>
+        <S.TextStyled isSelect={isSelect} isSmall onPress={handleSelect(name[0][0])}>
+          {/* {name[0]} */}
+          {secondPart}
+        </S.TextStyled>
+      </S.ButtonStyled>
+      <S.ButtonStyled isSelect={isSelect === false} onPress={handleSelect(name[1][0])}>
+        {/* <S.TextStyled isSelect={isSelect === false}>{name[1]}</S.TextStyled> */}
+        <S.TextStyled
+          isSelect={isSelect === false}
+          isSmall={false}
+          onPress={handleSelect(name[1][0])}
+          style={{ marginBottom: 5 }}
+        >
+          {firstPart2}
+        </S.TextStyled>
+        <S.TextStyled isSelect={isSelect === false} isSmall onPress={handleSelect(name[1][0])}>
+          {secondPart2}
+        </S.TextStyled>
+      </S.ButtonStyled>
+    </S.RowStyled>
   );
 };
 
