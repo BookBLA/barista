@@ -10,7 +10,7 @@ export const useInitialRouteName = () => {
   const getInitialRouteName = (memberStatusParam?: string) => {
     const routeMap: TRouteMap = {
       PROFILE: 'initUserinfoStack',
-      APPROVAL: 'waitConfirm',
+      // APPROVAL: 'waitConfirm',
       STYLE: 'completePage',
       BOOK: 'initBookStack',
       COMPLETED: 'tapScreens',
@@ -21,4 +21,10 @@ export const useInitialRouteName = () => {
   };
 
   return getInitialRouteName;
+  // const response = await getMemberStatusesApi();
+  // const schoolStatus = response.result?.schoolStatus;
+
+  // if (schoolStatus === 'CLOSED' && memberStatus === 'STYLE') {
+  //   return 'inviteFriends';
+  // } else return getInitialRouteName;
 };
