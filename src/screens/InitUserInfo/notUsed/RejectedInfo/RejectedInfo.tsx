@@ -3,7 +3,7 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useCounter } from '@commons/store/features/counter/useCounter';
 import { colors } from '@commons/styles/variablesStyles';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import { TitleProgress } from '@screens/InitStyle/units/TitleProgress';
+import { TitleProgress } from '@screens/InitStyle/notUsed/TitleProgress';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Image, View } from 'react-native';
 

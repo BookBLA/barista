@@ -2,7 +2,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import React, { useState } from 'react';
 import { FlatList } from 'react-native';
 import styled from 'styled-components/native';
-import Page from '../units/components/openChatPage/Page';
+import Page from './openChatPage/Page';
 
 interface ICarousel {
   gap: number;

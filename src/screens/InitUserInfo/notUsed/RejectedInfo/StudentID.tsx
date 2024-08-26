@@ -5,7 +5,7 @@ import { useCounter } from '@commons/store/features/counter/useCounter';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
-import { TitleProgress } from '@screens/InitStyle/units/TitleProgress';
+import { TitleProgress } from '@screens/InitStyle/notUsed/TitleProgress';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';

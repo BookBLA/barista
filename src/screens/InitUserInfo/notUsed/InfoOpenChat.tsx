@@ -5,7 +5,7 @@ import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Dimensions, Text } from 'react-native';
 import * as S from '../InitUserInfo.styles';
-import Carousel from '../units/Carousel';
+import Carousel from './Carousel';
 
 const screenWidth = Math.round(Dimensions.get('window').width);
 const PAGES = [

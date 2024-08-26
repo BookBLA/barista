@@ -1,5 +1,5 @@
-import nextButton from '@assets/images/buttons/nextButton.png';
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
@@ -10,10 +10,9 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
 import React, { useState } from 'react';
 import { Image, Text } from 'react-native';
-import * as S from '../InitUserInfo.styles';
-import ModalContent from './components/BirthSelect/ModalContent';
-import ModalTitle from './components/BirthSelect/ModalTitle';
-import { TitleProgress } from './TitleProgress';
+import * as S from '../../InitUserInfo.styles';
+import ModalContent from './units/BirthSelect/ModalContent';
+import ModalTitle from './units/BirthSelect/ModalTitle';
 
 const GenderBirth = () => {
   useHeaderControl({
@@ -49,10 +48,23 @@ const GenderBirth = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={25} />
-      <S.ColumnStyled style={{ height: '70%' }}>
-        <S.ViewStyled>
-          <S.ContentStyled style={{ textAlign: 'center' }}>성별을 선택해 주세요.</S.ContentStyled>
+      {/* <TitleProgress gauge={75} /> */}
+      <S.ColumnStyled style={{ marginTop: '34%', justifyContent: 'center', height: 'auto' }}>
+        <S.ViewStyled style={{ marginBottom: 95 }}>
+          <S.ContentStyled style={{ textAlign: 'center', marginBottom: 8 }}>성별을 선택해 주세요.</S.ContentStyled>
+          <Text
+            style={{
+              color: colors.textGray2,
+              fontFamily: 'fontLight',
+              fontSize: 12,
+              textAlign: 'center',
+              marginBottom: 20,
+            }}
+          >
+            프로필 확인 후 거짓 사실이 확인되면{'\n'}
+            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>영구정지 처리 및 불이익</Text>이 발생할 수
+            있습니다.
+          </Text>
           <S.RowStyled>
             <S.BooleanButtonStyled
               isSelect={userInfo.gender === 'FEMALE'}
@@ -108,7 +120,7 @@ const GenderBirth = () => {
         {userInfo.gender === '' || userInfo.birthDate === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <S.MoveButton onPress={movePage('namePhone')}>
+          <S.MoveButton onPress={movePage('insertInviteCode')}>
             <Image source={nextButton} />
           </S.MoveButton>
         )}

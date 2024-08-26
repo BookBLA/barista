@@ -6,7 +6,7 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
 import { OpenChatTextFiledStyled } from '@screens/InitStyle/InitStyle.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
-import { TitleProgress } from '@screens/InitUserInfo/units/TitleProgress';
+import { TitleProgress } from '@screens/InitUserInfo/notUsed/TitleProgress';
 import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 const OpenChat = () => {

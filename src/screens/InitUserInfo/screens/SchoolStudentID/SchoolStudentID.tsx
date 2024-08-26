@@ -1,7 +1,6 @@
-import nextButton from '@assets/images/buttons/nextButton.png';
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
-import { uploadStudentIdImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -9,18 +8,15 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
-import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Alert, Image, Linking, Text, View } from 'react-native';
-import uuid from 'react-native-uuid';
-import * as S from '../InitUserInfo.styles';
-import ModalContent from './components/searchSchool/ModalContent';
-import ModalTitle from './components/searchSchool/ModalTitle';
-import { TitleProgress } from './TitleProgress';
+import { Image, Text, View } from 'react-native';
+import * as S from '../../InitUserInfo.styles';
+import ModalContent from './units/searchSchool/ModalContent';
+import ModalTitle from './units/searchSchool/ModalTitle';
 
 const SchoolStudentID = () => {
   useHeaderControl({
-    title: '정보 입력',
+    title: '학교 입력',
     left: false,
   });
   const { isOpen, toggle } = useToggle();
@@ -31,49 +27,49 @@ const SchoolStudentID = () => {
   const [school, setSchool] = useState('');
 
   //이미지 업로드 함수
-  const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
-  const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
-  const uploadImage = async () => {
-    if (!status?.granted) {
-      const permission = await requestPermission();
-      if (!permission.granted) {
-        Alert.alert(
-          '권한 필요',
-          '앱에서 이미지를 업로드하려면 접근 권한이 필요합니다. 설정으로 이동하여 권한을 부여하세요.',
-          [
-            { text: '취소', style: 'cancel' },
-            { text: '설정으로 이동', onPress: () => Linking.openSettings() },
-          ],
-        );
-        return null;
-      }
-    }
+  // const [imageUrl, setImageUrl] = useState(userInfo.studentIdImageUrl);
+  // const [status, requestPermission] = ImagePicker.useMediaLibraryPermissions();
+  // const uploadImage = async () => {
+  //   if (!status?.granted) {
+  //     const permission = await requestPermission();
+  //     if (!permission.granted) {
+  //       Alert.alert(
+  //         '권한 필요',
+  //         '앱에서 이미지를 업로드하려면 접근 권한이 필요합니다. 설정으로 이동하여 권한을 부여하세요.',
+  //         [
+  //           { text: '취소', style: 'cancel' },
+  //           { text: '설정으로 이동', onPress: () => Linking.openSettings() },
+  //         ],
+  //       );
+  //       return null;
+  //     }
+  //   }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: false,
-      // aspect: [4, 3],
-      quality: 1,
-    });
+  //   const result = await ImagePicker.launchImageLibraryAsync({
+  //     mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  //     allowsEditing: false,
+  //     // aspect: [4, 3],
+  //     quality: 1,
+  //   });
 
-    if (result.canceled) {
-      return null; //이미지 업로드 취소시
-    }
+  //   if (result.canceled) {
+  //     return null; //이미지 업로드 취소시
+  //   }
 
-    //로직 수정 (이미지 선택시 setState로만 유저 속이기)
-    //다음 버튼 누르면 s3 등록
-    setImageUrl(result?.assets[0].uri);
-    updateUserInfo({ studentIdImageUrl: result?.assets[0].uri });
-  };
+  //   //로직 수정 (이미지 선택시 setState로만 유저 속이기)
+  //   //다음 버튼 누르면 s3 등록
+  //   setImageUrl(result?.assets[0].uri);
+  //   updateUserInfo({ studentIdImageUrl: result?.assets[0].uri });
+  // };
 
   const moveNext = async () => {
     movePage('emailAuth')();
-    if (userInfo.studentIdImageUrl !== '') {
-      const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
-      if (uploadedFileUrl) {
-        updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
-      }
-    }
+    // if (userInfo.studentIdImageUrl !== '') {
+    //   const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
+    //   if (uploadedFileUrl) {
+    //     updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
+    //   }
+    // }
   };
 
   const selectSchool = (school: string) => {
@@ -93,13 +89,13 @@ const SchoolStudentID = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={75} />
+      {/* <TitleProgress gauge={25} /> */}
       {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-around' }}
         > */}
-      <View style={{ width: '100%', alignItems: 'center' }}>
+      <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
         <S.ContentStyled>학교를 선택해 주세요.</S.ContentStyled>
         <S.ButtonStyled onPress={toggle}>
           <Text
@@ -113,7 +109,7 @@ const SchoolStudentID = () => {
         </S.ButtonStyled>
         <CustomModal modalConfig={modalConfig} />
       </View>
-      <View style={{ width: '100%', alignItems: 'center' }}>
+      {/* <View style={{ width: '100%', alignItems: 'center' }}>
         <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
         <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12 }}>
           실물 학생증 및 모바일 학생증 모두 가능합니다.
@@ -145,14 +141,14 @@ const SchoolStudentID = () => {
         >
           학생증 도용 시 처벌 대상이 될 수 있습니다.
         </Text>
-      </View>
+      </View> */}
       {/* </KeyboardAwareScrollView>
       </TouchableWithoutFeedback> */}
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {userInfo.studentIdImageUrl === '' || userInfo.schoolName === '' ? (
+        {userInfo.schoolName === '' ? (
           <Image source={notYetNextButton} />
         ) : (
           <S.MoveButton onPress={moveNext}>

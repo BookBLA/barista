@@ -1,5 +1,5 @@
-import nextButton from '@assets/images/buttons/nextButton.png';
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import { postAuthEmailApi, postAuthVerifyApi } from '@commons/api/members/email/memberEmail';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
@@ -14,8 +14,7 @@ import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as S from '../InitUserInfo.styles';
-import { TitleProgress } from './TitleProgress';
+import * as S from '../../InitUserInfo.styles';
 
 const EmailAuth = () => {
   useHeaderControl({
@@ -47,8 +46,6 @@ const EmailAuth = () => {
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  // const memberId = useMemberStore((state) => state.memberInfo.id);
-
   const callPostAuthEmailApi = async () => {
     try {
       const response = await postAuthEmailApi({
@@ -65,7 +62,7 @@ const EmailAuth = () => {
       showToast({
         content: '인증 코드가 전송되었습니다.',
       });
-    } catch (error) {
+    } catch (error: any) {
       console.log('callPostAuthApi error', error);
       setIsSuccess(IsSuccess.false);
       if (error.response.data.message === '이메일이 이미 존재합니다.') {
@@ -106,17 +103,17 @@ const EmailAuth = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={100} />
+      {/* <TitleProgress gauge={25} /> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
             height: '100%',
-            justifyContent: 'center',
+            // justifyContent: 'center',
             alignItems: 'center',
           }}
         >
-          <View style={{ marginBottom: 125 }}>
+          <View style={{ marginBottom: 125, marginTop: '34%' }}>
             <S.ContentStyled style={{ textAlign: 'center' }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
             <S.RowStyled style={{ width: '93%' }}>
               <S.TextFiledStyled
@@ -135,17 +132,33 @@ const EmailAuth = () => {
               {/* 이메일 전송 버튼 */}
               <S.ButtonStyled
                 onPress={() => SendEmail()}
-                disabled={isSuccess === IsSuccess.done || isSuccess === IsSuccess.error || email === ''}
+                disabled={
+                  isSuccess === IsSuccess.done ||
+                  isSuccess === IsSuccess.error ||
+                  isSuccess === IsSuccess.true ||
+                  email === ''
+                }
                 style={{
                   width: 70,
                   marginBottom: 6,
                   backgroundColor:
                     (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
-                      ? colors.buttonAuthToggle
+                      ? colors.buttonNavStroke
                       : colors.primary,
                 }}
               >
-                <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>전송</Text>
+                <Text
+                  style={{
+                    color:
+                      (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
+                        ? colors.textGray2
+                        : colors.secondary,
+                    fontFamily: 'fontMedium',
+                    fontSize: 16,
+                  }}
+                >
+                  전송
+                </Text>
               </S.ButtonStyled>
             </S.RowStyled>
             {isSuccess === IsSuccess.done || isSuccess === IsSuccess.error ? (
@@ -165,7 +178,7 @@ const EmailAuth = () => {
               </TouchableOpacity>
             ) : (
               isSuccess === IsSuccess.false && (
-                <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
                   올바른 이메일 형식을 입력해주세요.
                 </Text>
               )
@@ -201,11 +214,22 @@ const EmailAuth = () => {
                   marginBottom: 6,
                   backgroundColor:
                     isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
-                      ? colors.buttonAuthToggle
+                      ? colors.buttonNavStroke
                       : colors.primary,
                 }}
               >
-                <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>확인</Text>
+                <Text
+                  style={{
+                    color:
+                      isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
+                        ? colors.textGray2
+                        : colors.secondary,
+                    fontFamily: 'fontMedium',
+                    fontSize: 16,
+                  }}
+                >
+                  확인
+                </Text>
               </S.ButtonStyled>
             </S.RowStyled>
             {isSuccess === IsSuccess.error && (
@@ -232,7 +256,7 @@ const EmailAuth = () => {
         {isSuccess !== IsSuccess.true ? (
           <Image source={notYetNextButton} /> //코드 인증 미완료
         ) : (
-          <S.MoveButton onPress={() => handleReset('profileImage')}>
+          <S.MoveButton onPress={movePage('namePhone')}>
             <Image source={nextButton} />
           </S.MoveButton>
         )}

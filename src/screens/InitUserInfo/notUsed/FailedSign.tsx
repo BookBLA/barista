@@ -6,10 +6,10 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { useRoute } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { TProps } from '../InitUserinfo.types';
-import OpenChat from './components/RejectedInfo/OpenChat';
-import RejectedInfo from './components/RejectedInfo/RejectedInfo';
-import ReProfileImage from './components/RejectedInfo/ReProfileImage';
-import StudentID from './components/RejectedInfo/StudentID';
+import OpenChat from './RejectedInfo/OpenChat';
+import ReProfileImage from './RejectedInfo/ReProfileImage';
+import RejectedInfo from './RejectedInfo/RejectedInfo';
+import StudentID from './RejectedInfo/StudentID';
 
 const FailedSign = () => {
   const route = useRoute<TProps>();

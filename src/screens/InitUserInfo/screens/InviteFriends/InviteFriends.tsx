@@ -8,8 +8,7 @@ import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as Clipboard from 'expo-clipboard';
 import { useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
-import * as S from '../InitUserInfo.styles';
-import { TitleProgress } from './TitleProgress';
+import * as S from '../../InitUserInfo.styles';
 
 const imgUrl = {
   1: img.heartGauge1,
@@ -63,7 +62,6 @@ const InviteFriends = () => {
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={75} />
       <S.ColumnStyled style={{ height: '90%', alignItems: 'center', justifyContent: 'center' }}>
         <S.ContentStyled style={{ marginBottom: 5 }}>{schoolName} </S.ContentStyled>
         <S.ContentStyled>친구를 초대해봐요!</S.ContentStyled>
@@ -113,16 +111,11 @@ const InviteFriends = () => {
             </CustomText>
             지급!{'\n'}책갈피는 매칭 신청과 수락할 때 사용됩니다
           </CustomText>
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ButtonStyled
-              onPress={copyToClipboard}
-              style={{ height: 44, width: 208, backgroundColor: colors.primary, marginTop: 26 }}
-            >
-              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
-            </S.ButtonStyled>
-          </View>
         </S.InviteFriendsContainer>
       </S.ColumnStyled>
+      <S.NextButtonStyled onPress={copyToClipboard} height={44}>
+        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
+      </S.NextButtonStyled>
     </S.Wrapper>
   );
 };

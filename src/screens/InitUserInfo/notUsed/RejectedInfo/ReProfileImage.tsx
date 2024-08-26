@@ -8,7 +8,7 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { TitleProgress } from '@screens/InitStyle/units/TitleProgress';
+import { TitleProgress } from '@screens/InitStyle/notUsed/TitleProgress';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import * as P from '@screens/Library/Library.styles';
 import * as ImagePicker from 'expo-image-picker';

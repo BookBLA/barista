@@ -1,5 +1,5 @@
-import nextButton from '@assets/images/buttons/nextButton.png';
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -8,9 +8,7 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as S from '../InitUserInfo.styles';
-import { TitleProgress } from './TitleProgress';
+import * as S from '../../InitUserInfo.styles';
 
 const NamePhone = () => {
   useHeaderControl({
@@ -49,45 +47,43 @@ const NamePhone = () => {
 
   const nextPage = () => {
     updateUserInfo({ name, phoneNumber: '000-0000-0000' });
-    movePage('schoolStudentID')();
+    movePage('genderBirth')();
   };
 
   return (
     <S.Wrapper>
-      <TitleProgress gauge={50} />
+      {/* <TitleProgress gauge={50} /> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView
+        {/* <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
-            height: '85%',
-            justifyContent: 'space-around',
+            height: '90%',
           }}
-        >
-          <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
-            <Text
-              style={{
-                color: colors.textGray3,
-                fontFamily: 'fontLight',
-                fontSize: 12,
-                textAlign: 'center',
-                marginBottom: 20,
-              }}
-            >
-              한국어로 된 닉네임만 가능합니다.
-            </Text>
-            <S.TextFiledStyled
-              maxLength={10} // 최대 길이 제한
-              defaultValue={userInfo.name}
-              onChangeText={(text: string) => handleChangeName(text)}
-              // onBlur={() => updateUserInfo('name', name)}
-              placeholder="닉네임"
-              placeholderTextColor={colors.textGray2}
-              value={name}
-            />
-          </View>
+        > */}
+        <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
+          <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
+          <Text
+            style={{
+              color: colors.textGray3,
+              fontFamily: 'fontLight',
+              fontSize: 12,
+              textAlign: 'center',
+              marginBottom: 20,
+            }}
+          >
+            한국어로 된 닉네임만 가능합니다.
+          </Text>
+          <S.TextFiledStyled
+            maxLength={10} // 최대 길이 제한
+            defaultValue={userInfo.name}
+            onChangeText={(text: string) => handleChangeName(text)}
+            placeholder="닉네임"
+            placeholderTextColor={colors.textGray2}
+            value={name}
+          />
+        </View>
 
-          {/* <View style={{ width: '100%', alignItems: 'center' }}>
+        {/* <View style={{ width: '100%', alignItems: 'center' }}>
             <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
             <S.TextFiledStyled
               value={phNum}
@@ -99,7 +95,7 @@ const NamePhone = () => {
               placeholderTextColor={colors.textGray2}
             />
           </View> */}
-        </KeyboardAwareScrollView>
+        {/* </KeyboardAwareScrollView> */}
       </TouchableWithoutFeedback>
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
