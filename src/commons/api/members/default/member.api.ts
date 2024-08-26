@@ -1,9 +1,14 @@
-import { Delete, Get, Post } from '@commons/configs/axios/http.api';
-import { MemberResponse } from '@commons/types/openapiGenerator';
+import { Delete, Get, Post, Put } from '@commons/configs/axios/http.api';
+import {
+  MemberInformationReadResponse,
+  MemberInformationUpdateRequest,
+  MemberResponse,
+  MemberStatusResponse,
+} from '@commons/types/openapiGenerator';
 
 export interface IMemberStatusContents {
   memberStatus: string;
-  reason: string;
+  reason?: string;
 }
 
 export interface IMember {
@@ -23,6 +28,10 @@ export const getMemberAllOtherMembersApi = (params: object) => Get(`members/all-
 
 export const getMemberPostcardsApi = () => Get(`postcard`);
 
-export const getMemberStatusesApi = () => Get('members/statuses');
+export const getMemberStatusesApi = () => Get<MemberStatusResponse>('members/statuses');
 
 export const postMemberStatusesApi = (contents: IMemberStatusContents) => Post('members/status', contents);
+
+export const GetMyInfoApi = () => Get<MemberInformationReadResponse>('members/me/information');
+
+export const PutMyInfoApi = (contents: MemberInformationUpdateRequest) => Put('members/me/information', contents);

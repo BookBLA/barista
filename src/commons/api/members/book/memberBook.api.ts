@@ -1,7 +1,6 @@
 import { Delete, Get, Post, Put } from '@commons/configs/axios/http.api';
 
 export interface IContents {
-  isRepresentative: boolean;
   title?: string | undefined;
   authors?: string | undefined;
   isbn?: string | undefined;
