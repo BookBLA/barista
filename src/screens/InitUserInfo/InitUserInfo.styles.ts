@@ -95,9 +95,8 @@ export const CodeFiledStyled = styled.View`
 `;
 
 export const NextButtonStyled = styled.TouchableOpacity`
-  width: 95%;
-  height: 50px;
-  /* height: 6%, */
+  width: 90%;
+  height: ${({ height }: { height?: number }) => (height ? `${height}px` : '50px')};
   border-radius: 60px;
   background-color: ${colors.primary};
   align-items: center;
@@ -178,6 +177,7 @@ export const ButtonArea = styled.View`
   justify-content: space-between;
   display: flex;
   align-items: center;
+  z-index: 5;
 `;
 
 export const MoveButton = styled.TouchableOpacity.attrs({

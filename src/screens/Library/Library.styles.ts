@@ -85,13 +85,13 @@ export const OverlayImage = styled.Image`
   top: 20px;
 `;
 
-// export const ProfileImageModificationImage = styled.Image`
-//   width: 30px;
-//   height: 30px;
-//   position: absolute;
-//   left: 40px;
-//   top: 60px;
-// `;
+export const ProfileImageModificationImage = styled.Image`
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 40px;
+  top: 40px;
+`;
 
 export const ProfileHeaderButtonContainer = styled.View`
   flex-direction: row;

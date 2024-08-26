@@ -1,8 +1,7 @@
 import { RouteProp } from '@react-navigation/native';
 
 export enum EBook {
-  MaxBooks = 3,
-  FirstBookIndex = 0,
+  MaxBooks = 4,
 }
 
 export type TParamList = {

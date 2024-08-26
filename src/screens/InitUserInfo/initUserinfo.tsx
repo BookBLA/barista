@@ -2,29 +2,25 @@ import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import TermsOfService from '../TermsOfService/TermsOfService';
-import EmailAuth from './units/EmailAuth';
-import GenderBirth from './units/GenderBirth';
-import InfoOpenChat from './units/InfoOpenChat';
-import InsertInviteCode from './units/InsertInviteCode';
-import InviteFriends from './units/InviteFriends';
-import NamePhone from './units/NamePhone';
-import OpenChatLink from './units/OpenChatLink';
-import ProfileImage from './units/ProfileImage';
-import SchoolStudentID from './units/SchoolStudentID';
+import EmailAuth from './screens/EmailAuth/EmailAuth';
+import GenderBirth from './screens/GenderBirth/GenderBirth';
+import InsertInviteCode from './screens/InsertInviteCode/InsertInviteCode';
+import NamePhone from './screens/NamePhone/NamePhone';
+import SchoolStudentID from './screens/SchoolStudentID/SchoolStudentID';
 
 const Stack = createStackNavigator();
 
 const screens = [
   { name: 'termsOfService', component: TermsOfService },
-  { name: 'insertInviteCode', component: InsertInviteCode },
-  { name: 'genderBirth', component: GenderBirth },
-  { name: 'namePhone', component: NamePhone },
   { name: 'schoolStudentID', component: SchoolStudentID },
   { name: 'emailAuth', component: EmailAuth },
-  { name: 'profileImage', component: ProfileImage },
-  { name: 'openChatLink', component: OpenChatLink },
-  { name: 'infoOpenChat', component: InfoOpenChat },
-  { name: 'inviteFriends', component: InviteFriends },
+  { name: 'namePhone', component: NamePhone },
+  { name: 'genderBirth', component: GenderBirth },
+  { name: 'insertInviteCode', component: InsertInviteCode },
+
+  // { name: 'profileImage', component: ProfileImage },
+  // { name: 'openChatLink', component: OpenChatLink },
+  // { name: 'infoOpenChat', component: InfoOpenChat },
 ];
 
 const InitUserInfoStack = () => {

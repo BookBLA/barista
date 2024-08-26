@@ -1,24 +1,22 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
-import CommStyle from './units/CommStyle';
-import DateCost from './units/DateCost';
-import Mbti from './units/Mbti';
-import MyHeight from './units/MyHeight';
-import OppositeSex from './units/OppositeSex';
-import PersonalQuestion from './units/PersonalQuestion';
-import SmokeDrink from './units/SmokeDrink';
+import Mbti from './screens/Mbti/Mbti';
+import MyHeight from './screens/MyHeight/MyHeight';
+import SelectProfile from './screens/SelectProfile/SelectProfile';
+import SmokeDrink from './screens/SmokeDrink/SmokeDrink';
 
 const Stack = createStackNavigator();
 
 const screens = [
   { name: 'mbti', component: Mbti },
   { name: 'smokeDrink', component: SmokeDrink },
-  { name: 'oppositeSex', component: OppositeSex },
-  { name: 'commStyle', component: CommStyle },
-  { name: 'dateCost', component: DateCost },
+  // { name: 'oppositeSex', component: OppositeSex },
+  // { name: 'commStyle', component: CommStyle },
+  // { name: 'dateCost', component: DateCost },
   { name: 'myHeight', component: MyHeight },
-  { name: 'personalQuestion', component: PersonalQuestion },
+  // { name: 'personalQuestion', component: PersonalQuestion },
+  { name: 'selectProfile', component: SelectProfile },
 ];
 
 const InitStyleStack = () => {

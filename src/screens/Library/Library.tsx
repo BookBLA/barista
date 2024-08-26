@@ -30,6 +30,7 @@ import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResp
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
@@ -41,11 +42,10 @@ import { BookItemList, TBookResponses } from './Library.types';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
-import BlockModalContent from './utils/BLockModalContent';
-import ReportOption from './utils/ReportOption/ReportOption';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import ViewStyle from './ViewStyle/ViewStyle';
-import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
+import BlockModalContent from './utils/BLockModalContent';
+import ReportOption from './utils/ReportOption/ReportOption';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -402,11 +402,19 @@ const Library: React.FC<Props> = ({ route }) => {
         {/*  </S.UserModificationStatusBar>*/}
         {/*)}*/}
         <S.UserInfoView>
-          <S.CircularImage
-            source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
-            blurRadius={platformBlurRadius}
-          />
-          {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
+          {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
+          <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
+            <S.CircularImage
+              source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
+              blurRadius={platformBlurRadius}
+            />
+            {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
+            {!isYourLibrary && (
+              <S.ProfileImageModificationImage
+                source={require('../../../assets/images/icons/ProfileImageSetting.png')}
+              />
+            )}
+          </TouchableOpacity>
 
           <S.UserInfoWrapper>
             <S.UserInfoNameWrapper>

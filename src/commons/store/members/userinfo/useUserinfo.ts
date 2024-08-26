@@ -3,10 +3,11 @@ import {
   patchMemberProfileImageApi,
   putMemberProfileApi,
 } from '@commons/api/members/profile/memberProfile.api';
+import { MemberProfileCreateRequestGenderEnum } from '@commons/types/openapiGenerator';
 import { create } from 'zustand';
 
 interface UserInfo {
-  gender: string;
+  gender: MemberProfileCreateRequestGenderEnum;
   birthDate: string;
   name: string;
   phoneNumber: string;
@@ -29,7 +30,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
     name: '',
     birthDate: '',
-    gender: '',
+    gender: 'FEMALE',
     schoolName: '',
     schoolEmail: '',
     phoneNumber: '',
@@ -43,7 +44,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   resetUserInfo: () =>
     set({
       userInfo: {
-        gender: '',
+        gender: 'FEMALE',
         birthDate: '',
         name: '',
         phoneNumber: '',
