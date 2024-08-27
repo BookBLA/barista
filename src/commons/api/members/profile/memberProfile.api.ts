@@ -1,5 +1,9 @@
 import { Get, Patch, Post, Put } from '@commons/configs/axios/http.api';
-import { MemberProfileCreateRequest, MemberProfileImageTypeUpdateRequest } from '@commons/types/openapiGenerator';
+import {
+  MemberProfileCreateRequest,
+  MemberProfileImageTypeUpdateRequest,
+  ProfileImageTypeReadResponse,
+} from '@commons/types/openapiGenerator';
 
 interface IPatchMemberProfile {
   openKakaoRoomUrl: string;
@@ -21,4 +25,4 @@ export const patchMemberProfileImageApi = (contents: MemberProfileImageTypeUpdat
 
 export const patchMemberProfileApi = (contents: IPatchMemberProfile) => Patch(`members/me/member-profile`, contents);
 
-export const getProfileImageType = () => Get('/members/me/profile-image-types');
+export const getProfileImageType = () => Get<ProfileImageTypeReadResponse>('/members/me/profile-image-types');
