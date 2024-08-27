@@ -69,7 +69,7 @@ const Library: React.FC<Props> = ({ route }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
-  const reportSnapPoints = useMemo(() => ['80%'], []);
+  const reportSnapPoints = useMemo(() => ['78%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;
@@ -409,11 +409,7 @@ const Library: React.FC<Props> = ({ route }) => {
               blurRadius={platformBlurRadius}
             />
             {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
-            {!isYourLibrary && (
-              <S.ProfileImageModificationImage
-                source={require('../../../assets/images/icons/ProfileImageSetting.png')}
-              />
-            )}
+            {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
           </TouchableOpacity>
 
           <S.UserInfoWrapper>
