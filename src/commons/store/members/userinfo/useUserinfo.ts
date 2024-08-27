@@ -30,7 +30,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
     name: '',
     birthDate: '',
-    gender: 'FEMALE',
+    gender: MemberProfileCreateRequestGenderEnum.Female,
     schoolName: '',
     schoolEmail: '',
     phoneNumber: '',
@@ -44,7 +44,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   resetUserInfo: () =>
     set({
       userInfo: {
-        gender: 'FEMALE',
+        gender: MemberProfileCreateRequestGenderEnum.Female,
         birthDate: '',
         name: '',
         phoneNumber: '',
