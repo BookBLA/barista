@@ -11,6 +11,7 @@ import { useStyleStore } from '@commons/store/members/style/useStyle';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import * as T from '@screens/InitStyle/InitStyle.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import React, { useEffect, useRef, useState } from 'react';
@@ -25,7 +26,7 @@ const ModifyStyle = () => {
   const { handleLimitTextLine } = useLimitTextLine();
   const [mbti, setMbti] = useState(['', '', '', '']);
   const { updateUserInfo, userInfo } = useUserStore();
-  const { updateStyleInfo, styleInfo } = useStyleStore();
+  const { updateStyleInfo, styleInfo, updateStyleInfoGroup } = useStyleStore();
   const showToast = useToastStore((state) => state.showToast);
 
   const scrollViewRef = useRef(null); // Create a ref for KeyboardAwareScrollView
@@ -68,9 +69,14 @@ const ModifyStyle = () => {
     try {
       const response = await GetMyInfoApi();
       updateUserInfo({ name: response.result.name });
-      updateStyleInfo('mbti', response.result.mbti);
-      updateStyleInfo('smokeType', response.result.smokeType);
-      updateStyleInfo('height', response.result.height);
+      // updateStyleInfo('mbti', response.result.mbti);
+      // updateStyleInfo('smokeType', response.result.smokeType);
+      // updateStyleInfo('height', response.result.height);
+      updateStyleInfoGroup({
+        mbti: response.result.mbti,
+        smokeType: response.result.smokeType,
+        height: response.result.height,
+      });
       const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
       setMbti([...newMbti]); // Update the mbti array with the newMbti array
     } catch (error) {
@@ -83,17 +89,25 @@ const ModifyStyle = () => {
   }, []);
 
   const callPutMyInfoApi = async () => {
+    if (styleInfo.height < 140 || styleInfo.height > 230) {
+      showToast({
+        content: '키는 140~230 사이의 값만 가능합니다!',
+      });
+      return;
+    }
     try {
+      console.log('userInfo', userInfo.name);
       const response = await PutMyInfoApi({
         name: userInfo.name,
-        mbti: styleInfo.mbti,
+        mbti: mbti.join(''),
         smokeType: styleInfo.smokeType,
         height: styleInfo.height,
       });
       console.log('putMyInfoApi', response);
       showToast({
-        content: '수정되었습니다.',
+        content: '회원정보가 수정되었습니다.',
       });
+      updateStyleInfo('mbti', mbti.join(''));
     } catch (error) {
       console.log('ERROR) putMyInfoApi', error);
       showToast({
@@ -106,10 +120,6 @@ const ModifyStyle = () => {
     const sanitizedInput = input.replace(/[^0-9]/g, '');
     const parsedInput = sanitizedInput === '' ? '' : parseInt(sanitizedInput);
     updateStyleInfo('height', parsedInput);
-  };
-  const isHangul = (text: string) => {
-    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3\u00B7\u11A2]+$/;
-    return hangulRegex.test(text);
   };
 
   const handleChangeName = (input: string) => {
