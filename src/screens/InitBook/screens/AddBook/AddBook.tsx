@@ -27,13 +27,12 @@ const AddBook = () => {
   const resetParams = route.params?.isStylePage ? { screen: 'Home' } : { screen: 'Library' };
 
   const nextPage = () => {
-    postMemberStatusesApi({ memberStatus: 'COMPLETED' })
-      .then(() => {
-        handleReset('tapScreens', resetParams);
-      })
-      .catch((error) => {
-        console.log('ERROR) postMemberStatusesApi', error);
-      });
+    try {
+      postMemberStatusesApi({ memberStatus: 'COMPLETED' });
+      handleReset('tapScreens', resetParams);
+    } catch (error) {
+      console.log('ERROR) postMemberStatusesApi', error);
+    }
   };
 
   return (

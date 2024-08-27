@@ -79,13 +79,16 @@ const SmokeDrink = () => {
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {styleInfo.smokeType === '' ? (
+        {/* {styleInfo.smokeType === '' ? (
           <Image source={notYetNextButton} />
         ) : (
           <S.MoveButton onPress={movePage('myHeight')}>
             <Image source={nextButton} />
           </S.MoveButton>
-        )}
+        )} */}
+        <S.MoveButton onPress={movePage('myHeight')} disabled={!styleInfo.smokeType}>
+          <Image source={styleInfo.smokeType ? nextButton : notYetNextButton} />
+        </S.MoveButton>
       </S.ButtonArea>
     </S.Wrapper>
   );

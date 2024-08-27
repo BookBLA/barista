@@ -6,6 +6,7 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
+import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import * as S from '../../InitUserInfo.styles';
@@ -20,11 +21,6 @@ const NamePhone = () => {
   const { movePage } = useMovePage();
   const [name, setName] = useState(userInfo.name);
   // const [phNum, setPhNum] = useState(userInfo.phoneNumber);
-
-  const isHangul = (text: string) => {
-    const hangulRegex = /^[\u3131-\u318E\uAC00-\uD7A3\u00B7\u11A2]+$/;
-    return hangulRegex.test(text);
-  };
 
   const handleChangeName = (input: string) => {
     if (isHangul(input) || input === '') {
