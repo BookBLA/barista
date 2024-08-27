@@ -27,7 +27,6 @@ const ModifyProfile = () => {
 
   useEffect(() => {
     callGetProfileImage();
-    setProfile(profileId);
   }, []);
 
   const handleModifyProfile = async () => {
