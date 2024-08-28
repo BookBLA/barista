@@ -1,4 +1,4 @@
-import { colors } from '../../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import LogOutContent from '../units/LogOutContent/LogOutContent';
 
 interface IModal {

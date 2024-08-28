@@ -1,5 +1,5 @@
+import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
-import { colors } from '../../commons/styles/variablesStyles';
 
 interface IProps {
   isSelect: boolean;
@@ -18,7 +18,7 @@ export const InnerWrapper = styled.TouchableHighlight`
 export const ButtonStyled = styled.TouchableOpacity`
   width: 105px;
   height: 44px;
-  border-radius: 14px;
+  border-radius: 20px;
   display: flex;
   justify-content: center;
   background-color: ${(props: IProps) => (props.isSelect ? colors.primary : colors.buttonMain)};

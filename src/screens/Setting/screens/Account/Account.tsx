@@ -1,19 +1,19 @@
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { useToggle } from '../../../../commons/hooks/useToggle';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
-import { useLogout } from '../../../../commons/hooks/useLogout';
-import * as S from '../../SettingStack.styles';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useMemberStore from '../../../../commons/store/useMemberStore';
-import { EMemberStatus } from '../../../../commons/types/memberStatus';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
-import { useEnableMatching } from './hooks/useEnableMatching';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomSwitch } from '@commons/components/Inputs/CustomSwitch/CustomSwitch';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { useLogout } from '@commons/hooks/auths/logout/useLogout';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import * as S from '@screens/Setting/SettingStack.styles';
 import { getHeaderConfig } from './configs/headerConfig';
-import { getMatchingConfig } from './configs/matchingconfig';
-import { CustomSwitch } from '../../../../commons/components/CustomSwitch/CustomSwitch';
 import { getLogoutConfig } from './configs/logoutConfig';
+import { getMatchingConfig } from './configs/matchingconfig';
+import { useEnableMatching } from './hooks/useEnableMatching';
 
 const Account = () => {
   useScreenLogger();
@@ -56,7 +56,7 @@ const Account = () => {
         <CustomText margin="16px 0" onPress={logoutToggle}>
           로그아웃
         </CustomText>
-        <CustomText onPress={movePage('modifyUserinfo')} margin="16px 0">
+        <CustomText onPress={movePage('modifyStyle')} margin="16px 0">
           회원정보 수정
         </CustomText>
         <S.BetweenWrapper>

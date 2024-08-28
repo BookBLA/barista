@@ -1,6 +1,6 @@
-import styled from 'styled-components/native';
-import { colors } from '../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import { Platform, StyleSheet } from 'react-native';
+import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
   flex: 1;

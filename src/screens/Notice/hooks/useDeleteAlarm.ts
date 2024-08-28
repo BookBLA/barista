@@ -1,4 +1,4 @@
-import { deleteAlarm } from '../../../commons/api/memberPushAlarm.api';
+import { deleteAlarm } from '@commons/api/members/alarm/memberPushAlarm.api';
 
 export const useDeleteAlarm = () => {
   const callDeleteAlarm = async (memberPushAlarmId?: string | null) => {

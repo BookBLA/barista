@@ -1,7 +1,7 @@
-import styled from 'styled-components/native';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { Platform, StyleSheet } from 'react-native';
-import { deviceWidth } from '../../../../commons/utils/dimensions';
+import styled from 'styled-components/native';
 
 export const ContainerViewStyled = styled.View`
   color: white;

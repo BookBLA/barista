@@ -1,15 +1,18 @@
-import { Image, Linking, TouchableOpacity, View } from 'react-native';
+import manIcon from '@assets/images/icons/ManSmall.png';
+import womanIcon from '@assets/images/icons/WomanSmall.png';
+import { readPostcard } from '@commons/api/matching/matching.api';
+import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useModalStore from '@commons/store/ui/modal/useModalStore';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useState } from 'react';
-import { IReceivePostcardProps } from './ReceivePostcard.types';
-import * as S from './ReceivePostcard.styles';
-import { CustomModal } from '../../../../commons/components/CustomModal/CustomModal';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import useToastStore from '../../../../commons/store/useToastStore';
-import useFetchMemberPostcard from '../../../../commons/hooks/useMemberPostcard';
-import { readPostcard } from '../../../../commons/api/matching.api';
-import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
-import useMovePage from '../../../../commons/hooks/useMovePage';
+import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import {
   CircularImage,
   GenderIconStyled,
@@ -24,12 +27,9 @@ import {
   UserInfoWrapper,
   UserNameText,
 } from '../Send/SendPostcard.styles';
-import manIcon from '../../../../../assets/images/icons/ManSmall.png';
-import womanIcon from '../../../../../assets/images/icons/WomanSmall.png';
-import useModalStore from '../../../../commons/store/useModalStore';
-import { icons, img } from '../../../../commons/utils/variablesImages';
-import { deviceWidth } from '../../../../commons/utils/dimensions';
-import useAnalyticsEventLogger from '../../../../commons/hooks/useAnalyticsEventLogger';
+import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
+import * as S from './ReceivePostcard.styles';
+import { IReceivePostcardProps } from './ReceivePostcard.types';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -63,7 +63,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
 
-  // console.log(bookImageUrls);
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
   };
@@ -146,10 +145,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         />
         <S.PostcardInfoViewStyled>
           <S.PostcardInfoFirstViewStyled>
-            <S.PostcardTextViewStyled style={{ fontSize: 14 }}>{`${memberAge}살 `}</S.PostcardTextViewStyled>
-            <S.PostcardTextViewStyled style={{ fontSize: 10 }}>
-              {`(독서퀴즈: ${quizScore}점)`}{' '}
-            </S.PostcardTextViewStyled>
+            <S.PostcardTextViewStyled
+              style={{ fontSize: 14 }}
+            >{`${memberName} ${memberAge}살 `}</S.PostcardTextViewStyled>
           </S.PostcardInfoFirstViewStyled>
           <S.PostcardTextViewStyled style={{ fontSize: 12, fontFamily: 'fontLight' }}>
             {memberSchoolName}
@@ -163,17 +161,17 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
             받은 엽서 열어보기
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            엽서 1개를 사용해 받은 엽서를 열어보시겠어요?
+            책갈피 5개를 사용해 받은 엽서를 열어보시겠어요?
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleCheckBeforeSendPostcardModal} bgColor={colors.buttonMain}>
               <CustomText size="14px" color={colors.textBlack}>
-                아니요
+                다음에 보기
               </CustomText>
             </S.RoundButton>
             <S.RoundButton onPress={showPostcardDetail} bgColor={colors.buttonPrimary}>
               <CustomText size="14px" color={colors.textYellow}>
-                예
+                엽서 보기
               </CustomText>
             </S.RoundButton>
           </S.ModalBottomWrapper>
@@ -182,20 +180,20 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-            엽서가 부족합니다.
+            책갈피가 부족합니다.
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+            책갈피를 충전하고 받은 엽서를 확인해보세요!
           </CustomText>
           <S.ModalBottomWrapper>
             <S.RoundButton onPress={toggleNoPostcardModal} bgColor={colors.buttonMain}>
               <CustomText size="14px" color={colors.textBlack}>
-                아니요
+                다음에 하기
               </CustomText>
             </S.RoundButton>
             <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
               <CustomText size="14px" color={colors.textYellow}>
-                충전시간 확인하기
+                충전하기
               </CustomText>
             </S.RoundButton>
           </S.ModalBottomWrapper>

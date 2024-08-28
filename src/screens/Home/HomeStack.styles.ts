@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
-import { colors } from '../../commons/styles/variablesStyles';
-import { deviceWidth } from '../../commons/utils/dimensions';
 
 export const Wrapper = styled.SafeAreaView`
   display: flex;

@@ -1,10 +1,10 @@
-import styled from 'styled-components/native';
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { Platform, StyleSheet } from 'react-native';
-import { colors } from '../../commons/styles/variablesStyles';
-import { deviceHeight, deviceWidth } from '../../commons/utils/dimensions';
+import styled from 'styled-components/native';
 
 export const UserInfoContainerView = styled.View`
-  margin: 8px 16px;
+  margin: 24px 16px;
 `;
 
 export const UserModificationStatusBar = styled.View`
@@ -19,17 +19,23 @@ export const UserModificationStatusBar = styled.View`
 export const UserInfoView = styled.View`
   flex-direction: row;
   justify-content: center;
-  align-items: center;
-  margin-bottom: 12px;
 `;
 
 export const UserInfoWrapper = styled.View`
   flex: 4;
 `;
 
+export const InviteFriendButtonWrapper = styled.View``;
+
+export const InviteFriendButtonImage = styled.Image`
+  width: 29px;
+  height: 29px;
+`;
+
 export const UserInfoNameWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 `;
 
 export const GenderIconStyled = styled.Image`
@@ -38,22 +44,35 @@ export const GenderIconStyled = styled.Image`
 `;
 
 export const UserNameText = styled.Text`
-  font-size: 20px;
-  color: ${colors.textBlack};
-  margin-bottom: 4px;
+  font-size: 22px;
+  color: ${colors.textWhite};
   font-family: fontMedium;
 `;
 
 export const SchoolNameText = styled.Text`
   font-size: 14px;
-  color: #858585;
+  margin-top: 8px;
+  color: ${colors.textWhite};
   font-family: fontLight;
 `;
 
+export const MemberStyleList = styled.View`
+  margin-top: 12px;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+`;
+
+export const MemberStyleView = styled.View`
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 4px;
+  padding: 8px 16px;
+`;
+
 export const CircularImage = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
+  width: 64px;
+  height: 64px;
+  border-radius: 32px;
   margin-right: 10px;
   background-color: #e9e9e9;
 `;
@@ -62,15 +81,15 @@ export const OverlayImage = styled.Image`
   width: 32px;
   height: 32px;
   position: absolute;
-  left: 15px;
-  top: 15px;
+  left: 18px;
+  top: 20px;
 `;
 
 export const ProfileImageModificationImage = styled.Image`
   width: 30px;
   height: 30px;
   position: absolute;
-  left: 38px;
+  left: 40px;
   top: 40px;
 `;
 
@@ -94,13 +113,25 @@ export const ProfileModifyButtonText = styled.Text`
 `;
 
 export const BookListContainerView = styled.View`
+  align-items: center;
   height: 100%;
-  background-color: #f7f4ed;
+  background-color: #f0f0f0;
   border-top-left-radius: 30px;
   border-top-right-radius: 30px;
 `;
 
-export const BookContainer = styled.View``;
+export const BookContainer = styled.View`
+  flex: 1;
+  margin-top: 20px;
+  color: #f0f0f0;
+`;
+
+export const BookFloorWrapper = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 20px;
+`;
 
 export const BookShelves = styled.View`
   width: ${deviceWidth}px;
@@ -124,12 +155,33 @@ export const styles: any = StyleSheet.create({
       },
     }),
   },
+  AddBookButton: {
+    position: 'absolute',
+    bottom: 12,
+    right: 5,
+    margin: 0,
+    padding: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 5,
+          height: 5,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+      },
+      android: {
+        elevation: 4,
+      },
+    }),
+  },
 });
 
 export const ModalBookListContainer = styled.View`
   flex-direction: row;
   justify-content: center;
-  padding-top: 45px;
+  padding-top: 20px;
   padding-right: 40px;
   padding-left: 40px;
   gap: 40px;
@@ -142,7 +194,7 @@ export const BookTouchableOpacity = styled.TouchableOpacity`
 `;
 
 export const BookImage = styled.Image`
-  width: 90%;
+  width: 80%;
   height: ${deviceHeight / 4 - 40}px;
   border-radius: 10px;
   object-fit: fill;
@@ -199,6 +251,18 @@ export const EmptyPostcardModalHeader = styled.View`
   margin-bottom: 20px;
 `;
 
+export const InviteFriendModalWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  padding: 30px 20px;
+`;
+
+export const InviteFriendModalHeader = styled.View`
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
 export const ModalBottomWrapper = styled.View`
   width: 100%;
   display: flex;
@@ -215,4 +279,36 @@ export const RoundButton = styled.TouchableOpacity`
   padding: 14px 20px;
   border-radius: 60px;
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+`;
+
+export const FriendInvitationCode = styled.View`
+  justify-content: center;
+  align-items: center;
+  width: 260px;
+  height: 96px;
+  background-color: #ecf0f9;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  //padding: 69px 31px;
+`;
+
+export const CopyCodeButtonWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const CopyCodeButton = styled.TouchableOpacity`
+  justify-content: center;
+  align-items: center;
+  padding: 14px 109px;
+  border-radius: 4px;
+  background-color: ${({ bgColor }: any) => bgColor || colors.primary};
+  margin-bottom: 20px;
+`;
+
+export const AddBookButton = styled.Image`
+  width: 54px;
+  height: 54px;
+  align-content: center;
+  justify-content: center;
 `;

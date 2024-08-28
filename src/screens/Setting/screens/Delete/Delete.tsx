@@ -1,16 +1,16 @@
-import { TouchableOpacity, View } from 'react-native';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { TProps } from './Delete.types';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { CustomButton } from '../../../../commons/components/CustomButton/CustomButton';
-import { useToggle } from '../../../../commons/hooks/useToggle';
-import { useDeleteMember } from './hooks/useDeleteMember';
-import * as S from '../../SettingStack.styles';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import CheckboxOff from '../../../../../assets/images/icons/CheckboxOff.png';
-import CheckboxOn from '../../../../../assets/images/icons/CheckboxOn.png';
+import CheckboxOff from '@assets/images/icons/CheckboxOff.png';
+import CheckboxOn from '@assets/images/icons/CheckboxOn.png';
+import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { colors } from '@commons/styles/variablesStyles';
 import { useRoute } from '@react-navigation/native';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import * as S from '@screens/Setting/SettingStack.styles';
+import { TouchableOpacity, View } from 'react-native';
+import { TProps } from './Delete.types';
+import { useDeleteMember } from './hooks/useDeleteMember';
 
 export const Delete = () => {
   useScreenLogger();

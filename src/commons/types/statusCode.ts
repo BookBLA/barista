@@ -11,5 +11,7 @@ export enum EStatusCode {
 
   MEMBER_Email_003 = 'member_email_003',
 
+  MEMBER_BOOK_004 = 'member-book_004',
+
   MEMBER_BOOK_005 = 'member-book_005',
 }

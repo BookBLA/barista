@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
-import { deviceHeight, deviceWidth } from '../../../commons/utils/dimensions';
-import { colors } from '../../../commons/styles/variablesStyles';
 
 export const SendPostcardModalContainer = styled.View`
   padding: 0 16px;

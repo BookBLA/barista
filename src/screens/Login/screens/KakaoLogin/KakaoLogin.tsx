@@ -1,14 +1,14 @@
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { INJECTED_JAVASCRIPT, KAKAO_URL } from '@screens/Login/LoginStack.constants';
+import * as S from '@screens/Login/LoginStack.styles';
 import React, { useEffect } from 'react';
 import { ActivityIndicator, Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import { icons } from '../../../../commons/utils/variablesImages';
-import { INJECTED_JAVASCRIPT, KAKAO_URL } from '../../LoginStack.constants';
-import { useKakaoLogin } from './hooks/useKakakoLogin';
-import { useAuthCode } from './hooks/useAuthCode';
-import * as S from '../../LoginStack.styles';
 import WebView from 'react-native-webview';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import { useAuthCode } from './hooks/useAuthCode';
+import { useKakaoLogin } from './hooks/useKakakoLogin';
 
 const KakaoLogin = () => {
   useScreenLogger();

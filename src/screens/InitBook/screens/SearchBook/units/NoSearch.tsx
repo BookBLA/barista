@@ -1,6 +1,6 @@
-import { View, Image } from 'react-native';
-import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { icons } from '../../../../../commons/utils/variablesImages';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { Image, View } from 'react-native';
 
 export const NoSearch = ({ search }: { search: string }) => {
   return (

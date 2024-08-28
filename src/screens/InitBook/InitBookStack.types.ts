@@ -1,5 +1,4 @@
 import { RouteProp } from '@react-navigation/native';
-import { ImageSourcePropType } from 'react-native';
 
 export type RootStackParamList = {
   AddBook: { isModify: boolean };

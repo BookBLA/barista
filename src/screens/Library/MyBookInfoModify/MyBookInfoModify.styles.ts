@@ -1,6 +1,6 @@
+import { colors } from '@commons/styles/variablesStyles';
+import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
-import { deviceHeight } from '../../../commons/utils/dimensions';
-import { colors } from '../../../commons/styles/variablesStyles';
 
 export const BookInfoContainer = styled.View`
   flex-direction: row;

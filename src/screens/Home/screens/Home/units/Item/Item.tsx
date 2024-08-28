@@ -1,7 +1,7 @@
+import { IDdata } from '@screens/Home/HomeStack.types';
 import React from 'react';
-import { IDdata } from '../../../../HomeStack.types';
+import Profile from '../Profile/Profile';
 import * as S from './Item.styles';
-import Profile from './units/../../Profile/Profile';
 
 interface IItemProps {
   item: IDdata;

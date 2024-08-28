@@ -1,25 +1,25 @@
-import { Controller, useForm } from 'react-hook-form';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { colors } from '@commons/styles/variablesStyles';
+import truncateText from '@commons/utils/ui/truncateText/truncateText';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { defaultValues } from '../../initBookStack.contents';
-import { initBookSchema } from '../../initBookStack.schema';
-import { icons } from '../../../../commons/utils/variablesImages';
+import * as U from '@screens/InitBook/InitBookStack.styles';
+import { defaultValues } from '@screens/InitBook/initBookStack.contents';
+import { initBookSchema } from '@screens/InitBook/initBookStack.schema';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
+import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, View } from 'react-native';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import Dash from 'react-native-dash';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import useInvalid from './hooks/useInvalid';
 import { usePostMemberBook } from './hooks/usePostMemberBook';
 import { IProps } from './initQuiz.types';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as U from '../../InitBookStack.styles';
-import Dash from 'react-native-dash';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import truncateText from '../../../../commons/utils/truncateText';
-import useInvalid from './hooks/useInvalid';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
 
 const InitQuiz = ({ route }: IProps) => {
   useScreenLogger();
-  const { isRepresentative, selectedBook } = route?.params ?? '';
+  const { selectedBook } = route?.params ?? '';
   useHeaderControl({
     title: truncateText(selectedBook?.title ?? '', 22),
   });
@@ -33,7 +33,7 @@ const InitQuiz = ({ route }: IProps) => {
     mode: 'onChange',
     resolver: yupResolver(initBookSchema),
   });
-  const { callPostMemberBook } = usePostMemberBook(isRepresentative, selectedBook);
+  const { callPostMemberBook } = usePostMemberBook(selectedBook);
   const reviewValue = watch('review');
   const handleFormError = useInvalid();
 
@@ -84,8 +84,8 @@ const InitQuiz = ({ route }: IProps) => {
                 height: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                marginBottom: 10,
-                marginTop: 10,
+                marginBottom: 28,
+                marginTop: 49,
               }}
               dashGap={5}
               dashLength={5}
@@ -173,23 +173,16 @@ const InitQuiz = ({ route }: IProps) => {
         </KeyboardAwareScrollView>
         <S.NextButtonStyled
           style={{
-            height: 50,
+            height: 44,
             bottom: 5,
             backgroundColor: isValid ? colors.primary : colors.primary02,
           }}
           onPress={handleSubmit(callPostMemberBook, handleFormError)}
         >
-          <Text style={{ color: isValid ? colors.primary02 : colors.textGray, fontFamily: 'fontMedium', fontSize: 16 }}>
+          <Text style={{ color: isValid ? colors.primary02 : colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
             등록하기
           </Text>
         </S.NextButtonStyled>
-
-        {/* <CustomButton
-          onPress={handleSubmit(callPostMemberBook, handleFormError)}
-          backgroundColor={isValid ? colors.primary : colors.primary02}
-          fontColor={isValid ? colors.primary02 : colors.textGray}
-          contents="등록하기"
-        /> */}
       </U.Wrapper>
     </>
   );

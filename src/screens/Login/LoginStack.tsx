@@ -1,6 +1,6 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import React from 'react';
 import KakaoLogin from './screens/KakaoLogin/KakaoLogin';
 import LoginHome from './screens/LoginHome/LoginHome';
 

@@ -1,7 +1,7 @@
-import { postMemberQuizzesApi } from '../../../../../commons/api/memberQuizzes.api';
-import useMovePage from '../../../../../commons/hooks/useMovePage';
-import useToastStore from '../../../../../commons/store/useToastStore';
-import { IRequestQuizzes } from '../../../InitBookStack.types';
+import { postMemberQuizzesApi } from '@commons/api/quiz/memberQuizzes.api';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { IRequestQuizzes } from '@screens/InitBook/InitBookStack.types';
 
 // TODO: 성진 - 이제 사용하지 않을 예정
 export const usePostMemberQuizzes = (memberBookId: string) => {

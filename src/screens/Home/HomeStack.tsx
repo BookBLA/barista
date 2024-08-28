@@ -1,10 +1,10 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
+import usePushNotifications from '@commons/hooks/notifications/pushNotifications/usePushNotifications';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
-import Product from './screens/Product/Product';
+import Library from '@screens/Library/Library';
+import React from 'react';
 import Home from './screens/Home/Home';
-import usePushNotifications from '../../commons/hooks/usePushNotifications';
-import Library from '../Library/Library';
+import Product from './screens/Product/Product';
 
 const Stack = createStackNavigator();
 const screens = [

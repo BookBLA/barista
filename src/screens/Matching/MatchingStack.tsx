@@ -1,10 +1,10 @@
-import React from 'react';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CustomScreen } from '../../commons/components/CustomScreen/CustomScreen';
+import Product from '@screens/Home/screens/Product/Product';
+import Library from '@screens/Library/Library';
+import React from 'react';
 import Matching from './Matching';
 import ReceivePostcardDetail from './Postcard/Receive/ReceivePostcardDetail';
-import Product from '../Home/screens/Product/Product';
-import Library from '../Library/Library';
 
 const Stack = createStackNavigator();
 const screens = [

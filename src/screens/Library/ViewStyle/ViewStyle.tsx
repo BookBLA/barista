@@ -1,10 +1,10 @@
-import { View } from 'react-native';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { colors } from '@commons/styles/variablesStyles';
 import React from 'react';
+import { View } from 'react-native';
 import * as S from './ViewStyle.styles';
 import { PersonalQuizAnswerBox, UserStyleBox } from './ViewStyle.styles';
 import { IViewStyleProps } from './ViewStyle.types';
-import { CustomText } from '../../../commons/components/TextComponents/CustomText/CustomText';
-import { colors } from '../../../commons/styles/variablesStyles';
 
 const ViewStyle: React.FC<IViewStyleProps> = ({ styles, friendPreferenceType, personalQuestion }) => {
   return (

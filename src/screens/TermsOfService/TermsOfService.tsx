@@ -1,18 +1,18 @@
-import useMovePage from '../../commons/hooks/useMovePage';
-import * as S from '../InitUserInfo/InitUserInfo.styles';
-import * as T from './TermsOfService.styles';
-import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../commons/styles/variablesStyles';
+import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
+import nextButton from '@assets/images/buttons/nextButton.png';
+import nextArrow from '@assets/images/icons/NextArrow.png';
+import { agreementTitles, agreementUrls } from '@commons/contents/agreement/agreementUrls';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useGetPushToken from '@commons/hooks/notifications/getPushToken/useGetPushToken';
+import { usePostPushToken } from '@commons/hooks/notifications/postPushToken/usePostPushToken';
+import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
+import { colors } from '@commons/styles/variablesStyles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import Checkbox from 'expo-checkbox';
 import React, { useState } from 'react';
-import nextArrow from '../../../assets/images/icons/NextArrow.png';
-import { useAgreementStore } from '../../commons/store/useAgreement';
-import { agreementTitles, agreementUrls } from '../../commons/contents/agreement/agreementUrls';
-import useGetPushToken from '../../commons/hooks/useGetPushToken';
-import { usePostPushToken } from '../../commons/hooks/usePostPushToken';
-import notYetNextButton from '../../../assets/images/buttons/NotYetNextButton.png';
-import nextButton from '../../../assets/images/buttons/nextButton.png';
-import useScreenLogger from '../../commons/hooks/useAnalyticsScreenLogger';
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
+import * as T from './TermsOfService.styles';
 
 const TermsOfService = () => {
   useScreenLogger();
@@ -29,7 +29,7 @@ const TermsOfService = () => {
   const onClickMovePage = async () => {
     const pushToken = await getPushToken();
     await postPushToken(pushToken);
-    movePage('insertInviteCode')();
+    movePage('schoolStudentID')();
   };
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states

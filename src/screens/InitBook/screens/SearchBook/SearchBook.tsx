@@ -1,40 +1,38 @@
+import Pagination from '@commons/components/Layouts/Pagination/Pagination';
+import { SearchedBookList } from '@commons/components/Lists/SearchedBookList/SearchedBookList';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import usePagination from '@commons/hooks/ui/pagination/usePagination';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { colors } from '@commons/styles/variablesStyles';
+import { BookSearchResponse } from '@commons/types/openapiGenerator';
+import { buttons, icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import * as T from '@screens/InitBook/InitBookStack.styles';
+import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { useEffect, useState } from 'react';
-import { buttons, icons } from '../../../../commons/utils/variablesImages';
-import { IBookData } from '../../InitBookStack.types';
-import { ScrollView } from 'react-native-gesture-handler';
-import { SearchedBookList } from '../../../../commons/components/SearchedBookList/SearchedBookList';
-import { CustomText } from '../../../../commons/components/TextComponents/CustomText/CustomText';
-import { NoSearch } from './units/NoSearch';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
-import { colors } from '../../../../commons/styles/variablesStyles';
-import { useHandleMoveTop } from '../../../../commons/hooks/useHandleMoveTop';
+import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
-import * as S from '../../../InitUserInfo/InitUserInfo.styles';
-import * as T from '../../InitBookStack.styles';
-import useHeaderControl from '../../../../commons/hooks/useHeaderControl';
-import useManageMargin from '../../../../commons/hooks/useManageMargin';
-import Pagination from '../../../../commons/components/Pagination/Pagination';
-import usePagination from '../../../../commons/hooks/usePagination';
-import { IProps } from './SearchBook.types';
-import useMovePage from '../../../../commons/hooks/useMovePage';
-import useToastStore from '../../../../commons/store/useToastStore';
-import useScreenLogger from '../../../../commons/hooks/useAnalyticsScreenLogger';
+import { NoSearch } from './units/NoSearch';
 
-const SearchBook = ({ route }: IProps) => {
+const SearchBook = () => {
   useScreenLogger();
   useManageMargin();
   useHeaderControl({
-    title: '내 서재',
+    title: '책 검색',
     left: true,
   });
   const { movePage } = useMovePage();
-  const { isRepresentative } = route.params;
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
   const { bookList, resultSearch, callGetSearchBookApi } = useSearchBooks(setTotalPage);
   const [search, setSearch] = useState('');
-  const [selectedBook, setSelectedBook] = useState<Partial<IBookData>>({});
+  const [selectedBook, setSelectedBook] = useState<BookSearchResponse>({});
   const showToast = useToastStore((state) => state.showToast);
 
   const SearchBook = () => {
@@ -80,7 +78,7 @@ const SearchBook = ({ route }: IProps) => {
               <CustomText font="fontRegular" size="12px">
                 검색결과 {totalPage}건
               </CustomText>
-              {bookList.map((item: IBookData, index) => (
+              {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
                   key={index}
                   item={item}
@@ -105,10 +103,10 @@ const SearchBook = ({ route }: IProps) => {
               nextEndPage={nextEndPage}
             />
             <S.NextButtonStyled
-              style={{ height: 50, position: 'absolute', bottom: 10, zIndex: 1 }}
-              onPress={movePage('initQuiz', { isRepresentative, selectedBook })}
+              style={{ height: 44, position: 'absolute', bottom: 10, zIndex: 1 }}
+              onPress={movePage('initQuiz', { selectedBook })}
             >
-              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>등록하기</Text>
+              <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>등록하기</Text>
             </S.NextButtonStyled>
           </>
         ) : null}
