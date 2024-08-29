@@ -11,14 +11,13 @@ export const ReadingQuizInfoContainer = styled.View`
   background-color: cornflowerblue;
 `;
 
-export const BookImage = styled.View`
+export const BookImage = styled.Image`
   border-radius: 10px;
   border-width: 2px;
   border-color: ${colors.buttonNavStroke};
   overflow: hidden;
   width: ${deviceWidth * 0.22}px;
   height: ${deviceHeight * 0.15}px;
-  background-color: antiquewhite;
 `;
 
 export const BookTextContainer = styled.View`
@@ -31,6 +30,24 @@ export const BookTitleWrapper = styled.View`
   overflow: hidden;
   background-color: darkblue;
 `;
+
+export const StepProgressBar = styled.View`
+  
+`;
+
+export const PreviousStepImage = styled.Image`
+  width: 14px;
+  height: 14px;
+`;
+
+export const StepImage = styled.Image`
+  width: 16px;
+  height: 16px;
+`;
+
+export const StepName = styled.View`
+
+`
 
 export const ReadingQuizTestContainer = styled.View`
   display: flex;
@@ -56,14 +73,21 @@ export const AnswerCheckbox = styled.View`
   flex-direction: row;
   border-radius: 10px;
   border-width: 2px;
-  border-color: #00000022;
   width: 100%;
   padding: 11px 16px;
   margin: 6px 0;
   background-color: white;
 `;
 
+export const AnswerCheckRadioButton = styled.Image`
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+`;
+
 export const NextButton = styled.TouchableOpacity`
+  margin-top: auto;
+  margin-bottom: 20px;
   width: 90%;
   height: 56px;
   background-color: ${colors.primary02};

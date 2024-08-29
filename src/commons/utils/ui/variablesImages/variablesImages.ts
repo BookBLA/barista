@@ -73,6 +73,14 @@ export const icons = {
 
   hourGlass: require('@assets/images/icons/Hourglass.png'),
   inviteFriend: require('@assets/images/icons/InviteFriend.png'),
+
+  previousStep: require('@assets/images/icons/PreviousStep.png'),
+  currentStep: require('@assets/images/icons/CurrentStep.png'),
+  nextStep: require('@assets/images/icons/NextStep.png'),
+
+  radiobuttonDefault: require('@assets/images/icons/radiobutton_default.png'),
+  radiobuttonSelected: require('@assets/images/icons/radiobutton_selected.png'),
+  radiobuttonCorrect: require('@assets/images/icons/radiobutton_correct.png'),
 };
 
 export const img = {

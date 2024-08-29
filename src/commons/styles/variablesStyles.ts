@@ -9,6 +9,8 @@ export const colors = {
   buttonAuthToggle: '#BBBFCF',
   buttonMain: '#FFF5D6',
   buttonPrimary: '#1D2E61',
+  buttonBackground: '#455C9F24',
+  buttonBorder: '#00000022',
   buttonYellow: '#FFF5D6',
   buttonPrevNext: '#E9DCB9',
   buttonWrong: '#EE3D3D',
