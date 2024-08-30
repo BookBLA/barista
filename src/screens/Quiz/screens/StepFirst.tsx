@@ -9,7 +9,7 @@ import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import { Text, TouchableOpacity } from 'react-native';
+import { Image, Text } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
 
 const StepFirst = () => {
@@ -50,8 +50,22 @@ const StepFirst = () => {
   useHeaderControl({ title: '독서 퀴즈' });
   return (
     <>
-      {/* TODO: step progressbar */}
       <S.Wrapper style={{ alignItems: 'center' }}>
+        <T.StepProgressBar>
+          <T.StepLine style={{ backgroundColor: 'black' }} />
+          <T.StepImage>
+            <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
+            <T.StepName>Step 01</T.StepName>
+          </T.StepImage>
+          <T.StepImage>
+            <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
+            <T.StepName>Step 02</T.StepName>
+          </T.StepImage>
+          <T.StepImage>
+            <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
+            <T.StepName>Step 03</T.StepName>
+          </T.StepImage>
+        </T.StepProgressBar>
         <T.ReadingQuizInfoContainer>
           <T.BookImage source={bookInfo?.imageUrl ? { uri: bookInfo?.imageUrl } : img.prepareBookImage} />
           <T.BookTextContainer>
@@ -72,63 +86,60 @@ const StepFirst = () => {
             </CustomText>
           </T.QuizTitleContainer>
           <T.AnswerCheckboxContainer>
-            <TouchableOpacity style={{ width: '100%' }} onPress={() => selectAnswer(1)}>
-              <T.AnswerCheckbox
-                style={{
-                  backgroundColor: currentPressedAnswer === 1 ? colors.buttonBackground : 'white',
-                  borderColor: currentPressedAnswer === 1 ? colors.buttonPrimary : colors.buttonBorder,
-                }}
+            <T.AnswerCheckbox
+              onPress={() => selectAnswer(1)}
+              style={{
+                backgroundColor: currentPressedAnswer === 1 ? colors.buttonBackground : 'white',
+                borderColor: currentPressedAnswer === 1 ? colors.buttonPrimary : colors.buttonBorder,
+              }}
+            >
+              <CustomText
+                font="fontMedium"
+                size="16px"
+                color={currentPressedAnswer === 1 ? colors.buttonPrimary : '#00000099'}
               >
-                <CustomText
-                  font="fontMedium"
-                  size="16px"
-                  color={currentPressedAnswer === 1 ? colors.buttonPrimary : '#00000099'}
-                >
-                  {bookInfo?.firstChoice ?? 'A. 첫 번째 답'}
-                </CustomText>
-                <T.AnswerCheckRadioButton
-                  source={currentPressedAnswer === 1 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
-                />
-              </T.AnswerCheckbox>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%' }} onPress={() => selectAnswer(2)}>
-              <T.AnswerCheckbox
-                style={{
-                  backgroundColor: currentPressedAnswer === 2 ? colors.buttonBackground : 'white',
-                  borderColor: currentPressedAnswer === 2 ? colors.buttonPrimary : colors.buttonBorder,
-                }}
+                {bookInfo?.firstChoice ?? 'A. 첫 번째 답'}
+              </CustomText>
+              <T.AnswerCheckRadioButton
+                source={currentPressedAnswer === 1 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+              />
+            </T.AnswerCheckbox>
+            <T.AnswerCheckbox
+              onPress={() => selectAnswer(2)}
+              style={{
+                backgroundColor: currentPressedAnswer === 2 ? colors.buttonBackground : 'white',
+                borderColor: currentPressedAnswer === 2 ? colors.buttonPrimary : colors.buttonBorder,
+              }}
+            >
+              <CustomText
+                font="fontMedium"
+                size="16px"
+                color={currentPressedAnswer === 2 ? colors.buttonPrimary : '#00000099'}
               >
-                <CustomText
-                  font="fontMedium"
-                  size="16px"
-                  color={currentPressedAnswer === 2 ? colors.buttonPrimary : '#00000099'}
-                >
-                  {bookInfo?.secondChoice ?? 'B. 두 번째 답'}
-                </CustomText>
-                <T.AnswerCheckRadioButton
-                  source={currentPressedAnswer === 2 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
-                />
-              </T.AnswerCheckbox>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ width: '100%' }} onPress={() => selectAnswer(3)}>
-              <T.AnswerCheckbox
-                style={{
-                  backgroundColor: currentPressedAnswer === 3 ? colors.buttonBackground : 'white',
-                  borderColor: currentPressedAnswer === 3 ? colors.buttonPrimary : colors.buttonBorder,
-                }}
+                {bookInfo?.secondChoice ?? 'B. 두 번째 답'}
+              </CustomText>
+              <T.AnswerCheckRadioButton
+                source={currentPressedAnswer === 2 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+              />
+            </T.AnswerCheckbox>
+            <T.AnswerCheckbox
+              onPress={() => selectAnswer(3)}
+              style={{
+                backgroundColor: currentPressedAnswer === 3 ? colors.buttonBackground : 'white',
+                borderColor: currentPressedAnswer === 3 ? colors.buttonPrimary : colors.buttonBorder,
+              }}
+            >
+              <CustomText
+                font="fontMedium"
+                size="16px"
+                color={currentPressedAnswer === 3 ? colors.buttonPrimary : '#00000099'}
               >
-                <CustomText
-                  font="fontMedium"
-                  size="16px"
-                  color={currentPressedAnswer === 3 ? colors.buttonPrimary : '#00000099'}
-                >
-                  {bookInfo?.thirdChoice ?? 'C. 세 번째 답'}
-                </CustomText>
-                <T.AnswerCheckRadioButton
-                  source={currentPressedAnswer === 3 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
-                />
-              </T.AnswerCheckbox>
-            </TouchableOpacity>
+                {bookInfo?.thirdChoice ?? 'C. 세 번째 답'}
+              </CustomText>
+              <T.AnswerCheckRadioButton
+                source={currentPressedAnswer === 3 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+              />
+            </T.AnswerCheckbox>
           </T.AnswerCheckboxContainer>
         </T.ReadingQuizTestContainer>
 

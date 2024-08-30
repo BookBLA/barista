@@ -2,12 +2,48 @@ import { colors } from '@commons/styles/variablesStyles';
 import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
 
+export const StepProgressBar = styled.View`
+  margin-top: 15px;
+  margin-bottom: auto;
+  padding: 0 10px;
+  width: 45%;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: blueviolet;
+`;
+
+export const StepLine = styled.View`
+  margin: 0 15px;
+  width: 90%;
+  height: 2px;
+  position: absolute;
+  z-index: 0;
+`;
+
+export const StepImage = styled.View`
+  position: relative;
+`;
+
+export const StepName = styled.Text`
+  width: 50px;
+  position: absolute;
+  left: 50%;
+  margin-left: -25px;
+  bottom: -15px;
+  font-size: 10px;
+  color: black;
+  text-align: center;
+`;
+
 export const ReadingQuizInfoContainer = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
+  margin: 10px 0;
   background-color: cornflowerblue;
 `;
 
@@ -31,24 +67,6 @@ export const BookTitleWrapper = styled.View`
   background-color: darkblue;
 `;
 
-export const StepProgressBar = styled.View`
-  
-`;
-
-export const PreviousStepImage = styled.Image`
-  width: 14px;
-  height: 14px;
-`;
-
-export const StepImage = styled.Image`
-  width: 16px;
-  height: 16px;
-`;
-
-export const StepName = styled.View`
-
-`
-
 export const ReadingQuizTestContainer = styled.View`
   display: flex;
   background-color: gainsboro;
@@ -68,7 +86,7 @@ export const AnswerCheckboxContainer = styled.View`
   align-items: space-between;
 `;
 
-export const AnswerCheckbox = styled.View`
+export const AnswerCheckbox = styled.TouchableOpacity`
   display: flex;
   flex-direction: row;
   border-radius: 10px;
@@ -76,7 +94,6 @@ export const AnswerCheckbox = styled.View`
   width: 100%;
   padding: 11px 16px;
   margin: 6px 0;
-  background-color: white;
 `;
 
 export const AnswerCheckRadioButton = styled.Image`
