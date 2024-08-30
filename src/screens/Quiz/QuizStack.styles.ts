@@ -1,6 +1,7 @@
 import { colors } from '@commons/styles/variablesStyles';
 import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const StepProgressBar = styled.View`
   margin-top: 15px;
@@ -15,7 +16,12 @@ export const StepProgressBar = styled.View`
   background-color: blueviolet;
 `;
 
-export const StepLine = styled.View`
+export const StepLineFirst = styled(LinearGradient).attrs({
+  colors: ['#AFDFF8', '#D6EFFB', '#ECECEC', '#EBEFF2', '#EDEEF2'],
+  locations: [0, 0.1, 0.4, 0.49, 1],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 0 },
+})`
   margin: 0 15px;
   width: 90%;
   height: 2px;

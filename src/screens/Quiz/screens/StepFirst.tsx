@@ -52,7 +52,7 @@ const StepFirst = () => {
     <>
       <S.Wrapper style={{ alignItems: 'center' }}>
         <T.StepProgressBar>
-          <T.StepLine style={{ backgroundColor: 'black' }} />
+          <T.StepLineFirst />
           <T.StepImage>
             <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
             <T.StepName>Step 01</T.StepName>
