@@ -7,13 +7,14 @@ import StepFirst from '@screens/Quiz/screens/StepFirst';
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import StepSecond from '@screens/Quiz/screens/StepSecond';
 import StepThird from '@screens/Quiz/screens/StepThird';
+import Completion from '@screens/Quiz/screens/Completion';
 
 const Stack = createStackNavigator();
 const screens = [
   { name: 'stepFirst', component: StepFirst },
   { name: 'stepSecond', component: StepSecond },
   { name: 'stepThird', component: StepThird },
-  // { name: 'completion', component: Delete },
+  { name: 'completion', component: Completion },
 ];
 
 const QuizStack = () => {

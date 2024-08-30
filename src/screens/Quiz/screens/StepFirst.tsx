@@ -11,9 +11,11 @@ import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { Image, Text } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 
 const StepFirst = () => {
   useScreenLogger();
+  const { movePage } = useMovePage();
   const route = useRoute<TProps>();
   const memberBookId = route.params.bookQuizInfo;
 
@@ -56,6 +58,7 @@ const StepFirst = () => {
           <T.StepImage>
             <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
             <T.StepName>Step 01</T.StepName>
+            {/*  TODO: StepName 색상 수정 */}
           </T.StepImage>
           <T.StepImage>
             <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
@@ -144,7 +147,8 @@ const StepFirst = () => {
         </T.ReadingQuizTestContainer>
 
         {/*onPress={() => handleReset('tapScreens', resetParams)*/}
-        <T.NextButton style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}>
+        {/* TODO: 버튼 안눌리게 */}
+        <T.NextButton onPress={movePage('completion')} style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}>
           <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
         </T.NextButton>
       </S.Wrapper>

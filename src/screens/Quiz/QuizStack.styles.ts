@@ -29,6 +29,32 @@ export const StepLineFirst = styled(LinearGradient).attrs({
   z-index: 0;
 `;
 
+export const StepLineSecond = styled(LinearGradient).attrs({
+  colors: ['#ECECEC', '#D6EFFB', '#AFDFF8', '#B0DFF8', '#D6EFFB', '#ECEDEF', '#EDEEF2'],
+  locations: [0, 0.1, 0.4, 0.49, 0.73, 0.9, 1],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 0 },
+})`
+  margin: 0 15px;
+  width: 90%;
+  height: 2px;
+  position: absolute;
+  z-index: 0;
+`;
+
+export const StepLineThird = styled(LinearGradient).attrs({
+  colors: ['#EDEEF2', '#EDEEF0', '#E6F5FD', '#D6EFFB', '#AFDFF8'],
+  locations: [0.4, 0.51, 0.68, 0.9, 1],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 0 },
+})`
+  margin: 0 15px;
+  width: 90%;
+  height: 2px;
+  position: absolute;
+  z-index: 0;
+`;
+
 export const StepImage = styled.View`
   position: relative;
 `;
@@ -117,4 +143,22 @@ export const NextButton = styled.TouchableOpacity`
   border-radius: 10px;
   align-items: center;
   justify-content: center;
+`;
+
+export const CompletionContainer = styled.View`
+  margin-top: auto;
+  width: 90%;
+  height: ${deviceHeight * 0.7}px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  background-color: cornflowerblue;
+`;
+
+export const CompletionImage = styled.Image`
+  margin-bottom: 50px;
+  width: 126px;
+  height: 161px;
 `;

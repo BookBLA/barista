@@ -109,6 +109,9 @@ export const img = {
   heartGauge5: require('@assets/images/img/heartGauge/heartGauge5.png'),
   heartGauge6: require('@assets/images/img/heartGauge/heartGauge6.png'),
   heartGauge7: require('@assets/images/img/heartGauge/heartGauge7.png'),
+
+  quizFail: require('@assets/images/img/quizFail.png'),
+  quizSuccess: require('@assets/images/img/quizSuccess.png'),
 };
 
 export const logos = {

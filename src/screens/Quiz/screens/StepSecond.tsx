@@ -8,6 +8,6 @@ const StepSecond = () => {
       <h1>asdfadf</h1>
     </>
   );
-}
+};
 
 export default StepSecond;
