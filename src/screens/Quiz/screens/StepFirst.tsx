@@ -17,7 +17,8 @@ const StepFirst = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
-  const memberBookId = route.params.bookQuizInfo;
+  // @ts-ignore
+  const memberBookId = route.params['memberBookId'];
 
   const [bookInfo, setBookInfo] = useState<TBookInfo | null>(null);
   const [currentPressedAnswer, setCurrentPressedAnswer] = useState<number>(-1);
@@ -147,7 +148,7 @@ const StepFirst = () => {
 
         {/*onPress={() => handleReset('tapScreens', resetParams)*/}
         <T.NextButton
-          onPress={movePage('completion')}
+          onPress={movePage('stepSecond', { memberBookId })}
           style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}
           disabled={currentPressedAnswer === -1}
         >

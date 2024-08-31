@@ -9,7 +9,7 @@ const Header = () => {
   const { movePage } = useMovePage();
   const { memberPostcard } = useFetchMemberPostcard();
   const { data } = useGetAlarms();
-  const memberBookId = 1;
+  const memberBookId = 1000035;
 
   return (
     <S.HeaderWrapper>

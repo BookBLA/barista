@@ -9,7 +9,7 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 const Completion = () => {
   const { movePage } = useMovePage();
 
-  const isSuccess = true;
+  const isSuccess = false;
 
   return (
     <S.Wrapper style={{ alignItems: 'center' }}>

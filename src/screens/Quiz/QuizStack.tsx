@@ -29,7 +29,7 @@ const QuizStack = () => {
             key={name}
             name={name}
             component={CustomScreen(component)}
-            initialParams={{ ...route.params.bookQuizInfo }}
+            initialParams={{ ...route.params }}
           />
         ) : (
           <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
