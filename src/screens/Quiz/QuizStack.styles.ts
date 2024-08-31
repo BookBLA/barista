@@ -150,6 +150,51 @@ export const TextCount = styled.Text`
   margin-top: 6px;
 `;
 
+export const PostCardImageListWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;
+
+export const PostCardImageWrapper = styled.View`
+  position: relative;
+  margin: 0 7px;
+  width: 114px;
+  height: 170px;
+  border-radius: 10px;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const PostCardImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+`;
+
+export const PostCardSelectedBackground = styled.View`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #00000066;
+  z-index: 10;
+`;
+
+export const PostCardSelectedImage = styled.Image`
+  position: absolute;
+  width: 60px;
+  height: 42px;
+  top: 50%;
+  margin-top: -21px;
+  left: 50%;
+  margin-left: -30px;
+  z-index: 20;
+  object-fit: fill;
+`;
+
 export const NextButton = styled.TouchableOpacity`
   margin-top: auto;
   margin-bottom: 20px;

@@ -112,6 +112,8 @@ export const img = {
 
   quizFail: require('@assets/images/img/quizFail.png'),
   quizSuccess: require('@assets/images/img/quizSuccess.png'),
+
+  postcardSelected: require('@assets/images/img/postcardSelected.png'),
 };
 
 export const logos = {

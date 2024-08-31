@@ -1,12 +1,92 @@
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import * as S from '@screens/Home/HomeStack.styles';
+import * as T from '@screens/Quiz/QuizStack.styles';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
+import { useRoute } from '@react-navigation/native';
+import { TProps } from '@screens/Quiz/QuizStack.types';
+import { BookInfo } from '@screens/Quiz/units/BookInfo';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { Image, Text, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
+import { getPostcardTypeList } from '@commons/api/postcard/library.api';
 
 const StepThird = () => {
   useScreenLogger();
+  const { movePage } = useMovePage();
+  const route = useRoute<TProps>();
 
+  const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
+  const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
+
+  const fetchPostcardInfo = async () => {
+    const result = await getPostcardTypeList();
+    setPostcardTypeInfoList(result);
+  };
+
+  const selectPostcard = (postcardId: TPostcardInfo) => {
+    setCurrentPressedPostcard(postcardId);
+  };
+
+  useEffect(() => {
+    fetchPostcardInfo();
+  }, []);
+
+  useHeaderControl({ title: '독서 퀴즈' });
   return (
-    <>
-    </>
+    <S.Wrapper style={{ alignItems: 'center' }}>
+      <T.StepProgressBar>
+        <T.StepLineThird />
+        <T.StepImage>
+          <Image source={icons.previousStep} style={{ margin: 1, width: 14, height: 14 }} />
+          <T.StepName style={{ opacity: 0.4 }}>Step 01</T.StepName>
+        </T.StepImage>
+        <T.StepImage>
+          <Image source={icons.previousStep} style={{ margin: 1, width: 14, height: 14 }} />
+          <T.StepName style={{ opacity: 0.4 }}>Step 02</T.StepName>
+        </T.StepImage>
+        <T.StepImage>
+          <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
+          <T.StepName>Step 03</T.StepName>
+        </T.StepImage>
+      </T.StepProgressBar>
+
+      <BookInfo params={route.params} key="" name="QuizStack" />
+
+      <T.ReadingQuizTestContainer>
+        <T.QuizTitleContainer>
+          <CustomText font="fontSemiBold" size="18px" color="black">
+            엽서 뒷면 디자인을 골라주세요
+          </CustomText>
+        </T.QuizTitleContainer>
+
+        <T.PostCardImageListWrapper>
+          {postcardTypeInfoList?.map((postcardInfo) => (
+            <TouchableWithoutFeedback key={postcardInfo.postcardTypeId} onPress={() => selectPostcard(postcardInfo)}>
+              <T.PostCardImageWrapper>
+                <T.PostCardImage source={{ uri: postcardInfo.postcardImageUrl }} />
+                {currentPressedPostcard?.postcardTypeId === postcardInfo.postcardTypeId && (
+                  <T.PostCardSelectedBackground>
+                    <T.PostCardSelectedImage source={img.postcardSelected} />
+                  </T.PostCardSelectedBackground>
+                )}
+              </T.PostCardImageWrapper>
+            </TouchableWithoutFeedback>
+          ))}
+        </T.PostCardImageListWrapper>
+      </T.ReadingQuizTestContainer>
+
+      <T.NextButton
+        onPress={movePage('completion')}
+        style={{ opacity: !currentPressedPostcard ? 0.3 : 1 }}
+        disabled={!currentPressedPostcard}
+      >
+        <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>엽서 보내기</Text>
+      </T.NextButton>
+    </S.Wrapper>
   );
-}
+};
 
 export default StepThird;

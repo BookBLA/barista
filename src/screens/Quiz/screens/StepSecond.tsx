@@ -15,6 +15,8 @@ const StepSecond = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
+  // @ts-ignore
+  const memberBookId = route.params['memberBookId'];
 
   const [text, setText] = React.useState<string>('');
   const maxLength = 100;
@@ -83,7 +85,7 @@ const StepSecond = () => {
 
         {!isKeyboardVisible && (
           <T.NextButton
-            onPress={movePage('stepThird')}
+            onPress={movePage('stepThird', { memberBookId })}
             style={{ opacity: text.length < 10 ? 0.3 : 1 }}
             disabled={text.length < 10}
           >
