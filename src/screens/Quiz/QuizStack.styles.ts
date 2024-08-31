@@ -134,6 +134,22 @@ export const AnswerCheckRadioButton = styled.Image`
   height: 22px;
 `;
 
+export const TextSection = styled.TextInput`
+  padding: 20px;
+  width: 100%;
+  height: 145px;
+  text-align-vertical: top;
+  border-width: 1px;
+  border-color: #00000015;
+  border-radius: 10px;
+  font-size: 14px;
+  color: black;
+`;
+
+export const TextCount = styled.Text`
+  margin-top: 6px;
+`;
+
 export const NextButton = styled.TouchableOpacity`
   margin-top: auto;
   margin-bottom: 20px;
