@@ -58,15 +58,14 @@ const StepFirst = () => {
           <T.StepImage>
             <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
             <T.StepName>Step 01</T.StepName>
-            {/*  TODO: StepName 색상 수정 */}
           </T.StepImage>
           <T.StepImage>
             <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
-            <T.StepName>Step 02</T.StepName>
+            <T.StepName style={{ opacity: 0.4 }}>Step 02</T.StepName>
           </T.StepImage>
           <T.StepImage>
             <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
-            <T.StepName>Step 03</T.StepName>
+            <T.StepName style={{ opacity: 0.4 }}>Step 03</T.StepName>
           </T.StepImage>
         </T.StepProgressBar>
         <T.ReadingQuizInfoContainer>
@@ -147,8 +146,11 @@ const StepFirst = () => {
         </T.ReadingQuizTestContainer>
 
         {/*onPress={() => handleReset('tapScreens', resetParams)*/}
-        {/* TODO: 버튼 안눌리게 */}
-        <T.NextButton onPress={movePage('completion')} style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}>
+        <T.NextButton
+          onPress={movePage('completion')}
+          style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}
+          disabled={currentPressedAnswer === -1}
+        >
           <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
         </T.NextButton>
       </S.Wrapper>
