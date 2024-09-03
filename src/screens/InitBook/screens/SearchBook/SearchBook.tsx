@@ -80,7 +80,7 @@ const SearchBook = () => {
               </CustomText>
               {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
-                  key={index}
+                  key={item.isbn}
                   item={item}
                   isSelected={item.isbn === selectedBook?.isbn}
                   onSelectBook={setSelectedBook}
