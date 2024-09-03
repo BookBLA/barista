@@ -47,7 +47,7 @@ const AddBook = () => {
             <Text style={{ color: 'black', fontFamily: 'fontMedium', fontSize: 16, marginBottom: 14 }}>
               내가 좋아하는 책
             </Text>
-            <LightText margin={'7px'}> 좋아하는 책들을 등록해주세요!</LightText>
+            <LightText margin="7px"> 좋아하는 책들을 등록해주세요!</LightText>
             <S.RowStyled style={{ width: 'auto', marginBottom: 7 }}>
               <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>첫 4권</Text>
               <LightText>을 등록하시면</LightText>
@@ -61,8 +61,8 @@ const AddBook = () => {
             </S.RowStyled>
           </View>
           <>
-            {data.map((item: MemberBookReadResponse, index) => (
-              <React.Fragment key={index}>
+            {data.map((item: MemberBookReadResponse) => (
+              <React.Fragment key={item.memberBookId}>
                 <FavBookList fetchGetMemberBook={fetchGetMemberBook} item={item} />
               </React.Fragment>
             ))}
