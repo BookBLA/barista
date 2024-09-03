@@ -9,6 +9,7 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import React from 'react';
 import { Image, Platform } from 'react-native';
 import { useAppleLogin } from './hooks/useAppleLogin';
+import { useTestLogin } from './hooks/useTestLogin';
 
 const LoginHome = () => {
   useScreenLogger();
@@ -16,7 +17,8 @@ const LoginHome = () => {
   usePushNotifications();
   const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
-  // const { handleTestLogin } = useTestLogin();
+  const { handleTestLogin } = useTestLogin();
+  const isDevelop = process.env.NODE_ENV === 'development' ? handleTestLogin : undefined;
 
   return (
     <S.Wrapper style={{ justifyContent: 'flex-end' }}>
@@ -24,7 +26,9 @@ const LoginHome = () => {
         <S.LogoImage source={logos.mainLogoDark} />
         <S.SubTitleText>같은 줄을 읽다. 같은 마음을 느끼다.</S.SubTitleText>
       </S.InnerWrapper>
-      <CustomText size="14px">SNS 간편 로그인</CustomText>
+      <CustomText size="14px" onPress={isDevelop}>
+        SNS 간편 로그인
+      </CustomText>
 
       <S.LoginButton onPress={movePage('kakaoLogin')}>
         <Image style={{ width: 300, height: 45 }} source={buttons.kakaoLogin} />
