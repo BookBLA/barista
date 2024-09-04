@@ -14,7 +14,7 @@ const MbtiComponent = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<Se
   return (
     <View>
       {mbtiNames.map((name: string[], index: number) => (
-        <MbtiItem char={mbti[index]} key={index} name={name} setMbti={setMbti} index={index} />
+        <MbtiItem char={mbti[index]} key={name[0]} name={name} setMbti={setMbti} index={index} />
       ))}
     </View>
   );
