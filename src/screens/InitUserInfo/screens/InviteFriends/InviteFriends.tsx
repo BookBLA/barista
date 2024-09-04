@@ -1,8 +1,8 @@
 import { getSchoolMembers } from '@commons/api/schools/school.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as Clipboard from 'expo-clipboard';
@@ -21,7 +21,7 @@ const imgUrl = {
 };
 
 const InviteFriends = () => {
-  const { movePage } = useMovePage();
+  const showToast = useToastStore((state) => state.showToast);
   useManageMargin();
   useHeaderControl({
     title: '친구 초대',
@@ -42,12 +42,12 @@ const InviteFriends = () => {
   const callGetSchoolMembersApi = async () => {
     try {
       const response = await getSchoolMembers();
-      setCurrentMemberCount(response.result.currentMemberCount);
-      setGoalMemberCount(response.result.goalMemberCount);
-      setPercentage(response.result.percentage);
-      setSchoolName(response.result.schoolName);
+      setCurrentMemberCount(response.result.currentMemberCount!);
+      setGoalMemberCount(response.result.goalMemberCount!);
+      setPercentage(response.result.percentage!);
+      setSchoolName(response.result.schoolName!);
       setCode(response.result.invitationCode || 'undefined');
-      setHeartGauge(response.result.currentMemberCount);
+      setHeartGauge(response.result.currentMemberCount!);
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +58,9 @@ const InviteFriends = () => {
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(code);
+    showToast({
+      content: '코드가 복사되었습니다',
+    });
   };
 
   return (
