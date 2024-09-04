@@ -53,15 +53,6 @@ const InsertInviteCode = () => {
     //postProfileApi 호출 후
     await callPostPolicyApi();
     await callPostMemberProfileAPi();
-    //schoolStatus Get api 호출
-    //schoolStatus가 "OPEN"이면 completePage로 이동
-    const response = await getMemberStatusesApi();
-    const schoolStatus = response.result?.schoolStatus;
-    if (schoolStatus === 'OPEN') {
-      handleReset('completePage');
-    } else if (schoolStatus === 'CLOSE') {
-      handleReset('inviteFriends');
-    }
   };
 
   const { agreementInfo } = useAgreementStore();
@@ -85,16 +76,27 @@ const InsertInviteCode = () => {
         name: userInfo.name,
         birthDate: userInfo.birthDate,
         gender: userInfo.gender,
-        schoolName: userInfo.schoolName,
-        schoolEmail: userInfo.schoolEmail,
+        // schoolName: userInfo.schoolName,
+        schoolName: '연세대학교',
+        // schoolEmail: userInfo.schoolEmail,
+        schoolEmail: 'alth@yonsei.ac.kr',
         phoneNumber: userInfo.phoneNumber,
-        studentIdImageUrl: userInfo.studentIdImageUrl,
-        profileImageUrl: userInfo.profileImageUrl,
-        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
       });
       console.log('프로필 등록 성공', response);
+      //schoolStatus Get api 호출
+      //schoolStatus가 "OPEN"이면 completePage로 이동
+      const schoolStatusResponse = await getMemberStatusesApi();
+      const schoolStatus = schoolStatusResponse.result?.schoolStatus;
+      if (schoolStatus === 'OPEN') {
+        handleReset('completePage');
+      } else if (schoolStatus === 'CLOSE') {
+        handleReset('inviteFriends');
+      }
     } catch (error) {
       console.log('프로필 등록 실패', error);
+      showToast({
+        content: error.response.data.message,
+      });
     }
   };
   return (
