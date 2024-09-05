@@ -23,6 +23,7 @@ export const useInitialRouteName = () => {
       COMPLETED: 'tapScreens',
       MATCHING_DISABLED: 'tapScreens',
       DEFAULT: 'loginStack',
+      // DENIED: 'rejectStudentId',
     };
 
     // if (schoolStatus === 'CLOSED' && memberStatus === 'STYLE') {
