@@ -77,9 +77,7 @@ const InsertInviteCode = () => {
         birthDate: userInfo.birthDate,
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
-        // schoolName: '연세대학교',
         schoolEmail: userInfo.schoolEmail,
-        // schoolEmail: 'alth@yonsei.ac.kr',
         phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
