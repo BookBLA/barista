@@ -2,6 +2,7 @@ import checkBlack from '@assets/images/icons/CheckBlack.png';
 import { getSchools } from '@commons/api/schools/school.api';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { SchoolDetail } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as T from '@screens/InitBook/InitBookStack.styles';
 import { ModalWrapper } from '@screens/Setting/SettingStack.styles';
@@ -12,19 +13,20 @@ const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value
   const showToast = useToastStore((state) => state.showToast);
   const [search, setSearch] = useState('');
   const [searchList, setSearchList] = useState([]); //검색해서 걸러진 데이터
-  const [universityList, setUniversityList] = useState([]);
+  const [universityList, setUniversityList] = useState<string[]>([]);
 
   const callSchoolList = async () => {
     try {
       const response = await getSchools();
-      const schoolNames = response.result.schools.map(
-        (element: { id: 0; name: string; emailDomain: string; schoolStatus: string }) => element.name,
-      );
-      setUniversityList(schoolNames);
+      if (response.result && response.result.schools) {
+        const schoolNames = response.result.schools.map((element: SchoolDetail) => element.name);
+        setUniversityList(schoolNames.filter((name: string | undefined): name is string => name !== undefined));
+      }
     } catch (error) {
       console.log('학교 리스트 가져오기 실패', error);
     }
   };
+
   useEffect(() => {
     callSchoolList();
   }, []);
