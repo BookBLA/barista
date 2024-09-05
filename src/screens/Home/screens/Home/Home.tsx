@@ -6,8 +6,13 @@ import React from 'react';
 import Advert from './units/Advert/Advert';
 import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
+import { OnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/OnboardingModal';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { View } from 'react-native';
 
 const Home = () => {
+  const { toggle, isOpen } = useToggle();
+
   useScreenLogger();
   useHeaderControl({
     free: <Header />,
@@ -17,6 +22,10 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
+        <View style={{ height: '50%' }}>
+          <OnboardingModal onClose={toggle} visible={true} />
+        </View>
+
         <MemberCard />
         {/* <EventCard /> */}
         {/* <InviteCard /> */}
