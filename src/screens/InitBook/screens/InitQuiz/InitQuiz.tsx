@@ -47,7 +47,16 @@ const InitQuiz = ({ route }: IProps) => {
           extraScrollHeight={100}
         >
           <View style={{ width: '100%', height: 'auto', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginBottom: 36, fontSize: 18 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+            <S.ContentStyled style={{ fontSize: 18, marginBottom: 12 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+            <CustomText
+              size="12px"
+              font="fontRegular"
+              color={colors.textGray2}
+              margin="0 0 19px"
+              style={{ textAlign: 'center' }}
+            >
+              나를 궁금해하는 상대방을 위해{'\n'} 나의 생각과 매력이 잘 보이도록 느낀 점을 적어주세요!
+            </CustomText>
             <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -85,7 +94,7 @@ const InitQuiz = ({ route }: IProps) => {
                 flexDirection: 'row',
                 justifyContent: 'center',
                 marginBottom: 28,
-                marginTop: 49,
+                marginTop: 28,
               }}
               dashGap={5}
               dashLength={5}
@@ -95,7 +104,7 @@ const InitQuiz = ({ route }: IProps) => {
           </U.CenterWrapper>
 
           <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>
+            <S.ContentStyled style={{ marginTop: 10, marginBottom: 12, fontSize: 18 }}>
               객관식 독서퀴즈 출제하기
             </S.ContentStyled>
             <CustomText size="12px" font="fontRegular" color={colors.textGray2}>
