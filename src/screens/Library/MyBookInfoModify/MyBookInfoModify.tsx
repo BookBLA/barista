@@ -1,4 +1,5 @@
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '@commons/api/postcard/library.api';
+import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -160,7 +161,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>
-          <S.DashLine />
+          <DashDividerLine width={100} margin={20} />
           <S.BookReviewContainer>
             <S.BookReviewHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
@@ -211,7 +212,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               </CustomText>
             </S.BookReviewLengthView>
           </S.BookReviewContainer>
-          <S.DashLine />
+          <DashDividerLine width={100} margin={20} />
           <S.BookQuizContainer>
             <S.BookQuizHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">

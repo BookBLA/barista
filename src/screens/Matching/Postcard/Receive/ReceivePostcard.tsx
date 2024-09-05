@@ -3,9 +3,11 @@ import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { readPostcard } from '@commons/api/matching/matching.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { getStudentIdConfig } from '@commons/configs/StudentIdModal/studentIdConfig';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useModalStore from '@commons/store/ui/modal/useModalStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
@@ -22,10 +24,10 @@ import {
   ModalBookWrapper,
   ModalSchoolNameText,
   ModalUserInfoViewStyled,
-  styles,
   UserInfoNameWrapper,
   UserInfoWrapper,
   UserNameText,
+  styles,
 } from '../Send/SendPostcard.styles';
 import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import * as S from './ReceivePostcard.styles';
@@ -62,6 +64,11 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { movePageNoReference } = useMovePage();
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
+  const { toggle: studentIdToggle, isOpen } = useToggle();
+  const studentIdModalConfig = getStudentIdConfig({
+    isOpen,
+    studentIdToggle,
+  });
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -72,15 +79,17 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-      movePageNoReference('receivePostcardDetail', rest);
-    } else {
-      if (memberPostcard > 0) {
-        toggleCheckBeforeSendPostcardModal();
-      } else {
-        toggleNoPostcardModal();
-      }
-    }
+    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+    //   movePageNoReference('receivePostcardDetail', rest);
+    // } else {
+    //   if (memberPostcard > 0) {
+    //     toggleCheckBeforeSendPostcardModal();
+    //   } else {
+    //     toggleNoPostcardModal();
+    //   }
+    // }
+    studentIdToggle;
+    console.log('studentIdToggle', studentIdToggle);
   };
 
   const showPostcardDetail = async () => {
@@ -229,6 +238,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           <ModalBookShelves style={styles.Shadow} />
         </View>
       </CustomModal>
+      <CustomModal modalConfig={studentIdModalConfig} />
     </S.ContainerViewStyled>
   );
 };

@@ -53,15 +53,6 @@ const InsertInviteCode = () => {
     //postProfileApi 호출 후
     await callPostPolicyApi();
     await callPostMemberProfileAPi();
-    //schoolStatus Get api 호출
-    //schoolStatus가 "OPEN"이면 completePage로 이동
-    const response = await getMemberStatusesApi();
-    const schoolStatus = response.result?.schoolStatus;
-    if (schoolStatus === 'OPEN') {
-      handleReset('completePage');
-    } else if (schoolStatus === 'CLOSE') {
-      handleReset('inviteFriends');
-    }
   };
 
   const { agreementInfo } = useAgreementStore();
@@ -88,13 +79,23 @@ const InsertInviteCode = () => {
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
         phoneNumber: userInfo.phoneNumber,
-        studentIdImageUrl: userInfo.studentIdImageUrl,
-        profileImageUrl: userInfo.profileImageUrl,
-        openKakaoRoomUrl: userInfo.openKakaoRoomUrl,
       });
       console.log('프로필 등록 성공', response);
-    } catch (error) {
+      //schoolStatus Get api 호출
+      //schoolStatus가 "OPEN"이면 completePage로 이동
+      const schoolStatusResponse = await getMemberStatusesApi();
+      const schoolStatus = schoolStatusResponse.result?.schoolStatus;
+      console.log('schoolStatus', schoolStatus);
+      if (schoolStatus === 'OPEN') {
+        handleReset('completePage');
+      } else if (schoolStatus === 'CLOSED') {
+        handleReset('inviteFriends');
+      }
+    } catch (error: any) {
       console.log('프로필 등록 실패', error);
+      showToast({
+        content: error.response.data.message,
+      });
     }
   };
   return (
@@ -117,8 +118,9 @@ const InsertInviteCode = () => {
               marginBottom: 18,
             }}
           >
-            여성분들에게는 친구에게 받은 초대코드를{'\n'}입력하시면{' '}
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>2만원 상당의 혜택</Text>을 드려요!{'\n'}
+            친구에게 받은 초대코드를 입력하시면{'\n'}
+            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>최대 2만원 상당의 혜택</Text>을 드려요!
+            {'\n'}
             코드가 없다면 다음으로 넘어가 주세요
           </Text>
           <S.RowStyled style={{ width: '93%' }}>

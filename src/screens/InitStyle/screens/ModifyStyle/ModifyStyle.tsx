@@ -159,7 +159,7 @@ const ModifyStyle = () => {
                 </S.RowStyled>
                 <S.RowStyled style={{ width: '90%', marginBottom: 6 }}>
                   {buttonList.map((button, index) => (
-                    <T.MoveButtonStyled key={index} onPress={() => handleMovePosition(index)}>
+                    <T.MoveButtonStyled key={button} onPress={() => handleMovePosition(index)}>
                       <CustomText font="fontRegular" size="12" color={colors.textGray4} style={{ textAlign: 'center' }}>
                         {button}
                       </CustomText>
