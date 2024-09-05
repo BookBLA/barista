@@ -65,7 +65,7 @@ const InviteFriends = () => {
 
   return (
     <S.Wrapper>
-      <S.ColumnStyled style={{ height: '90%', alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
         <S.ContentStyled style={{ marginBottom: 5 }}>{schoolName} </S.ContentStyled>
         <S.ContentStyled>친구를 초대해봐요!</S.ContentStyled>
         <Text
@@ -108,14 +108,14 @@ const InviteFriends = () => {
             </CustomText>
           </S.InviteCodeContainer>
           <CustomText size="12px" font="fontMedium" color={colors.textGray4} style={{ lineHeight: 22 }}>
-            여자인 친구 초대하면{'\n'}친구도 나도
+            친구를 초대하면{'\n'}친구도 나도 최대
             <CustomText size="12px" font="fontBold" color={colors.primary} style={{ lineHeight: 22 }}>
-              {' 책갈피 100개'}
+              {' 책갈피 70개'}
             </CustomText>
             지급!{'\n'}책갈피는 매칭 신청과 수락할 때 사용됩니다
           </CustomText>
         </S.InviteFriendsContainer>
-      </S.ColumnStyled>
+      </View>
       <S.NextButtonStyled onPress={copyToClipboard} height={44}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
       </S.NextButtonStyled>
