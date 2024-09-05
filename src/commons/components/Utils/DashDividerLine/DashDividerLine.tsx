@@ -1,16 +1,16 @@
 import { colors } from '@commons/styles/variablesStyles';
 import Dash from 'react-native-dash';
 
-export const DashDividerLine = () => {
+export const DashDividerLine = ({ width, margin }: { width?: number; margin?: number }) => {
   return (
     <Dash
       style={{
-        width: '85%',
+        width: width ? `${width}%` : '85%',
         height: 1,
         flexDirection: 'row',
         justifyContent: 'center',
-        marginBottom: 10,
-        marginTop: 10,
+        marginBottom: margin ? margin : 10,
+        marginTop: margin ? margin : 10,
       }}
       dashGap={5}
       dashLength={5}
