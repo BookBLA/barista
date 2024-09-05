@@ -76,10 +76,10 @@ const InsertInviteCode = () => {
         name: userInfo.name,
         birthDate: userInfo.birthDate,
         gender: userInfo.gender,
-        // schoolName: userInfo.schoolName,
-        schoolName: '연세대학교',
-        // schoolEmail: userInfo.schoolEmail,
-        schoolEmail: 'alth@yonsei.ac.kr',
+        schoolName: userInfo.schoolName,
+        // schoolName: '연세대학교',
+        schoolEmail: userInfo.schoolEmail,
+        // schoolEmail: 'alth@yonsei.ac.kr',
         phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
@@ -87,12 +87,13 @@ const InsertInviteCode = () => {
       //schoolStatus가 "OPEN"이면 completePage로 이동
       const schoolStatusResponse = await getMemberStatusesApi();
       const schoolStatus = schoolStatusResponse.result?.schoolStatus;
+      console.log('schoolStatus', schoolStatus);
       if (schoolStatus === 'OPEN') {
         handleReset('completePage');
-      } else if (schoolStatus === 'CLOSE') {
+      } else if (schoolStatus === 'CLOSED') {
         handleReset('inviteFriends');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.log('프로필 등록 실패', error);
       showToast({
         content: error.response.data.message,
@@ -119,8 +120,9 @@ const InsertInviteCode = () => {
               marginBottom: 18,
             }}
           >
-            여성분들에게는 친구에게 받은 초대코드를{'\n'}입력하시면{' '}
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>2만원 상당의 혜택</Text>을 드려요!{'\n'}
+            친구에게 받은 초대코드를 입력하시면{'\n'}
+            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>최대 2만원 상당의 혜택</Text>을 드려요!
+            {'\n'}
             코드가 없다면 다음으로 넘어가 주세요
           </Text>
           <S.RowStyled style={{ width: '93%' }}>
