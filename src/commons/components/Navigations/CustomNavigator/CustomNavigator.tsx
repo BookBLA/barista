@@ -4,6 +4,8 @@ import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName
 import { useHasMargin } from '@commons/store/ui/hasMargin/useHasMargin';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
+import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
 import InitStyleStack from '@screens/InitStyle/initStyle';
 import ModifyProfile from '@screens/InitStyle/screens/ModifyProfile/ModifyProfile';
@@ -33,6 +35,8 @@ const screens = [
   // { name: 'waitConfirm', component: WaitConfirm },
   { name: 'inviteFriends', component: InviteFriends },
   { name: 'modifyProfile', component: ModifyProfile },
+  { name: 'studentId', component: CustomScreen(StudentId) },
+  { name: 'rejectStudentId', component: RejectStudentId },
 ];
 
 export const CustomNavigator = () => {
