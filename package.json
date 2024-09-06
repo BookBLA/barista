@@ -6,7 +6,7 @@
     "start": "react-devtools & npx expo start",
     "start:doppler": "react-devtools & doppler run npx expo start",
     "dev": "npx expo start --no-dev --minify",
-    "dev:doppler": "doppler run npx expo start --no-dev --minify",
+    "dev:doppler": "doppler run -- npx expo start --minify",
     "tsc": "npx tsc",
     "watch": "npx tsc -w",
     "build:dev": "./build.sh all development",
