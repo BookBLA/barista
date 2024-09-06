@@ -22,6 +22,8 @@ const StepFirst = () => {
 
   const [bookInfo, setBookInfo] = useState<TBookInfo | null>(null);
   const [currentPressedAnswer, setCurrentPressedAnswer] = useState<number>(-1);
+  const [currentPressedAnswerString, setCurrentPressedAnswerString] = useState<string>('');
+  const [isCorrectAnswer, setIsCorrectAnswer] = useState(false);
 
   const fetchBookInfo = async (memberBookId: number) => {
     const bookInfoResult = await getBookInfo(memberBookId);
@@ -42,8 +44,14 @@ const StepFirst = () => {
     setBookInfo(updatedBookInfo);
   };
 
-  const selectAnswer = (questionId: number) => {
+  const selectAnswer = (questionId: number, answer: string) => {
     setCurrentPressedAnswer(questionId);
+    setCurrentPressedAnswerString(answer);
+  };
+
+  const checkQuizAnswer = async (memberBookId: number) => {
+    // 정답 넘겨서 확인 후 isCorrectAnswer 수정.
+    setIsCorrectAnswer(true);
   };
 
   useEffect(() => {
@@ -90,66 +98,132 @@ const StepFirst = () => {
           </T.QuizTitleContainer>
           <T.AnswerCheckboxContainer>
             <T.AnswerCheckbox
-              onPress={() => selectAnswer(1)}
-              style={{
-                backgroundColor: currentPressedAnswer === 1 ? colors.buttonBackground : 'white',
-                borderColor: currentPressedAnswer === 1 ? colors.buttonPrimary : colors.buttonBorder,
-              }}
+              onPress={() => selectAnswer(1, bookInfo?.firstChoice ?? '첫 번째 답')}
+              style={[
+                isCorrectAnswer &&
+                  currentPressedAnswer === 1 && {
+                    backgroundColor: colors.buttonCorrect,
+                    borderColor: colors.buttonCorrectBorder,
+                  },
+                !isCorrectAnswer && {
+                  backgroundColor: currentPressedAnswer === 1 ? colors.buttonBackground : 'white',
+                  borderColor: currentPressedAnswer === 1 ? colors.buttonPrimary : colors.buttonBorder,
+                },
+              ]}
+              disabled={isCorrectAnswer}
             >
               <CustomText
                 font="fontMedium"
                 size="16px"
-                color={currentPressedAnswer === 1 ? colors.buttonPrimary : '#00000099'}
+                color={
+                  isCorrectAnswer && currentPressedAnswer === 1
+                    ? colors.buttonCorrectBorder
+                    : currentPressedAnswer === 1
+                      ? colors.buttonPrimary
+                      : '#00000099'
+                }
               >
-                {bookInfo?.firstChoice ?? 'A. 첫 번째 답'}
+                A. {bookInfo?.firstChoice ?? '첫 번째 답'}
               </CustomText>
               <T.AnswerCheckRadioButton
-                source={currentPressedAnswer === 1 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+                source={
+                  isCorrectAnswer && currentPressedAnswer === 1
+                    ? icons.radiobuttonCorrect
+                    : currentPressedAnswer === 1
+                      ? icons.radiobuttonSelected
+                      : icons.radiobuttonDefault
+                }
               />
             </T.AnswerCheckbox>
             <T.AnswerCheckbox
-              onPress={() => selectAnswer(2)}
-              style={{
-                backgroundColor: currentPressedAnswer === 2 ? colors.buttonBackground : 'white',
-                borderColor: currentPressedAnswer === 2 ? colors.buttonPrimary : colors.buttonBorder,
-              }}
+              onPress={() => selectAnswer(2, bookInfo?.secondChoice ?? '두 번째 답')}
+              style={[
+                isCorrectAnswer &&
+                  currentPressedAnswer === 2 && {
+                    backgroundColor: colors.buttonCorrect,
+                    borderColor: colors.buttonCorrectBorder,
+                  },
+                !isCorrectAnswer && {
+                  backgroundColor: currentPressedAnswer === 2 ? colors.buttonBackground : 'white',
+                  borderColor: currentPressedAnswer === 2 ? colors.buttonPrimary : colors.buttonBorder,
+                },
+              ]}
+              disabled={isCorrectAnswer}
             >
               <CustomText
                 font="fontMedium"
                 size="16px"
-                color={currentPressedAnswer === 2 ? colors.buttonPrimary : '#00000099'}
+                color={
+                  isCorrectAnswer && currentPressedAnswer === 2
+                    ? colors.buttonCorrectBorder
+                    : currentPressedAnswer === 2
+                      ? colors.buttonPrimary
+                      : '#00000099'
+                }
               >
-                {bookInfo?.secondChoice ?? 'B. 두 번째 답'}
+                B. {bookInfo?.secondChoice ?? '두 번째 답'}
               </CustomText>
               <T.AnswerCheckRadioButton
-                source={currentPressedAnswer === 2 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+                source={
+                  isCorrectAnswer && currentPressedAnswer === 2
+                    ? icons.radiobuttonCorrect
+                    : currentPressedAnswer === 2
+                      ? icons.radiobuttonSelected
+                      : icons.radiobuttonDefault
+                }
               />
             </T.AnswerCheckbox>
             <T.AnswerCheckbox
-              onPress={() => selectAnswer(3)}
-              style={{
-                backgroundColor: currentPressedAnswer === 3 ? colors.buttonBackground : 'white',
-                borderColor: currentPressedAnswer === 3 ? colors.buttonPrimary : colors.buttonBorder,
-              }}
+              onPress={() => selectAnswer(3, bookInfo?.thirdChoice ?? '세 번째 답')}
+              style={[
+                isCorrectAnswer &&
+                  currentPressedAnswer === 3 && {
+                    backgroundColor: colors.buttonCorrect,
+                    borderColor: colors.buttonCorrectBorder,
+                  },
+                !isCorrectAnswer && {
+                  backgroundColor: currentPressedAnswer === 3 ? colors.buttonBackground : 'white',
+                  borderColor: currentPressedAnswer === 3 ? colors.buttonPrimary : colors.buttonBorder,
+                },
+              ]}
+              disabled={isCorrectAnswer}
             >
               <CustomText
                 font="fontMedium"
                 size="16px"
-                color={currentPressedAnswer === 3 ? colors.buttonPrimary : '#00000099'}
+                color={
+                  isCorrectAnswer && currentPressedAnswer === 3
+                    ? colors.buttonCorrectBorder
+                    : currentPressedAnswer === 3
+                      ? colors.buttonPrimary
+                      : '#00000099'
+                }
               >
-                {bookInfo?.thirdChoice ?? 'C. 세 번째 답'}
+                C. {bookInfo?.thirdChoice ?? '세 번째 답'}
               </CustomText>
               <T.AnswerCheckRadioButton
-                source={currentPressedAnswer === 3 ? icons.radiobuttonSelected : icons.radiobuttonDefault}
+                source={
+                  isCorrectAnswer && currentPressedAnswer === 3
+                    ? icons.radiobuttonCorrect
+                    : currentPressedAnswer === 3
+                      ? icons.radiobuttonSelected
+                      : icons.radiobuttonDefault
+                }
               />
             </T.AnswerCheckbox>
           </T.AnswerCheckboxContainer>
         </T.ReadingQuizTestContainer>
 
-        {/*onPress={() => handleReset('tapScreens', resetParams)*/}
+        <T.NextButton
+          onPress={() => checkQuizAnswer(memberBookId)}
+          style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1, display: isCorrectAnswer ? 'none' : 'flex' }}
+          disabled={currentPressedAnswer === -1}
+        >
+          <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
+        </T.NextButton>
         <T.NextButton
           onPress={movePage('stepSecond', { memberBookId })}
-          style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}
+          style={{ display: isCorrectAnswer ? 'flex' : 'none' }}
           disabled={currentPressedAnswer === -1}
         >
           <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
