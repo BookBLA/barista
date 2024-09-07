@@ -1,8 +1,8 @@
 import { getSchoolMembers } from '@commons/api/schools/school.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
-import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as Clipboard from 'expo-clipboard';
@@ -21,19 +21,21 @@ const imgUrl = {
 };
 
 const InviteFriends = () => {
-  const { movePage } = useMovePage();
+  const showToast = useToastStore((state) => state.showToast);
   useManageMargin();
   useHeaderControl({
     title: '친구 초대',
     left: false,
   });
 
-  const [code, setCode] = useState('');
-  const [currentMemberCount, setCurrentMemberCount] = useState(0);
-  const [goalMemberCount, setGoalMemberCount] = useState(30);
-  const [percentage, setPercentage] = useState(0);
-  const [schoolName, setSchoolName] = useState('');
   const [heartImage, setHeartImage] = useState(1);
+  const [schoolData, setSchoolData] = useState({
+    currentMemberCount: 0,
+    goalMemberCount: 30,
+    percentage: 0,
+    schoolName: '',
+    invitationCode: '',
+  });
 
   const setHeartGauge = (currentMemberCount: number) => {
     setHeartImage(Math.floor(currentMemberCount / 5 + 1));
@@ -42,12 +44,8 @@ const InviteFriends = () => {
   const callGetSchoolMembersApi = async () => {
     try {
       const response = await getSchoolMembers();
-      setCurrentMemberCount(response.result.currentMemberCount);
-      setGoalMemberCount(response.result.goalMemberCount);
-      setPercentage(response.result.percentage);
-      setSchoolName(response.result.schoolName);
-      setCode(response.result.invitationCode || 'undefined');
-      setHeartGauge(response.result.currentMemberCount);
+      setSchoolData((prev) => ({ ...prev, ...response?.result }));
+      setHeartGauge(response.result.currentMemberCount!);
     } catch (error) {
       console.log(error);
     }
@@ -57,13 +55,16 @@ const InviteFriends = () => {
   }, []);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(code);
+    await Clipboard.setStringAsync(schoolData.invitationCode);
+    showToast({
+      content: '코드가 복사되었습니다',
+    });
   };
 
   return (
     <S.Wrapper>
-      <S.ColumnStyled style={{ height: '90%', alignItems: 'center', justifyContent: 'center' }}>
-        <S.ContentStyled style={{ marginBottom: 5 }}>{schoolName} </S.ContentStyled>
+      <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
+        <S.ContentStyled style={{ marginBottom: 5 }}>{schoolData.schoolName} </S.ContentStyled>
         <S.ContentStyled>친구를 초대해봐요!</S.ContentStyled>
         <Text
           style={{
@@ -81,13 +82,13 @@ const InviteFriends = () => {
             <View style={{ flexDirection: 'column' }}>
               <CustomText size="12px" font="fontExtraBold" color={colors.textGray3} style={{ marginBottom: 14 }}>
                 <CustomText size="12px" font="fontExtraBold" color={colors.textGray5} style={{ marginBottom: 14 }}>
-                  {currentMemberCount}명
+                  {schoolData.currentMemberCount}명
                 </CustomText>
-                {` / ${goalMemberCount}명`}
+                {` / ${schoolData.goalMemberCount}명`}
               </CustomText>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CustomText size="22px" font="fontBold" color={colors.primary}>
-                  {percentage}%
+                  {schoolData.percentage}%
                 </CustomText>
                 <CustomText size="16px" font="fontRegular" color={colors.textGray3}>
                   {' 모집완료'}
@@ -101,18 +102,18 @@ const InviteFriends = () => {
           </CustomText>
           <S.InviteCodeContainer>
             <CustomText size="30px" font="fontSemiBold" color={colors.primary}>
-              {code}
+              {schoolData.invitationCode}
             </CustomText>
           </S.InviteCodeContainer>
           <CustomText size="12px" font="fontMedium" color={colors.textGray4} style={{ lineHeight: 22 }}>
-            여자인 친구 초대하면{'\n'}친구도 나도
+            친구를 초대하면{'\n'}친구도 나도 최대
             <CustomText size="12px" font="fontBold" color={colors.primary} style={{ lineHeight: 22 }}>
-              {' 책갈피 100개'}
+              {' 책갈피 70개'}
             </CustomText>
             지급!{'\n'}책갈피는 매칭 신청과 수락할 때 사용됩니다
           </CustomText>
         </S.InviteFriendsContainer>
-      </S.ColumnStyled>
+      </View>
       <S.NextButtonStyled onPress={copyToClipboard} height={44}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>코드 복사하기</Text>
       </S.NextButtonStyled>

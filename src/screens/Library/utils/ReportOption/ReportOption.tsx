@@ -89,7 +89,7 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
         </View>
         <View style={{ width: '90%' }}>
           {reportCases.map((reportCase, index) => (
-            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 }} key={reportCase}>
               <Checkbox
                 value={isChecked[index]}
                 onValueChange={() => handleCheckboxChange(index)}

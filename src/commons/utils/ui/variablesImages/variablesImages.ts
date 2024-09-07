@@ -51,15 +51,20 @@ export const icons = {
   postcard: require('@assets/images/icons/Postcard.png'),
   profileImageSetting: require('@assets/images/icons/ProfileImageSetting.png'),
 
+  quoteStart: require('@assets/images/icons/QuoteStart.png'),
+  quoteEnd: require('@assets/images/icons/QuoteEnd.png'),
+
   reset: require('@assets/images/icons/Reset.png'),
   report: require('@assets/images/icons/ReportIcon.png'),
   rightEndPage: require('@assets/images/buttons/RightEndPage.png'),
   rightPage: require('@assets/images/buttons/RightPage.png'),
+  refresh: require('@assets/images/icons/Refresh.png'),
 
   selected: require('@assets/images/icons/Selected.png'),
   setting: require('@assets/images/icons/Setting.png'),
   supportTransparent: require('@assets/images/icons/SupportTransparent.png'),
   search: require('@assets/images/icons/search.png'),
+  save: require('@assets/images/icons/Save.png'),
 
   woman: require('@assets/images/icons/Woman.png'),
   womanSmall: require('@assets/images/icons/WomanSmall.png'),
@@ -120,4 +125,13 @@ export const logos = {
 export const buttons = {
   moveTop: require('@assets/images/buttons/MoveTop.png'),
   kakaoLogin: require('@assets/images/buttons/kakaoLogin.png'),
+};
+
+export const background = {
+  eventCard: require('@assets/images/background/EventCard.png'),
+  inviteCard: require('@assets/images/background/InviteCard.png'),
+};
+
+export const example = {
+  book: require('@assets/images/example/BookExample.png'),
 };

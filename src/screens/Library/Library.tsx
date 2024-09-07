@@ -380,6 +380,7 @@ const Library: React.FC<Props> = ({ route }) => {
                 bookItem.book && (
                   <S.BookImage
                     source={bookItem.book.bookImageUrl ? { uri: bookItem.book.bookImageUrl } : img.prepareBookImage}
+                    style={{ objectFit: 'contain' }}
                   />
                 )
               )}
@@ -497,7 +498,7 @@ const Library: React.FC<Props> = ({ route }) => {
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <MyBookInfoModify
-            memberId={memberInfo.id}
+            memberId={memberInfo.id!}
             memberBookId={selectedBookId}
             deleteBookFunc={deleteBookInBookList}
           />
@@ -638,16 +639,13 @@ const Library: React.FC<Props> = ({ route }) => {
               </CustomText>
             </S.FriendInvitationCode>
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)">
-                여자인 친구 초대하면
-              </CustomText>
-              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)">
-                친구도 나도
+              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)" style={{ textAlign: 'center' }}>
+                친구 초대하면 친구도 나도
                 <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0)">
                   {' '}
-                  책갈피 70개
+                  책갈피
                 </CustomText>{' '}
-                지급!
+                지급!{'\n'}(여자 70개, 남자 35개)
               </CustomText>
             </View>
           </S.InviteFriendModalHeader>

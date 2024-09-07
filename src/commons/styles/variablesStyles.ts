@@ -4,11 +4,14 @@ export const colors = {
   secondary: '#F7E2A4',
   background: '#F7F4ED',
   dividerLine: '#D2D6E2',
+  cardBackground: '#FAFAFA',
+  inviteCardBackground: '#120B2E',
 
   // 버튼 색상
   buttonAuthToggle: '#BBBFCF',
   buttonMain: '#FFF5D6',
   buttonPrimary: '#1D2E61',
+  buttonPrimary2: '#1D2E60',
   buttonYellow: '#FFF5D6',
   buttonPrevNext: '#E9DCB9',
   buttonWrong: '#EE3D3D',

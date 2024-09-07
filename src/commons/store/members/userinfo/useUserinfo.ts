@@ -12,10 +12,7 @@ interface UserInfo {
   name: string;
   phoneNumber: string;
   schoolName: string;
-  studentIdImageUrl: string;
   schoolEmail: string;
-  profileImageUrl: string;
-  openKakaoRoomUrl: string;
 }
 
 interface UserState {
@@ -34,9 +31,6 @@ export const useUserStore = create<UserState>((set, get) => ({
     schoolName: '',
     schoolEmail: '',
     phoneNumber: '',
-    profileImageUrl: '',
-    openKakaoRoomUrl: '',
-    studentIdImageUrl: '',
   },
   updateUserInfo: async (newUser) => {
     set((state) => ({ userInfo: { ...state.userInfo, ...newUser } }));
@@ -49,10 +43,7 @@ export const useUserStore = create<UserState>((set, get) => ({
         name: '',
         phoneNumber: '',
         schoolName: '',
-        studentIdImageUrl: '',
         schoolEmail: '',
-        profileImageUrl: '',
-        openKakaoRoomUrl: '',
       },
     }),
   saveUserInfo: async (newUser) => {
