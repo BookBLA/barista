@@ -28,12 +28,19 @@ const InviteFriends = () => {
     left: false,
   });
 
-  const [code, setCode] = useState('');
-  const [currentMemberCount, setCurrentMemberCount] = useState(0);
-  const [goalMemberCount, setGoalMemberCount] = useState(30);
-  const [percentage, setPercentage] = useState(0);
-  const [schoolName, setSchoolName] = useState('');
+  // const [code, setCode] = useState('');
+  // const [currentMemberCount, setCurrentMemberCount] = useState(0);
+  // const [goalMemberCount, setGoalMemberCount] = useState(30);
+  // const [percentage, setPercentage] = useState(0);
+  // const [schoolName, setSchoolName] = useState('');
   const [heartImage, setHeartImage] = useState(1);
+  const [schoolData, setSchoolData] = useState({
+    currentMemberCount: 0,
+    goalMemberCount: 30,
+    percentage: 0,
+    schoolName: '',
+    invitationCode: '',
+  });
 
   const setHeartGauge = (currentMemberCount: number) => {
     setHeartImage(Math.floor(currentMemberCount / 5 + 1));
@@ -42,11 +49,12 @@ const InviteFriends = () => {
   const callGetSchoolMembersApi = async () => {
     try {
       const response = await getSchoolMembers();
-      setCurrentMemberCount(response.result.currentMemberCount!);
-      setGoalMemberCount(response.result.goalMemberCount!);
-      setPercentage(response.result.percentage!);
-      setSchoolName(response.result.schoolName!);
-      setCode(response.result.invitationCode || 'undefined');
+      // setCurrentMemberCount(response.result.currentMemberCount!);
+      // setGoalMemberCount(response.result.goalMemberCount!);
+      // setPercentage(response.result.percentage!);
+      // setSchoolName(response.result.schoolName!);
+      // setCode(response.result.invitationCode || 'undefined');
+      setSchoolData((prev) => ({ ...prev, ...response?.result }));
       setHeartGauge(response.result.currentMemberCount!);
     } catch (error) {
       console.log(error);
@@ -57,7 +65,7 @@ const InviteFriends = () => {
   }, []);
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(code);
+    await Clipboard.setStringAsync(schoolData.invitationCode);
     showToast({
       content: '코드가 복사되었습니다',
     });
@@ -66,7 +74,7 @@ const InviteFriends = () => {
   return (
     <S.Wrapper>
       <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
-        <S.ContentStyled style={{ marginBottom: 5 }}>{schoolName} </S.ContentStyled>
+        <S.ContentStyled style={{ marginBottom: 5 }}>{schoolData.schoolName} </S.ContentStyled>
         <S.ContentStyled>친구를 초대해봐요!</S.ContentStyled>
         <Text
           style={{
@@ -84,13 +92,13 @@ const InviteFriends = () => {
             <View style={{ flexDirection: 'column' }}>
               <CustomText size="12px" font="fontExtraBold" color={colors.textGray3} style={{ marginBottom: 14 }}>
                 <CustomText size="12px" font="fontExtraBold" color={colors.textGray5} style={{ marginBottom: 14 }}>
-                  {currentMemberCount}명
+                  {schoolData.currentMemberCount}명
                 </CustomText>
-                {` / ${goalMemberCount}명`}
+                {` / ${schoolData.goalMemberCount}명`}
               </CustomText>
               <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <CustomText size="22px" font="fontBold" color={colors.primary}>
-                  {percentage}%
+                  {schoolData.percentage}%
                 </CustomText>
                 <CustomText size="16px" font="fontRegular" color={colors.textGray3}>
                   {' 모집완료'}
@@ -104,7 +112,7 @@ const InviteFriends = () => {
           </CustomText>
           <S.InviteCodeContainer>
             <CustomText size="30px" font="fontSemiBold" color={colors.primary}>
-              {code}
+              {schoolData.invitationCode}
             </CustomText>
           </S.InviteCodeContainer>
           <CustomText size="12px" font="fontMedium" color={colors.textGray4} style={{ lineHeight: 22 }}>
