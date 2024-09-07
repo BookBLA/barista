@@ -28,11 +28,6 @@ const InviteFriends = () => {
     left: false,
   });
 
-  // const [code, setCode] = useState('');
-  // const [currentMemberCount, setCurrentMemberCount] = useState(0);
-  // const [goalMemberCount, setGoalMemberCount] = useState(30);
-  // const [percentage, setPercentage] = useState(0);
-  // const [schoolName, setSchoolName] = useState('');
   const [heartImage, setHeartImage] = useState(1);
   const [schoolData, setSchoolData] = useState({
     currentMemberCount: 0,
@@ -49,11 +44,6 @@ const InviteFriends = () => {
   const callGetSchoolMembersApi = async () => {
     try {
       const response = await getSchoolMembers();
-      // setCurrentMemberCount(response.result.currentMemberCount!);
-      // setGoalMemberCount(response.result.goalMemberCount!);
-      // setPercentage(response.result.percentage!);
-      // setSchoolName(response.result.schoolName!);
-      // setCode(response.result.invitationCode || 'undefined');
       setSchoolData((prev) => ({ ...prev, ...response?.result }));
       setHeartGauge(response.result.currentMemberCount!);
     } catch (error) {
