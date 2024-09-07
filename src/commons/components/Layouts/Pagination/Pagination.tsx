@@ -27,7 +27,7 @@ const Pagination = ({
       {new Array(size).fill('').map(
         (_, index) =>
           index + startPage <= Math.ceil(totalPage / itemsPerPage) && (
-            <TouchableOpacity key={index} onPress={movePageIndex(index + startPage)}>
+            <TouchableOpacity key={index + startPage} onPress={movePageIndex(index + startPage)}>
               <S.PageIndexTextStyled selected={index + startPage === pageIndex}>
                 {index + startPage}
               </S.PageIndexTextStyled>

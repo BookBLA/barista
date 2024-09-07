@@ -22,7 +22,7 @@ const ModifyMBTI = ({ setMbti, mbti }: { setMbti: Dispatch<SetStateAction<string
 
         return (
           <ModifyMbtiItem
-            key={index}
+            key={name[0]}
             name={name}
             setMbti={setMbti}
             index={index}

@@ -17,9 +17,9 @@ const MatchingContent = ({ reason, selected, setSelected, setReason }: IProps) =
   return (
     <S.ModalWrapper>
       <CustomText margin="0 0 14px">어떤 이유로 비활성화하시나요?</CustomText>
-      {matchingContents.map((el, dex) => (
+      {matchingContents.map((el) => (
         <CustomButton
-          key={dex}
+          key={el}
           contents={el}
           onPress={() => {
             setSelected(el);
