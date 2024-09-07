@@ -8,7 +8,6 @@ import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
 import { OnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/OnboardingModal';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
-import { View } from 'react-native';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);

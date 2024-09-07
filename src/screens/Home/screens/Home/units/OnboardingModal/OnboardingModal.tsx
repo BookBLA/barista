@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import type { ICarouselInstance } from 'react-native-reanimated-carousel';
 import Carousel from 'react-native-reanimated-carousel';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ModalItem } from '@screens/Home/screens/Home/units/OnboardingModal/ModalItem';
-import { TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native';
 import Modal from 'react-native-modal';
 import { useSharedValue } from 'react-native-reanimated';
 import { number } from 'yup';
@@ -51,8 +50,8 @@ export const OnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) => {
       } as const);
 
   return (
-    <Modal isVisible={visible} onBackdropPress={onClose}>
-      <TouchableWithoutFeedback onPress={onClose}>
+    <Modal isVisible={visible}>
+      <TouchableWithoutFeedback>
         <Carousel
           {...baseOptions}
           mode="parallax"
