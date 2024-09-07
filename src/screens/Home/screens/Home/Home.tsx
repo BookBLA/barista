@@ -11,7 +11,7 @@ import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { View } from 'react-native';
 
 const Home = () => {
-  const { toggle, isOpen } = useToggle();
+  const { isOpen, toggle } = useToggle(true);
 
   useScreenLogger();
   useHeaderControl({
@@ -22,9 +22,7 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        <View style={{ height: '50%' }}>
-          <OnboardingModal onClose={toggle} visible={true} />
-        </View>
+        <OnboardingModal onClose={toggle} visible={isOpen} />
 
         <MemberCard />
         {/* <EventCard /> */}

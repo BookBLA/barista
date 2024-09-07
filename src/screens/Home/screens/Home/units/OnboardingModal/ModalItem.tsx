@@ -3,6 +3,8 @@ import { Image } from 'react-native';
 import { IProps } from '@screens/Home/screens/Home/units/OnboardingModal/OnboardingModal.types';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './OnboardingModal.styles';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { colors } from '@commons/styles/variablesStyles';
 
 const images = [img.homeOnboarding1, img.homeOnboarding2, img.homeOnboarding3];
 const titles = [
@@ -17,18 +19,32 @@ const descriptions = [
 ];
 const leftButtonText = ['', '이전', '이전'];
 const rightButtonText = ['다음', '다음', '시작하기'];
+const indexImages = [img.homOnboardingPage1, img.homOnboardingPage2, img.homOnboardingPage3];
 
-export const ModalItem: React.FC<IProps> = ({ index }) => {
+export const ModalItem: React.FC<IProps> = ({ index, data, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
   return (
     <S.Wrapper>
       <S.ImageSection>
-        <Image source={images[index]} />
+        <Image style={{ width: '70%', height: '75%' }} resizeMode="contain" source={images[index]} />
       </S.ImageSection>
 
       <S.TextSection>
         <S.Title>{titles[index]}</S.Title>
         <S.Description>{descriptions[index]}</S.Description>
       </S.TextSection>
+
+      <S.Footer>
+        <S.LeftButton onPress={onPrevSlide}>
+          <CustomText color="#00000066">{leftButtonText[index]}</CustomText>
+        </S.LeftButton>
+        <S.PageIndex resizeMode="contain" source={indexImages[index]} />
+        <S.RightButton
+          onPress={index === 2 ? onClose : onNextSlide}
+          style={{ backgroundColor: index === 2 ? colors.primary02 : 'transparent' }}
+        >
+          <CustomText color="black">{rightButtonText[index]}</CustomText>
+        </S.RightButton>
+      </S.Footer>
     </S.Wrapper>
   );
 };

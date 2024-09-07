@@ -1,4 +1,4 @@
-import { boolean, number } from 'yup';
+import { boolean, number, string } from 'yup';
 
 export interface ModalProps {
   onClose: () => void;
@@ -7,4 +7,9 @@ export interface ModalProps {
 
 export interface IProps {
   index: number;
+  data: string[];
+  activeSlide?: number;
+  onPrevSlide?: () => void;
+  onNextSlide?: () => void;
+  onClose?: () => void;
 }
