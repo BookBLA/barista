@@ -2,6 +2,7 @@ import { getMemberApi } from '@commons/api/members/default/member.api';
 import { MemberResponse } from '@commons/types/openapiGenerator';
 import analytics from '@react-native-firebase/analytics';
 import { create } from 'zustand';
+import { EStudentIdImageStatus } from './MemberInfo.types';
 
 interface IMemberInfo {
   memberInfo: MemberResponse;
@@ -17,6 +18,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
     memberType: '',
     memberStatus: '',
     memberGender: '',
+    studentIdImageStatus: EStudentIdImageStatus.PENDING,
   },
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
   saveMemberInfo: async () => {
