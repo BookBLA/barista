@@ -6,8 +6,12 @@ import React from 'react';
 import Advert from './units/Advert/Advert';
 import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
+import { OnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/OnboardingModal';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 
 const Home = () => {
+  const { isOpen, toggle } = useToggle(true);
+
   useScreenLogger();
   useHeaderControl({
     free: <Header />,
@@ -17,6 +21,8 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
+        <OnboardingModal onClose={toggle} visible={isOpen} />
+
         <MemberCard />
         {/* <EventCard /> */}
         {/* <InviteCard /> */}

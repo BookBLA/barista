@@ -6,6 +6,7 @@ export const colors = {
   dividerLine: '#D2D6E2',
   cardBackground: '#FAFAFA',
   inviteCardBackground: '#120B2E',
+  onboardingBackground: '#ECF0F9',
 
   // 버튼 색상
   buttonAuthToggle: '#BBBFCF',
@@ -36,6 +37,7 @@ export const colors = {
   textYellow: '#FFEBAC',
   textGray: '#858585',
   textWhite: '#FFFFFF',
+  textSub: '#00000099',
 
   lineDivider: '#D2D6E2',
   textGray1: '#D9D9D9',
