@@ -1,12 +1,13 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatInfoScreen.styles';
 import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
   const { user } = route.params;
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true); // 스위치 상태 관리
   const patner = {
     avatar: require('@assets/images/img/profile_ex1.png'),
     school: '서울대학교',
@@ -16,6 +17,8 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
     nickname: '김서울',
   };
   const navigation = useNavigation();
+
+  const toggleSwitch = () => setIsNotificationEnabled((previousState) => !previousState);
 
   return (
     <View style={styles.container}>
@@ -35,7 +38,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
         <View style={styles.optionItem}>
           <Ionicons name="notifications-outline" size={24} color="black" />
           <Text style={styles.optionText}>알림</Text>
-          <Switch style={styles.switch} />
+          <Switch style={styles.switch} onValueChange={toggleSwitch} value={isNotificationEnabled} />
         </View>
 
         <TouchableOpacity style={styles.optionItem}>
