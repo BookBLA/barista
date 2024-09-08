@@ -1,11 +1,12 @@
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import * as S from './ChatDetail.styles';
-import { styles } from './ChatInfoScreen/ChatInfoScreen.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
 const ChatDetail: React.FC = () => {
@@ -15,6 +16,8 @@ const ChatDetail: React.FC = () => {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
+
+  const showToast = useToastStore((state) => state.showToast);
 
   useEffect(() => {
     const loadChatMessages = async () => {
@@ -62,12 +65,11 @@ const ChatDetail: React.FC = () => {
     loadChatMessages();
   }, [user.id]);
 
-  // Function to scroll immediately to the end of the list
   const scrollToEndImmediately = () => {
     if (flatListRef.current && messages.length > 0) {
       flatListRef.current.scrollToOffset({
-        offset: messages.length * 1000, // Setting a large enough offset to ensure the last item is in view
-        animated: false, // Disable animation to make it instant
+        offset: messages.length * 1000,
+        animated: false,
       });
     }
   };
@@ -75,6 +77,14 @@ const ChatDetail: React.FC = () => {
   useEffect(() => {
     scrollToEndImmediately();
   }, [messages]);
+
+  // 메시지를 꾹 눌렀을 때 클립보드에 복사하는 함수
+  const handleLongPress = async (text: string) => {
+    await Clipboard.setStringAsync(text);
+    showToast({
+      content: '클립보드에 복사되었습니다.',
+    });
+  };
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
     const showAvatar =
@@ -84,10 +94,7 @@ const ChatDetail: React.FC = () => {
     const showDate =
       index === 0 || new Date(item.timestamp).getDate() !== new Date(messages[index - 1].timestamp).getDate();
 
-    // 프로필 섹션을 첫 번째 메시지 위에 표시
     const isFirstMessage = index === 0;
-
-    // 상대방에 대한 정보를 띄운다.
     const patner = {
       avatar: require('@assets/images/img/profile_ex1.png'),
       school: '서울대학교',
@@ -95,8 +102,6 @@ const ChatDetail: React.FC = () => {
       mbti: 'ENFP',
       height: 170,
     };
-
-    console.log('patner', patner);
 
     return (
       <View>
@@ -117,18 +122,20 @@ const ChatDetail: React.FC = () => {
             <S.DateText>{new Date(item.timestamp).toLocaleDateString()}</S.DateText>
           </S.DateSeparator>
         )}
-        <S.MessageItem>
-          {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
-          <S.MessageContent sender={item.sender}>
-            {item.image && <S.BookCover source={item.image} />}
-            <S.MessageBubble sender={item.sender}>
-              <S.MessageText sender={item.sender}>{item.text}</S.MessageText>
-            </S.MessageBubble>
-            <S.Timestamp>
-              {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </S.Timestamp>
-          </S.MessageContent>
-        </S.MessageItem>
+        <TouchableOpacity onLongPress={() => handleLongPress(item.text)}>
+          <S.MessageItem>
+            {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
+            <S.MessageContent sender={item.sender}>
+              {item.image && <S.BookCover source={item.image} />}
+              <S.MessageBubble sender={item.sender}>
+                <S.MessageText sender={item.sender}>{item.text}</S.MessageText>
+              </S.MessageBubble>
+              <S.Timestamp>
+                {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </S.Timestamp>
+            </S.MessageContent>
+          </S.MessageItem>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -140,7 +147,7 @@ const ChatDetail: React.FC = () => {
   return (
     <S.Wrapper>
       <S.Header>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={S.styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <S.HeaderTitle>

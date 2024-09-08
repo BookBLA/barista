@@ -1,5 +1,3 @@
-// ChatDetail.styles.ts
-
 import Icon from 'react-native-vector-icons/Feather';
 import styled from 'styled-components/native';
 
@@ -17,11 +15,6 @@ export const Header = styled.View`
   border-bottom-color: #e0e0e0;
 `;
 
-export const BackButton = styled.Text`
-  font-size: 24px;
-  color: #000000;
-`;
-
 export const HeaderTitle = styled.View`
   flex-direction: row;
   align-items: center;
@@ -37,21 +30,6 @@ export const SmallAvatar = styled.Image`
 export const HeaderText = styled.Text`
   font-size: 16px;
   font-weight: bold;
-`;
-
-export const InfoButton = styled.TouchableOpacity`
-  width: 24px;
-  height: 24px;
-  border-radius: 12px;
-  background-color: #e0e0e0;
-  justify-content: center;
-  align-items: center;
-`;
-
-export const InfoButtonText = styled.Text`
-  font-size: 14px;
-  font-weight: bold;
-  color: #000080;
 `;
 
 export const ProfileSection = styled.View`
@@ -181,3 +159,9 @@ export const SendButtonIcon = styled(Icon)`
   color: #ffffff;
   font-size: 20px;
 `;
+
+export const styles = {
+  backButton: {
+    padding: 10,
+  },
+};
