@@ -122,20 +122,23 @@ const ChatDetail: React.FC = () => {
             <S.DateText>{new Date(item.timestamp).toLocaleDateString()}</S.DateText>
           </S.DateSeparator>
         )}
-        <TouchableOpacity onLongPress={() => handleLongPress(item.text)}>
-          <S.MessageItem>
-            {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
-            <S.MessageContent sender={item.sender}>
-              {item.image && <S.BookCover source={item.image} />}
+        <S.MessageItem>
+          {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
+          <S.MessageContent sender={item.sender}>
+            {item.image && <S.BookCover source={item.image} />}
+            <TouchableOpacity
+              delayLongPress={500} // 꾹 누르기 시작 후 500ms (0.5초) 이후에 반응하도록 설정
+              onLongPress={() => handleLongPress(item.text)}
+            >
               <S.MessageBubble sender={item.sender}>
                 <S.MessageText sender={item.sender}>{item.text}</S.MessageText>
               </S.MessageBubble>
-              <S.Timestamp>
-                {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </S.Timestamp>
-            </S.MessageContent>
-          </S.MessageItem>
-        </TouchableOpacity>
+            </TouchableOpacity>
+            <S.Timestamp>
+              {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </S.Timestamp>
+          </S.MessageContent>
+        </S.MessageItem>
       </View>
     );
   };
