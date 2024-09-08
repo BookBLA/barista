@@ -87,14 +87,25 @@ const ChatDetail: React.FC = () => {
     // 프로필 섹션을 첫 번째 메시지 위에 표시
     const isFirstMessage = index === 0;
 
+    // 상대방에 대한 정보를 띄운다.
+    const patner = {
+      avatar: require('@assets/images/img/profile_ex1.png'),
+      school: '서울대학교',
+      smokingStatus: '흡연',
+      mbti: 'ENFP',
+      height: 170,
+    };
+
+    console.log('patner', patner);
+
     return (
       <View>
         {isFirstMessage && (
           <S.ProfileSection>
-            <S.ProfileAvatar source={{ uri: user.avatar }} />
+            <S.ProfileAvatar source={patner.avatar} />
             <S.ProfileInfo>
-              <S.ProfileSchool>{user.school}</S.ProfileSchool>
-              <S.ProfileDetails>{`${user.smokingStatus} • ${user.mbti} • ${user.height}cm`}</S.ProfileDetails>
+              <S.ProfileSchool>{patner.school}</S.ProfileSchool>
+              <S.ProfileDetails>{`${patner.smokingStatus} • ${patner.mbti} • ${patner.height}cm`}</S.ProfileDetails>
               <S.LibraryButton>
                 <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
               </S.LibraryButton>
@@ -107,7 +118,7 @@ const ChatDetail: React.FC = () => {
           </S.DateSeparator>
         )}
         <S.MessageItem>
-          {item.sender === 'partner' && showAvatar && <S.MessageAvatar source={{ uri: user.avatar }} />}
+          {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
           <S.MessageContent sender={item.sender}>
             {item.image && <S.BookCover source={item.image} />}
             <S.MessageBubble sender={item.sender}>
