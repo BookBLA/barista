@@ -65,6 +65,7 @@
     "react": "18.2.0",
     "react-hook-form": "^7.51.3",
     "react-native": "0.73.6",
+    "react-native-clipboard": "^0.0.5",
     "react-native-dash": "^0.0.11",
     "react-native-gesture-handler": "~2.14.0",
     "react-native-keyboard-aware-scroll-view": "^0.9.5",
