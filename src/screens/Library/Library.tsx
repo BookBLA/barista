@@ -68,7 +68,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '93%'], []);
+  const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '80%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
   const reportSnapPoints = useMemo(() => ['78%'], []);
   //todo 추후 삭제
@@ -101,6 +101,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     });
   };
 
+  //todo 내서재/상대방서재 스타일 정보 Api로 받아와서 추가하기
   const setMyLibraryInfo = useCallback(async () => {
     try {
       // const memberStyle = await getMemberStyle(result.memberId);
@@ -492,7 +493,12 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           <S.AddBookButton source={icons.addBook} />
         </TouchableOpacity>
       )}
-      <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
+      <CustomBottomSheetModal
+        ref={modifyBookModalRef}
+        index={5}
+        snapPoints={snapPoints}
+        enableContentPanningGesture={false}
+      >
         <S.BookModificationBottomSheetContainer>
           <MyBookInfoModify
             memberId={memberInfo.id!}

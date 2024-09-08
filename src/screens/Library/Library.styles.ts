@@ -238,10 +238,7 @@ export const ProfileImageModificationButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const BookModificationBottomSheetContainer = styled.View`
-  margin: 4px 8px;
-  padding: 16px;
-`;
+export const BookModificationBottomSheetContainer = styled.View``;
 
 export const EmptyPostcardModalWrapper = styled.View`
   padding: 16px 14px;

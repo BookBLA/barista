@@ -6,7 +6,7 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
@@ -147,12 +147,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
   return (
     <>
       <KeyboardAwareScrollView
-        extraScrollHeight={120}
         enableOnAndroid
         keyboardShouldPersistTaps="handled"
-        overScrollMode="never"
+        alwaysBounceVertical={false}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
       >
-        <ScrollView>
+        <View style={{ margin: '4 8', padding: 16 }}>
           <S.BookInfoContainer>
             <S.BookWrapper>
               <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
@@ -351,7 +351,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
               서재에서 책 삭제하기
             </CustomText>
           </S.BookRemoveButton>
-        </ScrollView>
+        </View>
       </KeyboardAwareScrollView>
     </>
   );
