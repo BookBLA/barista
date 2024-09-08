@@ -35,7 +35,7 @@ import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
-import { FlatList, Platform, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { BookItemList, TBookResponses } from './Library.types';
@@ -43,10 +43,10 @@ import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
 import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
-import ViewStyle from './ViewStyle/ViewStyle';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
 import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -58,7 +58,7 @@ type Props = {
   route: LibraryRouteProp;
 };
 
-const Library: React.FC<Props> = ({ route }) => {
+const Library: React.FC<Props> = ({ route, navigation }) => {
   useScreenLogger();
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
@@ -68,31 +68,25 @@ const Library: React.FC<Props> = ({ route }) => {
   const modifyBookModalRef = useRef<BottomSheetModal>(null);
   const viewStyleModalRef = useRef<BottomSheetModal>(null);
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['15%', '30%', '50%', '70%', '93%'], []);
+  const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
   const reportSnapPoints = useMemo(() => ['78%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;
   const targetMemberId = route.params?.memberId;
-  // const targetMemberId = 4;
-  const postcardId = route.params?.postcardId;
+  // const targetMemberId = 1;
   const [isSendPostcardModalVisible, setSendPostcardModalVisible] = useState(false);
   const [isResendPostcardModalVisible, setResendPostcardModalVisible] = useState(false);
   const [isEmptyPostcardModalVisible, setEmptyPostcardVisible] = useState(false);
   const [isInviteFriendModalVisible, setInviteFriendModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  // const [libraryInfo, setLibraryInfo] = useState<TLibrary>();
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfoList, setBookInfoList] = useState<TBookResponses[]>([]);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
   const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
-  const platformBlurRadius = Platform.select({
-    ios: isProfileImageModificationStatus ? 9 : 0,
-    android: isProfileImageModificationStatus ? 30 : 0,
-  });
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
   const [invitationCode, setInvitationCode] = useState('');
@@ -123,7 +117,7 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   }, []);
 
-  const SetYourLibraryInfo = useCallback(async () => {
+  const setYourLibraryInfo = useCallback(async () => {
     try {
       // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
@@ -135,11 +129,20 @@ const Library: React.FC<Props> = ({ route }) => {
   useFocusEffect(
     useCallback(() => {
       if (isYourLibrary) {
-        SetYourLibraryInfo();
+        setYourLibraryInfo();
       } else {
         setMyLibraryInfo();
       }
     }, [isYourLibrary, isFocused, libraryInfo, bookRows]),
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      if (isYourLibrary) {
+        // 파라미터 값이 true일 때만 탭 바 숨기기
+        navigation.getParent<BottomTabNavigationProp<any>>()?.setOptions({ tabBarStyle: { display: 'none' } });
+      }
+    }, [navigation, isYourLibrary]), // 의존성 배열에 route 파라미터 추가
   );
 
   const fetchBookInfo = async (memberBookId?: number) => {
@@ -417,10 +420,7 @@ const Library: React.FC<Props> = ({ route }) => {
         <S.UserInfoView>
           {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
           <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
-            <S.CircularImage
-              source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
-              blurRadius={platformBlurRadius}
-            />
+            <S.CircularImage source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }} />
             {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
             {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
           </TouchableOpacity>
@@ -463,34 +463,18 @@ const Library: React.FC<Props> = ({ route }) => {
             </S.MemberStyleList>
           </S.UserInfoWrapper>
         </S.UserInfoView>
-
-        <S.ProfileHeaderButtonContainer>
-          {isYourLibrary && (
-            <>
-              <S.ProfileModifyButtonWrapper
-                onPress={async () => {
-                  await fetchTargetMemberStyle(targetMemberId);
-                  handleViewStyleModalRef();
-                }}
-              >
-                <S.ProfileModifyButtonText>스타일 보기</S.ProfileModifyButtonText>
-              </S.ProfileModifyButtonWrapper>
-              <S.ProfileModifyButtonWrapper
-                onPress={async () => {
-                  await handlePostcardClick();
-                }}
-                style={{ backgroundColor: colors.buttonPrimary }}
-              >
-                <S.ProfileModifyButtonText style={{ color: colors.textYellow }}>엽서 보내기</S.ProfileModifyButtonText>
-              </S.ProfileModifyButtonWrapper>
-            </>
-          )}
-        </S.ProfileHeaderButtonContainer>
       </S.UserInfoContainerView>
       <S.BookListContainerView>
-        <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-          책을 누르면 한 줄 감상문과 독서퀴즈를 수정할 수 있습니다.
-        </CustomText>
+        {isYourLibrary ? (
+          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+            책을 눌러 상대방의 마음을 알아보세요.
+          </CustomText>
+        ) : (
+          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+            책을 누르면 한 줄 감상문과 독서퀴즈를 수정할 수 있습니다.
+          </CustomText>
+        )}
+
         <S.BookContainer>
           <FlatList
             data={bookRows}
@@ -503,10 +487,11 @@ const Library: React.FC<Props> = ({ route }) => {
           />
         </S.BookContainer>
       </S.BookListContainerView>
-      <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook', { isRepresentative: false })}>
-        <S.AddBookButton source={icons.addBook} />
-      </TouchableOpacity>
-
+      {!isYourLibrary && (
+        <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook', { isRepresentative: false })}>
+          <S.AddBookButton source={icons.addBook} />
+        </TouchableOpacity>
+      )}
       <CustomBottomSheetModal ref={modifyBookModalRef} index={4} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <MyBookInfoModify
@@ -542,23 +527,7 @@ const Library: React.FC<Props> = ({ route }) => {
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
       </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={viewStyleModalRef} index={3} snapPoints={snapPoints}>
-        <S.BookModificationBottomSheetContainer>
-          <ViewStyle
-            styles={[
-              memberStyle?.dateStyleType,
-              memberStyle?.dateCostType,
-              memberStyle?.contactType,
-              memberStyle?.drinkType,
-              memberStyle?.smokeType,
-              memberStyle?.mbti,
-            ]}
-            friendPreferenceType={memberStyle?.justFriendType}
-            personalQuestion={memberStyle?.memberAsk}
-          />
-        </S.BookModificationBottomSheetContainer>
-      </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={viewBookInfoModalRef} index={2} snapPoints={snapPoints}>
+      <CustomBottomSheetModal ref={viewBookInfoModalRef} index={3} snapPoints={snapPoints}>
         <S.BookModificationBottomSheetContainer>
           <ViewBookInfo
             bookName={bookInfo?.title}
