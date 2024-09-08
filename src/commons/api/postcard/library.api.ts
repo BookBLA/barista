@@ -15,7 +15,9 @@ export const getYourLibraryInfo = async (targetMemberId: number) => {
     result: { baseResponse },
   } = await Get(`members/library/target/${Number(targetMemberId)}`, true);
 
-  return baseResponse;
+  return {
+    result: baseResponse,
+  };
 };
 
 export const getBookQuizInfo = async (memberBookId: number) => {
