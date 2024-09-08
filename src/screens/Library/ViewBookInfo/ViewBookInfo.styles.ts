@@ -2,12 +2,12 @@ import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
 
 export const BookInfoContainer = styled.View`
-  flex-direction: row;
+  align-items: center;
+  margin-bottom: 22px;
 `;
 export const BookWrapper = styled.View`
-  flex: 0.8;
-  justify-content: center;
-  align-items: center;
+  width: 90px;
+  height: 132px;
 `;
 
 export const BookImage = styled.Image`
@@ -18,29 +18,19 @@ export const BookImage = styled.Image`
 `;
 
 export const BookTitleWrapper = styled.View`
-  flex: 2;
-  justify-content: flex-end;
-  padding-left: 8px;
-`;
-
-export const DashLine = styled.View`
-  width: 100%;
-  margin: 20px 0;
-  border: 1px dashed #d2d6e2;
+  margin-top: 14px;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const BookReviewContainer = styled.View``;
 
-export const BookReviewHeaderWrapper = styled.View`
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-`;
 export const BookReviewWrapper = styled.View`
   width: 100%;
-  height: 120px;
+  height: 150px;
   padding: 20px;
   border-radius: 10px;
-  background-color: #fff5d6;
+  border: 1px rgba(0, 0, 0, 0.1) solid;
+  background-color: white;
+  margin-bottom: 12px;
 `;

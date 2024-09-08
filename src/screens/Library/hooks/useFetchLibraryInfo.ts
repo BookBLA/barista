@@ -35,7 +35,11 @@ export const useFetchLibraryInfo = (isYourLibrary: boolean, targetMemberId?: num
 
       setBookRows(bookRows);
     } catch (error) {
-      console.error('서재 정보를 불러오는데 실패하였습니다.', error);
+      if (isYourLibrary) {
+        console.error('상대방 서재 정보를 불러오는데 실패하였습니다.', error);
+      } else {
+        console.error('내 서재 정보를 불러오는데 실패하였습니다.', error);
+      }
     }
   }, [isYourLibrary]);
 
@@ -48,5 +52,6 @@ export const useFetchLibraryInfo = (isYourLibrary: boolean, targetMemberId?: num
   return {
     libraryInfo: data,
     bookRows,
+    fetchLibraryInfo,
   };
 };
