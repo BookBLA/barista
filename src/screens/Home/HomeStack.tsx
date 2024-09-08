@@ -1,5 +1,6 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import Chat from '@screens/Chat/Chat';
 import Library from '@screens/Library/Library';
 import React from 'react';
 import Home from './screens/Home/Home';
@@ -11,6 +12,7 @@ const screens = [
   { name: 'home', component: Home },
   { name: 'product', component: Product },
   { name: 'library', component: Library },
+  { name: 'chat', component: Chat },
 ];
 
 const HomeStack = () => {
