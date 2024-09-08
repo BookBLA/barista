@@ -1,7 +1,7 @@
 export interface IMyBookInfoModifyProps {
   memberId?: number;
   memberBookId: number;
-  deleteBookFunc: () => void;
+  showDeleteBookModalFunc: () => void;
 }
 
 export type TBookInfo = {

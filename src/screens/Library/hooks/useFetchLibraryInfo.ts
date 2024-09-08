@@ -48,5 +48,6 @@ export const useFetchLibraryInfo = (isYourLibrary: boolean, targetMemberId?: num
   return {
     libraryInfo: data,
     bookRows,
+    fetchLibraryInfo,
   };
 };

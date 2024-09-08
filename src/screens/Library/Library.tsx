@@ -29,7 +29,7 @@ import { EStatusCode } from '@commons/types/statusCode';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { RouteProp, useFocusEffect } from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
@@ -46,6 +46,7 @@ import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import ViewStyle from './ViewStyle/ViewStyle';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
+import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -95,7 +96,9 @@ const Library: React.FC<Props> = ({ route }) => {
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
   const [invitationCode, setInvitationCode] = useState('');
-  const { libraryInfo, bookRows } = useFetchLibraryInfo(isYourLibrary);
+  const { libraryInfo, bookRows, fetchLibraryInfo } = useFetchLibraryInfo(isYourLibrary, targetMemberId);
+  const [isDeleteBookModalVisible, setIsDeleteBookModalVisible] = useState(false);
+  const isFocused = useIsFocused();
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(invitationCode);
@@ -104,7 +107,7 @@ const Library: React.FC<Props> = ({ route }) => {
     });
   };
 
-  const fetchMyLibraryInfo = useCallback(async () => {
+  const setMyLibraryInfo = useCallback(async () => {
     try {
       // const memberStyle = await getMemberStyle(result.memberId);
       setBookInfoList(libraryInfo?.bookResponses ?? []);
@@ -120,7 +123,7 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   }, []);
 
-  const fetchYourLibraryInfo = useCallback(async () => {
+  const SetYourLibraryInfo = useCallback(async () => {
     try {
       // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
@@ -132,11 +135,11 @@ const Library: React.FC<Props> = ({ route }) => {
   useFocusEffect(
     useCallback(() => {
       if (isYourLibrary) {
-        fetchYourLibraryInfo();
+        SetYourLibraryInfo();
       } else {
-        fetchMyLibraryInfo();
+        setMyLibraryInfo();
       }
-    }, [fetchMyLibraryInfo, fetchYourLibraryInfo, isYourLibrary]),
+    }, [isYourLibrary, isFocused, libraryInfo, bookRows]),
   );
 
   const fetchBookInfo = async (memberBookId?: number) => {
@@ -257,10 +260,12 @@ const Library: React.FC<Props> = ({ route }) => {
     }
   };
 
-  const deleteBookInBookList = async () => {
+  const processDeleteBook = async () => {
     try {
       await deleteBook(selectedBookId);
-      await fetchMyLibraryInfo();
+      await fetchLibraryInfo();
+      await setMyLibraryInfo();
+      toggleDeleteBookModal();
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       const { code, message } = error.response.data;
@@ -270,8 +275,11 @@ const Library: React.FC<Props> = ({ route }) => {
         });
       }
     }
+  };
 
-    modifyBookModalRef.current?.close();
+  const showDeleteBookModal = async () => {
+    modifyBookModalRef.current.close();
+    toggleDeleteBookModal();
   };
 
   const moveProductScreen = () => {
@@ -300,6 +308,10 @@ const Library: React.FC<Props> = ({ route }) => {
   const inviteFriendModalConfig = {
     visible: isInviteFriendModalVisible,
     onClose: toggleInviteFriendModal,
+  };
+
+  const toggleDeleteBookModal = () => {
+    setIsDeleteBookModalVisible(!isDeleteBookModalVisible);
   };
 
   const memberInfo = useMemberStore((state) => state.memberInfo);
@@ -500,7 +512,7 @@ const Library: React.FC<Props> = ({ route }) => {
           <MyBookInfoModify
             memberId={memberInfo.id!}
             memberBookId={selectedBookId}
-            deleteBookFunc={deleteBookInBookList}
+            showDeleteBookModalFunc={showDeleteBookModal}
           />
         </S.BookModificationBottomSheetContainer>
       </CustomBottomSheetModal>
@@ -663,6 +675,18 @@ const Library: React.FC<Props> = ({ route }) => {
           </TouchableOpacity>
         </S.InviteFriendModalWrapper>
       </CustomModal>
+      <CustomModal
+        modalConfig={{
+          visible: isDeleteBookModalVisible,
+          onClose: toggleDeleteBookModal,
+          mode: 'round',
+          contents: <DeleteBookModalContent />,
+          buttons: [
+            { label: '삭제하기', action: processDeleteBook, bgColor: colors.buttonMain, color: 'black' },
+            { label: '취소', action: toggleDeleteBookModal },
+          ],
+        }}
+      ></CustomModal>
     </SafeAreaView>
   );
 };

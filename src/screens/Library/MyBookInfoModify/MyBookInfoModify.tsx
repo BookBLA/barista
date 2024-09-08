@@ -12,7 +12,11 @@ import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
 import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
+  memberId,
+  memberBookId,
+  showDeleteBookModalFunc,
+}) => {
   const { handleLimitTextLine } = useLimitTextLine();
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
@@ -342,7 +346,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               )}
             </View>
           </S.BookQuizContainer>
-          <S.BookRemoveButton onPress={deleteBookFunc}>
+          <S.BookRemoveButton onPress={showDeleteBookModalFunc}>
             <CustomText font="fontMedium" size="14px" color="white">
               서재에서 책 삭제하기
             </CustomText>
