@@ -1,9 +1,11 @@
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import * as S from './ChatDetail.styles';
+import { styles } from './ChatInfoScreen/ChatInfoScreen.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
 const ChatDetail: React.FC = () => {
@@ -127,8 +129,8 @@ const ChatDetail: React.FC = () => {
   return (
     <S.Wrapper>
       <S.Header>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <S.BackButton>{'<'}</S.BackButton>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+          <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <S.HeaderTitle>
           <S.SmallAvatar source={{ uri: user.avatar }} />
