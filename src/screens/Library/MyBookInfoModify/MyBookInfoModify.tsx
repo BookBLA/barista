@@ -24,10 +24,11 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [bookImageUrl, setBookImageUrl] = useState<string>();
+  const showToast = useToastStore((state) => state.showToast);
 
   const isEmptyReview = () => {
     if (!bookReviewText) {
-      useToastStore.getState().showToast({ content: '한 줄 감상문을 입력해주세요!' });
+      showToast({ content: '한 줄 감상문을 입력해주세요!' });
       return true;
     }
 
@@ -36,22 +37,22 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
 
   const isEmptyQuiz = () => {
     if (!bookQuizText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizFirstAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizSecondAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizThirdAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
       return true;
     }
 
@@ -68,7 +69,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
           firstWrongChoice: bookQuizSecondAnswerText,
           secondWrongChoice: bookQuizThirdAnswerText,
         });
-        useToastStore.getState().showToast({ content: '독서 퀴즈가 변경되었습니다.' });
+        showToast({ content: '독서 퀴즈가 변경되었습니다.' });
       } catch (err) {
         console.error('업데이트에 실패하였습니다.', err);
       }
@@ -82,7 +83,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
           memberBookId,
           contents: bookReviewText,
         });
-        useToastStore.getState().showToast({ content: '한 줄 감상문이 변경되었습니다.' });
+        showToast({ content: '한 줄 감상문이 변경되었습니다.' });
       } catch (err) {
         console.error('업데이트에 실패하였습니다.', err);
       }

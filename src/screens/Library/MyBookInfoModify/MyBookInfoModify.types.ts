@@ -1,5 +1,5 @@
 export interface IMyBookInfoModifyProps {
-  memberId: number;
+  memberId?: number;
   memberBookId: number;
   deleteBookFunc: () => void;
 }
