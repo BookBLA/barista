@@ -1,5 +1,6 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
+import Chat from '@screens/Chat/Chat';
 import Product from '@screens/Home/screens/Product/Product';
 import Library from '@screens/Library/Library';
 import React from 'react';
@@ -12,6 +13,7 @@ const screens = [
   { name: 'receivePostcardDetail', component: ReceivePostcardDetail },
   { name: 'product', component: Product },
   { name: 'library', component: Library },
+  { name: 'chat', component: Chat },
 ];
 
 const MatchingStack = () => {
