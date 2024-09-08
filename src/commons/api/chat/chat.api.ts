@@ -1,6 +1,6 @@
 // chat.api.ts
+
 import { Get } from '@commons/configs/axios/http.api';
-import axios from 'axios';
 
 export const fetchChatList = async () => {
   try {
@@ -28,12 +28,12 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
   }
 };
 
-export const sendMessageToServer = async (message: any) => {
+// WebSocket을 사용하여 메시지를 JSON으로 전송하는 함수
+export const sendMessageViaWebSocket = (message: any) => {
   try {
-    const response = await axios.post('chat/send', message);
-    return response.data;
+    WebSocketClient.sendMessage(message); // WebSocket을 통해 JSON 메시지 전송
+    console.log('Message sent via WebSocket:', message);
   } catch (error) {
-    console.error('Error sending message:', error);
-    throw error;
+    console.error('Error sending message via WebSocket:', error);
   }
 };
