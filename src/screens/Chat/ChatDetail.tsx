@@ -101,6 +101,7 @@ const ChatDetail: React.FC = () => {
       smokingStatus: '흡연',
       mbti: 'ENFP',
       height: 170,
+      nickname: '김서울',
     };
 
     return (

@@ -7,6 +7,14 @@ import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
   const { user } = route.params;
+  const patner = {
+    avatar: require('@assets/images/img/profile_ex1.png'),
+    school: '서울대학교',
+    smokingStatus: '흡연',
+    mbti: 'ENFP',
+    height: 170,
+    nickname: '김서울',
+  };
   const navigation = useNavigation();
 
   return (
@@ -19,8 +27,8 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.profileSection}>
-        <Image source={{ uri: user.avatar }} style={styles.avatar} />
-        <Text style={styles.username}>{user.nickname}</Text>
+        <Image source={patner.avatar} style={styles.avatar} />
+        <Text style={styles.username}>{patner.nickname}</Text>
       </View>
 
       <View style={styles.optionsSection}>
