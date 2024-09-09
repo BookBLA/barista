@@ -8,7 +8,6 @@ import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
-import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -22,7 +21,7 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        <LibraryOnboardingModal onClose={toggle} visible={isOpen} />
+        <HomeOnboardingModal onClose={toggle} visible={isOpen} />
 
         <MemberCard />
         {/* <EventCard /> */}

@@ -47,6 +47,7 @@ export const Footer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: space-between;
+  background-color: white;
 `;
 
 export const LeftButton = styled.TouchableOpacity`

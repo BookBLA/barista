@@ -60,6 +60,7 @@ type Props = {
 
 const Library: React.FC<Props> = ({ route }) => {
   useScreenLogger();
+  const { toggle: onboardingToggle, isOpen: isOnboardingOpen } = useToggle(true);
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -395,7 +396,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
-      {/*<LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingToggleOpen} />*/}
+      <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
       <S.UserInfoContainerView>
         {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
         {/*  <S.UserModificationStatusBar>*/}
