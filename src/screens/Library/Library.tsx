@@ -46,6 +46,7 @@ import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import ViewStyle from './ViewStyle/ViewStyle';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
+import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -394,6 +395,7 @@ const Library: React.FC<Props> = ({ route }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
+      {/*<LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingToggleOpen} />*/}
       <S.UserInfoContainerView>
         {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
         {/*  <S.UserModificationStatusBar>*/}
