@@ -47,7 +47,6 @@ export const Footer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: space-between;
-  background-color: white;
 `;
 
 export const LeftButton = styled.TouchableOpacity`
@@ -75,4 +74,14 @@ export const RightButton = styled.TouchableOpacity`
   padding: 10px 16px;
   border-radius: 4px;
   font-size: 14px;
+`;
+
+export const ExitButton = styled.TouchableHighlight`
+  flex: 2;
+  border-top-width: 1px;
+  border-color: #0000001a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
 `;

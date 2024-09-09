@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, View } from 'react-native';
 import { IProps } from './OnboardingModal.types';
 import * as S from './OnboardingModal.styles';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -17,18 +17,28 @@ export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSl
         <S.Description>{item.description}</S.Description>
       </S.TextSection>
 
-      <S.Footer>
-        <S.LeftButton onPress={onPrevSlide}>
-          <CustomText color="#00000066">{item.leftButtonText}</CustomText>
-        </S.LeftButton>
-        <S.PageIndex resizeMode="contain" source={item.indexImage} />
-        <S.RightButton
-          onPress={index === 2 ? onClose : onNextSlide}
-          style={{ backgroundColor: index === 2 ? colors.primary02 : 'transparent' }}
-        >
-          <CustomText color="black">{item.rightButtonText}</CustomText>
-        </S.RightButton>
-      </S.Footer>
+      {index === -1 ? (
+        <>
+          <S.ExitButton underlayColor="ghostwhite" onPress={onClose}>
+            <CustomText size="16" color="black">
+              닫기
+            </CustomText>
+          </S.ExitButton>
+        </>
+      ) : (
+        <S.Footer>
+          <S.LeftButton onPress={onPrevSlide}>
+            <CustomText color="#00000066">{item.leftButtonText}</CustomText>
+          </S.LeftButton>
+          <S.PageIndex resizeMode="contain" source={item.indexImage} />
+          <S.RightButton
+            onPress={index === 2 ? onClose : onNextSlide}
+            style={{ backgroundColor: index === 2 ? colors.primary02 : 'transparent' }}
+          >
+            <CustomText color="black">{item.rightButtonText}</CustomText>
+          </S.RightButton>
+        </S.Footer>
+      )}
     </S.Wrapper>
   );
 };

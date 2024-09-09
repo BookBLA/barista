@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import Modal from 'react-native-modal';
-import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableWithoutFeedback, View } from 'react-native';
 import { ModalItem } from '@commons/components/Specific/OnboardingModal/ModalItem';
 import { ModalProps } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal.types';
 
@@ -17,10 +17,13 @@ export const LibraryOnboardingModal: React.FC<ModalProps> = ({ onClose, visible 
   };
 
   return (
-    /* modal width, height / 닫기 버튼 */
     <Modal isVisible={visible}>
-      <TouchableWithoutFeedback>
-        <ModalItem index={-1} item={data} onClose={onClose} />
+      <TouchableWithoutFeedback
+        style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
+      >
+        <View style={{ width: modalWidth, height: modalHeight }}>
+          <ModalItem index={-1} item={data} onClose={onClose} />
+        </View>
       </TouchableWithoutFeedback>
     </Modal>
   );
