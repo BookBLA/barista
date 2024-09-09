@@ -76,3 +76,13 @@ export const RightButton = styled.TouchableOpacity`
   border-radius: 4px;
   font-size: 14px;
 `;
+
+export const ExitButton = styled.TouchableHighlight`
+  flex: 2;
+  border-top-width: 1px;
+  border-color: #0000001a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+`;

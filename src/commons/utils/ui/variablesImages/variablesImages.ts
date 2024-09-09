@@ -122,6 +122,8 @@ export const img = {
   homOnboardingPage1: require('@assets/images/img/homeOnboarding/page1.png'),
   homOnboardingPage2: require('@assets/images/img/homeOnboarding/page2.png'),
   homOnboardingPage3: require('@assets/images/img/homeOnboarding/page3.png'),
+
+  libraryOnboarding: require('@assets/images/img/libraryOnboarding.png'),
 };
 
 export const logos = {

@@ -47,6 +47,7 @@ import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
 import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -60,6 +61,7 @@ type Props = {
 
 const Library: React.FC<Props> = ({ route, navigation }) => {
   useScreenLogger();
+  const { toggle: onboardingToggle, isOpen: isOnboardingOpen } = useToggle(true);
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -410,6 +412,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
+      <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
       <S.UserInfoContainerView>
         {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
         {/*  <S.UserModificationStatusBar>*/}

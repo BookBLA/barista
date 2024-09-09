@@ -1,13 +1,17 @@
 import { boolean, number, string } from 'yup';
 
-export interface ModalProps {
-  onClose: () => void;
-  visible: boolean;
+export interface IDataItem {
+  image: any;
+  title: string;
+  description: string;
+  leftButtonText?: string;
+  rightButtonText?: string;
+  indexImage?: any;
 }
 
 export interface IProps {
   index: number;
-  data: string[];
+  item: IDataItem;
   activeSlide?: number;
   onPrevSlide?: () => void;
   onNextSlide?: () => void;

@@ -6,7 +6,7 @@ import React from 'react';
 import Advert from './units/Advert/Advert';
 import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
-import { OnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/OnboardingModal';
+import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 
 const Home = () => {
@@ -21,7 +21,7 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        <OnboardingModal onClose={toggle} visible={isOpen} />
+        <HomeOnboardingModal onClose={toggle} visible={isOpen} />
 
         <MemberCard />
         {/* <EventCard /> */}
