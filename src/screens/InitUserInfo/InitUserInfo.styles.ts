@@ -77,7 +77,7 @@ export const ButtonTextStyled = styled.Text`
 export const ButtonStyled = styled.TouchableOpacity<{ borderRadius?: number }>`
   width: 80%;
   height: 40px;
-  border-radius: ${({ borderRadius }: { borderRadius?: number }) => (borderRadius ? `${borderRadius}px` : '60px')};
+  border-radius: ${({ borderRadius }: { borderRadius?: number }) => (borderRadius !== undefined ? borderRadius : 60)};
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;

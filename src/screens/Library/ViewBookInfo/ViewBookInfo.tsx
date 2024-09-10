@@ -12,7 +12,7 @@ export const ViewBookInfo: React.FC<IViewBookInfoProps> = ({ bookImageUrl, bookA
           <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
         </S.BookWrapper>
         <S.BookTitleWrapper>
-          <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="16px" color="black" weight="bold">
+          <CustomText style={{ marginBottom: 4 }} font="fontMedium" size="20px" color="black" weight="bold">
             {bookName}
           </CustomText>
           <CustomText font="fontLight" size="14px" color="#616C90">
@@ -20,13 +20,8 @@ export const ViewBookInfo: React.FC<IViewBookInfoProps> = ({ bookImageUrl, bookA
           </CustomText>
         </S.BookTitleWrapper>
       </S.BookInfoContainer>
-      <S.DashLine />
+
       <S.BookReviewContainer>
-        <S.BookReviewHeaderWrapper>
-          <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-            한 줄 감상문
-          </CustomText>
-        </S.BookReviewHeaderWrapper>
         <S.BookReviewWrapper>
           <CustomText font="fontRegular" size="14px" color="black">
             {bookReview}

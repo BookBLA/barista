@@ -114,6 +114,16 @@ export const img = {
   heartGauge5: require('@assets/images/img/heartGauge/heartGauge5.png'),
   heartGauge6: require('@assets/images/img/heartGauge/heartGauge6.png'),
   heartGauge7: require('@assets/images/img/heartGauge/heartGauge7.png'),
+
+  homeOnboarding1: require('@assets/images/img/homeOnboarding/homeOnboarding1.png'),
+  homeOnboarding2: require('@assets/images/img/homeOnboarding/homeOnboarding2.png'),
+  homeOnboarding3: require('@assets/images/img/homeOnboarding/homeOnboarding3.png'),
+
+  homOnboardingPage1: require('@assets/images/img/homeOnboarding/page1.png'),
+  homOnboardingPage2: require('@assets/images/img/homeOnboarding/page2.png'),
+  homOnboardingPage3: require('@assets/images/img/homeOnboarding/page3.png'),
+
+  libraryOnboarding: require('@assets/images/img/libraryOnboarding.png'),
 };
 
 export const logos = {

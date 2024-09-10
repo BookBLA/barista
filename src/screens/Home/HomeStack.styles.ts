@@ -21,7 +21,7 @@ export const PositionedWrapper = styled.View`
   width: 100%;
   height: 85%;
   /* background-color: ${colors.background};  */
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 20px 20px 0 0;
 `;
 
 export const BodyWrapper = styled.View`
@@ -33,5 +33,5 @@ export const BodyWrapper = styled.View`
   width: 100%;
   height: 100%;
   /* background-color: ${colors.background}; */
-  border-radius: 20px 20px 0px 0px;
+  border-radius: 20px 20px 0 0;
 `;
