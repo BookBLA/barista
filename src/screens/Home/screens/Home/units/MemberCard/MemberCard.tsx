@@ -6,13 +6,16 @@ import BookImage from '../BookImage/BookImage';
 import BookInfo from '../BookInfo/BookInfo';
 import Profile from '../Profile/Profile';
 import * as S from './MemberCard.styles';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 
 const MemberCard = () => {
+  const { movePage } = useMovePage();
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
     isOpen,
     studentIdToggle,
   });
+  const memberBookId = 1000035;
 
   return (
     <S.Wrapper>
@@ -20,7 +23,7 @@ const MemberCard = () => {
       <BookImage />
       <BookInfo />
 
-      <S.SendButton onPress={studentIdToggle}>
+      <S.SendButton onPress={movePage('quizStack', { memberBookId })}>
         <CustomText>엽서 보내기</CustomText>
       </S.SendButton>
       <CustomModal modalConfig={studentIdModalConfig} />

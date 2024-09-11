@@ -9,13 +9,11 @@ const Header = () => {
   const { movePage } = useMovePage();
   const { memberPostcard } = useFetchMemberPostcard();
   const { data } = useGetAlarms();
-  const memberBookId = 1000035;
 
   return (
     <S.HeaderWrapper>
       <S.LogoWrapper>
-        <S.IconButton onPress={movePage('quizStack', { memberBookId })}>
-          {/* 홈페이지 변경 전까지 독서퀴즈 페이지 접근용으로 만든 임시 버튼 */}
+        <S.IconButton>
           <S.LogoImage source={LogoDarkBg} />
         </S.IconButton>
         <S.LogoTitleImage source={logos.mainLogo} />
