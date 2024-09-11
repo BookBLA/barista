@@ -24,7 +24,7 @@ export const ModalButtons: React.FC<IProps> = ({ buttons, mode }) => {
       )}
       {mode === 'round' &&
         buttons.map((button, index) => (
-          <S.RoundButton key={index} onPress={button.action} width={buttonWidth} bgColor={button.bgColor}>
+          <S.RoundButton key={button.label} onPress={button.action} width={buttonWidth} bgColor={button.bgColor}>
             <CustomText size="14px" font="fontMedium" color={button.color || colors.secondary}>
               {button.label}
             </CustomText>

@@ -4,11 +4,15 @@ export const colors = {
   secondary: '#F7E2A4',
   background: '#F7F4ED',
   dividerLine: '#D2D6E2',
+  cardBackground: '#FAFAFA',
+  inviteCardBackground: '#120B2E',
+  onboardingBackground: '#ECF0F9',
 
   // 버튼 색상
   buttonAuthToggle: '#BBBFCF',
   buttonMain: '#FFF5D6',
   buttonPrimary: '#1D2E61',
+  buttonPrimary2: '#1D2E60',
   buttonBackground: '#455C9F24',
   buttonBorder: '#00000022',
   buttonYellow: '#FFF5D6',
@@ -35,6 +39,8 @@ export const colors = {
   textBlack: '#000000',
   textYellow: '#FFEBAC',
   textGray: '#858585',
+  textWhite: '#FFFFFF',
+  textSub: '#00000099',
 
   lineDivider: '#D2D6E2',
   textGray1: '#D9D9D9',

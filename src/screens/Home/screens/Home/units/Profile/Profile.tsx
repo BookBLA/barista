@@ -1,26 +1,28 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { colors } from '@commons/styles/variablesStyles';
-import truncateText from '@commons/utils/ui/truncateText/truncateText';
-import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import { IDdata } from '@screens/Home/HomeStack.types';
+import { example, icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './Profile.styles';
 
-const Profile = ({ item }: { item: IDdata }) => {
-  const { memberId, bookName, memberName, memberSchoolName, memberAge, bookImageUrl } = item;
-  const { movePage } = useMovePage();
+const Profile = () => {
+  // TODO: 프로필 컴포넌트 공용화 예정
 
   return (
-    <S.ProfileWrapper onPress={movePage('library', { memberId, isYourLibrary: true })}>
-      <S.BookImageWrapper>
-        <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : icons.bookCover} />
-      </S.BookImageWrapper>
-      <CustomText size="12px">{truncateText(bookName, 15)}</CustomText>
-      <CustomText size="10px">{`${memberName} (${memberAge ?? '0'}살)`}</CustomText>
-      <CustomText size="10px" color={colors.textGray}>
-        {memberSchoolName ?? '?? 대학교'}
-      </CustomText>
-    </S.ProfileWrapper>
+    <S.Wrapper>
+      <S.LeftWrapper>
+        <S.ProfileImage source={example.book} />
+      </S.LeftWrapper>
+      <S.RightWrapper>
+        <S.InfoWrapper>
+          <CustomText>이름 | 나이</CustomText>
+          <S.GenderWrapper>
+            <S.GenderImage source={icons.man} />
+          </S.GenderWrapper>
+        </S.InfoWrapper>
+
+        <CustomText size="12px" font="fontRegular">
+          가천대학교
+        </CustomText>
+      </S.RightWrapper>
+    </S.Wrapper>
   );
 };
 

@@ -18,6 +18,8 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "target": "ESNext",
+    "importHelpers": true,
+    "types": ["styled-components-react-native", "jest"]
   },
   "exclude": ["node_modules", "babel.config.js"],
   "include": ["src"],

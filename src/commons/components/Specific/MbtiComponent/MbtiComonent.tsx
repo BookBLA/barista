@@ -1,5 +1,4 @@
 import MbtiItem from '@commons/components/Lists/MbtiItem/MbtiItem';
-import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 import { Dispatch, SetStateAction } from 'react';
 import { View } from 'react-native';
 
@@ -13,9 +12,9 @@ const MbtiComponent = ({ mbti, setMbti }: { mbti: string[]; setMbti: Dispatch<Se
   // console.log('mbti', mbti);
 
   return (
-    <View style={{ height: deviceHeight * 0.52, justifyContent: 'space-between' }}>
+    <View>
       {mbtiNames.map((name: string[], index: number) => (
-        <MbtiItem char={mbti[index]} key={index} name={name} setMbti={setMbti} index={index} />
+        <MbtiItem char={mbti[index]} key={name[0]} name={name} setMbti={setMbti} index={index} />
       ))}
     </View>
   );

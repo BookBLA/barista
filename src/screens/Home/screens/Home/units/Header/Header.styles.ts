@@ -5,8 +5,9 @@ export const HeaderWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   height: 48px;
-  background-color: #fff;
+  background-color: pink;
   padding: 0px 16px;
+  margin-bottom: 16px;
 `;
 
 export const LogoWrapper = styled.View`
@@ -43,7 +44,7 @@ export const IconWrapper = styled.View`
 export const IconButton = styled.TouchableOpacity``;
 
 export const IconImage = styled.Image`
-  width: 21px;
+  width: 16.75px;
   height: 21px;
 `;
 

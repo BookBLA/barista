@@ -3,18 +3,16 @@ import {
   patchMemberProfileImageApi,
   putMemberProfileApi,
 } from '@commons/api/members/profile/memberProfile.api';
+import { MemberProfileCreateRequestGenderEnum } from '@commons/types/openapiGenerator';
 import { create } from 'zustand';
 
 interface UserInfo {
-  gender: string;
+  gender: MemberProfileCreateRequestGenderEnum;
   birthDate: string;
   name: string;
   phoneNumber: string;
   schoolName: string;
-  studentIdImageUrl: string;
   schoolEmail: string;
-  profileImageUrl: string;
-  openKakaoRoomUrl: string;
 }
 
 interface UserState {
@@ -29,13 +27,10 @@ export const useUserStore = create<UserState>((set, get) => ({
   userInfo: {
     name: '',
     birthDate: '',
-    gender: '',
+    gender: MemberProfileCreateRequestGenderEnum.Female,
     schoolName: '',
     schoolEmail: '',
     phoneNumber: '',
-    profileImageUrl: '',
-    openKakaoRoomUrl: '',
-    studentIdImageUrl: '',
   },
   updateUserInfo: async (newUser) => {
     set((state) => ({ userInfo: { ...state.userInfo, ...newUser } }));
@@ -43,15 +38,12 @@ export const useUserStore = create<UserState>((set, get) => ({
   resetUserInfo: () =>
     set({
       userInfo: {
-        gender: '',
+        gender: MemberProfileCreateRequestGenderEnum.Female,
         birthDate: '',
         name: '',
         phoneNumber: '',
         schoolName: '',
-        studentIdImageUrl: '',
         schoolEmail: '',
-        profileImageUrl: '',
-        openKakaoRoomUrl: '',
       },
     }),
   saveUserInfo: async (newUser) => {

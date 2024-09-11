@@ -95,9 +95,8 @@ export const CodeFiledStyled = styled.View`
 `;
 
 export const NextButtonStyled = styled.TouchableOpacity`
-  width: 95%;
-  height: 50px;
-  /* height: 6%, */
+  width: 90%;
+  height: ${({ height }: { height?: number }) => (height ? `${height}px` : '50px')};
   border-radius: 60px;
   background-color: ${colors.primary};
   align-items: center;
@@ -133,7 +132,7 @@ export const OpenChatTitleStyled = styled.Text`
   font-size: 20px;
   font-family: fontSemiBold;
   text-align: center;
-  color: 'black';
+  color: black;
   margin-bottom: 16px;
   margin-top: 8%;
 `;
@@ -158,8 +157,8 @@ export const RoundRectStyled = styled.View`
   margin-top: 20px;
   border-radius: 10px;
   background-color: ${colors.buttonMain};
-  justify-content: 'center';
-  align-items: 'center';
+  justify-content: center;
+  align-items: center;
   flex-direction: 'column';
 `;
 
@@ -178,6 +177,7 @@ export const ButtonArea = styled.View`
   justify-content: space-between;
   display: flex;
   align-items: center;
+  z-index: 5;
 `;
 
 export const MoveButton = styled.TouchableOpacity.attrs({

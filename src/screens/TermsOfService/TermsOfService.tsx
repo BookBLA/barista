@@ -29,7 +29,7 @@ const TermsOfService = () => {
   const onClickMovePage = async () => {
     const pushToken = await getPushToken();
     await postPushToken(pushToken);
-    movePage('insertInviteCode')();
+    movePage('schoolStudentID')();
   };
 
   const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
@@ -68,7 +68,7 @@ const TermsOfService = () => {
         <T.ColumnStyled>
           <S.ContentStyled style={{ marginTop: 30, marginBottom: 30 }}>북블라 서비스 동의</S.ContentStyled>
           {agreementTitles.map((title, index) => (
-            <React.Fragment key={index}>
+            <React.Fragment key={title}>
               <T.RowStyled>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <Checkbox

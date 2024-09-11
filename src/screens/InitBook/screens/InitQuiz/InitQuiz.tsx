@@ -5,9 +5,9 @@ import { colors } from '@commons/styles/variablesStyles';
 import truncateText from '@commons/utils/ui/truncateText/truncateText';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { yupResolver } from '@hookform/resolvers/yup';
+import * as U from '@screens/InitBook/InitBookStack.styles';
 import { defaultValues } from '@screens/InitBook/initBookStack.contents';
 import { initBookSchema } from '@screens/InitBook/initBookStack.schema';
-import * as U from '@screens/InitBook/InitBookStack.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, Text, View } from 'react-native';
@@ -19,7 +19,7 @@ import { IProps } from './initQuiz.types';
 
 const InitQuiz = ({ route }: IProps) => {
   useScreenLogger();
-  const { isRepresentative, selectedBook } = route?.params ?? '';
+  const { selectedBook } = route?.params ?? '';
   useHeaderControl({
     title: truncateText(selectedBook?.title ?? '', 22),
   });
@@ -33,7 +33,7 @@ const InitQuiz = ({ route }: IProps) => {
     mode: 'onChange',
     resolver: yupResolver(initBookSchema),
   });
-  const { callPostMemberBook } = usePostMemberBook(isRepresentative, selectedBook);
+  const { callPostMemberBook } = usePostMemberBook(selectedBook);
   const reviewValue = watch('review');
   const handleFormError = useInvalid();
 
@@ -47,7 +47,16 @@ const InitQuiz = ({ route }: IProps) => {
           extraScrollHeight={100}
         >
           <View style={{ width: '100%', height: 'auto', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginBottom: 36, fontSize: 18 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+            <S.ContentStyled style={{ fontSize: 18, marginBottom: 12 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+            <CustomText
+              size="12px"
+              font="fontRegular"
+              color={colors.textGray2}
+              margin="0 0 19px"
+              style={{ textAlign: 'center' }}
+            >
+              나를 궁금해하는 상대방을 위해{'\n'} 나의 생각과 매력이 잘 보이도록 느낀 점을 적어주세요!
+            </CustomText>
             <Controller
               control={control}
               render={({ field: { onChange, onBlur, value } }) => (
@@ -84,8 +93,8 @@ const InitQuiz = ({ route }: IProps) => {
                 height: 1,
                 flexDirection: 'row',
                 justifyContent: 'center',
-                marginBottom: 10,
-                marginTop: 10,
+                marginBottom: 28,
+                marginTop: 28,
               }}
               dashGap={5}
               dashLength={5}
@@ -95,7 +104,7 @@ const InitQuiz = ({ route }: IProps) => {
           </U.CenterWrapper>
 
           <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled style={{ marginTop: 10, marginBottom: 26, fontSize: 18 }}>
+            <S.ContentStyled style={{ marginTop: 10, marginBottom: 12, fontSize: 18 }}>
               객관식 독서퀴즈 출제하기
             </S.ContentStyled>
             <CustomText size="12px" font="fontRegular" color={colors.textGray2}>
@@ -173,23 +182,16 @@ const InitQuiz = ({ route }: IProps) => {
         </KeyboardAwareScrollView>
         <S.NextButtonStyled
           style={{
-            height: 50,
+            height: 44,
             bottom: 5,
             backgroundColor: isValid ? colors.primary : colors.primary02,
           }}
           onPress={handleSubmit(callPostMemberBook, handleFormError)}
         >
-          <Text style={{ color: isValid ? colors.primary02 : colors.textGray, fontFamily: 'fontMedium', fontSize: 16 }}>
+          <Text style={{ color: isValid ? colors.primary02 : colors.textGray, fontFamily: 'fontMedium', fontSize: 14 }}>
             등록하기
           </Text>
         </S.NextButtonStyled>
-
-        {/* <CustomButton
-          onPress={handleSubmit(callPostMemberBook, handleFormError)}
-          backgroundColor={isValid ? colors.primary : colors.primary02}
-          fontColor={isValid ? colors.primary02 : colors.textGray}
-          contents="등록하기"
-        /> */}
       </U.Wrapper>
     </>
   );

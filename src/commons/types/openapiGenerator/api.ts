@@ -71,81 +71,6 @@ export interface AdminLogoutRequest {
 /**
  * 
  * @export
- * @interface AdminMemberKakaoRoomResponse
- */
-export interface AdminMemberKakaoRoomResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberKakaoRoomResponse
-     */
-    'memberVerifyId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberKakaoRoomResponse
-     */
-    'memberId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberKakaoRoomResponse
-     */
-    'name'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberKakaoRoomResponse
-     */
-    'openKakaoRoomUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberKakaoRoomResponse
-     */
-    'createdAt'?: string;
-}
-/**
- * 
- * @export
- * @interface AdminMemberKakaoRoomResponses
- */
-export interface AdminMemberKakaoRoomResponses {
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberKakaoRoomResponses
-     */
-    'totalCount'?: number;
-    /**
-     * 
-     * @type {Array<AdminMemberKakaoRoomResponse>}
-     * @memberof AdminMemberKakaoRoomResponses
-     */
-    'data'?: Array<AdminMemberKakaoRoomResponse>;
-}
-/**
- * 
- * @export
- * @interface AdminMemberKakaoRoomStatusUpdateRequest
- */
-export interface AdminMemberKakaoRoomStatusUpdateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberKakaoRoomStatusUpdateRequest
-     */
-    'status': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberKakaoRoomStatusUpdateRequest
-     */
-    'reason': string;
-}
-/**
- * 
- * @export
  * @interface AdminMemberNotificationRequest
  */
 export interface AdminMemberNotificationRequest {
@@ -167,81 +92,6 @@ export interface AdminMemberNotificationRequest {
      * @memberof AdminMemberNotificationRequest
      */
     'contents': string;
-}
-/**
- * 
- * @export
- * @interface AdminMemberProfileImageResponse
- */
-export interface AdminMemberProfileImageResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberProfileImageResponse
-     */
-    'memberVerifyId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberProfileImageResponse
-     */
-    'memberId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberProfileImageResponse
-     */
-    'gender'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberProfileImageResponse
-     */
-    'profileImageUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberProfileImageResponse
-     */
-    'createdAt'?: string;
-}
-/**
- * 
- * @export
- * @interface AdminMemberProfileImageResponses
- */
-export interface AdminMemberProfileImageResponses {
-    /**
-     * 
-     * @type {number}
-     * @memberof AdminMemberProfileImageResponses
-     */
-    'totalCount'?: number;
-    /**
-     * 
-     * @type {Array<AdminMemberProfileImageResponse>}
-     * @memberof AdminMemberProfileImageResponses
-     */
-    'data'?: Array<AdminMemberProfileImageResponse>;
-}
-/**
- * 
- * @export
- * @interface AdminMemberProfileImageStatusUpdateRequest
- */
-export interface AdminMemberProfileImageStatusUpdateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberProfileImageStatusUpdateRequest
-     */
-    'status': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof AdminMemberProfileImageStatusUpdateRequest
-     */
-    'reason': string;
 }
 /**
  * 
@@ -503,12 +353,6 @@ export interface BookResponse {
      * @memberof BookResponse
      */
     'bookImageUrl'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BookResponse
-     */
-    'representative'?: boolean;
 }
 /**
  * 
@@ -815,12 +659,6 @@ export interface MemberBlockReadResponse {
 export interface MemberBookCreateRequest {
     /**
      * 
-     * @type {boolean}
-     * @memberof MemberBookCreateRequest
-     */
-    'isRepresentative': boolean;
-    /**
-     * 
      * @type {string}
      * @memberof MemberBookCreateRequest
      */
@@ -836,13 +674,13 @@ export interface MemberBookCreateRequest {
      * @type {string}
      * @memberof MemberBookCreateRequest
      */
-    'isbn': string;
+    'thumbnail'?: string;
     /**
      * 
      * @type {string}
      * @memberof MemberBookCreateRequest
      */
-    'thumbnail': string;
+    'isbn': string;
     /**
      * 
      * @type {string}
@@ -910,43 +748,13 @@ export interface MemberBookProfileRequestDto {
      * @type {string}
      * @memberof MemberBookProfileRequestDto
      */
-    'drinkType'?: MemberBookProfileRequestDtoDrinkTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberBookProfileRequestDto
-     */
     'smokeType'?: MemberBookProfileRequestDtoSmokeTypeEnum;
     /**
      * 
      * @type {string}
      * @memberof MemberBookProfileRequestDto
      */
-    'contactType'?: MemberBookProfileRequestDtoContactTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberBookProfileRequestDto
-     */
-    'dateStyleType'?: MemberBookProfileRequestDtoDateStyleTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberBookProfileRequestDto
-     */
-    'dateCostType'?: MemberBookProfileRequestDtoDateCostTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberBookProfileRequestDto
-     */
     'mbti'?: MemberBookProfileRequestDtoMbtiEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberBookProfileRequestDto
-     */
-    'justFriendType'?: MemberBookProfileRequestDtoJustFriendTypeEnum;
 }
 
 export const MemberBookProfileRequestDtoGenderEnum = {
@@ -955,15 +763,6 @@ export const MemberBookProfileRequestDtoGenderEnum = {
 } as const;
 
 export type MemberBookProfileRequestDtoGenderEnum = typeof MemberBookProfileRequestDtoGenderEnum[keyof typeof MemberBookProfileRequestDtoGenderEnum];
-export const MemberBookProfileRequestDtoDrinkTypeEnum = {
-    None: 'NONE',
-    OnceAMonth: 'ONCE_A_MONTH',
-    OnceAWeek: 'ONCE_A_WEEK',
-    OverTwiceAWeek: 'OVER_TWICE_A_WEEK',
-    Everyday: 'EVERYDAY'
-} as const;
-
-export type MemberBookProfileRequestDtoDrinkTypeEnum = typeof MemberBookProfileRequestDtoDrinkTypeEnum[keyof typeof MemberBookProfileRequestDtoDrinkTypeEnum];
 export const MemberBookProfileRequestDtoSmokeTypeEnum = {
     Smoke: 'SMOKE',
     NonSmoke: 'NON_SMOKE',
@@ -971,26 +770,6 @@ export const MemberBookProfileRequestDtoSmokeTypeEnum = {
 } as const;
 
 export type MemberBookProfileRequestDtoSmokeTypeEnum = typeof MemberBookProfileRequestDtoSmokeTypeEnum[keyof typeof MemberBookProfileRequestDtoSmokeTypeEnum];
-export const MemberBookProfileRequestDtoContactTypeEnum = {
-    Slow: 'SLOW',
-    Fast: 'FAST'
-} as const;
-
-export type MemberBookProfileRequestDtoContactTypeEnum = typeof MemberBookProfileRequestDtoContactTypeEnum[keyof typeof MemberBookProfileRequestDtoContactTypeEnum];
-export const MemberBookProfileRequestDtoDateStyleTypeEnum = {
-    Home: 'HOME',
-    Outside: 'OUTSIDE'
-} as const;
-
-export type MemberBookProfileRequestDtoDateStyleTypeEnum = typeof MemberBookProfileRequestDtoDateStyleTypeEnum[keyof typeof MemberBookProfileRequestDtoDateStyleTypeEnum];
-export const MemberBookProfileRequestDtoDateCostTypeEnum = {
-    DutchPay: 'DUTCH_PAY',
-    Rotate: 'ROTATE',
-    MoreMoney: 'MORE_MONEY',
-    DateAccount: 'DATE_ACCOUNT'
-} as const;
-
-export type MemberBookProfileRequestDtoDateCostTypeEnum = typeof MemberBookProfileRequestDtoDateCostTypeEnum[keyof typeof MemberBookProfileRequestDtoDateCostTypeEnum];
 export const MemberBookProfileRequestDtoMbtiEnum = {
     Intp: 'INTP',
     Intj: 'INTJ',
@@ -1012,15 +791,6 @@ export const MemberBookProfileRequestDtoMbtiEnum = {
 } as const;
 
 export type MemberBookProfileRequestDtoMbtiEnum = typeof MemberBookProfileRequestDtoMbtiEnum[keyof typeof MemberBookProfileRequestDtoMbtiEnum];
-export const MemberBookProfileRequestDtoJustFriendTypeEnum = {
-    Never: 'NEVER',
-    Eating: 'EATING',
-    Alcohol: 'ALCOHOL',
-    Travel: 'TRAVEL',
-    Everything: 'EVERYTHING'
-} as const;
-
-export type MemberBookProfileRequestDtoJustFriendTypeEnum = typeof MemberBookProfileRequestDtoJustFriendTypeEnum[keyof typeof MemberBookProfileRequestDtoJustFriendTypeEnum];
 
 /**
  * 
@@ -1152,12 +922,6 @@ export interface MemberBookReadResponse {
      * @memberof MemberBookReadResponse
      */
     'authors'?: Array<string>;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof MemberBookReadResponse
-     */
-    'representative'?: boolean;
 }
 /**
  * 
@@ -1221,6 +985,19 @@ export interface MemberBookUpdateRequest {
      * @memberof MemberBookUpdateRequest
      */
     'secondWrongChoice': string;
+}
+/**
+ * 
+ * @export
+ * @interface MemberBookmarkResponse
+ */
+export interface MemberBookmarkResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberBookmarkResponse
+     */
+    'admobCount'?: number;
 }
 /**
  * 
@@ -1290,6 +1067,68 @@ export interface MemberEmailVerifyRequest {
      * @memberof MemberEmailVerifyRequest
      */
     'verifyCode': string;
+}
+/**
+ * 
+ * @export
+ * @interface MemberInformationReadResponse
+ */
+export interface MemberInformationReadResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationReadResponse
+     */
+    'name'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationReadResponse
+     */
+    'mbti'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationReadResponse
+     */
+    'smokeType'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberInformationReadResponse
+     */
+    'height'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MemberInformationUpdateRequest
+ */
+export interface MemberInformationUpdateRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationUpdateRequest
+     */
+    'name': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationUpdateRequest
+     */
+    'mbti': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInformationUpdateRequest
+     */
+    'smokeType': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberInformationUpdateRequest
+     */
+    'height': number;
 }
 /**
  * 
@@ -1722,24 +1561,6 @@ export interface MemberProfileCreateRequest {
      * @memberof MemberProfileCreateRequest
      */
     'phoneNumber': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileCreateRequest
-     */
-    'profileImageUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileCreateRequest
-     */
-    'openKakaoRoomUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileCreateRequest
-     */
-    'studentIdImageUrl': string;
 }
 
 export const MemberProfileCreateRequestGenderEnum = {
@@ -1752,15 +1573,15 @@ export type MemberProfileCreateRequestGenderEnum = typeof MemberProfileCreateReq
 /**
  * 
  * @export
- * @interface MemberProfileImageUpdateRequest
+ * @interface MemberProfileImageTypeUpdateRequest
  */
-export interface MemberProfileImageUpdateRequest {
+export interface MemberProfileImageTypeUpdateRequest {
     /**
      * 
-     * @type {string}
-     * @memberof MemberProfileImageUpdateRequest
+     * @type {number}
+     * @memberof MemberProfileImageTypeUpdateRequest
      */
-    'profileImageUrl': string;
+    'profileImageTypeId': number;
 }
 /**
  * 
@@ -1823,24 +1644,6 @@ export interface MemberProfileResponse {
      * @memberof MemberProfileResponse
      */
     'gender'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileResponse
-     */
-    'profileImageUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileResponse
-     */
-    'openKakaoRoomUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileResponse
-     */
-    'studentIdImageUrl'?: string;
 }
 /**
  * 
@@ -1909,24 +1712,6 @@ export interface MemberProfileUpdateRequest {
      * @memberof MemberProfileUpdateRequest
      */
     'phoneNumber': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileUpdateRequest
-     */
-    'profileImageUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileUpdateRequest
-     */
-    'openKakaoRoomUrl': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberProfileUpdateRequest
-     */
-    'studentIdImageUrl': string;
 }
 
 export const MemberProfileUpdateRequestGenderEnum = {
@@ -1954,50 +1739,6 @@ export interface MemberPushAlarmReadResponse {
      * @memberof MemberPushAlarmReadResponse
      */
     'pushAlarmInfos'?: Array<PushAlarmInfo>;
-}
-/**
- * 
- * @export
- * @interface MemberReplyResponse
- */
-export interface MemberReplyResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof MemberReplyResponse
-     */
-    'memberReplyId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberReplyResponse
-     */
-    'askContent'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberReplyResponse
-     */
-    'replyContent'?: string;
-}
-/**
- * 
- * @export
- * @interface MemberReplyUpdateRequest
- */
-export interface MemberReplyUpdateRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof MemberReplyUpdateRequest
-     */
-    'postcardId': number;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberReplyUpdateRequest
-     */
-    'content': string;
 }
 /**
  * 
@@ -2198,12 +1939,6 @@ export interface MemberStatusUpdateRequest {
      * @memberof MemberStatusUpdateRequest
      */
     'memberStatus': MemberStatusUpdateRequestMemberStatusEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStatusUpdateRequest
-     */
-    'reason'?: string;
 }
 
 export const MemberStatusUpdateRequestMemberStatusEnum = {
@@ -2237,49 +1972,19 @@ export interface MemberStyleCreateRequest {
      * @type {string}
      * @memberof MemberStyleCreateRequest
      */
-    'drinkType': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleCreateRequest
-     */
-    'dateCostType': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleCreateRequest
-     */
     'smokeType': string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof MemberStyleCreateRequest
      */
-    'contactType': string;
+    'height'?: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof MemberStyleCreateRequest
      */
-    'justFriendType': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleCreateRequest
-     */
-    'dateStyleType': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleCreateRequest
-     */
-    'heightType': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleCreateRequest
-     */
-    'memberAsk': string;
+    'profileImageTypeId': number;
 }
 /**
  * 
@@ -2304,55 +2009,25 @@ export interface MemberStyleResponse {
      * @type {string}
      * @memberof MemberStyleResponse
      */
-    'contactType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'dateCostType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'dateStyleType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'justFriendType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'drinkType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
     'mbti'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'heightType'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleResponse
-     */
-    'memberAsk'?: string;
     /**
      * 
      * @type {number}
      * @memberof MemberStyleResponse
      */
-    'memberAskId'?: number;
+    'height'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberStyleResponse
+     */
+    'profileImageTypeId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberStyleResponse
+     */
+    'profileImageUrl'?: string;
 }
 /**
  * 
@@ -2371,49 +2046,19 @@ export interface MemberStyleUpdateRequest {
      * @type {string}
      * @memberof MemberStyleUpdateRequest
      */
-    'drinkType': MemberStyleUpdateRequestDrinkTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleUpdateRequest
-     */
-    'dateCostType': MemberStyleUpdateRequestDateCostTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleUpdateRequest
-     */
     'smokeType': MemberStyleUpdateRequestSmokeTypeEnum;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof MemberStyleUpdateRequest
      */
-    'contactType': MemberStyleUpdateRequestContactTypeEnum;
+    'height'?: number;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof MemberStyleUpdateRequest
      */
-    'justFriendType': MemberStyleUpdateRequestJustFriendTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleUpdateRequest
-     */
-    'dateStyleType': MemberStyleUpdateRequestDateStyleTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleUpdateRequest
-     */
-    'heightType': MemberStyleUpdateRequestHeightTypeEnum;
-    /**
-     * 
-     * @type {string}
-     * @memberof MemberStyleUpdateRequest
-     */
-    'memberAsk': string;
+    'profileImageTypeId': number;
 }
 
 export const MemberStyleUpdateRequestMbtiEnum = {
@@ -2437,23 +2082,6 @@ export const MemberStyleUpdateRequestMbtiEnum = {
 } as const;
 
 export type MemberStyleUpdateRequestMbtiEnum = typeof MemberStyleUpdateRequestMbtiEnum[keyof typeof MemberStyleUpdateRequestMbtiEnum];
-export const MemberStyleUpdateRequestDrinkTypeEnum = {
-    None: 'NONE',
-    OnceAMonth: 'ONCE_A_MONTH',
-    OnceAWeek: 'ONCE_A_WEEK',
-    OverTwiceAWeek: 'OVER_TWICE_A_WEEK',
-    Everyday: 'EVERYDAY'
-} as const;
-
-export type MemberStyleUpdateRequestDrinkTypeEnum = typeof MemberStyleUpdateRequestDrinkTypeEnum[keyof typeof MemberStyleUpdateRequestDrinkTypeEnum];
-export const MemberStyleUpdateRequestDateCostTypeEnum = {
-    DutchPay: 'DUTCH_PAY',
-    Rotate: 'ROTATE',
-    MoreMoney: 'MORE_MONEY',
-    DateAccount: 'DATE_ACCOUNT'
-} as const;
-
-export type MemberStyleUpdateRequestDateCostTypeEnum = typeof MemberStyleUpdateRequestDateCostTypeEnum[keyof typeof MemberStyleUpdateRequestDateCostTypeEnum];
 export const MemberStyleUpdateRequestSmokeTypeEnum = {
     Smoke: 'SMOKE',
     NonSmoke: 'NON_SMOKE',
@@ -2461,41 +2089,6 @@ export const MemberStyleUpdateRequestSmokeTypeEnum = {
 } as const;
 
 export type MemberStyleUpdateRequestSmokeTypeEnum = typeof MemberStyleUpdateRequestSmokeTypeEnum[keyof typeof MemberStyleUpdateRequestSmokeTypeEnum];
-export const MemberStyleUpdateRequestContactTypeEnum = {
-    Slow: 'SLOW',
-    Fast: 'FAST'
-} as const;
-
-export type MemberStyleUpdateRequestContactTypeEnum = typeof MemberStyleUpdateRequestContactTypeEnum[keyof typeof MemberStyleUpdateRequestContactTypeEnum];
-export const MemberStyleUpdateRequestJustFriendTypeEnum = {
-    Never: 'NEVER',
-    Eating: 'EATING',
-    Alcohol: 'ALCOHOL',
-    Travel: 'TRAVEL',
-    Everything: 'EVERYTHING'
-} as const;
-
-export type MemberStyleUpdateRequestJustFriendTypeEnum = typeof MemberStyleUpdateRequestJustFriendTypeEnum[keyof typeof MemberStyleUpdateRequestJustFriendTypeEnum];
-export const MemberStyleUpdateRequestDateStyleTypeEnum = {
-    Home: 'HOME',
-    Outside: 'OUTSIDE'
-} as const;
-
-export type MemberStyleUpdateRequestDateStyleTypeEnum = typeof MemberStyleUpdateRequestDateStyleTypeEnum[keyof typeof MemberStyleUpdateRequestDateStyleTypeEnum];
-export const MemberStyleUpdateRequestHeightTypeEnum = {
-    LessThan150: 'LESS_THAN_150',
-    Over150AndLessThan155: 'OVER_150_AND_LESS_THAN_155',
-    Over155AndLessThan160: 'OVER_155_AND_LESS_THAN_160',
-    Over160AndLessThan165: 'OVER_160_AND_LESS_THAN_165',
-    Over165AndLessThan170: 'OVER_165_AND_LESS_THAN_170',
-    Over170AndLessThan175: 'OVER_170_AND_LESS_THAN_175',
-    Over175AndLessThan180: 'OVER_175_AND_LESS_THAN_180',
-    Over180AndLessThan185: 'OVER_180_AND_LESS_THAN_185',
-    Over185AndLessThan190: 'OVER_185_AND_LESS_THAN_190',
-    Over190: 'OVER_190'
-} as const;
-
-export type MemberStyleUpdateRequestHeightTypeEnum = typeof MemberStyleUpdateRequestHeightTypeEnum[keyof typeof MemberStyleUpdateRequestHeightTypeEnum];
 
 /**
  * 
@@ -2559,18 +2152,6 @@ export interface NotificationResponse {
      * @type {string}
      * @memberof NotificationResponse
      */
-    'message'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
     'status'?: string;
     /**
      * 
@@ -2578,6 +2159,18 @@ export interface NotificationResponse {
      * @memberof NotificationResponse
      */
     'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'id'?: string;
 }
 /**
  * 
@@ -2590,19 +2183,25 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalElements'?: number;
+    'totalPages'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalPages'?: number;
+    'totalElements'?: number;
     /**
      * 
      * @type {SortObject}
      * @memberof PageMemberBookProfileResponse
      */
     'sort'?: SortObject;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'number'?: number;
     /**
      * 
      * @type {boolean}
@@ -2620,24 +2219,6 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'size'?: number;
-    /**
-     * 
-     * @type {Array<MemberBookProfileResponse>}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'content'?: Array<MemberBookProfileResponse>;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'number'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
     'numberOfElements'?: number;
     /**
      * 
@@ -2645,6 +2226,18 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'pageable'?: PageableObject;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<MemberBookProfileResponse>}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'content'?: Array<MemberBookProfileResponse>;
     /**
      * 
      * @type {boolean}
@@ -2694,12 +2287,6 @@ export interface PageableObject {
      * @type {number}
      * @memberof PageableObject
      */
-    'offset'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableObject
-     */
     'pageNumber'?: number;
     /**
      * 
@@ -2719,6 +2306,44 @@ export interface PageableObject {
      * @memberof PageableObject
      */
     'unpaged'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageableObject
+     */
+    'offset'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentInAppPurchaseRequest
+ */
+export interface PaymentInAppPurchaseRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof PaymentInAppPurchaseRequest
+     */
+    '인앱결제 후 받은 영수증 정보': string;
+}
+/**
+ * 
+ * @export
+ * @interface PaymentPurchaseResponse
+ */
+export interface PaymentPurchaseResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentPurchaseResponse
+     */
+    'bookmarks'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PaymentPurchaseResponse
+     */
+    'price'?: number;
 }
 /**
  * 
@@ -2836,33 +2461,40 @@ export interface PostcardTypeResponse {
 /**
  * 
  * @export
- * @interface ProfileModifyRequest
+ * @interface ProfileImageResponse
  */
-export interface ProfileModifyRequest {
+export interface ProfileImageResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProfileImageResponse
+     */
+    'profileImageTypeId'?: number;
     /**
      * 
      * @type {string}
-     * @memberof ProfileModifyRequest
+     * @memberof ProfileImageResponse
      */
-    'openKakaoRoomUrl': string;
+    'gender'?: string;
     /**
      * 
      * @type {string}
-     * @memberof ProfileModifyRequest
+     * @memberof ProfileImageResponse
      */
-    'name': string;
+    'profileImageUrl'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ProfileImageTypeReadResponse
+ */
+export interface ProfileImageTypeReadResponse {
     /**
      * 
-     * @type {string}
-     * @memberof ProfileModifyRequest
+     * @type {Array<ProfileImageResponse>}
+     * @memberof ProfileImageTypeReadResponse
      */
-    'phoneNumber': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ProfileModifyRequest
-     */
-    'schoolName': string;
+    'profileImageResponseTypes'?: Array<ProfileImageResponse>;
 }
 /**
  * 
@@ -2943,43 +2575,6 @@ export interface QuizAnswer {
 /**
  * 
  * @export
- * @interface QuizQuestionCreateRequest
- */
-export interface QuizQuestionCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionCreateRequest
-     */
-    'review': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionCreateRequest
-     */
-    'quiz': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionCreateRequest
-     */
-    'quizAnswer': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionCreateRequest
-     */
-    'firstWrongChoice': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionCreateRequest
-     */
-    'secondWrongChoice': string;
-}
-/**
- * 
- * @export
  * @interface QuizQuestionReadResponse
  */
 export interface QuizQuestionReadResponse {
@@ -3019,43 +2614,6 @@ export interface QuizQuestionReadResponse {
      * @memberof QuizQuestionReadResponse
      */
     'review'?: string;
-}
-/**
- * 
- * @export
- * @interface QuizQuestionUpdateRequest
- */
-export interface QuizQuestionUpdateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionUpdateRequest
-     */
-    'quiz': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionUpdateRequest
-     */
-    'quizAnswer': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionUpdateRequest
-     */
-    'firstWrongChoice': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionUpdateRequest
-     */
-    'secondWrongChoice': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof QuizQuestionUpdateRequest
-     */
-    'review': string;
 }
 /**
  * 
@@ -3249,12 +2807,6 @@ export interface SortObject {
      * @type {boolean}
      * @memberof SortObject
      */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SortObject
-     */
     'sorted'?: boolean;
     /**
      * 
@@ -3262,100 +2814,12 @@ export interface SortObject {
      * @memberof SortObject
      */
     'unsorted'?: boolean;
-}
-/**
- * 
- * @export
- * @interface StylesResponse
- */
-export interface StylesResponse {
     /**
      * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
+     * @type {boolean}
+     * @memberof SortObject
      */
-    'smokeTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'drinkTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'contactTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'dateStyleTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'dateCostTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'justFriendTypes'?: Array<string>;
-    /**
-     * 
-     * @type {Array<string>}
-     * @memberof StylesResponse
-     */
-    'heightTypes'?: Array<string>;
-}
-/**
- * 
- * @export
- * @interface TestCreateRequest
- */
-export interface TestCreateRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof TestCreateRequest
-     */
-    'contents': string;
-}
-/**
- * 
- * @export
- * @interface TestCreateResponse
- */
-export interface TestCreateResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof TestCreateResponse
-     */
-    'id'?: number;
-}
-/**
- * 
- * @export
- * @interface TestReadResponse
- */
-export interface TestReadResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof TestReadResponse
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof TestReadResponse
-     */
-    'contents'?: string;
+    'empty'?: boolean;
 }
 /**
  * 
@@ -3509,45 +2973,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(memberStyleCreateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {TestCreateRequest} testCreateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createTest: async (testCreateRequest: TestCreateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'testCreateRequest' is not null or undefined
-            assertParamExists('createTest', 'testCreateRequest', testCreateRequest)
-            const localVarPath = `/tests`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(testCreateRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3748,6 +3173,50 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 인앱결제 API입니다
+         * @param {string} payType 인앱결제 유형입니다
+         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderBookmark: async (payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'payType' is not null or undefined
+            assertParamExists('orderBookmark', 'payType', payType)
+            // verify required parameter 'paymentInAppPurchaseRequest' is not null or undefined
+            assertParamExists('orderBookmark', 'paymentInAppPurchaseRequest', paymentInAppPurchaseRequest)
+            const localVarPath = `/payments/in-app/{payType}`
+                .replace(`{${"payType"}}`, encodeURIComponent(String(payType)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(paymentInAppPurchaseRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 탈퇴 회원 목록 조회 API
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
@@ -3811,49 +3280,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             // authentication Bearer Authentication required
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 승인 채팅방 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readKakaoOpenRoomUrlPendingMembers: async (pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pageable' is not null or undefined
-            assertParamExists('readKakaoOpenRoomUrlPendingMembers', 'pageable', pageable)
-            const localVarPath = `/admin/members/pending/kakao`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (pageable !== undefined) {
-                for (const [key, value] of Object.entries(pageable)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
 
 
     
@@ -3940,16 +3366,46 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 회원 스타일 조회
-         * @param {number} memberId 
+         * @summary 사용자와 같은 성별의 기본 프로필 설정 값들을 읽어들입니다.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readMemberStyle: async (memberId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberId' is not null or undefined
-            assertParamExists('readMemberStyle', 'memberId', memberId)
-            const localVarPath = `/members/styles/{memberId}`
-                .replace(`{${"memberId"}}`, encodeURIComponent(String(memberId)));
+        readMemberProfileGenderTypes: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members/me/profile-image-types`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 회원 스타일 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readMemberStyle: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members/styles`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3987,49 +3443,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             // verify required parameter 'pageable' is not null or undefined
             assertParamExists('readMembers', 'pageable', pageable)
             const localVarPath = `/admin/members`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (pageable !== undefined) {
-                for (const [key, value] of Object.entries(pageable)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 프로필 이미지 승인 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readProfileImagePendingMembers: async (pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'pageable' is not null or undefined
-            assertParamExists('readProfileImagePendingMembers', 'pageable', pageable)
-            const localVarPath = `/admin/members/pending/profile-image`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4160,80 +3573,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
                 for (const [key, value] of Object.entries(pageable)) {
                     localVarQueryParameter[key] = value;
                 }
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 스타일 관련 모든 값들을 읽어들입니다.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readStyles: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/styles`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {string} contents 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readTest: async (contents: string, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'contents' is not null or undefined
-            assertParamExists('readTest', 'contents', contents)
-            const localVarPath = `/tests`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (contents !== undefined) {
-                localVarQueryParameter['contents'] = contents;
             }
 
 
@@ -4420,39 +3759,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        testError: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/tests/error`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 테스트 회원 토큰 발급
          * @param {TestSignUpRequest} testSignUpRequest 
          * @param {*} [options] Override http request option.
@@ -4525,50 +3831,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(testSignUpRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 채팅방 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberKakaoRoomStatusUpdateRequest} adminMemberKakaoRoomStatusUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateKakaoRoomUrlPendingMemberStatus: async (memberVerifyId: number, adminMemberKakaoRoomStatusUpdateRequest: AdminMemberKakaoRoomStatusUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberVerifyId' is not null or undefined
-            assertParamExists('updateKakaoRoomUrlPendingMemberStatus', 'memberVerifyId', memberVerifyId)
-            // verify required parameter 'adminMemberKakaoRoomStatusUpdateRequest' is not null or undefined
-            assertParamExists('updateKakaoRoomUrlPendingMemberStatus', 'adminMemberKakaoRoomStatusUpdateRequest', adminMemberKakaoRoomStatusUpdateRequest)
-            const localVarPath = `/admin/member-verifies/{memberVerifyId}/pending/kakao`
-                .replace(`{${"memberVerifyId"}}`, encodeURIComponent(String(memberVerifyId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(adminMemberKakaoRoomStatusUpdateRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4661,19 +3923,15 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 프로필 이미지 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberProfileImageStatusUpdateRequest} adminMemberProfileImageStatusUpdateRequest 
+         * @summary 회원 스타일 내 기본 프로필 사진 수정
+         * @param {MemberProfileImageTypeUpdateRequest} memberProfileImageTypeUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProfileImagePendingMemberStatus: async (memberVerifyId: number, adminMemberProfileImageStatusUpdateRequest: AdminMemberProfileImageStatusUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberVerifyId' is not null or undefined
-            assertParamExists('updateProfileImagePendingMemberStatus', 'memberVerifyId', memberVerifyId)
-            // verify required parameter 'adminMemberProfileImageStatusUpdateRequest' is not null or undefined
-            assertParamExists('updateProfileImagePendingMemberStatus', 'adminMemberProfileImageStatusUpdateRequest', adminMemberProfileImageStatusUpdateRequest)
-            const localVarPath = `/admin/member-verifies/{memberVerifyId}/pending/profile-image`
-                .replace(`{${"memberVerifyId"}}`, encodeURIComponent(String(memberVerifyId)));
+        updateMemberStyleProfileImageType: async (memberProfileImageTypeUpdateRequest: MemberProfileImageTypeUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberProfileImageTypeUpdateRequest' is not null or undefined
+            assertParamExists('updateMemberStyleProfileImageType', 'memberProfileImageTypeUpdateRequest', memberProfileImageTypeUpdateRequest)
+            const localVarPath = `/members/styles/profile-image-type`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -4696,7 +3954,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(adminMemberProfileImageStatusUpdateRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(memberProfileImageTypeUpdateRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4873,18 +4131,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {TestCreateRequest} testCreateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createTest(testCreateRequest: TestCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TestCreateResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createTest(testCreateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.createTest']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 회원 도서 삭제
          * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
@@ -4949,6 +4195,20 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @summary 인앱결제 API입니다
+         * @param {string} payType 인앱결제 유형입니다
+         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmark(payType, paymentInAppPurchaseRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.orderBookmark']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 탈퇴 회원 목록 조회 API
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
@@ -4970,19 +4230,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readInvitationCode(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.readInvitationCode']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 승인 채팅방 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readKakaoOpenRoomUrlPendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AdminMemberKakaoRoomResponses>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readKakaoOpenRoomUrlPendingMembers(pageable, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readKakaoOpenRoomUrlPendingMembers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5012,13 +4259,24 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 회원 스타일 조회
-         * @param {number} memberId 
+         * @summary 사용자와 같은 성별의 기본 프로필 설정 값들을 읽어들입니다.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async readMemberStyle(memberId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberStyleResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readMemberStyle(memberId, options);
+        async readMemberProfileGenderTypes(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProfileImageTypeReadResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readMemberProfileGenderTypes(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readMemberProfileGenderTypes']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 회원 스타일 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readMemberStyle(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberStyleResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readMemberStyle(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.readMemberStyle']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5034,19 +4292,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readMembers(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.readMembers']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary 프로필 이미지 승인 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readProfileImagePendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AdminMemberProfileImageResponses>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readProfileImagePendingMembers(pageable, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readProfileImagePendingMembers']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5084,30 +4329,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readStudentIdPendingMembers(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.readStudentIdPendingMembers']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary 스타일 관련 모든 값들을 읽어들입니다.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readStyles(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<StylesResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readStyles(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readStyles']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {string} contents 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readTest(contents: string, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<TestReadResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readTest(contents, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.readTest']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5166,17 +4387,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async testError(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.testError(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.testError']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 테스트 회원 토큰 발급
          * @param {TestSignUpRequest} testSignUpRequest 
          * @param {*} [options] Override http request option.
@@ -5199,20 +4409,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.testSignUpKakao(testSignUpRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.testSignUpKakao']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 채팅방 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberKakaoRoomStatusUpdateRequest} adminMemberKakaoRoomStatusUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateKakaoRoomUrlPendingMemberStatus(memberVerifyId: number, adminMemberKakaoRoomStatusUpdateRequest: AdminMemberKakaoRoomStatusUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateKakaoRoomUrlPendingMemberStatus(memberVerifyId, adminMemberKakaoRoomStatusUpdateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.updateKakaoRoomUrlPendingMemberStatus']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5244,16 +4440,15 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 프로필 이미지 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberProfileImageStatusUpdateRequest} adminMemberProfileImageStatusUpdateRequest 
+         * @summary 회원 스타일 내 기본 프로필 사진 수정
+         * @param {MemberProfileImageTypeUpdateRequest} memberProfileImageTypeUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateProfileImagePendingMemberStatus(memberVerifyId: number, adminMemberProfileImageStatusUpdateRequest: AdminMemberProfileImageStatusUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfileImagePendingMemberStatus(memberVerifyId, adminMemberProfileImageStatusUpdateRequest, options);
+        async updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest: MemberProfileImageTypeUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.updateProfileImagePendingMemberStatus']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.updateMemberStyleProfileImageType']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5330,15 +4525,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {TestCreateRequest} testCreateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createTest(testCreateRequest: TestCreateRequest, options?: any): AxiosPromise<TestCreateResponse> {
-            return localVarFp.createTest(testCreateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 회원 도서 삭제
          * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
@@ -5388,6 +4574,17 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
+         * @summary 인앱결제 API입니다
+         * @param {string} payType 인앱결제 유형입니다
+         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
+            return localVarFp.orderBookmark(payType, paymentInAppPurchaseRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary 탈퇴 회원 목록 조회 API
          * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
@@ -5404,16 +4601,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         readInvitationCode(options?: any): AxiosPromise<MemberInvitationResponse> {
             return localVarFp.readInvitationCode(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 승인 채팅방 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readKakaoOpenRoomUrlPendingMembers(pageable: Pageable, options?: any): AxiosPromise<AdminMemberKakaoRoomResponses> {
-            return localVarFp.readKakaoOpenRoomUrlPendingMembers(pageable, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5436,13 +4623,21 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary 회원 스타일 조회
-         * @param {number} memberId 
+         * @summary 사용자와 같은 성별의 기본 프로필 설정 값들을 읽어들입니다.
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        readMemberStyle(memberId: number, options?: any): AxiosPromise<MemberStyleResponse> {
-            return localVarFp.readMemberStyle(memberId, options).then((request) => request(axios, basePath));
+        readMemberProfileGenderTypes(options?: any): AxiosPromise<ProfileImageTypeReadResponse> {
+            return localVarFp.readMemberProfileGenderTypes(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 회원 스타일 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readMemberStyle(options?: any): AxiosPromise<MemberStyleResponse> {
+            return localVarFp.readMemberStyle(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5453,16 +4648,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         readMembers(pageable: Pageable, options?: any): AxiosPromise<AdminMemberReadResponses> {
             return localVarFp.readMembers(pageable, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 프로필 이미지 승인 대기 회원 조회 API
-         * @param {Pageable} pageable 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readProfileImagePendingMembers(pageable: Pageable, options?: any): AxiosPromise<AdminMemberProfileImageResponses> {
-            return localVarFp.readProfileImagePendingMembers(pageable, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5491,24 +4676,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         readStudentIdPendingMembers(pageable: Pageable, options?: any): AxiosPromise<AdminMemberStudentIdResponses> {
             return localVarFp.readStudentIdPendingMembers(pageable, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 스타일 관련 모든 값들을 읽어들입니다.
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readStyles(options?: any): AxiosPromise<StylesResponse> {
-            return localVarFp.readStyles(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {string} contents 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readTest(contents: string, options?: any): AxiosPromise<Array<TestReadResponse>> {
-            return localVarFp.readTest(contents, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5554,14 +4721,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        testError(options?: any): AxiosPromise<void> {
-            return localVarFp.testError(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @summary 테스트 회원 토큰 발급
          * @param {TestSignUpRequest} testSignUpRequest 
          * @param {*} [options] Override http request option.
@@ -5579,17 +4738,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         testSignUpKakao(testSignUpRequest: TestSignUpRequest, options?: any): AxiosPromise<TestSignUpResponse> {
             return localVarFp.testSignUpKakao(testSignUpRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 카카오톡 오픈 채팅방 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberKakaoRoomStatusUpdateRequest} adminMemberKakaoRoomStatusUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateKakaoRoomUrlPendingMemberStatus(memberVerifyId: number, adminMemberKakaoRoomStatusUpdateRequest: AdminMemberKakaoRoomStatusUpdateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateKakaoRoomUrlPendingMemberStatus(memberVerifyId, adminMemberKakaoRoomStatusUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5614,14 +4762,13 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @summary 프로필 이미지 상태 변경 API
-         * @param {number} memberVerifyId 
-         * @param {AdminMemberProfileImageStatusUpdateRequest} adminMemberProfileImageStatusUpdateRequest 
+         * @summary 회원 스타일 내 기본 프로필 사진 수정
+         * @param {MemberProfileImageTypeUpdateRequest} memberProfileImageTypeUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateProfileImagePendingMemberStatus(memberVerifyId: number, adminMemberProfileImageStatusUpdateRequest: AdminMemberProfileImageStatusUpdateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateProfileImagePendingMemberStatus(memberVerifyId, adminMemberProfileImageStatusUpdateRequest, options).then((request) => request(axios, basePath));
+        updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest: MemberProfileImageTypeUpdateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5692,17 +4839,6 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {TestCreateRequest} testCreateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public createTest(testCreateRequest: TestCreateRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).createTest(testCreateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 회원 도서 삭제
      * @param {number} memberBookId 
      * @param {*} [options] Override http request option.
@@ -5762,6 +4898,19 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
+     * @summary 인앱결제 API입니다
+     * @param {string} payType 인앱결제 유형입니다
+     * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).orderBookmark(payType, paymentInAppPurchaseRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
      * @summary 탈퇴 회원 목록 조회 API
      * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
@@ -5781,18 +4930,6 @@ export class DefaultApi extends BaseAPI {
      */
     public readInvitationCode(options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).readInvitationCode(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 카카오톡 오픈 승인 채팅방 대기 회원 조회 API
-     * @param {Pageable} pageable 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public readKakaoOpenRoomUrlPendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readKakaoOpenRoomUrlPendingMembers(pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5820,14 +4957,24 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary 회원 스타일 조회
-     * @param {number} memberId 
+     * @summary 사용자와 같은 성별의 기본 프로필 설정 값들을 읽어들입니다.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public readMemberStyle(memberId: number, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readMemberStyle(memberId, options).then((request) => request(this.axios, this.basePath));
+    public readMemberProfileGenderTypes(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).readMemberProfileGenderTypes(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 회원 스타일 조회
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public readMemberStyle(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).readMemberStyle(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5840,18 +4987,6 @@ export class DefaultApi extends BaseAPI {
      */
     public readMembers(pageable: Pageable, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).readMembers(pageable, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 프로필 이미지 승인 대기 회원 조회 API
-     * @param {Pageable} pageable 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public readProfileImagePendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readProfileImagePendingMembers(pageable, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5886,28 +5021,6 @@ export class DefaultApi extends BaseAPI {
      */
     public readStudentIdPendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).readStudentIdPendingMembers(pageable, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 스타일 관련 모든 값들을 읽어들입니다.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public readStyles(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readStyles(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {string} contents 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public readTest(contents: string, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).readTest(contents, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5962,16 +5075,6 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public testError(options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).testError(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
      * @summary 테스트 회원 토큰 발급
      * @param {TestSignUpRequest} testSignUpRequest 
      * @param {*} [options] Override http request option.
@@ -5992,19 +5095,6 @@ export class DefaultApi extends BaseAPI {
      */
     public testSignUpKakao(testSignUpRequest: TestSignUpRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).testSignUpKakao(testSignUpRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 카카오톡 오픈 채팅방 상태 변경 API
-     * @param {number} memberVerifyId 
-     * @param {AdminMemberKakaoRoomStatusUpdateRequest} adminMemberKakaoRoomStatusUpdateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public updateKakaoRoomUrlPendingMemberStatus(memberVerifyId: number, adminMemberKakaoRoomStatusUpdateRequest: AdminMemberKakaoRoomStatusUpdateRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).updateKakaoRoomUrlPendingMemberStatus(memberVerifyId, adminMemberKakaoRoomStatusUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6034,15 +5124,14 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @summary 프로필 이미지 상태 변경 API
-     * @param {number} memberVerifyId 
-     * @param {AdminMemberProfileImageStatusUpdateRequest} adminMemberProfileImageStatusUpdateRequest 
+     * @summary 회원 스타일 내 기본 프로필 사진 수정
+     * @param {MemberProfileImageTypeUpdateRequest} memberProfileImageTypeUpdateRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public updateProfileImagePendingMemberStatus(memberVerifyId: number, adminMemberProfileImageStatusUpdateRequest: AdminMemberProfileImageStatusUpdateRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).updateProfileImagePendingMemberStatus(memberVerifyId, adminMemberProfileImageStatusUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    public updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest: MemberProfileImageTypeUpdateRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).updateMemberStyleProfileImageType(memberProfileImageTypeUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6723,6 +5812,40 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
+         * 
+         * @summary 본인의 회원정보 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readMemberInformation: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members/me/information`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 사용자의 상태를 조회<br>memberStatus : [PROFILE, APPROVAL, STYLE, BOOK, COMPLETED, DELETED, BLOCKED, MATCHING_DISABLED, REPORTED]
          * @summary 사용자 상태 조회 API
          * @param {*} [options] Override http request option.
@@ -6758,17 +5881,15 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
         },
         /**
          * 
-         * @param {MemberBookProfileRequestDto} memberBookProfileRequestDto 
-         * @param {Pageable} pageable 
+         * @summary 본인의 회원정보 수정
+         * @param {MemberInformationUpdateRequest} memberInformationUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sameBookMembersPage: async (memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberBookProfileRequestDto' is not null or undefined
-            assertParamExists('sameBookMembersPage', 'memberBookProfileRequestDto', memberBookProfileRequestDto)
-            // verify required parameter 'pageable' is not null or undefined
-            assertParamExists('sameBookMembersPage', 'pageable', pageable)
-            const localVarPath = `/members/same-book-members`;
+        updateMemberInformation: async (memberInformationUpdateRequest: MemberInformationUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberInformationUpdateRequest' is not null or undefined
+            assertParamExists('updateMemberInformation', 'memberInformationUpdateRequest', memberInformationUpdateRequest)
+            const localVarPath = `/members/me/information`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -6776,7 +5897,7 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -6784,23 +5905,14 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             // http bearer authentication required
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
-            if (memberBookProfileRequestDto !== undefined) {
-                for (const [key, value] of Object.entries(memberBookProfileRequestDto)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
-            if (pageable !== undefined) {
-                for (const [key, value] of Object.entries(pageable)) {
-                    localVarQueryParameter[key] = value;
-                }
-            }
-
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memberInformationUpdateRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6841,6 +5953,40 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(memberStatusUpdateRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 애드몹 시청 종료 후 해당 API 호출
+         * @summary 애드몹 시청
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        watchAdmob: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members/me/admob`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6907,6 +6053,18 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary 본인의 회원정보 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readMemberInformation(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberInformationReadResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readMemberInformation(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.readMemberInformation']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 사용자의 상태를 조회<br>memberStatus : [PROFILE, APPROVAL, STYLE, BOOK, COMPLETED, DELETED, BLOCKED, MATCHING_DISABLED, REPORTED]
          * @summary 사용자 상태 조회 API
          * @param {*} [options] Override http request option.
@@ -6920,15 +6078,15 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {MemberBookProfileRequestDto} memberBookProfileRequestDto 
-         * @param {Pageable} pageable 
+         * @summary 본인의 회원정보 수정
+         * @param {MemberInformationUpdateRequest} memberInformationUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async sameBookMembersPage(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PageMemberBookProfileResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.sameBookMembersPage(memberBookProfileRequestDto, pageable, options);
+        async updateMemberInformation(memberInformationUpdateRequest: MemberInformationUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemberInformation(memberInformationUpdateRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.sameBookMembersPage']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.updateMemberInformation']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6942,6 +6100,18 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemberStatus(memberStatusUpdateRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.updateMemberStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 애드몹 시청 종료 후 해당 API 호출
+         * @summary 애드몹 시청
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async watchAdmob(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberBookmarkResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.watchAdmob(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.watchAdmob']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -6992,6 +6162,15 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.readMember(options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary 본인의 회원정보 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readMemberInformation(options?: any): AxiosPromise<MemberInformationReadResponse> {
+            return localVarFp.readMemberInformation(options).then((request) => request(axios, basePath));
+        },
+        /**
          * 사용자의 상태를 조회<br>memberStatus : [PROFILE, APPROVAL, STYLE, BOOK, COMPLETED, DELETED, BLOCKED, MATCHING_DISABLED, REPORTED]
          * @summary 사용자 상태 조회 API
          * @param {*} [options] Override http request option.
@@ -7002,13 +6181,13 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
         },
         /**
          * 
-         * @param {MemberBookProfileRequestDto} memberBookProfileRequestDto 
-         * @param {Pageable} pageable 
+         * @summary 본인의 회원정보 수정
+         * @param {MemberInformationUpdateRequest} memberInformationUpdateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        sameBookMembersPage(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: any): AxiosPromise<PageMemberBookProfileResponse> {
-            return localVarFp.sameBookMembersPage(memberBookProfileRequestDto, pageable, options).then((request) => request(axios, basePath));
+        updateMemberInformation(memberInformationUpdateRequest: MemberInformationUpdateRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.updateMemberInformation(memberInformationUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -7019,6 +6198,15 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
          */
         updateMemberStatus(memberStatusUpdateRequest: MemberStatusUpdateRequest, options?: any): AxiosPromise<MemberStatusResponse> {
             return localVarFp.updateMemberStatus(memberStatusUpdateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 애드몹 시청 종료 후 해당 API 호출
+         * @summary 애드몹 시청
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        watchAdmob(options?: any): AxiosPromise<MemberBookmarkResponse> {
+            return localVarFp.watchAdmob(options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -7076,6 +6264,17 @@ export class MemberControllerApi extends BaseAPI {
     }
 
     /**
+     * 
+     * @summary 본인의 회원정보 조회
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberControllerApi
+     */
+    public readMemberInformation(options?: RawAxiosRequestConfig) {
+        return MemberControllerApiFp(this.configuration).readMemberInformation(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 사용자의 상태를 조회<br>memberStatus : [PROFILE, APPROVAL, STYLE, BOOK, COMPLETED, DELETED, BLOCKED, MATCHING_DISABLED, REPORTED]
      * @summary 사용자 상태 조회 API
      * @param {*} [options] Override http request option.
@@ -7088,14 +6287,14 @@ export class MemberControllerApi extends BaseAPI {
 
     /**
      * 
-     * @param {MemberBookProfileRequestDto} memberBookProfileRequestDto 
-     * @param {Pageable} pageable 
+     * @summary 본인의 회원정보 수정
+     * @param {MemberInformationUpdateRequest} memberInformationUpdateRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemberControllerApi
      */
-    public sameBookMembersPage(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: RawAxiosRequestConfig) {
-        return MemberControllerApiFp(this.configuration).sameBookMembersPage(memberBookProfileRequestDto, pageable, options).then((request) => request(this.axios, this.basePath));
+    public updateMemberInformation(memberInformationUpdateRequest: MemberInformationUpdateRequest, options?: RawAxiosRequestConfig) {
+        return MemberControllerApiFp(this.configuration).updateMemberInformation(memberInformationUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7108,6 +6307,17 @@ export class MemberControllerApi extends BaseAPI {
      */
     public updateMemberStatus(memberStatusUpdateRequest: MemberStatusUpdateRequest, options?: RawAxiosRequestConfig) {
         return MemberControllerApiFp(this.configuration).updateMemberStatus(memberStatusUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 애드몹 시청 종료 후 해당 API 호출
+     * @summary 애드몹 시청
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberControllerApi
+     */
+    public watchAdmob(options?: RawAxiosRequestConfig) {
+        return MemberControllerApiFp(this.configuration).watchAdmob(options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7920,84 +7130,6 @@ export const MemberProfileControllerApiAxiosParamCreator = function (configurati
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {MemberProfileImageUpdateRequest} memberProfileImageUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateMemberProfileImage: async (memberProfileImageUpdateRequest: MemberProfileImageUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberProfileImageUpdateRequest' is not null or undefined
-            assertParamExists('updateMemberProfileImage', 'memberProfileImageUpdateRequest', memberProfileImageUpdateRequest)
-            const localVarPath = `/members/me/profile/profile-image`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(memberProfileImageUpdateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {ProfileModifyRequest} profileModifyRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateProfile: async (profileModifyRequest: ProfileModifyRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'profileModifyRequest' is not null or undefined
-            assertParamExists('updateProfile', 'profileModifyRequest', profileModifyRequest)
-            const localVarPath = `/members/me/member-profile`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PATCH', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(profileModifyRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -8070,30 +7202,6 @@ export const MemberProfileControllerApiFp = function(configuration?: Configurati
             const localVarOperationServerBasePath = operationServerMap['MemberProfileControllerApi.updateMemberProfile']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
-        /**
-         * 
-         * @param {MemberProfileImageUpdateRequest} memberProfileImageUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateMemberProfileImage(memberProfileImageUpdateRequest: MemberProfileImageUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemberProfileImage(memberProfileImageUpdateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberProfileControllerApi.updateMemberProfileImage']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {ProfileModifyRequest} profileModifyRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateProfile(profileModifyRequest: ProfileModifyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateProfile(profileModifyRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberProfileControllerApi.updateProfile']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
     }
 };
 
@@ -8150,24 +7258,6 @@ export const MemberProfileControllerApiFactory = function (configuration?: Confi
          */
         updateMemberProfile(memberProfileUpdateRequest: MemberProfileUpdateRequest, options?: any): AxiosPromise<MemberProfileResponse> {
             return localVarFp.updateMemberProfile(memberProfileUpdateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {MemberProfileImageUpdateRequest} memberProfileImageUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateMemberProfileImage(memberProfileImageUpdateRequest: MemberProfileImageUpdateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateMemberProfileImage(memberProfileImageUpdateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {ProfileModifyRequest} profileModifyRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateProfile(profileModifyRequest: ProfileModifyRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateProfile(profileModifyRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -8234,28 +7324,6 @@ export class MemberProfileControllerApi extends BaseAPI {
      */
     public updateMemberProfile(memberProfileUpdateRequest: MemberProfileUpdateRequest, options?: RawAxiosRequestConfig) {
         return MemberProfileControllerApiFp(this.configuration).updateMemberProfile(memberProfileUpdateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {MemberProfileImageUpdateRequest} memberProfileImageUpdateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberProfileControllerApi
-     */
-    public updateMemberProfileImage(memberProfileImageUpdateRequest: MemberProfileImageUpdateRequest, options?: RawAxiosRequestConfig) {
-        return MemberProfileControllerApiFp(this.configuration).updateMemberProfileImage(memberProfileImageUpdateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {ProfileModifyRequest} profileModifyRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberProfileControllerApi
-     */
-    public updateProfile(profileModifyRequest: ProfileModifyRequest, options?: RawAxiosRequestConfig) {
-        return MemberProfileControllerApiFp(this.configuration).updateProfile(profileModifyRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -8641,193 +7709,6 @@ export class MemberPushAlarmControllerApi extends BaseAPI {
      */
     public updatePushAlarmSetting(pushAlarmSettingCreateRequest: PushAlarmSettingCreateRequest, options?: RawAxiosRequestConfig) {
         return MemberPushAlarmControllerApiFp(this.configuration).updatePushAlarmSetting(pushAlarmSettingCreateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * MemberReplyControllerApi - axios parameter creator
- * @export
- */
-export const MemberReplyControllerApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 사용자가 보낸 엽서의 개인 질문 답변 조회
-         * @summary 개인 질문 답변 조회
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readMemberReply: async (postcardId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postcardId' is not null or undefined
-            assertParamExists('readMemberReply', 'postcardId', postcardId)
-            const localVarPath = `/members/member-reply/{postcardId}`
-                .replace(`{${"postcardId"}}`, encodeURIComponent(String(postcardId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 사용자가 상대방의 응답을 기다리는 엽서(PENDING 상태)의 개인 질문 답변 수정
-         * @summary 개인 질문 답변 수정
-         * @param {MemberReplyUpdateRequest} memberReplyUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateMemberReply: async (memberReplyUpdateRequest: MemberReplyUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberReplyUpdateRequest' is not null or undefined
-            assertParamExists('updateMemberReply', 'memberReplyUpdateRequest', memberReplyUpdateRequest)
-            const localVarPath = `/members/member-reply`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(memberReplyUpdateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * MemberReplyControllerApi - functional programming interface
- * @export
- */
-export const MemberReplyControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = MemberReplyControllerApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 사용자가 보낸 엽서의 개인 질문 답변 조회
-         * @summary 개인 질문 답변 조회
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async readMemberReply(postcardId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberReplyResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.readMemberReply(postcardId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberReplyControllerApi.readMemberReply']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 사용자가 상대방의 응답을 기다리는 엽서(PENDING 상태)의 개인 질문 답변 수정
-         * @summary 개인 질문 답변 수정
-         * @param {MemberReplyUpdateRequest} memberReplyUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateMemberReply(memberReplyUpdateRequest: MemberReplyUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateMemberReply(memberReplyUpdateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberReplyControllerApi.updateMemberReply']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * MemberReplyControllerApi - factory interface
- * @export
- */
-export const MemberReplyControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = MemberReplyControllerApiFp(configuration)
-    return {
-        /**
-         * 사용자가 보낸 엽서의 개인 질문 답변 조회
-         * @summary 개인 질문 답변 조회
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        readMemberReply(postcardId: number, options?: any): AxiosPromise<MemberReplyResponse> {
-            return localVarFp.readMemberReply(postcardId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 사용자가 상대방의 응답을 기다리는 엽서(PENDING 상태)의 개인 질문 답변 수정
-         * @summary 개인 질문 답변 수정
-         * @param {MemberReplyUpdateRequest} memberReplyUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateMemberReply(memberReplyUpdateRequest: MemberReplyUpdateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateMemberReply(memberReplyUpdateRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * MemberReplyControllerApi - object-oriented interface
- * @export
- * @class MemberReplyControllerApi
- * @extends {BaseAPI}
- */
-export class MemberReplyControllerApi extends BaseAPI {
-    /**
-     * 사용자가 보낸 엽서의 개인 질문 답변 조회
-     * @summary 개인 질문 답변 조회
-     * @param {number} postcardId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberReplyControllerApi
-     */
-    public readMemberReply(postcardId: number, options?: RawAxiosRequestConfig) {
-        return MemberReplyControllerApiFp(this.configuration).readMemberReply(postcardId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 사용자가 상대방의 응답을 기다리는 엽서(PENDING 상태)의 개인 질문 답변 수정
-     * @summary 개인 질문 답변 수정
-     * @param {MemberReplyUpdateRequest} memberReplyUpdateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberReplyControllerApi
-     */
-    public updateMemberReply(memberReplyUpdateRequest: MemberReplyUpdateRequest, options?: RawAxiosRequestConfig) {
-        return MemberReplyControllerApiFp(this.configuration).updateMemberReply(memberReplyUpdateRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -9866,55 +8747,12 @@ export const QuizControllerApiAxiosParamCreator = function (configuration?: Conf
         /**
          * 
          * @param {number} memberBookId 
-         * @param {QuizQuestionCreateRequest} quizQuestionCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createQuizQuestion: async (memberBookId: number, quizQuestionCreateRequest: QuizQuestionCreateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createQuizQuestion: async (memberBookId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'memberBookId' is not null or undefined
             assertParamExists('createQuizQuestion', 'memberBookId', memberBookId)
-            // verify required parameter 'quizQuestionCreateRequest' is not null or undefined
-            assertParamExists('createQuizQuestion', 'quizQuestionCreateRequest', quizQuestionCreateRequest)
-            const localVarPath = `/quizzes/{memberBookId}`
-                .replace(`{${"memberBookId"}}`, encodeURIComponent(String(memberBookId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(quizQuestionCreateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createQuizQuestion1: async (memberBookId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberBookId' is not null or undefined
-            assertParamExists('createQuizQuestion1', 'memberBookId', memberBookId)
             const localVarPath = `/quizzes/{memberBookId}`
                 .replace(`{${"memberBookId"}}`, encodeURIComponent(String(memberBookId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -9943,49 +8781,6 @@ export const QuizControllerApiAxiosParamCreator = function (configuration?: Conf
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {QuizQuestionUpdateRequest} quizQuestionUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateQuizQuestion: async (memberBookId: number, quizQuestionUpdateRequest: QuizQuestionUpdateRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberBookId' is not null or undefined
-            assertParamExists('updateQuizQuestion', 'memberBookId', memberBookId)
-            // verify required parameter 'quizQuestionUpdateRequest' is not null or undefined
-            assertParamExists('updateQuizQuestion', 'quizQuestionUpdateRequest', quizQuestionUpdateRequest)
-            const localVarPath = `/quizzes/{memberBookId}`
-                .replace(`{${"memberBookId"}}`, encodeURIComponent(String(memberBookId)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(quizQuestionUpdateRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -9999,39 +8794,13 @@ export const QuizControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {number} memberBookId 
-         * @param {QuizQuestionCreateRequest} quizQuestionCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createQuizQuestion(memberBookId: number, quizQuestionCreateRequest: QuizQuestionCreateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createQuizQuestion(memberBookId, quizQuestionCreateRequest, options);
+        async createQuizQuestion(memberBookId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<QuizQuestionReadResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.createQuizQuestion(memberBookId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['QuizControllerApi.createQuizQuestion']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async createQuizQuestion1(memberBookId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<QuizQuestionReadResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.createQuizQuestion1(memberBookId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['QuizControllerApi.createQuizQuestion1']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {QuizQuestionUpdateRequest} quizQuestionUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateQuizQuestion(memberBookId: number, quizQuestionUpdateRequest: QuizQuestionUpdateRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateQuizQuestion(memberBookId, quizQuestionUpdateRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['QuizControllerApi.updateQuizQuestion']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
     }
@@ -10047,31 +8816,11 @@ export const QuizControllerApiFactory = function (configuration?: Configuration,
         /**
          * 
          * @param {number} memberBookId 
-         * @param {QuizQuestionCreateRequest} quizQuestionCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createQuizQuestion(memberBookId: number, quizQuestionCreateRequest: QuizQuestionCreateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.createQuizQuestion(memberBookId, quizQuestionCreateRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        createQuizQuestion1(memberBookId: number, options?: any): AxiosPromise<QuizQuestionReadResponse> {
-            return localVarFp.createQuizQuestion1(memberBookId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} memberBookId 
-         * @param {QuizQuestionUpdateRequest} quizQuestionUpdateRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateQuizQuestion(memberBookId: number, quizQuestionUpdateRequest: QuizQuestionUpdateRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.updateQuizQuestion(memberBookId, quizQuestionUpdateRequest, options).then((request) => request(axios, basePath));
+        createQuizQuestion(memberBookId: number, options?: any): AxiosPromise<QuizQuestionReadResponse> {
+            return localVarFp.createQuizQuestion(memberBookId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -10086,36 +8835,12 @@ export class QuizControllerApi extends BaseAPI {
     /**
      * 
      * @param {number} memberBookId 
-     * @param {QuizQuestionCreateRequest} quizQuestionCreateRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof QuizControllerApi
      */
-    public createQuizQuestion(memberBookId: number, quizQuestionCreateRequest: QuizQuestionCreateRequest, options?: RawAxiosRequestConfig) {
-        return QuizControllerApiFp(this.configuration).createQuizQuestion(memberBookId, quizQuestionCreateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} memberBookId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof QuizControllerApi
-     */
-    public createQuizQuestion1(memberBookId: number, options?: RawAxiosRequestConfig) {
-        return QuizControllerApiFp(this.configuration).createQuizQuestion1(memberBookId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} memberBookId 
-     * @param {QuizQuestionUpdateRequest} quizQuestionUpdateRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof QuizControllerApi
-     */
-    public updateQuizQuestion(memberBookId: number, quizQuestionUpdateRequest: QuizQuestionUpdateRequest, options?: RawAxiosRequestConfig) {
-        return QuizControllerApiFp(this.configuration).updateQuizQuestion(memberBookId, quizQuestionUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    public createQuizQuestion(memberBookId: number, options?: RawAxiosRequestConfig) {
+        return QuizControllerApiFp(this.configuration).createQuizQuestion(memberBookId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -10,6 +10,7 @@ export const useGetAlarms = () => {
       setData(result?.pushAlarmInfos ?? []);
     } catch (err) {
       console.error(err);
+      setData([]);
     }
   };
 

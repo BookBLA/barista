@@ -2,7 +2,6 @@ import { Delete, Get, Post, Put } from '@commons/configs/axios/http.api';
 import { MemberBookCreateResponse, MemberBookReadResponses } from '@commons/types/openapiGenerator';
 
 export interface IContents {
-  isRepresentative: boolean;
   title?: string | undefined;
   authors?: string | undefined;
   isbn?: string | undefined;

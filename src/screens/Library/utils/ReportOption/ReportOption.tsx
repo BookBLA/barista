@@ -62,10 +62,10 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
   };
 
   return (
-    <View style={{ width: '100%', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
+    <View style={{ width: '100%', alignItems: 'center', height: '100%' }}>
       {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
       <KeyboardAwareScrollView
-        style={{ width: '100%' }}
+        style={{ width: '100%', marginBottom: 20 }}
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: 'space-around',
@@ -78,34 +78,49 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
           <CustomText font="fontSemiBold" size="20px">
             신고 항목을 선택해 주세요
           </CustomText>
-          <CustomText font="fontSemiBold" size="12px" color={colors.textQaGray} style={{ marginTop: 12 }}>
+          <CustomText
+            font="fontSemiBold"
+            size="12px"
+            color={colors.textQaGray}
+            style={{ marginTop: 12, marginBottom: 30 }}
+          >
             중복으로 선택 가능합니다
           </CustomText>
         </View>
-        {reportCases.map((reportCase, index) => (
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start', width: '90%' }}>
-            <Checkbox
-              value={isChecked[index]}
-              onValueChange={() => handleCheckboxChange(index)}
-              color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
-            />
-            <CustomText font="fontRegular" size="14px" style={{ marginLeft: 10 }}>
-              {reportCase}
-            </CustomText>
-          </View>
-        ))}
+        <View style={{ width: '90%' }}>
+          {reportCases.map((reportCase, index) => (
+            <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 }} key={reportCase}>
+              <Checkbox
+                value={isChecked[index]}
+                onValueChange={() => handleCheckboxChange(index)}
+                color={isChecked[index] ? colors.primary : colors.buttonAuthToggle}
+                style={{ borderWidth: 1 }}
+              />
+              <CustomText font="fontRegular" size="14px" style={{ marginLeft: 10 }}>
+                {reportCase}
+              </CustomText>
+            </View>
+          ))}
+        </View>
         <InputStyled
           placeholder={
-            '신고 사유를 입력해주세요\n신고 사유에 맞지 않는 신고일 경우,\n해당 신고는 처리되지 않습니다.\n누적 신고횟수 3회 이상인 유저는\n서비스 이용이 불가능하며,\n프로필은 자동으로 차단됩니다.'
+            '신고 사유를 입력해주세요. 신고 사유에 맞지 않는 신고일 경우, 해당 신고는 처리되지 않습니다. 누적 신고횟수 3회 이상인 유저는 서비스 이용이 불가능하며, 프로필은 자동으로 차단됩니다.'
           }
           placeholderTextColor={colors.textGray}
           onChangeText={(text: string) => setEtcContents(text)}
         />
         <NextButtonStyled
+          height={44}
           onPress={() => handleReportClick()}
           disabled={reportCases.filter((_, index) => isChecked[index]).length === 0}
+          style={{
+            backgroundColor:
+              reportCases.filter((_, index) => isChecked[index]).length === 0
+                ? colors.buttonAuthToggle
+                : colors.primary,
+          }}
         >
-          <CustomText size="16px" color={colors.secondary} font="fontMedium">
+          <CustomText size="14px" color={colors.secondary} font="fontMedium">
             신고하기
           </CustomText>
         </NextButtonStyled>

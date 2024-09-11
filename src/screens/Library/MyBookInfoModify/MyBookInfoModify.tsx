@@ -1,17 +1,22 @@
 import { getBookInfo, getBookQuizInfo, updateBookReview, updateQuiz } from '@commons/api/postcard/library.api';
+import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View } from 'react-native';
+import { View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from './MyBookInfoModify.styles';
 import { BookQuizQuestionInputBox, BookQuizQuestionWrapper } from './MyBookInfoModify.styles';
 import { IMyBookInfoModifyProps, TBookInfo } from './MyBookInfoModify.types';
 
-export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, memberBookId, deleteBookFunc }) => {
+export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
+  memberId,
+  memberBookId,
+  showDeleteBookModalFunc,
+}) => {
   const { handleLimitTextLine } = useLimitTextLine();
   //todo props 정의하기
   const [bookReviewText, onChangeBookReviewText] = useState('한 줄로 독서 감상문이 들어갈 자리입니다.');
@@ -23,10 +28,11 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   const [isModifiableBookQuestion, setIsModifiableBookQuestion] = useState(false);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
   const [bookImageUrl, setBookImageUrl] = useState<string>();
+  const showToast = useToastStore((state) => state.showToast);
 
   const isEmptyReview = () => {
     if (!bookReviewText) {
-      useToastStore.getState().showToast({ content: '한 줄 감상문을 입력해주세요!' });
+      showToast({ content: '한 줄 감상문을 입력해주세요!' });
       return true;
     }
 
@@ -35,22 +41,22 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
 
   const isEmptyQuiz = () => {
     if (!bookQuizText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 문제를 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizFirstAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 첫번째 답을 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizSecondAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 두번쨰 답을 입력해주세요!' });
       return true;
     }
 
     if (!bookQuizThirdAnswerText) {
-      useToastStore.getState().showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
+      showToast({ content: '독서 퀴즈의 세번째 답을 입력해주세요!' });
       return true;
     }
 
@@ -67,7 +73,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
           firstWrongChoice: bookQuizSecondAnswerText,
           secondWrongChoice: bookQuizThirdAnswerText,
         });
-        useToastStore.getState().showToast({ content: '독서 퀴즈가 변경되었습니다.' });
+        showToast({ content: '독서 퀴즈가 변경되었습니다.' });
       } catch (err) {
         console.error('업데이트에 실패하였습니다.', err);
       }
@@ -81,7 +87,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
           memberBookId,
           contents: bookReviewText,
         });
-        useToastStore.getState().showToast({ content: '한 줄 감상문이 변경되었습니다.' });
+        showToast({ content: '한 줄 감상문이 변경되었습니다.' });
       } catch (err) {
         console.error('업데이트에 실패하였습니다.', err);
       }
@@ -141,12 +147,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
   return (
     <>
       <KeyboardAwareScrollView
-        extraScrollHeight={120}
         enableOnAndroid
         keyboardShouldPersistTaps="handled"
-        overScrollMode="never"
+        alwaysBounceVertical={false}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
       >
-        <ScrollView>
+        <View style={{ margin: '4 8', padding: 16 }}>
           <S.BookInfoContainer>
             <S.BookWrapper>
               <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
@@ -160,7 +166,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               </CustomText>
             </S.BookTitleWrapper>
           </S.BookInfoContainer>
-          <S.DashLine />
+          <DashDividerLine width={100} margin={20} />
           <S.BookReviewContainer>
             <S.BookReviewHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
@@ -211,7 +217,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               </CustomText>
             </S.BookReviewLengthView>
           </S.BookReviewContainer>
-          <S.DashLine />
+          <DashDividerLine width={100} margin={20} />
           <S.BookQuizContainer>
             <S.BookQuizHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
@@ -340,12 +346,12 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({ memberId, m
               )}
             </View>
           </S.BookQuizContainer>
-          <S.BookRemoveButton onPress={deleteBookFunc}>
+          <S.BookRemoveButton onPress={showDeleteBookModalFunc}>
             <CustomText font="fontMedium" size="14px" color="white">
               서재에서 책 삭제하기
             </CustomText>
           </S.BookRemoveButton>
-        </ScrollView>
+        </View>
       </KeyboardAwareScrollView>
     </>
   );

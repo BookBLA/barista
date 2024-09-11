@@ -11,7 +11,7 @@ export const usePostPushToken = () => {
       });
     } catch (err) {
       showToast({
-        content: `푸시토큰 전송애 실패하였습니다.`,
+        content: `푸시토큰 전송에 실패하였습니다.`,
       });
       console.error(err);
     }

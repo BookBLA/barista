@@ -7,7 +7,7 @@ export const Wrapper = styled.SafeAreaView`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  padding: 64px 16px 20px;
 `;
 
 export const ContentWrapper = styled.FlatList`
@@ -20,8 +20,8 @@ export const PositionedWrapper = styled.View`
   position: relative;
   width: 100%;
   height: 85%;
-  background-color: ${colors.background};
-  border-radius: 20px 20px 0px 0px;
+  /* background-color: ${colors.background};  */
+  border-radius: 20px 20px 0 0;
 `;
 
 export const BodyWrapper = styled.View`
@@ -31,6 +31,6 @@ export const BodyWrapper = styled.View`
   align-items: center;
   width: 100%;
   height: 100%;
-  background-color: ${colors.background};
-  border-radius: 20px 20px 0px 0px;
+  /* background-color: ${colors.background}; */
+  border-radius: 20px 20px 0 0;
 `;
