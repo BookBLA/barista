@@ -51,6 +51,7 @@ const StepFirst = () => {
 
   const checkQuizAnswer = async (memberBookId: number) => {
     // 정답 넘겨서 확인 후 isCorrectAnswer 수정.
+
     setIsCorrectAnswer(true);
   };
 

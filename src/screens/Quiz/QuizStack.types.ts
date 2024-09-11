@@ -8,3 +8,14 @@ export type TParamList = {
   };
 };
 export type TProps = RouteProp<TParamList, 'QuizStack'>;
+
+export interface IVerifyQuizAnswer {
+  quizId: number;
+  quizAnswer: string;
+}
+
+export interface IPostPostcard {
+  postcardTypeId: number;
+  receiveMemberId: number;
+  memberReply: string;
+}
