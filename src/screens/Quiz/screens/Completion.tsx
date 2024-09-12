@@ -5,12 +5,15 @@ import React from 'react';
 import { img, background } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { useRoute } from '@react-navigation/native';
+import { TCompleteQuiz } from '@screens/Quiz/QuizStack.types';
 
 const Completion = () => {
-  // TODO: true false 받기
   const { movePage } = useMovePage();
-
-  const isSuccess = true;
+  const route = useRoute<TCompleteQuiz>();
+  // @ts-ignore
+  const { isSuccess } = route.params;
+  console.log(route.params);
 
   return (
     <S.Wrapper style={{ alignItems: 'center' }}>

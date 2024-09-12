@@ -62,7 +62,7 @@ const StepFirst = () => {
     if (isCorrect) {
       setIsCorrectAnswer(true);
     } else {
-      movePage('completion')();
+      movePage('completion', { isSuccess: false })();
     }
   };
 
