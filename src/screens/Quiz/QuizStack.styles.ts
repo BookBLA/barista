@@ -209,7 +209,7 @@ export const NextButton = styled.TouchableOpacity`
 export const CompletionContainer = styled.View`
   margin-top: auto;
   width: 90%;
-  height: ${deviceHeight * 0.7}px;
+  height: ${deviceHeight * 0.66}px;
   border-radius: 10px;
   align-items: center;
   justify-content: center;

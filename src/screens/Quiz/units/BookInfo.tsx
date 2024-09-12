@@ -31,7 +31,7 @@ export const BookInfo: React.FC<TProps> = ({ params }) => {
   };
 
   useEffect(() => {
-    // fetchBookInfo(memberBookId);
+    fetchBookInfo(memberBookId);
   }, [memberBookId]);
 
   return (

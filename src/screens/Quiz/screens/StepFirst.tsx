@@ -52,7 +52,7 @@ const StepFirst = () => {
 
   const checkQuizAnswer = async () => {
     const content = {
-      quizId: bookInfo?.quizId /*memberbookId?*/,
+      quizId: bookInfo?.quizId,
       quizAnswer: currentPressedAnswerString,
     };
     const result = await postVerifyQuizAnswer(content);
@@ -87,6 +87,7 @@ const StepFirst = () => {
             <T.StepName style={{ opacity: 0.4 }}>Step 03</T.StepName>
           </T.StepImage>
         </T.StepProgressBar>
+
         <T.ReadingQuizInfoContainer>
           <T.BookImage source={bookInfo?.imageUrl ? { uri: bookInfo?.imageUrl } : img.prepareBookImage} />
           <T.BookTextContainer>
@@ -100,12 +101,14 @@ const StepFirst = () => {
             </T.BookTitleWrapper>
           </T.BookTextContainer>
         </T.ReadingQuizInfoContainer>
+
         <T.ReadingQuizTestContainer>
           <T.QuizTitleContainer>
             <CustomText font="fontSemiBold" size="18px" color="black">
               {bookInfo?.quiz ?? '독서 퀴즈'}
             </CustomText>
           </T.QuizTitleContainer>
+
           <T.AnswerCheckboxContainer>
             <T.AnswerCheckbox
               onPress={() => selectAnswer(1, bookInfo?.firstChoice ?? '첫 번째 답')}
@@ -145,6 +148,7 @@ const StepFirst = () => {
                 }
               />
             </T.AnswerCheckbox>
+
             <T.AnswerCheckbox
               onPress={() => selectAnswer(2, bookInfo?.secondChoice ?? '두 번째 답')}
               style={[
@@ -183,6 +187,7 @@ const StepFirst = () => {
                 }
               />
             </T.AnswerCheckbox>
+
             <T.AnswerCheckbox
               onPress={() => selectAnswer(3, bookInfo?.thirdChoice ?? '세 번째 답')}
               style={[
@@ -224,20 +229,36 @@ const StepFirst = () => {
           </T.AnswerCheckboxContainer>
         </T.ReadingQuizTestContainer>
 
-        <T.NextButton
-          onPress={() => checkQuizAnswer()}
-          style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1, display: isCorrectAnswer ? 'none' : 'flex' }}
-          disabled={currentPressedAnswer === -1}
-        >
-          <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
-        </T.NextButton>
-        <T.NextButton
-          onPress={movePage('stepSecond', { memberBookId })}
-          style={{ display: isCorrectAnswer ? 'flex' : 'none' }}
-          disabled={currentPressedAnswer === -1}
-        >
-          <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
-        </T.NextButton>
+        {/*<T.NextButton*/}
+        {/*  onPress={() => checkQuizAnswer()}*/}
+        {/*  style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1, display: isCorrectAnswer ? 'none' : 'flex' }}*/}
+        {/*  disabled={currentPressedAnswer === -1}*/}
+        {/*>*/}
+        {/*  <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>*/}
+        {/*</T.NextButton>*/}
+        {/*<T.NextButton*/}
+        {/*  onPress={movePage('stepSecond', { memberBookId })}*/}
+        {/*  style={{ display: isCorrectAnswer ? 'flex' : 'none' }}*/}
+        {/*  disabled={currentPressedAnswer === -1}*/}
+        {/*>*/}
+        {/*  <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>*/}
+        {/*</T.NextButton>*/}
+
+        {!isCorrectAnswer && (
+          <T.NextButton
+            onPress={() => checkQuizAnswer()}
+            style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1 }}
+            disabled={currentPressedAnswer === -1}
+          >
+            <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
+          </T.NextButton>
+        )}
+
+        {isCorrectAnswer && (
+          <T.NextButton onPress={movePage('stepSecond', { memberBookId })} disabled={currentPressedAnswer === -1}>
+            <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
+          </T.NextButton>
+        )}
       </S.Wrapper>
     </>
   );
