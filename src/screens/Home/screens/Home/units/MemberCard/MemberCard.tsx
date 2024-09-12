@@ -15,7 +15,8 @@ const MemberCard = () => {
     isOpen,
     studentIdToggle,
   });
-  const memberBookId = 1000035;
+  // TODO: 추후 memberbookId 값 받아서 넣기. 현재는 임시값
+  const memberBookId = 2849551;
 
   return (
     <S.Wrapper>

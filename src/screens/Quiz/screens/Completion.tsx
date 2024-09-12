@@ -7,6 +7,7 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 
 const Completion = () => {
+  // TODO: true false 받기
   const { movePage } = useMovePage();
 
   const isSuccess = false;

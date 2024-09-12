@@ -12,6 +12,7 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import { Image, Text } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { postVerifyQuizAnswer } from '@commons/api/quiz/verifyQuizAnswer';
 
 const StepFirst = () => {
   useScreenLogger();
@@ -49,14 +50,22 @@ const StepFirst = () => {
     setCurrentPressedAnswerString(answer);
   };
 
-  const checkQuizAnswer = async (memberBookId: number) => {
-    // 정답 넘겨서 확인 후 isCorrectAnswer 수정.
-
-    setIsCorrectAnswer(true);
+  const checkQuizAnswer = async () => {
+    const content = {
+      quizId: bookInfo?.quizId /*memberbookId?*/,
+      quizAnswer: currentPressedAnswerString,
+    };
+    const result = await postVerifyQuizAnswer(content);
+    const isCorrect = result.isCorrect;
+    if (isCorrect) {
+      setIsCorrectAnswer(true);
+    } else {
+      movePage('completion')();
+    }
   };
 
   useEffect(() => {
-    // fetchBookInfo(memberBookId);
+    fetchBookInfo(memberBookId);
   }, [memberBookId]);
 
   useHeaderControl({ title: '독서 퀴즈' });
@@ -216,7 +225,7 @@ const StepFirst = () => {
         </T.ReadingQuizTestContainer>
 
         <T.NextButton
-          onPress={() => checkQuizAnswer(memberBookId)}
+          onPress={() => checkQuizAnswer()}
           style={{ opacity: currentPressedAnswer === -1 ? 0.3 : 1, display: isCorrectAnswer ? 'none' : 'flex' }}
           disabled={currentPressedAnswer === -1}
         >
