@@ -79,7 +79,8 @@ const StepSecond = () => {
             maxLength={maxLength}
           />
           <T.TextCount>
-            {text.length} / {maxLength}자
+            <Text style={{ color: '#00000099' }}>{text.length}</Text>{' '}
+            <Text style={{ color: '#00000066' }}>/ {maxLength}자</Text>
           </T.TextCount>
         </T.ReadingQuizTestContainer>
 

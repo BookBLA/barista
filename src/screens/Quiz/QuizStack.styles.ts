@@ -148,6 +148,7 @@ export const TextSection = styled.TextInput`
 
 export const TextCount = styled.Text`
   margin-top: 6px;
+  text-align: right;
 `;
 
 export const PostCardImageListWrapper = styled.View`
