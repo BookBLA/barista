@@ -12,11 +12,15 @@ import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 import { getPostcardTypeList } from '@commons/api/postcard/library.api';
+import { postPostcard } from '@commons/api/quiz/sendPostcard.api';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 
 const StepThird = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
+  const logEvent = useAnalyticsEventLogger();
 
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
@@ -28,6 +32,21 @@ const StepThird = () => {
 
   const selectPostcard = (postcardId: TPostcardInfo) => {
     setCurrentPressedPostcard(postcardId);
+  };
+
+  const sendPostCard = async () => {
+    const postcardInfo = {
+      postcardTypeId: currentPressedPostcard?.postcardTypeId!,
+      receiveMemberId: route.params['targetMemberId'],
+      memberReply: route.params['text'],
+    };
+    try {
+      await postPostcard(postcardInfo);
+      logEvent('send_postcard');
+      movePage('completion')();
+    } catch (error) {
+      useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
+    }
   };
 
   useEffect(() => {
@@ -79,11 +98,13 @@ const StepThird = () => {
       </T.ReadingQuizTestContainer>
 
       <T.NextButton
-        onPress={movePage('completion')}
+        onPress={sendPostCard}
         style={{ opacity: !currentPressedPostcard ? 0.3 : 1 }}
         disabled={!currentPressedPostcard}
       >
-        <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>엽서 보내기</Text>
+        <T.NextButtonText>엽서 보내기 </T.NextButtonText>
+        <Image style={{ width: 12, height: 12 }} source={icons.sendPostcard} />
+        <Text style={{ fontSize: 14, opacity: 0.4 }}>35</Text>
       </T.NextButton>
     </S.Wrapper>
   );

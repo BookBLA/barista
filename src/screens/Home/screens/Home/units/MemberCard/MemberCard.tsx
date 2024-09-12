@@ -15,8 +15,9 @@ const MemberCard = () => {
     isOpen,
     studentIdToggle,
   });
-  // TODO: 추후 memberbookId 값 받아서 넣기. 현재는 임시값
+  // TODO: 추후 memberbookId, targetMemberId 값 받아서 넣기. 현재는 임시값
   const memberBookId = 2849551;
+  const targetMemberId = 900032;
 
   return (
     <S.Wrapper>
@@ -24,7 +25,7 @@ const MemberCard = () => {
       <BookImage />
       <BookInfo />
 
-      <S.SendButton onPress={movePage('quizStack', { memberBookId })}>
+      <S.SendButton onPress={movePage('quizStack', { memberBookId, targetMemberId })}>
         <CustomText>엽서 보내기</CustomText>
       </S.SendButton>
       <CustomModal modalConfig={studentIdModalConfig} />

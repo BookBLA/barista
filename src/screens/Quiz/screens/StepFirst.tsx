@@ -12,7 +12,7 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import { Image, Text } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { postVerifyQuizAnswer } from '@commons/api/quiz/verifyQuizAnswer';
+import { postVerifyQuizAnswer } from '@commons/api/quiz/verifyQuizAnswer.api';
 
 const StepFirst = () => {
   useScreenLogger();
@@ -20,6 +20,8 @@ const StepFirst = () => {
   const route = useRoute<TProps>();
   // @ts-ignore
   const memberBookId = route.params['memberBookId'];
+  // @ts-ignore
+  const targetMemberId = route.params['targetMemberId'];
 
   const [bookInfo, setBookInfo] = useState<TBookInfo | null>(null);
   const [currentPressedAnswer, setCurrentPressedAnswer] = useState<number>(-1);
@@ -255,8 +257,11 @@ const StepFirst = () => {
         )}
 
         {isCorrectAnswer && (
-          <T.NextButton onPress={movePage('stepSecond', { memberBookId })} disabled={currentPressedAnswer === -1}>
-            <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
+          <T.NextButton
+            onPress={movePage('stepSecond', { memberBookId, targetMemberId })}
+            disabled={currentPressedAnswer === -1}
+          >
+            <T.NextButtonText>다음</T.NextButtonText>
           </T.NextButton>
         )}
       </S.Wrapper>

@@ -203,8 +203,15 @@ export const NextButton = styled.TouchableOpacity`
   height: 56px;
   background-color: ${colors.primary02};
   border-radius: 10px;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+`;
+
+export const NextButtonText = styled.Text`
+  color: black;
+  font-weight: 500;
+  font-size: 16px;
 `;
 
 export const CompletionContainer = styled.View`

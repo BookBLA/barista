@@ -17,6 +17,8 @@ const StepSecond = () => {
   const route = useRoute<TProps>();
   // @ts-ignore
   const memberBookId = route.params['memberBookId'];
+  // @ts-ignore
+  const targetMemberId = route.params['targetMemberId'];
 
   const [text, setText] = React.useState<string>('');
   const maxLength = 100;
@@ -86,11 +88,11 @@ const StepSecond = () => {
 
         {!isKeyboardVisible && (
           <T.NextButton
-            onPress={movePage('stepThird', { memberBookId })}
+            onPress={movePage('stepThird', { memberBookId, targetMemberId, text })}
             style={{ opacity: text.length < 10 ? 0.3 : 1 }}
             disabled={text.length < 10}
           >
-            <Text style={{ color: 'black', fontFamily: 'fontSemiBold', fontSize: 16 }}>다음</Text>
+            <T.NextButtonText>다음</T.NextButtonText>
           </T.NextButton>
         )}
       </S.Wrapper>

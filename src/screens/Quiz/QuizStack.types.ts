@@ -5,6 +5,8 @@ export type TParamList = {
   QuizStack: {
     bookQuizInfo: {
       memberBookId: number;
+      targetMemberId: number;
+      text?: string;
     };
   };
 };
@@ -21,6 +23,8 @@ export interface IPostPostcard {
   memberReply: string;
 }
 
-// export interface TQuizIsCorrect {
-//   isCorrect: boolean;
-// }
+export interface ISendPostcardRequest {
+  postcardTypeId: number;
+  receiveMemberId: number;
+  memberReply: string;
+}

@@ -86,6 +86,7 @@ export const icons = {
   chatDark: require('@assets/images/icons/ChatDark.png'),
 
   addBook: require('@assets/images/icons/AddBook.png'),
+  sendPostcard: require('@assets/images/icons/SendPostcard.png'),
 
   previousStep: require('@assets/images/icons/PreviousStep.png'),
   currentStep: require('@assets/images/icons/CurrentStep.png'),
