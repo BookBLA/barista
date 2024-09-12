@@ -2,7 +2,7 @@ import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { Text } from 'react-native';
 import React from 'react';
-import { img } from '@commons/utils/ui/variablesImages/variablesImages';
+import { img, background } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 
@@ -10,11 +10,12 @@ const Completion = () => {
   // TODO: true false 받기
   const { movePage } = useMovePage();
 
-  const isSuccess = false;
+  const isSuccess = true;
 
   return (
     <S.Wrapper style={{ alignItems: 'center' }}>
       <T.CompletionContainer>
+        {isSuccess && <T.CompletionBackground source={background.CongratulationBackground} />}
         <T.CompletionImage source={isSuccess ? img.quizSuccess : img.quizFail} />
         <CustomText font="fontSemiBold" size="22px" color="black" style={{ textAlign: 'center', marginBottom: 14 }}>
           {isSuccess ? '엽서 보내기가 완료되었습니다' : '이번 독서퀴즈가\n조금 어려웠던 것 같습니다'}

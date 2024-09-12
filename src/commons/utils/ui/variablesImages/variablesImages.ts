@@ -153,6 +153,7 @@ export const buttons = {
 export const background = {
   eventCard: require('@assets/images/background/EventCard.png'),
   inviteCard: require('@assets/images/background/InviteCard.png'),
+  CongratulationBackground: require('@assets/images/background/CongratulationBackground.png'),
 };
 
 export const example = {

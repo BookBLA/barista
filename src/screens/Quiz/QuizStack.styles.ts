@@ -213,9 +213,19 @@ export const CompletionContainer = styled.View`
   border-radius: 10px;
   align-items: center;
   justify-content: center;
+  position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   background-color: cornflowerblue;
+`;
+
+export const CompletionBackground = styled.Image`
+  position: absolute;
+  top: 5px;
+  width: 97%;
+  height: 65%;
+  background: transparent;
 `;
 
 export const CompletionImage = styled.Image`
