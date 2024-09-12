@@ -19,6 +19,7 @@ import React from 'react';
 import { Platform, SafeAreaView } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
+import QuizStack from '@screens/Quiz/QuizStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -32,6 +33,7 @@ const screens = [
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
   { name: 'notice', component: CustomScreen(Notice) },
+  { name: 'quizStack', component: QuizStack },
   // { name: 'waitConfirm', component: WaitConfirm },
   { name: 'inviteFriends', component: InviteFriends },
   { name: 'modifyProfile', component: ModifyProfile },
