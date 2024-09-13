@@ -13,7 +13,9 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
       <S.LogoWrapper>
-        <S.LogoImage source={LogoDarkBg} />
+        <S.IconButton>
+          <S.LogoImage source={LogoDarkBg} />
+        </S.IconButton>
         <S.LogoTitleImage source={logos.mainLogo} />
       </S.LogoWrapper>
       <S.IconWrapper>

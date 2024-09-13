@@ -86,6 +86,15 @@ export const icons = {
   chatDark: require('@assets/images/icons/ChatDark.png'),
 
   addBook: require('@assets/images/icons/AddBook.png'),
+  sendPostcard: require('@assets/images/icons/SendPostcard.png'),
+
+  previousStep: require('@assets/images/icons/PreviousStep.png'),
+  currentStep: require('@assets/images/icons/CurrentStep.png'),
+  nextStep: require('@assets/images/icons/NextStep.png'),
+
+  radiobuttonDefault: require('@assets/images/icons/radiobutton_default.png'),
+  radiobuttonSelected: require('@assets/images/icons/radiobutton_selected.png'),
+  radiobuttonCorrect: require('@assets/images/icons/radiobutton_correct.png'),
 };
 
 export const img = {
@@ -124,6 +133,11 @@ export const img = {
   homOnboardingPage3: require('@assets/images/img/homeOnboarding/page3.png'),
 
   libraryOnboarding: require('@assets/images/img/libraryOnboarding.png'),
+
+  quizFail: require('@assets/images/img/quizFail.png'),
+  quizSuccess: require('@assets/images/img/quizSuccess.png'),
+
+  postcardSelected: require('@assets/images/img/postcardSelected.png'),
 };
 
 export const logos = {
@@ -140,6 +154,7 @@ export const buttons = {
 export const background = {
   eventCard: require('@assets/images/background/EventCard.png'),
   inviteCard: require('@assets/images/background/InviteCard.png'),
+  CongratulationBackground: require('@assets/images/background/CongratulationBackground.png'),
 };
 
 export const example = {

@@ -77,7 +77,7 @@ export const ButtonTextStyled = styled.Text`
 export const ButtonStyled = styled.TouchableOpacity<{ borderRadius?: number }>`
   width: 80%;
   height: 40px;
-  border-radius: ${({ borderRadius }: { borderRadius?: number }) => (borderRadius !== undefined ? borderRadius : 60)};
+  border-radius: ${({ borderRadius }: { borderRadius?: number }) => (borderRadius ? `${borderRadius}px` : '60px')};
   background-color: ${colors.buttonMain};
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@ export const OpenChatTitleStyled = styled.Text`
   font-size: 20px;
   font-family: fontSemiBold;
   text-align: center;
-  color: 'black';
+  color: black;
   margin-bottom: 16px;
   margin-top: 8%;
 `;
@@ -157,8 +157,8 @@ export const RoundRectStyled = styled.View`
   margin-top: 20px;
   border-radius: 10px;
   background-color: ${colors.buttonMain};
-  justify-content: 'center';
-  align-items: 'center';
+  justify-content: center;
+  align-items: center;
   flex-direction: 'column';
 `;
 

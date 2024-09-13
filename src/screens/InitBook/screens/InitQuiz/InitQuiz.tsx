@@ -47,7 +47,7 @@ const InitQuiz = ({ route }: IProps) => {
           extraScrollHeight={100}
         >
           <View style={{ width: '100%', height: 'auto', alignItems: 'center' }}>
-            <S.ContentStyled style={{ fontSize: 18, marginBottom: 12 }}>책 한 줄 감상문 남기기</S.ContentStyled>
+            <S.ContentStyled style={{ fontSize: 18, marginBottom: 12 }}>이 책을 좋아하는 이유</S.ContentStyled>
             <CustomText
               size="12px"
               font="fontRegular"
@@ -55,7 +55,7 @@ const InitQuiz = ({ route }: IProps) => {
               margin="0 0 19px"
               style={{ textAlign: 'center' }}
             >
-              나를 궁금해하는 상대방을 위해{'\n'} 나의 생각과 매력이 잘 보이도록 느낀 점을 적어주세요!
+              나를 궁금해하는 상대방을 위해 나의 생각이{'\n'} 잘 보이도록 이 책을 좋아하는 이유를 적어주세요!
             </CustomText>
             <Controller
               control={control}

@@ -475,7 +475,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           </CustomText>
         ) : (
           <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-            책을 누르면 한 줄 감상문과 독서퀴즈를 수정할 수 있습니다.
+            책을 누르면 좋아하는 이유와 독서퀴즈를 수정할 수 있습니다.
           </CustomText>
         )}
 
