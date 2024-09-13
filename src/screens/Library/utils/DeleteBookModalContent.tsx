@@ -11,7 +11,7 @@ const DeleteBookModalContent = () => {
         내 서재에 등록한 책을 삭제하시겠어요? ㅠ-ㅠ
       </CustomText>
       <CustomText size="12px" font="fontRegular">
-        등록한 한 줄 감상문과 독서퀴즈도 함께 삭제됩니다.
+        등록한 책을 좋아하는 이유와 독서퀴즈도 함께 삭제됩니다.
       </CustomText>
     </S.ModalWrapper>
   );
