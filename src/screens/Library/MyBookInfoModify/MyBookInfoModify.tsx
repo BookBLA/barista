@@ -32,7 +32,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
 
   const isEmptyReview = () => {
     if (!bookReviewText) {
-      showToast({ content: '한 줄 감상문을 입력해주세요!' });
+      showToast({ content: '이 책을 좋아하는 이유를 입력해주세요!' });
       return true;
     }
 
@@ -87,7 +87,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
           memberBookId,
           contents: bookReviewText,
         });
-        showToast({ content: '한 줄 감상문이 변경되었습니다.' });
+        showToast({ content: '이 책을 좋아하는 이유가 변경되었습니다.' });
       } catch (err) {
         console.error('업데이트에 실패하였습니다.', err);
       }
@@ -170,7 +170,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
           <S.BookReviewContainer>
             <S.BookReviewHeaderWrapper>
               <CustomText font="fontMedium" size="16px" color="black" weight="bold">
-                한 줄 감상문
+                이 책을 좋아하는 이유
               </CustomText>
               {isModifiableBookReview ? (
                 <S.ModifyButton onPress={async () => await handleOnModifyBookReview(false)}>
