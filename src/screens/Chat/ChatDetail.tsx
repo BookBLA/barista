@@ -9,6 +9,15 @@ import { FlatList, TouchableOpacity, View } from 'react-native';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
+const patner = {
+  avatar: require('@assets/images/img/profile_ex1.png'),
+  school: '서울대학교',
+  smokingStatus: '흡연',
+  mbti: 'ENFP',
+  height: 170,
+  nickname: '김서울',
+};
+
 const ChatDetail: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
@@ -95,14 +104,6 @@ const ChatDetail: React.FC = () => {
       index === 0 || new Date(item.timestamp).getDate() !== new Date(messages[index - 1].timestamp).getDate();
 
     const isFirstMessage = index === 0;
-    const patner = {
-      avatar: require('@assets/images/img/profile_ex1.png'),
-      school: '서울대학교',
-      smokingStatus: '흡연',
-      mbti: 'ENFP',
-      height: 170,
-      nickname: '김서울',
-    };
 
     return (
       <View>
@@ -145,7 +146,7 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleInfoPress = () => {
-    navigation.navigate('ChatInfo', { user });
+    navigation.navigate('ChatInfo', { patner });
   };
 
   return (
@@ -155,8 +156,8 @@ const ChatDetail: React.FC = () => {
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
         <S.HeaderTitle>
-          <S.SmallAvatar source={{ uri: user.avatar }} />
-          <S.HeaderText>{user.nickname}</S.HeaderText>
+          <S.SmallAvatar source={patner.avatar} />
+          <S.HeaderText>{patner.nickname}</S.HeaderText>
         </S.HeaderTitle>
         <InfoButton onPress={handleInfoPress} />
       </S.Header>

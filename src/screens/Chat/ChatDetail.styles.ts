@@ -16,8 +16,10 @@ export const Header = styled.View`
 `;
 
 export const HeaderTitle = styled.View`
-  flex-direction: row;
+  flex: 1;
   align-items: center;
+  flex-direction: row;
+  margin-top: 2px;
 `;
 
 export const SmallAvatar = styled.Image`
