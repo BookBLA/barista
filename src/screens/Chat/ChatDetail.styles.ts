@@ -112,7 +112,7 @@ export const messageAvatar = styled.Image`
 
 export const messageContent = styled.View<{ isUserMessage: boolean }>`
   flex: 1;
-  max-width: 80%;
+  max-width: 70%;
   align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 

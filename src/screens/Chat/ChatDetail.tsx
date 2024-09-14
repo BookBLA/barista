@@ -70,7 +70,10 @@ const ChatDetail: React.FC = () => {
       const dummyMessages = Array.from({ length: 1000 }, (_, index) => ({
         id: (1000 - index).toString(),
         sender: (1000 - index) % 3 === 0 ? 'partner' : 'user',
-        text: (1000 - index) % 3 === 0 ? `파트너의 메시지 ${1000 - index}` : `사용자의 메시지 ${1000 - index}`,
+        text:
+          (1000 - index) % 3 === 0
+            ? `파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지 ${1000 - index}`
+            : `사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지 ${1000 - index}`,
         timestamp: new Date(Date.now() - (1000 - index) * 60000).toISOString(),
       }));
 
@@ -145,7 +148,6 @@ const ChatDetail: React.FC = () => {
                   {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </S.timestamp>
               )}
-              {!isUserMessage && <S.readReceipt source={require('@assets/images/icons/read.png')} />}
             </S.messageRow>
           </S.messageContent>
         </S.messageItemInner>
