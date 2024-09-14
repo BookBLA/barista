@@ -1,18 +1,31 @@
 // ChatDetail.tsx
 
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  Animated,
+  FlatList,
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
+
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequestModal';
-import * as Clipboard from 'expo-clipboard';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { FlatList, TouchableOpacity, View } from 'react-native';
-import * as S from './ChatDetail.styles';
+import styles from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
-const patner = {
+const partner = {
   avatar: require('@assets/images/img/profile_ex1.png'),
   school: '서울대학교',
   smokingStatus: '흡연',
@@ -33,7 +46,11 @@ const ChatDetail: React.FC = () => {
 
   const showToast = useToastStore((state) => state.showToast);
 
-  const [isModalVisible, setIsModalVisible] = useState(false); // 모달 상태 추가
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
+
+  const scrollY = useRef(new Animated.Value(0)).current;
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
   const handleAccept = () => {
     setIsModalVisible(false);
@@ -54,46 +71,47 @@ const ChatDetail: React.FC = () => {
     try {
       const response = await fetchChatMessages(user.id);
       if (response.isSuccess && Array.isArray(response.result)) {
-        const reversedMessages = response.result.reverse(); // 메시지를 최신순으로 역순 정렬
-        setMessages(reversedMessages);
-        setDisplayedMessages(reversedMessages.slice(0, 100)); // 처음 100개의 메시지만 표시
+        const sortedMessages = response.result.sort(
+          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+        );
+        setMessages(sortedMessages);
+        setDisplayedMessages(sortedMessages.slice(0, 100));
       } else {
         throw new Error('Failed to load messages');
       }
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
 
-      // 1000개의 더미 데이터 생성
       const dummyMessages = Array.from({ length: 1000 }, (_, index) => ({
-        id: (index + 1).toString(),
-        sender: index % 2 === 0 ? 'partner' : 'user',
-        text: index % 2 === 0 ? `파트너의 메시지 ${index + 1}` : `사용자의 메시지 ${index + 1}`,
-        timestamp: new Date(Date.now() - index * 60000).toISOString(), // 각 메시지의 시간을 1분씩 이전으로 설정
-      })).reverse(); // 최신순으로 역순 정렬
+        id: (1000 - index).toString(),
+        sender: (1000 - index) % 3 === 0 ? 'partner' : 'user',
+        text: (1000 - index) % 3 === 0 ? `파트너의 메시지 ${1000 - index}` : `사용자의 메시지 ${1000 - index}`,
+        timestamp: new Date(Date.now() - (1000 - index) * 60000).toISOString(),
+      }));
+      const totalMessages = dummyMessages.length;
 
       setMessages(dummyMessages);
-      setDisplayedMessages(dummyMessages.slice(0, 100)); // 처음 100개의 메시지만 표시
+      setDisplayedMessages(dummyMessages.slice(0, 100));
     }
   }, [user.id]);
 
   useEffect(() => {
-    setIsModalVisible(true); // 채팅방 생성 시 모달을 띄움
+    setIsModalVisible(true);
     loadChatMessages();
   }, [loadChatMessages]);
 
-  // FlatList가 처음 렌더링될 때 맨 아래부터 표시되도록 설정
   useEffect(() => {
-    if (flatListRef.current) {
-      flatListRef.current.scrollToOffset({ offset: 0, animated: false }); // 맨 아래부터 시작
-    }
-  }, [displayedMessages]);
+    const listener = scrollY.addListener(({ value }) => {
+      setShowScrollButton(value > 100);
+    });
+    return () => scrollY.removeListener(listener);
+  }, []);
 
   const loadMoreMessages = () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
 
     setLoadingMore(true);
 
-    // 100개씩 추가 로드
     const currentLength = displayedMessages.length;
     const additionalMessages = messages.slice(currentLength, currentLength + 100);
 
@@ -108,6 +126,10 @@ const ChatDetail: React.FC = () => {
     });
   };
 
+  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    setContentVerticalOffset(event.nativeEvent.contentOffset.y);
+  };
+
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
     const showAvatar =
       index === 0 ||
@@ -116,65 +138,75 @@ const ChatDetail: React.FC = () => {
     const showDate =
       index === 0 || new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate();
 
-    // 모든 대화중에 제일 첫번째 메시지인지 확인
-    const isFirstMessage = index === 0;
+    // 제일 오래된 메시지인지이며, 첫 메시지인지 여부
+    const isFirstMessage = index === displayedMessages.length - 1 && index === messages.length - 1;
+
     return (
       <View>
         {isFirstMessage && (
-          <S.ProfileSection>
-            <S.ProfileAvatar source={patner.avatar} />
-            <S.ProfileInfo>
-              <S.ProfileSchool>{patner.school}</S.ProfileSchool>
-              <S.ProfileDetails>{`${patner.smokingStatus} • ${patner.mbti} • ${patner.height}cm`}</S.ProfileDetails>
-              <S.LibraryButton>
-                <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-              </S.LibraryButton>
-            </S.ProfileInfo>
-          </S.ProfileSection>
+          <View style={styles.profileSection}>
+            <Image source={partner.avatar} style={styles.profileAvatar} />
+            <View style={styles.profileInfo}>
+              <Text style={styles.profileSchool}>{partner.school}</Text>
+              <Text
+                style={styles.profileDetails}
+              >{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</Text>
+              <TouchableOpacity style={styles.libraryButton}>
+                <Text style={styles.libraryButtonText}>서재 구경하기</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         )}
         {showDate && (
-          <S.DateSeparator>
-            <S.DateText>{new Date(item.timestamp).toLocaleDateString()}</S.DateText>
-          </S.DateSeparator>
+          <View style={styles.dateSeparator}>
+            <Text style={styles.dateText}>{new Date(item.timestamp).toLocaleDateString()}</Text>
+          </View>
         )}
-        <S.MessageItem>
-          {item.sender === 'partner' && showAvatar && <S.MessageAvatar source={patner.avatar} />}
-          <S.MessageContent sender={item.sender}>
-            {item.sender === 'partner' && <S.MessageUsername>{patner.nickname}</S.MessageUsername>}
-            {/* TouchableOpacity와 S.Timestamp를 좌우로 정렬하기 위한 더미 뷰 */}
+        <View style={styles.messageItem}>
+          {item.sender === 'partner' && showAvatar && <Image source={partner.avatar} style={styles.messageAvatar} />}
+          <View style={[styles.messageContent, { alignItems: item.sender === 'user' ? 'flex-end' : 'flex-start' }]}>
+            {item.sender === 'partner' && <Text style={styles.messageUsername}>{partner.nickname}</Text>}
             <TouchableOpacity delayLongPress={500} onLongPress={() => handleLongPress(item.text)}>
-              <S.MessageBubble sender={item.sender}>
-                <S.MessageText sender={item.sender}>{item.text}</S.MessageText>
-              </S.MessageBubble>
+              <View style={[styles.messageBubble, { backgroundColor: item.sender === 'user' ? '#1D2E61' : '#f1f1f1' }]}>
+                <Text style={[styles.messageText, { color: item.sender === 'user' ? '#ffffff' : '#000000' }]}>
+                  {item.text}
+                </Text>
+              </View>
             </TouchableOpacity>
-            <S.Timestamp sender={item.sender}>
-              {new Date(item.timestamp).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-            </S.Timestamp>
-          </S.MessageContent>
-        </S.MessageItem>
+            <Text
+              style={[
+                styles.timestamp,
+                { marginLeft: item.sender === 'user' ? 8 : 0, marginRight: item.sender === 'partner' ? 8 : 0 },
+              ]}
+            >
+              {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+            </Text>
+          </View>
+        </View>
       </View>
     );
   };
 
   const handleInfoPress = () => {
-    navigation.navigate('ChatInfo', { patner });
+    navigation.navigate('ChatInfo', { partner });
+  };
+
+  const scrollToBottom = () => {
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
   return (
-    <S.Wrapper>
-      <S.Header>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={S.styles.backButton}>
+    <View style={styles.wrapper}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
           <Ionicons name="chevron-back" size={24} color="black" />
         </TouchableOpacity>
-        <S.HeaderTitle>
-          <S.SmallAvatar source={patner.avatar} />
-          <S.HeaderText>{patner.nickname}</S.HeaderText>
-        </S.HeaderTitle>
+        <View style={styles.headerTitle}>
+          <Image source={partner.avatar} style={styles.smallAvatar} />
+          <Text style={styles.headerText}>{partner.nickname}</Text>
+        </View>
         <InfoButton onPress={handleInfoPress} />
-      </S.Header>
+      </View>
 
       <FlatList
         ref={flatListRef}
@@ -182,42 +214,38 @@ const ChatDetail: React.FC = () => {
         renderItem={renderMessageItem}
         keyExtractor={(item) => item.id}
         contentContainerStyle={{ paddingVertical: 10 }}
-        onEndReached={loadMoreMessages} // 위로 스크롤 시 더 많은 메시지 로드
+        onEndReached={loadMoreMessages}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loadingMore ? <S.LoadingIndicator /> : null}
-        inverted // 리스트를 역순으로 표시하여 최신 메시지가 아래에 위치하도록 설정
-        initialNumToRender={20} // 처음 렌더링할 아이템 수 조정
-        maxToRenderPerBatch={20} // 한번에 렌더링할 최대 아이템 수 조정
-        windowSize={10} // 렌더링할 스크린 크기 대비 뷰포트 크기 조정
-        removeClippedSubviews // 화면 밖의 보이지 않는 뷰 제거하여 성능 향상
+        ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.loadingIndicator} /> : null}
+        inverted
+        initialNumToRender={20}
+        maxToRenderPerBatch={20}
+        windowSize={10}
+        removeClippedSubviews
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+        scrollEventThrottle={16}
       />
 
-      <S.TopButton
-        onPress={() => flatListRef.current?.scrollToOffset({ offset: 0 })}
-        // 만약 보이는 메시지가 100개 이상이면 보이고 아니면 안보임
-        // 그리고 스크롤이 맨 위에 있을 때만 보이도록 설정
-        style={{
-          display: displayedMessages.length >= 200 && displayedMessages.length < messages.length ? 'flex' : 'none',
-        }}
-      >
-        <S.TopButtonIcon name="arrow-right" />
-      </S.TopButton>
+      {showScrollButton && (
+        <TouchableOpacity style={styles.scrollToBottomButton} onPress={scrollToBottom}>
+          <Icon name="chevron-down" size={24} color="#ffffff" />
+        </TouchableOpacity>
+      )}
 
-      <S.InputContainer>
-        <S.TextInput placeholder="메시지 보내기" />
-        <S.SendButton>
-          <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
-        </S.SendButton>
-      </S.InputContainer>
+      <View style={styles.inputContainer}>
+        <TextInput style={styles.textInput} placeholder="메시지 보내기" />
+        <TouchableOpacity style={styles.sendButton}>
+          <Image source={require('@assets/images/icons/SendMessage.png')} style={styles.sendButtonIcon} />
+        </TouchableOpacity>
+      </View>
 
-      {/* 채팅 요청 모달 */}
       <ChatRequestModal
         visible={isModalVisible}
         onAccept={handleAccept}
         onDecline={handleDecline}
         onReport={handleReport}
       />
-    </S.Wrapper>
+    </View>
   );
 };
 
