@@ -1,3 +1,4 @@
+import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { checkReinstallation } from '@commons/store/appStatus/installStatus/installStatusStore';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
@@ -11,6 +12,7 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
   const removeToken = useAuthStore((state) => state.removeToken);
+  const updateMemberInfo = useMemberStore((state) => state.updateMemberInfo);
 
   useEffect(() => {
     const loadFonts = async () => {
@@ -37,6 +39,12 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
         await SplashScreen.preventAutoHideAsync();
         if (token) {
           await saveMemberInfo();
+          const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+          if (memberStatus === 'STYLE') {
+            //토큰이 있을 때>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다
+            const response = await getMemberStatusesApi();
+            updateMemberInfo('schoolStatus', response.result?.schoolStatus ?? 'OPEN');
+          }
         }
       } catch (error) {
         removeToken();
@@ -46,7 +54,6 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
         await SplashScreen.hideAsync();
       }
     };
-
     loadFonts().then(() => {
       console.debug('Complete Font Loading');
     });
