@@ -1,3 +1,5 @@
+// ChatDetail.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -133,14 +135,13 @@ const ChatDetail: React.FC = () => {
           <S.messageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.messageUsername>{partner.nickname}</S.messageUsername>}
             <S.messageRow isUserMessage={isUserMessage}>
-              {/* 읽음 표시 */}
               {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
               {isUserMessage && (
                 <S.timestamp isUserMessage={isUserMessage}>
                   {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </S.timestamp>
               )}
-              <S.messageBubble isUserMessage={isUserMessage}>
+              <S.messageBubble isUserMessage={isUserMessage} onLongPress={() => console.log('long press')}>
                 <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
               </S.messageBubble>
               {!isUserMessage && (
