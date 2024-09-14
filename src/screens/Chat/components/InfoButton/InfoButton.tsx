@@ -7,7 +7,7 @@ import { InfoButtonProps } from './InfoButton.types';
 const InfoButton: React.FC<InfoButtonProps> = ({ onPress }) => {
   return (
     <TouchableOpacity onPress={onPress} style={styles.container}>
-      <Ionicons name="information-circle-outline" size={24} color="black" />
+      <Ionicons name="information-circle-outline" size={24} color="#1D2E61" />
     </TouchableOpacity>
   );
 };
