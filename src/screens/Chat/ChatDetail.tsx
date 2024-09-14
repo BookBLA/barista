@@ -71,16 +71,16 @@ const ChatDetail: React.FC = () => {
 
       const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
         id: (100 - index).toString(),
-        sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
         text:
           (100 - index) % 3 === 0
             ? `파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지 ${100 - index}`
             : `사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지 ${100 - index}`,
         timestamp: new Date(Date.now() - (100 - index) * 60000).toISOString(),
+        sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
       }));
 
       setMessages(dummyMessages);
-      setDisplayedMessages(dummyMessages.slice(0, 100));
+      setDisplayedMessages(dummyMessages);
     }
   }, [user.id]);
 
@@ -109,7 +109,8 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
-    const isFirstMessage = index === 0;
+    const isFirstMessage = item.id === (1).toString();
+
     const isUserMessage = item.sender === 'user';
     const showAvatar =
       index === 0 ||
@@ -118,22 +119,21 @@ const ChatDetail: React.FC = () => {
 
     return (
       <S.messageItem>
+        {isFirstMessage && (
+          <S.ProfileSection>
+            <S.ProfileAvatar source={partner.avatar} />
+            <S.ProfileInfo>
+              <S.ProfileSchool>{partner.school}</S.ProfileSchool>
+              <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+              <S.LibraryButton>
+                <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+              </S.LibraryButton>
+            </S.ProfileInfo>
+          </S.ProfileSection>
+        )}
         {index === 0 ||
         new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
           <S.dateSeparator>
-            {isFirstMessage && (
-              <S.ProfileSection>
-                <S.ProfileAvatar source={partner.avatar} />
-                <S.ProfileInfo>
-                  <S.ProfileSchool>{partner.school}</S.ProfileSchool>
-                  <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-                  <S.LibraryButton>
-                    <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-                  </S.LibraryButton>
-                </S.ProfileInfo>
-              </S.ProfileSection>
-            )}
-
             <S.dateText>
               {new Date(item.timestamp).toLocaleDateString('ko-KR', {
                 year: 'numeric',

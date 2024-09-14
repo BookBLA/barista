@@ -16,9 +16,10 @@ export const header = styled.View`
 
 export const ProfileSection = styled.View`
   align-items: center;
-  padding: 20px 0;
+  padding: 10px 0;
   border-bottom-width: 1px;
   border-bottom-color: #e0e0e0;
+  margin-bottom: 20px;
 `;
 
 export const ProfileAvatar = styled.Image`
