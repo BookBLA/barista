@@ -16,10 +16,10 @@ export const CustomGradientButton: React.FC<IProps> = ({ contents, onPress, ...r
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 60,
-          paddingTop: 12,
-          paddingBottom: 12,
-          paddingLeft: 24,
-          paddingRight: 24,
+          paddingTop: 9,
+          paddingBottom: 9,
+          paddingLeft: 18,
+          paddingRight: 18,
         }}
       >
         <ButtonTextStyled {...rest}>
