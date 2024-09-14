@@ -96,6 +96,16 @@ const ChatDetail: React.FC = () => {
     return () => scrollY.removeListener(listener);
   }, [scrollY]);
 
+  useEffect(() => {
+    // 페이지에 진입할 때 탭을 숨김
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+
+    // 페이지에서 나갈 때 탭을 다시 보이게 설정
+    return () => {
+      navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
+    };
+  }, [navigation]);
+
   const loadMoreMessages = () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
 
