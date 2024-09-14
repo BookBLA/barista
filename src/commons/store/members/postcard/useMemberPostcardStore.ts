@@ -9,7 +9,7 @@ interface IMemberPostcardState {
 }
 
 export const useMemberPostcardStore = create<IMemberPostcardState>((set) => ({
-  memberPostcard: 10, // TODO: getMemberPostcardApi가 deprecated되어 임의로 수정. 원래 0
+  memberPostcard: 0, // TODO: getMemberPostcardApi가 deprecated되어 임의로 수정. 원래 0
   isLoading: false,
   error: null,
 
