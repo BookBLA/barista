@@ -115,6 +115,11 @@ export const BookCover = styled.Image`
   margin-bottom: 10px;
 `;
 
+export const MessageBubbleContainer = styled.View<{ sender: 'user' | 'partner' }>`
+  align-items: ${({ sender }) => (sender === 'user' ? 'flex-end' : 'flex-start')};
+  flex-direction: ${({ sender }) => (sender === 'user' ? 'row-reverse' : 'row')};
+`;
+
 export const MessageBubble = styled.View<{ sender: 'user' | 'partner' }>`
   background-color: ${({ sender }) => (sender === 'user' ? '#007aff' : '#e6ffe6')};
   padding: 10px;
@@ -133,11 +138,32 @@ export const Timestamp = styled.Text`
   margin-top: 5px;
 `;
 
+export const LoadingIndicator = styled.ActivityIndicator`
+  margin: 20px 0;
+`;
+
+export const TopButton = styled.TouchableOpacity`
+  position: absolute;
+  right: 10px;
+  width: 45px;
+  height: 45px;
+  bottom: 70px;
+  border-radius: 25px;
+  justify-content: center;
+  align-items: center;
+  border-width: 1px;
+  background-color: #ffffff;
+  opacity: 0.8;
+`;
+
+export const TopButtonIcon = styled(Icon)`
+  font-size: 20px;
+  transform: rotate(90deg);
+`;
+
 export const InputContainer = styled.View`
   flex-direction: row;
   padding: 10px;
-  border-top-width: 1px;
-  border-top-color: #e0e0e0;
 `;
 
 export const TextInput = styled.TextInput`
