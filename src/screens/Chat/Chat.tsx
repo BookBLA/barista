@@ -70,7 +70,6 @@ const ChatScreen: React.FC = () => {
       <S.Avatar source={item.avatar} />
       <S.ChatInfo>
         <S.ChatName>{item.name}</S.ChatName>
-        {/* if lastMessage가 20글자 이상이면 그 뒤에는 ...으로 대체 */}
         <S.LastMessage>
           {item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 15)}...` : item.lastMessage}
         </S.LastMessage>
