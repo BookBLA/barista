@@ -16,7 +16,7 @@ const ChatStack = () => {
     >
       <Stack.Screen name="Chat" component={Chat} />
       <Stack.Screen name="ChatDetail" component={ChatDetail} />
-      <Stack.Screen name="ChatInfo" component={ChatInfoScreen} />
+      <Stack.Screen name="ChatInfoScreen" component={ChatInfoScreen} />
     </Stack.Navigator>
   );
 };
