@@ -10,6 +10,7 @@ import React from 'react';
 import { Image, Platform } from 'react-native';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import { useTestLogin } from './hooks/useTestLogin';
+import { useKakaoLogin } from '@screens/Login/screens/LoginHome/hooks/useKakaoLogin';
 
 const LoginHome = () => {
   useScreenLogger();
@@ -17,6 +18,7 @@ const LoginHome = () => {
   usePushNotifications();
   const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
+  const { handleKakaoLogin } = useKakaoLogin();
   const { handleTestLogin } = useTestLogin();
   const isDevelop = process.env.NODE_ENV === 'development' ? handleTestLogin : undefined;
 
@@ -30,7 +32,7 @@ const LoginHome = () => {
         SNS 간편 로그인
       </CustomText>
 
-      <S.LoginButton onPress={movePage('kakaoLogin')}>
+      <S.LoginButton onPress={handleKakaoLogin}>
         <Image style={{ width: 300, height: 45 }} source={buttons.kakaoLogin} />
       </S.LoginButton>
       {Platform.OS === 'ios' && (
