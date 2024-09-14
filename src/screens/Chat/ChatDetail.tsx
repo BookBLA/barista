@@ -69,14 +69,14 @@ const ChatDetail: React.FC = () => {
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
 
-      const dummyMessages = Array.from({ length: 1000 }, (_, index) => ({
-        id: (1000 - index).toString(),
-        sender: (1000 - index) % 3 === 0 ? 'partner' : 'user',
+      const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
+        id: (100 - index).toString(),
+        sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
         text:
-          (1000 - index) % 3 === 0
-            ? `파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지 ${1000 - index}`
-            : `사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지 ${1000 - index}`,
-        timestamp: new Date(Date.now() - (1000 - index) * 60000).toISOString(),
+          (100 - index) % 3 === 0
+            ? `파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지 ${100 - index}`
+            : `사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지 ${100 - index}`,
+        timestamp: new Date(Date.now() - (100 - index) * 60000).toISOString(),
       }));
 
       setMessages(dummyMessages);
