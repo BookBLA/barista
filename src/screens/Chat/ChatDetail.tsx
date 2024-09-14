@@ -157,7 +157,7 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleInfoPress = () => {
-    navigation.navigate('ChatInfo', { partner });
+    navigation.navigate('ChatInfoScreen', { partner });
   };
 
   const scrollToBottom = () => {
