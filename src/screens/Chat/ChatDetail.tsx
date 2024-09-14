@@ -1,4 +1,5 @@
 // ChatDetail.tsx
+
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -137,15 +138,16 @@ const ChatDetail: React.FC = () => {
           </S.DateSeparator>
         )}
         <S.MessageItem>
-          {item.sender === 'partner' && <S.MessageAvatar source={patner.avatar} />}
+          {item.sender === 'partner' && showAvatar && <S.MessageAvatar source={patner.avatar} />}
           <S.MessageContent sender={item.sender}>
-            {item.image && <S.BookCover source={item.image} />}
+            {item.sender === 'partner' && <S.MessageUsername>{patner.nickname}</S.MessageUsername>}
+            {/* TouchableOpacity와 S.Timestamp를 좌우로 정렬하기 위한 더미 뷰 */}
             <TouchableOpacity delayLongPress={500} onLongPress={() => handleLongPress(item.text)}>
               <S.MessageBubble sender={item.sender}>
                 <S.MessageText sender={item.sender}>{item.text}</S.MessageText>
               </S.MessageBubble>
             </TouchableOpacity>
-            <S.Timestamp>
+            <S.Timestamp sender={item.sender}>
               {new Date(item.timestamp).toLocaleTimeString([], {
                 hour: '2-digit',
                 minute: '2-digit',
@@ -204,7 +206,7 @@ const ChatDetail: React.FC = () => {
       <S.InputContainer>
         <S.TextInput placeholder="메시지 보내기" />
         <S.SendButton>
-          <S.SendButtonIcon name="arrow-right" />
+          <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
         </S.SendButton>
       </S.InputContainer>
 

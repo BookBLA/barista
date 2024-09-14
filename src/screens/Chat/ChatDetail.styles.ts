@@ -92,7 +92,7 @@ export const DateText = styled.Text`
 
 export const MessageItem = styled.View`
   flex-direction: row;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   padding-horizontal: 15px;
 `;
 
@@ -100,7 +100,7 @@ export const MessageAvatar = styled.Image`
   width: 30px;
   height: 30px;
   border-radius: 15px;
-  margin-right: 10px;
+  margin-right: 8px;
 `;
 
 export const MessageContent = styled.View<{ sender: 'user' | 'partner' }>`
@@ -108,23 +108,17 @@ export const MessageContent = styled.View<{ sender: 'user' | 'partner' }>`
   align-items: ${({ sender }) => (sender === 'user' ? 'flex-end' : 'flex-start')};
 `;
 
-export const BookCover = styled.Image`
-  width: 100px;
-  height: 150px;
-  border-radius: 10px;
-  margin-bottom: 10px;
-`;
-
-export const MessageBubbleContainer = styled.View<{ sender: 'user' | 'partner' }>`
-  align-items: ${({ sender }) => (sender === 'user' ? 'flex-end' : 'flex-start')};
-  flex-direction: ${({ sender }) => (sender === 'user' ? 'row-reverse' : 'row')};
+export const MessageUsername = styled.Text`
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 2px;
 `;
 
 export const MessageBubble = styled.View<{ sender: 'user' | 'partner' }>`
-  background-color: ${({ sender }) => (sender === 'user' ? '#007aff' : '#e6ffe6')};
+  background-color: ${({ sender }) => (sender === 'user' ? '#1D2E61' : '#f1f1f1')};
   padding: 10px;
-  border-radius: 15px;
-  max-width: 80%;
+  border-radius: 12px;
+  max-width: 75%;
 `;
 
 export const MessageText = styled.Text<{ sender: 'user' | 'partner' }>`
@@ -132,10 +126,10 @@ export const MessageText = styled.Text<{ sender: 'user' | 'partner' }>`
   color: ${({ sender }) => (sender === 'user' ? '#ffffff' : '#000000')};
 `;
 
-export const Timestamp = styled.Text`
+export const Timestamp = styled.Text<{ sender: 'user' | 'partner' }>`
   font-size: 10px;
-  color: #666666;
-  margin-top: 5px;
+  color: #999999;
+  ${({ sender }) => (sender === 'user' ? 'margin-left: 8px' : 'margin-right: 8px')};
 `;
 
 export const LoadingIndicator = styled.ActivityIndicator`
@@ -175,7 +169,6 @@ export const TextInput = styled.TextInput`
 `;
 
 export const SendButton = styled.TouchableOpacity`
-  background-color: #007aff;
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -183,13 +176,15 @@ export const SendButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const SendButtonIcon = styled(Icon)`
-  color: #ffffff;
-  font-size: 20px;
+// img로 대체
+export const SendButtonIcon = styled.Image`
+  width: 20px;
+  height: 20px;
 `;
 
 export const styles = {
   backButton: {
-    padding: 10,
+    padding: 5,
+    marginRight: 10,
   },
 };
