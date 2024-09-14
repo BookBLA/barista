@@ -88,7 +88,6 @@ const ChatDetail: React.FC = () => {
         text: (1000 - index) % 3 === 0 ? `파트너의 메시지 ${1000 - index}` : `사용자의 메시지 ${1000 - index}`,
         timestamp: new Date(Date.now() - (1000 - index) * 60000).toISOString(),
       }));
-      const totalMessages = dummyMessages.length;
 
       setMessages(dummyMessages);
       setDisplayedMessages(dummyMessages.slice(0, 100));
@@ -102,7 +101,7 @@ const ChatDetail: React.FC = () => {
 
   useEffect(() => {
     const listener = scrollY.addListener(({ value }) => {
-      setShowScrollButton(value > 100);
+      setShowScrollButton(value > 3000);
     });
     return () => scrollY.removeListener(listener);
   }, []);
@@ -228,7 +227,7 @@ const ChatDetail: React.FC = () => {
 
       {showScrollButton && (
         <TouchableOpacity style={styles.scrollToBottomButton} onPress={scrollToBottom}>
-          <Icon name="chevron-down" size={24} color="#ffffff" />
+          <Icon name="chevron-down" size={24} color="#1D2E61" />
         </TouchableOpacity>
       )}
 
