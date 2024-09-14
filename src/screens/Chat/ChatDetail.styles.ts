@@ -210,7 +210,6 @@ export const sendButton = styled.TouchableOpacity`
 export const sendButtonIcon = styled.Image`
   width: 24px;
   height: 24px;
-  tint-color: #ffffff;
 `;
 
 export const backButton = styled.TouchableOpacity`
