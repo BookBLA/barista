@@ -30,7 +30,7 @@ export const deleteMemberApi = () => Delete<MemberDeleteResponse>('members');
 export const getMemberAllOtherMembersApi = (params: object) => Get<any>(`members/all-other-members/?size=10`, params);
 
 // DEPRECATED: 이 API 엔드포인트는 곧 사라질 예정입니다.
-export const getMemberPostcardsApi = () => Get<any>(`postcard`);
+export const getMemberPostcardsApi = () => Get<any>(`members/bookmarks`);
 
 export const getMemberStatusesApi = () => Get<MemberStatusResponse>('members/statuses');
 
