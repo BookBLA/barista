@@ -1,28 +1,14 @@
-// ChatDetail.tsx
-
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  ActivityIndicator,
-  Animated,
-  FlatList,
-  Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Animated, FlatList } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequestModal';
-import styles from './ChatDetail.styles';
+import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
 const partner = {
@@ -47,8 +33,6 @@ const ChatDetail: React.FC = () => {
   const showToast = useToastStore((state) => state.showToast);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [contentVerticalOffset, setContentVerticalOffset] = useState(0);
-
   const scrollY = useRef(new Animated.Value(0)).current;
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -72,7 +56,8 @@ const ChatDetail: React.FC = () => {
       const response = await fetchChatMessages(user.id);
       if (response.isSuccess && Array.isArray(response.result)) {
         const sortedMessages = response.result.sort(
-          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          (a: { timestamp: string | number | Date }, b: { timestamp: string | number | Date }) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         );
         setMessages(sortedMessages);
         setDisplayedMessages(sortedMessages.slice(0, 100));
@@ -104,7 +89,7 @@ const ChatDetail: React.FC = () => {
       setShowScrollButton(value > 3000);
     });
     return () => scrollY.removeListener(listener);
-  }, []);
+  }, [scrollY]);
 
   const loadMoreMessages = () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
@@ -118,71 +103,53 @@ const ChatDetail: React.FC = () => {
     setLoadingMore(false);
   };
 
-  const handleLongPress = async (text: string) => {
-    await Clipboard.setStringAsync(text);
-    showToast({
-      content: '클립보드에 복사되었습니다.',
-    });
-  };
-
-  const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    setContentVerticalOffset(event.nativeEvent.contentOffset.y);
-  };
-
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
+    const isUserMessage = item.sender === 'user';
+
     const showAvatar =
       index === 0 ||
       displayedMessages[index - 1].sender !== item.sender ||
       new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate();
-    const showDate =
-      index === 0 || new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate();
-
-    // 제일 오래된 메시지인지이며, 첫 메시지인지 여부
-    const isFirstMessage = index === displayedMessages.length - 1 && index === messages.length - 1;
 
     return (
-      <View>
-        {isFirstMessage && (
-          <View style={styles.profileSection}>
-            <Image source={partner.avatar} style={styles.profileAvatar} />
-            <View style={styles.profileInfo}>
-              <Text style={styles.profileSchool}>{partner.school}</Text>
-              <Text
-                style={styles.profileDetails}
-              >{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</Text>
-              <TouchableOpacity style={styles.libraryButton}>
-                <Text style={styles.libraryButtonText}>서재 구경하기</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
-        {showDate && (
-          <View style={styles.dateSeparator}>
-            <Text style={styles.dateText}>{new Date(item.timestamp).toLocaleDateString()}</Text>
-          </View>
-        )}
-        <View style={styles.messageItem}>
-          {item.sender === 'partner' && showAvatar && <Image source={partner.avatar} style={styles.messageAvatar} />}
-          <View style={[styles.messageContent, { alignItems: item.sender === 'user' ? 'flex-end' : 'flex-start' }]}>
-            {item.sender === 'partner' && <Text style={styles.messageUsername}>{partner.nickname}</Text>}
-            <TouchableOpacity delayLongPress={500} onLongPress={() => handleLongPress(item.text)}>
-              <View style={[styles.messageBubble, { backgroundColor: item.sender === 'user' ? '#1D2E61' : '#f1f1f1' }]}>
-                <Text style={[styles.messageText, { color: item.sender === 'user' ? '#ffffff' : '#000000' }]}>
-                  {item.text}
-                </Text>
-              </View>
-            </TouchableOpacity>
-            <Text
-              style={[
-                styles.timestamp,
-                { marginLeft: item.sender === 'user' ? 8 : 0, marginRight: item.sender === 'partner' ? 8 : 0 },
-              ]}
-            >
-              {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-            </Text>
-          </View>
-        </View>
-      </View>
+      <S.messageItem>
+        {index === 0 ||
+        new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
+          <S.dateSeparator>
+            <S.dateText>
+              {new Date(item.timestamp).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </S.dateText>
+          </S.dateSeparator>
+        ) : null}
+        <S.messageItemInner isUserMessage={isUserMessage}>
+          {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
+          <S.messageContent isUserMessage={isUserMessage}>
+            {!isUserMessage && <S.messageUsername>{partner.nickname}</S.messageUsername>}
+            <S.messageRow isUserMessage={isUserMessage}>
+              {/* 읽음 표시 */}
+              {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
+              {isUserMessage && (
+                <S.timestamp isUserMessage={isUserMessage}>
+                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </S.timestamp>
+              )}
+              <S.messageBubble isUserMessage={isUserMessage}>
+                <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
+              </S.messageBubble>
+              {!isUserMessage && (
+                <S.timestamp isUserMessage={isUserMessage}>
+                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </S.timestamp>
+              )}
+              {!isUserMessage && <S.readReceipt source={require('@assets/images/icons/read.png')} />}
+            </S.messageRow>
+          </S.messageContent>
+        </S.messageItemInner>
+      </S.messageItem>
     );
   };
 
@@ -195,17 +162,17 @@ const ChatDetail: React.FC = () => {
   };
 
   return (
-    <View style={styles.wrapper}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backButton}>
+    <S.wrapper>
+      <S.header>
+        <S.backButton onPress={() => navigation.goBack()}>
           <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
-        <View style={styles.headerTitle}>
-          <Image source={partner.avatar} style={styles.smallAvatar} />
-          <Text style={styles.headerText}>{partner.nickname}</Text>
-        </View>
+        </S.backButton>
+        <S.headerTitle>
+          <S.smallAvatar source={partner.avatar} />
+          <S.headerText>{partner.nickname}</S.headerText>
+        </S.headerTitle>
         <InfoButton onPress={handleInfoPress} />
-      </View>
+      </S.header>
 
       <FlatList
         ref={flatListRef}
@@ -215,7 +182,7 @@ const ChatDetail: React.FC = () => {
         contentContainerStyle={{ paddingVertical: 10 }}
         onEndReached={loadMoreMessages}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={loadingMore ? <ActivityIndicator style={styles.loadingIndicator} /> : null}
+        ListFooterComponent={loadingMore ? <S.loadingIndicator /> : null}
         inverted
         initialNumToRender={20}
         maxToRenderPerBatch={20}
@@ -226,17 +193,17 @@ const ChatDetail: React.FC = () => {
       />
 
       {showScrollButton && (
-        <TouchableOpacity style={styles.scrollToBottomButton} onPress={scrollToBottom}>
+        <S.scrollToBottomButton onPress={scrollToBottom}>
           <Icon name="chevron-down" size={24} color="#1D2E61" />
-        </TouchableOpacity>
+        </S.scrollToBottomButton>
       )}
 
-      <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} placeholder="메시지 보내기" />
-        <TouchableOpacity style={styles.sendButton}>
-          <Image source={require('@assets/images/icons/SendMessage.png')} style={styles.sendButtonIcon} />
-        </TouchableOpacity>
-      </View>
+      <S.inputContainer>
+        <S.textInput placeholder="메시지 보내기" />
+        <S.sendButton>
+          <S.sendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
+        </S.sendButton>
+      </S.inputContainer>
 
       <ChatRequestModal
         visible={isModalVisible}
@@ -244,7 +211,7 @@ const ChatDetail: React.FC = () => {
         onDecline={handleDecline}
         onReport={handleReport}
       />
-    </View>
+    </S.wrapper>
   );
 };
 
