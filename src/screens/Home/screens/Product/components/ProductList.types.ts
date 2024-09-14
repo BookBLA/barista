@@ -1,6 +1,7 @@
 export interface ProductProps {
-  props: ProductListContentProps;
+  props: ProductContentProps;
   index: number;
+  admobCount?: number;
 }
 
 export interface ProductListContentProps {
@@ -9,4 +10,15 @@ export interface ProductListContentProps {
   originalPrice?: string;
   discount?: string;
   buttonAction: () => void;
+}
+
+export interface ProductContentProps {
+  title: string;
+  productId: string;
+  price?: string;
+  localizedPrice?: string;
+  discount?: string;
+  originalPrice?: string;
+  krwPrice?: string;
+  buttonAction?: () => void;
 }
