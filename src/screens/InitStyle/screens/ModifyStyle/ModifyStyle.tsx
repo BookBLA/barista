@@ -5,16 +5,18 @@ import ModifyMBTI from '@commons/components/Specific/ModifyMBTI/ModifyMBTI';
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
 import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import * as T from '@screens/InitStyle/InitStyle.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -24,17 +26,12 @@ const buttonList = ['닉네임', 'MBTI', '흡연 여부', '키'];
 const ModifyStyle = () => {
   useScreenLogger();
   const { handleLimitTextLine } = useLimitTextLine();
-  const [mbti, setMbti] = useState(['', '', '', '']);
+  const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
   const { updateUserInfo, userInfo } = useUserStore();
   const { updateStyleInfo, styleInfo, updateStyleInfoGroup } = useStyleStore();
   const showToast = useToastStore((state) => state.showToast);
+  const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
 
-  const scrollViewRef = useRef(null); // Create a ref for KeyboardAwareScrollView
-  const handleMoveTop = () => {
-    if (scrollViewRef.current) {
-      (scrollViewRef.current as ScrollView).scrollTo({ x: 0, y: 0, animated: true });
-    }
-  };
   const handleMovePosition = (sectionIndex: number) => {
     let yOffset = 0;
 
@@ -77,7 +74,7 @@ const ModifyStyle = () => {
         smokeType: response.result.smokeType,
         height: response.result.height,
       });
-      const newMbti = response.result.mbti.split(''); // Split the mbti string into an array
+      const newMbti = response?.result?.mbti?.split('') ?? ['E', 'S', 'T', 'J']; // Split the mbti string into an array
       setMbti([...newMbti]); // Update the mbti array with the newMbti array
     } catch (error) {
       console.log('ERROR) getMemberStyleApi', error);
@@ -109,6 +106,7 @@ const ModifyStyle = () => {
       });
       updateStyleInfo('mbti', mbti.join(''));
     } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
       console.log('ERROR) putMyInfoApi', error);
       showToast({
         content: error.response.data.message,
@@ -132,7 +130,7 @@ const ModifyStyle = () => {
     <S.Wrapper>
       <ModifyTitleBar step={0} callPutApi={callPutMyInfoApi} />
       <View style={{ position: 'absolute', bottom: 30, right: 10, zIndex: 2 }}>
-        <TouchableOpacity onPress={handleMoveTop}>
+        <TouchableOpacity onPress={() => handleMoveTop}>
           <Image source={MoveTop} style={{ width: 45, height: 45 }} />
         </TouchableOpacity>
       </View>
