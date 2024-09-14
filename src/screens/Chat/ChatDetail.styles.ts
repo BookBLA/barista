@@ -14,6 +14,49 @@ export const header = styled.View`
   border-bottom-color: #e0e0e0;
 `;
 
+export const ProfileSection = styled.View`
+  align-items: center;
+  padding: 20px 0;
+  border-bottom-width: 1px;
+  border-bottom-color: #e0e0e0;
+`;
+
+export const ProfileAvatar = styled.Image`
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
+  margin-bottom: 10px;
+`;
+
+export const ProfileInfo = styled.View`
+  align-items: center;
+`;
+
+export const ProfileSchool = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+`;
+
+export const ProfileDetails = styled.Text`
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+`;
+
+export const LibraryButton = styled.TouchableOpacity`
+  background-color: #f0f0f0;
+  padding: 10px 20px;
+  border-radius: 20px;
+  align-items: center;
+`;
+
+export const LibraryButtonText = styled.Text`
+  font-size: 14px;
+  color: #007aff;
+`;
+
 export const headerTitle = styled.View`
   flex: 1;
   align-items: center;

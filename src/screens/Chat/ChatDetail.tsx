@@ -109,8 +109,8 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
+    const isFirstMessage = index === 0;
     const isUserMessage = item.sender === 'user';
-
     const showAvatar =
       index === 0 ||
       displayedMessages[index - 1].sender !== item.sender ||
@@ -121,6 +121,19 @@ const ChatDetail: React.FC = () => {
         {index === 0 ||
         new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
           <S.dateSeparator>
+            {isFirstMessage && (
+              <S.ProfileSection>
+                <S.ProfileAvatar source={partner.avatar} />
+                <S.ProfileInfo>
+                  <S.ProfileSchool>{partner.school}</S.ProfileSchool>
+                  <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                  <S.LibraryButton>
+                    <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+                  </S.LibraryButton>
+                </S.ProfileInfo>
+              </S.ProfileSection>
+            )}
+
             <S.dateText>
               {new Date(item.timestamp).toLocaleDateString('ko-KR', {
                 year: 'numeric',
