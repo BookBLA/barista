@@ -11,9 +11,12 @@ export const fetchChatList = async () => {
   }
 };
 
-export const fetchChatMessages = async (userId: string) => {
+export const fetchChatMessages = async (userId: string, page: number, size: number) => {
   try {
-    const response = await axios.get(`/api/chat/messages/${userId}`);
+    const response = await axios.get(`/api/chat?roomId=${userId}&page=${page}&size=${size}`);
+
+    console.log('response.data:', response.data);
+
     return response.data;
   } catch (error) {
     console.error('Error fetching chat messages:', error);
