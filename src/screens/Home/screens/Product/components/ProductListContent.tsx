@@ -1,29 +1,60 @@
-import { View, Image } from 'react-native';
-import { CustomText } from '../../../../../commons/components/TextComponents/CustomText/CustomText.styles';
-import { ProductProps } from './ProductList.types';
-import { CustomButton } from '../../../../../commons/components/CustomButton/CustomButton';
+import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { useEffect } from 'react';
+import { Image, View } from 'react-native';
+import { ProductPurchase, requestPurchase, useIAP } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
+import { CustomGradientButton } from '../../../../../commons/components/Inputs/CustomGradientButton/CustomGradientButton';
 import { colors } from '../../../../../commons/styles/variablesStyles';
-import { LinearGradient } from 'expo-linear-gradient';
-import { CustomGradientButton } from '../../../../../commons/components/CustomGradientButton/CustomGradientButton';
+import { ProductProps } from './ProductList.types';
 
-const adCount = 1;
+const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
+  const { title, krwPrice, localizedPrice, discount, originalPrice, productId } = props;
+  const { products, getProducts, finishTransaction, currentPurchase } = useIAP();
 
-const ProductListContent: React.FC<ProductProps> = ({ props, index }) => {
-  const { product, price, originalPrice, discount, buttonAction } = props;
+  const buy = async (sku: string) => {
+    try {
+      const result = await requestPurchase({
+        sku,
+        andDangerouslyFinishTransactionAutomaticallyIOS: false, // requestPurchase 호출 후 자동으로 finishTransaction을 호출할지 여부
+      });
+    } catch (err) {
+      console.error('Purchase failed:', err.code, err.message);
+    }
+  };
+  useEffect(() => {
+    const checkCurrentPurchase = async (purchase: ProductPurchase): Promise<void> => {
+      if (purchase) {
+        try {
+          console.log(JSON.stringify(purchase, null, 2));
+          const ackResult = await finishTransaction({ purchase });
+          // andDangerouslyFinishTransactionAutomaticallyIOS 값이 false이기 때문에,
+          // requestPurchase 호출 후 finishTransaction을 수동으로 호출해야만 결제가 완료된다.
+          console.log(JSON.stringify(ackResult, null, 2));
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    };
+
+    if (currentPurchase) {
+      checkCurrentPurchase(currentPurchase);
+    }
+  }, [currentPurchase, finishTransaction]);
 
   return (
     <View
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: 'white',
+        backgroundColor: index === 0 && admobCount === 0 ? 'transparent' : 'white',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         borderRadius: 9,
         borderColor: index === 0 ? 'transparent' : 'rgba(0, 0, 0, 0.05)',
         borderWidth: 1,
+        opacity: index === 0 && admobCount === 0 ? 0.4 : 1,
       }}
     >
       <View
@@ -39,11 +70,11 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index }) => {
           style={{
             width: '70%',
             height: '80%',
-            justifyContent: price ? 'space-between' : 'center',
+            justifyContent: krwPrice ? 'space-between' : 'center',
           }}
         >
           <CustomText size="16" font="fontMedium">
-            {product}
+            {title}
           </CustomText>
           <View>
             {originalPrice && (
@@ -62,9 +93,9 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index }) => {
                   {discount}
                 </CustomText>
               )}
-              {price && (
+              {krwPrice && (
                 <CustomText size="12" font="fontRegular">
-                  {price}
+                  {krwPrice}
                 </CustomText>
               )}
             </View>
@@ -72,9 +103,13 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index }) => {
         </View>
       </View>
       {index === 0 ? (
-        <CustomGradientButton contents={`무료 ${adCount}/2`} onPress={buttonAction} />
+        admobCount > 0 ? (
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => console.log('애드몹시청')} />
+        ) : (
+          <CustomButton contents={'무료 0/2'} disabled />
+        )
       ) : (
-        <CustomButton contents={'구매하기'} onPress={buttonAction} />
+        <CustomButton contents={'구매하기'} onPress={() => buy(productId)} />
       )}
     </View>
   );
