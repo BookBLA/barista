@@ -8,6 +8,9 @@ export type TLibrary = {
   openKakaoRoomStatus: string;
   profileImageStatus: string;
   bookResponses: [TBookResponses];
+  smokeType?: string;
+  mbti?: string;
+  height: number;
 };
 
 export type TYourLibrary = {

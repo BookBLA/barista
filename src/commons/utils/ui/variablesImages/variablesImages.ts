@@ -95,6 +95,9 @@ export const icons = {
   radiobuttonDefault: require('@assets/images/icons/radiobutton_default.png'),
   radiobuttonSelected: require('@assets/images/icons/radiobutton_selected.png'),
   radiobuttonCorrect: require('@assets/images/icons/radiobutton_correct.png'),
+
+  inviteCoin: require('@assets/images/icons/InviteCoin.png'),
+  update: require('@assets/images/icons/Update.png'),
 };
 
 export const img = {

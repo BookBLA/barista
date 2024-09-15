@@ -13,9 +13,6 @@ const useGetPushToken = () => {
 
     if (existingStatus !== 'granted') {
       const { status } = await Notifications.requestPermissionsAsync();
-      showToast({
-        content: `status: ${status}`,
-      });
       finalStatus = status;
     }
 
@@ -32,11 +29,14 @@ const useGetPushToken = () => {
           projectId,
         });
         pushToken = token.data;
-      } catch (err) {
+      } catch {
         showToast({
           content: `푸시토큰 발급에 실패하였습니다.`,
         });
+        return;
       }
+    } else {
+      return;
     }
     if (Platform.OS === 'android') {
       Notifications.setNotificationChannelAsync('default', {

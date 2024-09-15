@@ -4,13 +4,7 @@ import settingIcon from '@assets/images/icons/Setting.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
-import {
-  deleteBook,
-  getBookInfo,
-  getInvitationCode,
-  getMemberStyle,
-  validateSendPostcard,
-} from '@commons/api/postcard/library.api';
+import { deleteBook, getBookInfo, getInvitationCode, validateSendPostcard } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -37,13 +31,15 @@ import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/L
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { BookItemList, TBookResponses } from './Library.types';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
-import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import { TBookInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
@@ -86,7 +82,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfoList, setBookInfoList] = useState<TBookResponses[]>([]);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
-  const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
   const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
@@ -106,10 +101,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   //todo 내서재/상대방서재 스타일 정보 Api로 받아와서 추가하기
   const setMyLibraryInfo = useCallback(async () => {
     try {
-      // const memberStyle = await getMemberStyle(result.memberId);
       setBookInfoList(libraryInfo?.bookResponses ?? []);
-
-      // setMemberStyle(memberStyle);
 
       if (libraryInfo?.profileImageUrl) {
         if (libraryInfo.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
@@ -122,7 +114,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   const setYourLibraryInfo = useCallback(async () => {
     try {
-      // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
     } catch {
       console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
@@ -153,11 +144,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       const result = await getBookInfo(memberBookId);
       setBookInfo(result);
     }
-  };
-
-  const fetchTargetMemberStyle = async (targetMemberId: number) => {
-    const result = await getMemberStyle(targetMemberId);
-    setMemberStyle(result);
   };
 
   const handleModifyBookModalRef = useCallback((bookMemberId?: number) => {
@@ -355,7 +341,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   useHeaderControl(
     isYourLibrary
       ? {
-          title: '상대페이지',
+          title: '상대 페이지',
           left: true,
           onPressLeft: movePage(),
           right: {
@@ -364,7 +350,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           },
         }
       : {
-          title: '마이페이지',
+          title: '마이 페이지',
           left: false,
           right: {
             image: settingIcon,
@@ -372,6 +358,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               libraryInfo,
             }),
           },
+          backgroundColor: '#1D2E61',
         },
     isYourLibrary ? [] : [libraryInfo],
   );
@@ -411,259 +398,261 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
-      <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
-      <S.UserInfoContainerView>
-        {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
-        {/*  <S.UserModificationStatusBar>*/}
-        {/*    <CustomText size="14px" font="fontMedium" color="#F7F4ED">*/}
-        {/*      사진이 수정되어 승인 대기중입니다.*/}
-        {/*    </CustomText>*/}
-        {/*  </S.UserModificationStatusBar>*/}
-        {/*)}*/}
-        <S.UserInfoView>
-          <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
-            <S.CircularImage source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }} />
-            {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
-            {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
+    <SafeAreaView style={{ height: '100%' }}>
+      <StatusBar barStyle="light-content" backgroundColor="#1D2E61" />
+      <LinearGradient colors={['#1D2E61', '#5B6CA8']}>
+        <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
+        <S.UserInfoContainerView>
+          <S.UserInfoView>
+            {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
+            <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
+              <S.CircularImage
+                source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
+              />
+              {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
+              {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
+            </TouchableOpacity>
+
+            <S.UserInfoWrapper>
+              <S.UserInfoNameWrapper>
+                <S.UserNameText>
+                  {libraryInfo?.name} | {libraryInfo?.age}
+                  <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
+                </S.UserNameText>
+
+                {!isYourLibrary && (
+                  <S.InviteFriendButtonWrapper>
+                    <TouchableOpacity onPress={toggleInviteFriendModal}>
+                      <S.InviteFriendButtonImage source={icons.inviteFriend} />
+                    </TouchableOpacity>
+                  </S.InviteFriendButtonWrapper>
+                )}
+              </S.UserInfoNameWrapper>
+
+              <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
+
+              {/*//todo 추후 멤버 스타일 api 연동*/}
+              <S.MemberStyleList>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size={'12px'}>
+                    {libraryInfo?.smokeType}
+                  </CustomText>
+                </S.MemberStyleView>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size={'12px'}>
+                    {libraryInfo?.mbti}
+                  </CustomText>
+                </S.MemberStyleView>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size={'12px'}>
+                    {libraryInfo?.height}cm
+                  </CustomText>
+                </S.MemberStyleView>
+              </S.MemberStyleList>
+            </S.UserInfoWrapper>
+          </S.UserInfoView>
+        </S.UserInfoContainerView>
+        <S.BookListContainerView>
+          {isYourLibrary ? (
+            <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+              책을 눌러 상대방의 마음을 알아보세요.
+            </CustomText>
+          ) : (
+            <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+              책을 누르면 좋아하는 이유와 독서퀴즈를 수정할 수 있습니다.
+            </CustomText>
+          )}
+
+          <S.BookContainer>
+            <FlatList
+              data={bookRows}
+              renderItem={renderRow}
+              keyExtractor={(_, index) => `row-${index}`}
+              showsVerticalScrollIndicator
+              alwaysBounceVertical={false}
+              ListFooterComponent={<View style={{ height: 140 }} />}
+              overScrollMode="never"
+            />
+          </S.BookContainer>
+        </S.BookListContainerView>
+        {!isYourLibrary && (
+          <TouchableOpacity
+            style={S.styles.AddBookButton}
+            onPress={movePage('searchBook', { isRepresentative: false })}
+          >
+            <S.AddBookButton source={icons.addBook} />
           </TouchableOpacity>
-
-          <S.UserInfoWrapper>
-            <S.UserInfoNameWrapper>
-              <S.UserNameText>
-                {libraryInfo?.name} | {libraryInfo?.age}
-                <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
-              </S.UserNameText>
-
-              {!isYourLibrary && (
-                <S.InviteFriendButtonWrapper>
-                  <TouchableOpacity onPress={toggleInviteFriendModal}>
-                    <S.InviteFriendButtonImage source={icons.inviteFriend} />
-                  </TouchableOpacity>
-                </S.InviteFriendButtonWrapper>
-              )}
-            </S.UserInfoNameWrapper>
-
-            <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
-
-            {/*//todo 추후 멤버 스타일 api 연동*/}
-            <S.MemberStyleList>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  비흡연자
-                </CustomText>
-              </S.MemberStyleView>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  ENEJ
-                </CustomText>
-              </S.MemberStyleView>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  176cm
-                </CustomText>
-              </S.MemberStyleView>
-            </S.MemberStyleList>
-          </S.UserInfoWrapper>
-        </S.UserInfoView>
-      </S.UserInfoContainerView>
-      <S.BookListContainerView>
-        {isYourLibrary ? (
-          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-            책을 눌러 상대방의 마음을 알아보세요.
-          </CustomText>
-        ) : (
-          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-            책을 누르면 좋아하는 이유와 독서퀴즈를 수정할 수 있습니다.
-          </CustomText>
         )}
-
-        <S.BookContainer>
-          <FlatList
-            data={bookRows}
-            renderItem={renderRow}
-            keyExtractor={(_, index) => `row-${index}`}
-            showsVerticalScrollIndicator
-            alwaysBounceVertical={false}
-            ListFooterComponent={<View style={{ height: 140 }} />}
-            overScrollMode="never"
-          />
-        </S.BookContainer>
-      </S.BookListContainerView>
-      {!isYourLibrary && (
-        <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook', { isRepresentative: false })}>
-          <S.AddBookButton source={icons.addBook} />
-        </TouchableOpacity>
-      )}
-      <CustomBottomSheetModal
-        ref={modifyBookModalRef}
-        index={5}
-        snapPoints={snapPoints}
-        enableContentPanningGesture={false}
-      >
-        <S.BookModificationBottomSheetContainer>
-          <MyBookInfoModify
-            memberId={memberInfo.id!}
-            memberBookId={selectedBookId}
-            showDeleteBookModalFunc={showDeleteBookModal}
-          />
-        </S.BookModificationBottomSheetContainer>
-      </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
-        <S.ProfileImageBottomSheetContainer>
-          <S.ProfileImageModificationButton onPress={openImagePickerAsync}>
-            <CustomText size="16px" font="fontRegular">
-              앨범에서 사진 선택
-            </CustomText>
-          </S.ProfileImageModificationButton>
-        </S.ProfileImageBottomSheetContainer>
-      </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={reportBlockBottomSheet.bottomRef} index={0} snapPoints={reportBlockSnapPoints}>
-        <S.ProfileImageBottomSheetContainer>
-          <S.ProfileImageModificationButton onPress={handleReportClose} style={{ marginBottom: 13 }}>
-            <CustomText size="16px" font="fontRegular">
-              신고하기
-            </CustomText>
-          </S.ProfileImageModificationButton>
-          <S.ProfileImageModificationButton onPress={toggle}>
-            <CustomText size="16px" font="fontRegular">
-              차단하기
-            </CustomText>
-          </S.ProfileImageModificationButton>
-        </S.ProfileImageBottomSheetContainer>
-      </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
-        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
-      </CustomBottomSheetModal>
-      <CustomBottomSheetModal ref={viewBookInfoModalRef} index={3} snapPoints={snapPoints}>
-        <S.BookModificationBottomSheetContainer>
-          <ViewBookInfo
-            bookName={bookInfo?.title}
-            bookAuthors={bookInfo?.authors}
-            bookImageUrl={bookInfo?.imageUrl ?? img.prepareBookImage}
-            bookReview={bookInfo?.review}
-          />
-        </S.BookModificationBottomSheetContainer>
-      </CustomBottomSheetModal>
-      <CustomModal modalConfig={resendPostcardModalConfig}>
-        <S.EmptyPostcardModalWrapper>
-          <S.EmptyPostcardModalHeader>
-            <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-              엽서 다시 보내기
-            </CustomText>
-            <CustomText font="fontRegular" size="12px">
-              이전에 매칭을 거부한 상대입니다. 그래도 보내시겠어요?
-            </CustomText>
-          </S.EmptyPostcardModalHeader>
-          <S.ModalBottomWrapper>
-            <S.RoundButton onPress={toggleResendPostcardModal} bgColor={colors.buttonMain}>
-              <CustomText size="14px" color={colors.textBlack}>
-                아니요
+        <CustomBottomSheetModal
+          ref={modifyBookModalRef}
+          index={5}
+          snapPoints={snapPoints}
+          enableContentPanningGesture={false}
+        >
+          <S.BookModificationBottomSheetContainer>
+            <MyBookInfoModify
+              memberId={memberInfo.id!}
+              memberBookId={selectedBookId}
+              showDeleteBookModalFunc={showDeleteBookModal}
+            />
+          </S.BookModificationBottomSheetContainer>
+        </CustomBottomSheetModal>
+        <CustomBottomSheetModal ref={bottomRef} index={0} snapPoints={snapPoints}>
+          <S.ProfileImageBottomSheetContainer>
+            <S.ProfileImageModificationButton onPress={openImagePickerAsync}>
+              <CustomText size="16px" font="fontRegular">
+                앨범에서 사진 선택
               </CustomText>
-            </S.RoundButton>
-            <S.RoundButton onPress={handleOpenPostcardModal} bgColor={colors.buttonPrimary}>
-              <CustomText size="14px" color={colors.textYellow}>
-                네
+            </S.ProfileImageModificationButton>
+          </S.ProfileImageBottomSheetContainer>
+        </CustomBottomSheetModal>
+        <CustomBottomSheetModal ref={reportBlockBottomSheet.bottomRef} index={0} snapPoints={reportBlockSnapPoints}>
+          <S.ProfileImageBottomSheetContainer>
+            <S.ProfileImageModificationButton onPress={handleReportClose} style={{ marginBottom: 13 }}>
+              <CustomText size="16px" font="fontRegular">
+                신고하기
               </CustomText>
-            </S.RoundButton>
-          </S.ModalBottomWrapper>
-        </S.EmptyPostcardModalWrapper>
-      </CustomModal>
-      <CustomModal modalConfig={sendPostcardModalConfig}>
-        <SendPostcardModal
-          isVisible={isSendPostcardModalVisible}
-          targetMemberId={targetMemberId}
-          memberBookIdList={libraryInfo?.bookResponses?.map((bookResponse) => bookResponse.memberBookId) || []}
-          onClose={toggleSendPostcardModal}
+            </S.ProfileImageModificationButton>
+            <S.ProfileImageModificationButton onPress={toggle}>
+              <CustomText size="16px" font="fontRegular">
+                차단하기
+              </CustomText>
+            </S.ProfileImageModificationButton>
+          </S.ProfileImageBottomSheetContainer>
+        </CustomBottomSheetModal>
+        <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
+          <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
+        </CustomBottomSheetModal>
+        <CustomBottomSheetModal ref={viewBookInfoModalRef} index={3} snapPoints={snapPoints}>
+          <S.BookModificationBottomSheetContainer>
+            <ViewBookInfo
+              bookName={bookInfo?.title}
+              bookAuthors={bookInfo?.authors}
+              bookImageUrl={bookInfo?.imageUrl ?? img.prepareBookImage}
+              bookReview={bookInfo?.review}
+            />
+          </S.BookModificationBottomSheetContainer>
+        </CustomBottomSheetModal>
+        <CustomModal modalConfig={resendPostcardModalConfig}>
+          <S.EmptyPostcardModalWrapper>
+            <S.EmptyPostcardModalHeader>
+              <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+                엽서 다시 보내기
+              </CustomText>
+              <CustomText font="fontRegular" size="12px">
+                이전에 매칭을 거부한 상대입니다. 그래도 보내시겠어요?
+              </CustomText>
+            </S.EmptyPostcardModalHeader>
+            <S.ModalBottomWrapper>
+              <S.RoundButton onPress={toggleResendPostcardModal} bgColor={colors.buttonMain}>
+                <CustomText size="14px" color={colors.textBlack}>
+                  아니요
+                </CustomText>
+              </S.RoundButton>
+              <S.RoundButton onPress={handleOpenPostcardModal} bgColor={colors.buttonPrimary}>
+                <CustomText size="14px" color={colors.textYellow}>
+                  네
+                </CustomText>
+              </S.RoundButton>
+            </S.ModalBottomWrapper>
+          </S.EmptyPostcardModalWrapper>
+        </CustomModal>
+        <CustomModal modalConfig={sendPostcardModalConfig}>
+          <SendPostcardModal
+            isVisible={isSendPostcardModalVisible}
+            targetMemberId={targetMemberId}
+            memberBookIdList={libraryInfo?.bookResponses?.map((bookResponse) => bookResponse.memberBookId) || []}
+            onClose={toggleSendPostcardModal}
+          />
+        </CustomModal>
+        <CustomModal modalConfig={emptyPostcardModalConfig}>
+          <S.EmptyPostcardModalWrapper>
+            <S.EmptyPostcardModalHeader>
+              <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
+                엽서가 부족합니다.
+              </CustomText>
+              <CustomText font="fontRegular" size="12px">
+                엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
+              </CustomText>
+            </S.EmptyPostcardModalHeader>
+            <S.ModalBottomWrapper>
+              <S.RoundButton onPress={toggleEmptyPostcardModal} bgColor={colors.buttonMain}>
+                <CustomText size="14px" color={colors.textBlack}>
+                  아니요
+                </CustomText>
+              </S.RoundButton>
+              <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
+                <CustomText size="14px" color={colors.textYellow}>
+                  충전시간 확인하기
+                </CustomText>
+              </S.RoundButton>
+            </S.ModalBottomWrapper>
+          </S.EmptyPostcardModalWrapper>
+        </CustomModal>
+        <CustomModal
+          modalConfig={{
+            visible: isOpen,
+            onClose: toggle,
+            mode: 'round',
+            contents: <BlockModalContent />,
+            buttons: [
+              { label: '아니오', action: toggle, bgColor: colors.buttonMain, color: 'black' },
+              { label: '차단하기', action: handleBlockClick },
+            ],
+          }}
         />
-      </CustomModal>
-      <CustomModal modalConfig={emptyPostcardModalConfig}>
-        <S.EmptyPostcardModalWrapper>
-          <S.EmptyPostcardModalHeader>
-            <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
-              엽서가 부족합니다.
-            </CustomText>
-            <CustomText font="fontRegular" size="12px">
-              엽서가 부족합니다. 다음 충전 시간을 확인해 보세요.
-            </CustomText>
-          </S.EmptyPostcardModalHeader>
-          <S.ModalBottomWrapper>
-            <S.RoundButton onPress={toggleEmptyPostcardModal} bgColor={colors.buttonMain}>
-              <CustomText size="14px" color={colors.textBlack}>
-                아니요
+        <CustomModal modalConfig={inviteFriendModalConfig}>
+          <S.InviteFriendModalWrapper>
+            <S.InviteFriendModalHeader>
+              <CustomText font="fontSemiBold" size="18px">
+                친구를 초대하고
               </CustomText>
-            </S.RoundButton>
-            <S.RoundButton onPress={moveProductScreen} bgColor={colors.buttonPrimary}>
-              <CustomText size="14px" color={colors.textYellow}>
-                충전시간 확인하기
+              <CustomText font="fontSemiBold" size="18px" style={{ marginBottom: 16 }}>
+                무료 책갈피를 받으세요!
               </CustomText>
-            </S.RoundButton>
-          </S.ModalBottomWrapper>
-        </S.EmptyPostcardModalWrapper>
-      </CustomModal>
-      <CustomModal
-        modalConfig={{
-          visible: isOpen,
-          onClose: toggle,
-          mode: 'round',
-          contents: <BlockModalContent />,
-          buttons: [
-            { label: '아니오', action: toggle, bgColor: colors.buttonMain, color: 'black' },
-            { label: '차단하기', action: handleBlockClick },
-          ],
-        }}
-      />
-      <CustomModal modalConfig={inviteFriendModalConfig}>
-        <S.InviteFriendModalWrapper>
-          <S.InviteFriendModalHeader>
-            <CustomText font="fontSemiBold" size="18px">
-              친구를 초대하고
-            </CustomText>
-            <CustomText font="fontSemiBold" size="18px" style={{ marginBottom: 16 }}>
-              무료 책갈피를 받으세요!
-            </CustomText>
-            <S.FriendInvitationCode>
-              <CustomText font="fontBold" size="32px" color="#1D2E61">
-                {invitationCode}
+              <S.FriendInvitationCode>
+                <CustomText font="fontBold" size="32px" color="#1D2E61">
+                  {invitationCode}
+                </CustomText>
+              </S.FriendInvitationCode>
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)" style={{ textAlign: 'center' }}>
+                  친구 초대하면 친구도 나도
+                  <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0)">
+                    {' '}
+                    책갈피
+                  </CustomText>{' '}
+                  지급!{'\n'}(여자 70개, 남자 35개)
+                </CustomText>
+              </View>
+            </S.InviteFriendModalHeader>
+            <S.CopyCodeButtonWrapper>
+              <S.CopyCodeButton onPress={copyToClipboard} bgColor={colors.buttonPrimary}>
+                <CustomText size="14px" color={colors.textWhite}>
+                  코드 복사하기
+                </CustomText>
+              </S.CopyCodeButton>
+            </S.CopyCodeButtonWrapper>
+            <TouchableOpacity onPress={toggleInviteFriendModal}>
+              <CustomText size="14px" color="rgba(0, 0, 0, 0.4)" style={{ textDecorationLine: 'underline' }}>
+                다음에 하기
               </CustomText>
-            </S.FriendInvitationCode>
-            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-              <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)" style={{ textAlign: 'center' }}>
-                친구 초대하면 친구도 나도
-                <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0)">
-                  {' '}
-                  책갈피
-                </CustomText>{' '}
-                지급!{'\n'}(여자 70개, 남자 35개)
-              </CustomText>
-            </View>
-          </S.InviteFriendModalHeader>
-          <S.CopyCodeButtonWrapper>
-            <S.CopyCodeButton onPress={copyToClipboard} bgColor={colors.buttonPrimary}>
-              <CustomText size="14px" color={colors.textWhite}>
-                코드 복사하기
-              </CustomText>
-            </S.CopyCodeButton>
-          </S.CopyCodeButtonWrapper>
-          <TouchableOpacity onPress={toggleInviteFriendModal}>
-            <CustomText size="14px" color="rgba(0, 0, 0, 0.4)" style={{ textDecorationLine: 'underline' }}>
-              다음에 하기
-            </CustomText>
-          </TouchableOpacity>
-        </S.InviteFriendModalWrapper>
-      </CustomModal>
-      <CustomModal
-        modalConfig={{
-          visible: isDeleteBookModalVisible,
-          onClose: toggleDeleteBookModal,
-          mode: 'round',
-          contents: <DeleteBookModalContent />,
-          buttons: [
-            { label: '삭제하기', action: processDeleteBook, bgColor: colors.buttonMain, color: 'black' },
-            { label: '취소', action: toggleDeleteBookModal },
-          ],
-        }}
-      ></CustomModal>
+            </TouchableOpacity>
+          </S.InviteFriendModalWrapper>
+        </CustomModal>
+        <CustomModal
+          modalConfig={{
+            visible: isDeleteBookModalVisible,
+            onClose: toggleDeleteBookModal,
+            mode: 'round',
+            contents: <DeleteBookModalContent />,
+            buttons: [
+              { label: '삭제하기', action: processDeleteBook, bgColor: colors.buttonMain, color: 'black' },
+              { label: '취소', action: toggleDeleteBookModal },
+            ],
+          }}
+        ></CustomModal>
+      </LinearGradient>
     </SafeAreaView>
   );
 };
