@@ -1,5 +1,3 @@
-// ChatDetail.tsx
-
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -8,7 +6,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
 import ReportModal from '@screens/Chat/modals/Report/ReportModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Animated, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
@@ -22,15 +20,13 @@ const ChatDetail: React.FC = () => {
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
-
   const showToast = useToastStore((state) => state.showToast);
-
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
   const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
   const [isReportModalVisible, setIsReportModalVisible] = useState(false);
-  const scrollY = useRef(new Animated.Value(0)).current;
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   const handleAccept = () => {
     setIsModalVisible(false);
@@ -57,7 +53,6 @@ const ChatDetail: React.FC = () => {
   };
 
   const submitReport = (selectedReasons: string[], otherReason: string) => {
-    console.log(selectedReasons, otherReason);
     closeReportModal();
     setIsReportSubmittedModalVisible(true); // 신고 완료 모달을 표시합니다.
   };
@@ -81,14 +76,12 @@ const ChatDetail: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-
       const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
         id: (100 - index).toString(),
         text: (100 - index) % 3 === 0 ? `파트너의 메시지 ${100 - index}` : `사용자의 메시지 ${100 - index}`,
         timestamp: new Date(Date.now() - (100 - index) * 60000).toISOString(),
         sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
       }));
-
       setMessages(dummyMessages);
       setDisplayedMessages(dummyMessages);
     }
@@ -108,7 +101,6 @@ const ChatDetail: React.FC = () => {
 
   useEffect(() => {
     navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
-
     return () => {
       navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
     };
@@ -116,12 +108,9 @@ const ChatDetail: React.FC = () => {
 
   const loadMoreMessages = () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
-
     setLoadingMore(true);
-
     const currentLength = displayedMessages.length;
     const additionalMessages = messages.slice(currentLength, currentLength + 100);
-
     setDisplayedMessages((prev) => [...prev, ...additionalMessages]);
     setLoadingMore(false);
   };
@@ -172,9 +161,11 @@ const ChatDetail: React.FC = () => {
                   {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                 </S.timestamp>
               )}
-              <S.messageBubble isUserMessage={isUserMessage} onLongPress={() => console.log('long press')}>
-                <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
-              </S.messageBubble>
+              <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
+                <S.messageBubble isUserMessage={isUserMessage}>
+                  <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
+                </S.messageBubble>
+              </TouchableOpacity>
               {!isUserMessage && (
                 <S.timestamp isUserMessage={isUserMessage}>
                   {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

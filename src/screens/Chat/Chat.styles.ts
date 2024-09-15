@@ -94,3 +94,16 @@ export const ModalCloseText = styled.Text`
   color: red;
   text-align: center;
 `;
+
+export const EmptyWrapper = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const EmptyText = styled.Text`
+  font-size: 16px;
+  color: #999;
+  text-align: center;
+  margin-top: 10px;
+`;

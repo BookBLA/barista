@@ -3,7 +3,7 @@ import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Modal, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, TouchableOpacity, View } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 import * as S from './Chat.styles';
 
@@ -11,7 +11,7 @@ const ChatScreen: React.FC = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
-  const [, setError] = useState('');
+  const [error, setError] = useState('');
   const navigation = useNavigation();
 
   useHeaderControl({
@@ -23,7 +23,10 @@ const ChatScreen: React.FC = () => {
     const loadChats = async () => {
       try {
         const response = await fetchChatList();
-        if (response.isSuccess && Array.isArray(response.result)) {
+
+        if (response.result.length === 0) {
+          setError('채팅 목록이 없습니다.');
+        } else if (response.isSuccess && Array.isArray(response.result)) {
           setChats(response.result);
         } else {
           setError('채팅 목록을 불러올 수 없습니다.');
@@ -116,6 +119,18 @@ const ChatScreen: React.FC = () => {
     </View>
   );
 
+  if (error) {
+    return (
+      <S.EmptyWrapper>
+        <Image
+          source={require('@assets/images/icons/Warning.png')} // 이미지 경로 수정
+          style={{ width: 100, height: 100, marginBottom: 20 }}
+        />
+        <S.EmptyText>{error}</S.EmptyText>
+      </S.EmptyWrapper>
+    );
+  }
+
   return (
     <>
       <S.ChatList data={chats} renderItem={renderChatItem} keyExtractor={(item: { id: any }) => item.id} />
@@ -127,6 +142,8 @@ const ChatScreen: React.FC = () => {
               <TouchableOpacity
                 onPress={() => {
                   // 푸시 알람 끄기 로직 구현
+                  console.log('푸시 알람 끄기');
+                  closeModal();
                 }}
               >
                 <S.ButtonContainer>
@@ -137,6 +154,8 @@ const ChatScreen: React.FC = () => {
               <TouchableOpacity
                 onPress={() => {
                   // 채팅방 나가기 로직 구현
+                  console.log('채팅방 나가기');
+                  closeModal();
                 }}
               >
                 <S.ButtonContainer>

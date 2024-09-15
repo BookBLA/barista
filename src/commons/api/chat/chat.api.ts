@@ -6,8 +6,6 @@ export const fetchChatList = async () => {
   try {
     const response = await Get('chat/room');
 
-    console.log('response.data:', response);
-
     return response;
   } catch (error) {
     console.error('Error fetching chat list:', error);
