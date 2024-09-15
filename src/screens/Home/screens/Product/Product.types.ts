@@ -22,3 +22,8 @@ export interface ProductContentProps {
   krwPrice?: string;
   buttonAction?: () => void;
 }
+
+export interface ProductContentContainerProps {
+  index: number;
+  admobCount: number;
+}
