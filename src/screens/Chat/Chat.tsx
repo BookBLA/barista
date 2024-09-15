@@ -36,13 +36,17 @@ const ChatScreen: React.FC = () => {
         console.log('Fetch response:', response);
 
         if (response.isSuccess && Array.isArray(response.result)) {
-          const formattedChats: ChatType[] = response.result.map((chat) => ({
-            id: chat.id.toString(),
-            name: chat.otherMember.name,
-            avatar: { uri: chat.otherMember.profileImageUrl },
-            lastMessage: chat.postcard.message,
-            timestamp: new Date(chat.postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-            unreadCount: chat.unreadCount,
+          const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
+            id: chatRoom.id.toString(),
+            name: chatRoom.otherMember.name,
+            avatar: { uri: chatRoom.otherMember.profileImageUrl },
+            lastMessage: chatRoom.postcard.message,
+            timestamp: new Date(chatRoom.postcard.createdAt).toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            }),
+            unreadCount: chatRoom.unreadCount,
+            partner: chatRoom.otherMember,
           }));
 
           setChats(formattedChats);
@@ -79,7 +83,7 @@ const ChatScreen: React.FC = () => {
     <View>
       <LongPressGestureHandler onHandlerStateChange={(event) => handleLongPress(event, item)} minDurationMs={800}>
         <View>
-          <S.ChatItem onPress={() => navigation.navigate('ChatDetail', { partner: item })}>
+          <S.ChatItem onPress={() => navigation.navigate('ChatDetail', { partner: item.partner })}>
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
               <S.ChatName>{item.name}</S.ChatName>

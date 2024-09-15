@@ -29,6 +29,14 @@ const ChatDetail: React.FC = () => {
   const navigation = useNavigation();
   const { partner } = route.params as { user: { name: string; avatar: any; lastMessage: string } };
 
+  partner.id = partner.memberId;
+  partner.name = partner.name;
+  partner.avatar = { uri: partner.profileImageUrl };
+  partner.mbti = partner.mbti;
+  partner.smokingStatus = partner.smokeType;
+  partner.height = partner.height;
+  partner.school = partner.schoolName;
+
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
