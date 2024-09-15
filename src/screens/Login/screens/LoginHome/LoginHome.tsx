@@ -16,7 +16,6 @@ const LoginHome = () => {
   useScreenLogger();
   useManageMargin();
   usePushNotifications();
-  const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
   const { handleKakaoLogin } = useKakaoLogin();
   const { handleTestLogin } = useTestLogin();
