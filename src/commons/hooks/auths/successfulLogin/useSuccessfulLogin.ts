@@ -1,3 +1,4 @@
+import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName/useInitialRouteName';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useGetPushToken from '@commons/hooks/notifications/getPushToken/useGetPushToken';
@@ -24,11 +25,16 @@ export const useSuccessfulLogin = () => {
     }
 
     setToken(result.accessToken);
-    updateMemberInfo('memberStatus', result.memberStatus);
+    console.log('memberStatus: ', result.memberStatus);
 
     if (result.memberStatus !== EMemberStatus.PROFILE) {
       const pushToken = await getPushToken();
       await postPushToken(pushToken);
+    }
+    if (result.memberStatus === 'STYLE') {
+      //로그인 성공 시>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다
+      const response = await getMemberStatusesApi();
+      updateMemberInfo('schoolStatus', response.result?.schoolStatus ?? 'OPEN');
     }
 
     showToast({

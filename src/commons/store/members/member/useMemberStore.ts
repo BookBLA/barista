@@ -1,11 +1,20 @@
 import { getMemberApi } from '@commons/api/members/default/member.api';
-import { MemberResponse } from '@commons/types/openapiGenerator';
+// import { MemberResponse } from '@commons/types/openapiGenerator';
 import analytics from '@react-native-firebase/analytics';
 import { create } from 'zustand';
 import { EStudentIdImageStatus } from './MemberInfo.types';
 
 interface IMemberInfo {
-  memberInfo: MemberResponse;
+  memberInfo: {
+    id: number;
+    oauthEmail: string;
+    oauthProfileImageUrl: string;
+    memberType: string;
+    memberStatus: string;
+    memberGender: string;
+    studentIdImageStatus: EStudentIdImageStatus;
+    schoolStatus: string | null;
+  };
   saveMemberInfo: () => Promise<void>;
   updateMemberInfo: (field: string, value: string | number) => void;
 }
@@ -19,6 +28,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
     memberStatus: '',
     memberGender: '',
     studentIdImageStatus: EStudentIdImageStatus.PENDING,
+    schoolStatus: null,
   },
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
   saveMemberInfo: async () => {
@@ -32,6 +42,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
       gender: String(memberGender),
     });
     const memberInfo = response.result;
+    console.log('memberInfo', memberInfo);
     if (memberInfo) {
       set({ memberInfo });
     }

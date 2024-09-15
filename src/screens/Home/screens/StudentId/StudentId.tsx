@@ -1,4 +1,5 @@
 import { uploadStudentIdImageToS3 } from '@commons/api/image/imageUploadToS3.api';
+import { postStudentIdImageApi } from '@commons/api/members/profile/memberProfile.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -64,23 +65,31 @@ const StudentId = ({ route }: IProps) => {
     if (imageUrl !== '') {
       const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
       if (uploadedFileUrl) {
-        // updateUserInfo({ studentIdImageUrl: uploadedFileUrl });
-        console.log('uploadedFileUrl', uploadedFileUrl);
+        postStudentIdImage(uploadedFileUrl);
       }
     }
+  };
 
-    //학생증 인증 api 호출
-
-    // 반려 후 바로 이동 시 홈으로, 아닐 시 이전 페이지로
-    if (isRejected) {
-      handleReset('tapScreens');
-      return;
-    } else {
-      movePage()();
+  const postStudentIdImage=async(imgUrl: string)=>{
+    try{
+      const response=await postStudentIdImageApi(imgUrl);
+      console.log('response', response);
+      if (isRejected) {
+          handleReset('tapScreens');
+          return;
+        } else {
+          movePage()();
+        }
+        showToast({
+          content: '학생증을 검토 중입니다.',
+        });
     }
-    showToast({
-      content: '학생증을 검토 중입니다.',
-    });
+    catch(error){
+      console.log('error', error);
+      showToast({
+          content: '학생증 업로드에 실패했습니다.',
+        });
+    }
   };
 
   return (

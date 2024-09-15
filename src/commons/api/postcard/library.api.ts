@@ -1,4 +1,5 @@
 import { Delete, Get, Patch, Post } from '@commons/configs/axios/http.api';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { TUpdateBookInfo, TUpdateBookReview, TValidatePostcardStatus } from '@screens/Library/Library.types';
 import {
   TBookInfo,
@@ -51,7 +52,8 @@ export const validateSendPostcard = async (targetMemberId: number) => {
     const { result } = await Post(`postcard/send/validation`, { targetMemberId });
 
     return { isRefused: result.isRefused, isSuccess: true } as TValidatePostcardStatus;
-  } catch (error: any) {
+  } catch (error) {
+    if (!isAxiosErrorResponse(error)) return;
     if (error.response.data.code === 'postcard-003' || error.response.data.code === 'postcard-005') {
       return {
         isSuccess: false,

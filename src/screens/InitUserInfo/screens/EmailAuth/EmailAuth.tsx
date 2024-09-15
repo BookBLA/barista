@@ -10,6 +10,7 @@ import { IsSuccess, useEmailStatusStore } from '@commons/store/members/emailStat
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
@@ -62,7 +63,8 @@ const EmailAuth = () => {
       showToast({
         content: '인증 코드가 전송되었습니다.',
       });
-    } catch (error: any) {
+    } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
       console.log('callPostAuthApi error', error);
       setIsSuccess(IsSuccess.false);
       if (error.response.data.message === '이메일이 이미 존재합니다.') {

@@ -13,6 +13,7 @@ import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreeme
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
@@ -91,7 +92,8 @@ const InsertInviteCode = () => {
       } else if (schoolStatus === 'CLOSED') {
         handleReset('inviteFriends');
       }
-    } catch (error: any) {
+    } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
       console.log('프로필 등록 실패', error);
       showToast({
         content: error.response.data.message,
