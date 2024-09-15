@@ -39,6 +39,7 @@
     "@react-native-firebase/crashlytics": "^20.5.0",
     "@react-native-firebase/firestore": "^20.5.0",
     "@react-native-firebase/messaging": "^20.5.0",
+    "@react-native-kakao/core": "^2.2.6",
     "@react-navigation/bottom-tabs": "^6.5.11",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
