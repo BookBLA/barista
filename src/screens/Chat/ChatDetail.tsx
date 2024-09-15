@@ -53,6 +53,7 @@ const ChatDetail: React.FC = () => {
 
   const closeDeclineModal = () => {
     setIsDeclineModalVisible(false);
+    setIsModalVisible(true);
   };
 
   const loadChatMessages = useCallback(async () => {
@@ -251,7 +252,7 @@ const ChatDetail: React.FC = () => {
               <S.DeclineButton
                 onPress={() => {
                   showToast({ content: '엽서를 거절했습니다.' });
-                  closeDeclineModal();
+                  navigation.goBack();
                 }}
               >
                 <S.DeclineButtonText>거절하기</S.DeclineButtonText>
