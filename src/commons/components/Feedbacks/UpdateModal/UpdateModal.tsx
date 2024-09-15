@@ -1,12 +1,21 @@
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { useGetLatestVersion } from '@commons/hooks/datas/useGetLatestVersion/useGetLatestVersion';
+import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
+import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { Platform } from 'react-native';
 import * as S from './UpdateModal.styles';
 
 const UpdateModal = () => {
+  const { data } = useGetLatestVersion();
+  const handleLinkPress = useLinkingOpen();
+  const appVersion = getAppVersion();
+  const getStoreUrl = Platform.OS === 'ios' ? data?.appStoreUrl : data?.googlePlayStoreUrl;
+
   const modalConfig = {
-    visible: true,
+    visible: data.version ? appVersion !== data.version : false,
     onClose: () => {},
   };
 
@@ -24,7 +33,7 @@ const UpdateModal = () => {
         </CustomText>
         <CustomText font="fontMedium">최신 버전(v.0.0.0)으로 업데이트 부탁드려요</CustomText>
         <S.ButtonWrapper>
-          <CustomButton contents="업데이트" borderRadius="5px" />
+          <CustomButton contents="업데이트" borderRadius="5px" onPress={handleLinkPress(getStoreUrl)} />
         </S.ButtonWrapper>
       </S.Wrapper>
     </CustomModal>
