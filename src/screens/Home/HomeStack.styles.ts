@@ -2,9 +2,11 @@ import { colors } from '@commons/styles/variablesStyles';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
 
-export const Wrapper = styled.SafeAreaView`
+export const Wrapper = styled.View`
+  position: relative;
   display: flex;
   flex-direction: column;
+
   width: 100%;
   height: 100%;
   padding: 64px 16px 20px;
