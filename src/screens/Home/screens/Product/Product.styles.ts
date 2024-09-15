@@ -15,8 +15,8 @@ export const ProductContentContainer = styled.View<ProductContentContainerProps>
 `;
 
 export const ProductInfoContainer = styled.View`
-    flex-direction: row;
+  flex-direction: row;
   width: 50%;
   height: 90%;
   align-items: center;
-    `;
+`;
