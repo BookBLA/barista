@@ -144,18 +144,6 @@ const ChatDetail: React.FC = () => {
 
     return (
       <S.messageItem>
-        {index === 0 ||
-        new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
-          <S.dateSeparator>
-            <S.dateText>
-              {new Date(item.timestamp).toLocaleDateString('ko-KR', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-              })}
-            </S.dateText>
-          </S.dateSeparator>
-        ) : null}
         <S.messageItemInner isUserMessage={isUserMessage}>
           {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
           <S.messageContent isUserMessage={isUserMessage}>
