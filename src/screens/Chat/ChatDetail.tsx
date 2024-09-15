@@ -1,3 +1,5 @@
+// ChatDetail.tsx
+
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -10,15 +12,6 @@ import { Animated, FlatList, Modal, Text, TouchableOpacity, View } from 'react-n
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
-
-// const partner = {
-//   avatar: require('@assets/images/img/profile_ex1.png'),
-//   school: '서울대학교',
-//   smokingStatus: '흡연',
-//   mbti: 'ENFP',
-//   height: 170,
-//   nickname: '김서울',
-// };
 
 const ChatDetail: React.FC = () => {
   const route = useRoute();
@@ -63,13 +56,15 @@ const ChatDetail: React.FC = () => {
     setIsReportModalVisible(false);
   };
 
-  const submitReport = () => {
+  const submitReport = (selectedReasons: string[], otherReason: string) => {
+    console.log(selectedReasons, otherReason);
     closeReportModal();
     setIsReportSubmittedModalVisible(true); // 신고 완료 모달을 표시합니다.
   };
 
   const closeReportSubmittedModal = () => {
     setIsReportSubmittedModalVisible(false);
+    navigation.goBack();
   };
 
   const loadChatMessages = useCallback(async () => {
@@ -89,10 +84,7 @@ const ChatDetail: React.FC = () => {
 
       const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
         id: (100 - index).toString(),
-        text:
-          (100 - index) % 3 === 0
-            ? `파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지파트너의 메시지 ${100 - index}`
-            : `사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지사용자의 메시지 ${100 - index}`,
+        text: (100 - index) % 3 === 0 ? `파트너의 메시지 ${100 - index}` : `사용자의 메시지 ${100 - index}`,
         timestamp: new Date(Date.now() - (100 - index) * 60000).toISOString(),
         sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
       }));
