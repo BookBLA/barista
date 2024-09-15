@@ -1,3 +1,5 @@
+// @screens/Chat/ChatDetail.tsx
+
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -5,13 +7,12 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
-import ReportOption from '@screens/Library/utils/ReportOption/ReportOption'; // Import ReportOption component
+import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Animated,
   FlatList,
-  Keyboard,
   KeyboardAvoidingView,
   Modal,
   Platform,
@@ -19,93 +20,37 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
 const ChatDetail: React.FC = () => {
-  const route = useRoute();
+  const { params } = useRoute();
   const navigation = useNavigation();
-  const { partner, postcard } = route.params as {
-    user: { name: string; avatar: any; lastMessage: string };
-    postcard: {
-      postcardId: number;
-      type: {
-        createdAt: string;
-        lastModifiedAt: string | null;
-        id: number;
-        price: number;
-        name: string;
-        imageUrl: string;
-      };
-      imageUrl: string;
-      message: string;
-      status: string;
-    };
-  };
+  const { partner, postcard } = params as any;
 
-  partner.id = partner.memberId;
-  partner.name = partner.name;
-  partner.avatar = { uri: partner.profileImageUrl };
-  partner.mbti = partner.mbti;
-  partner.smokingStatus = partner.smokeType;
-  partner.height = partner.height;
-  partner.school = partner.schoolName;
-
-  console.log(`postcard:`, postcard);
+  console.log('ChatInfoScreen partner:', JSON.stringify(partner));
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
   const [loadingMore, setLoadingMore] = useState(false);
-  const flatListRef = useRef<FlatList<ChatMessage>>(null);
-  const showToast = useToastStore((state) => state.showToast);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
   const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
+
+  const flatListRef = useRef<FlatList<ChatMessage>>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
-
-  const reportBottomSheetRef = useRef(null); // Ref for the CustomBottomSheetModal
-
-  const handleAccept = () => {
-    setIsModalVisible(false);
-    showToast({ content: '채팅이 시작되었습니다.' });
-  };
-
-  const handleDecline = () => {
-    setIsModalVisible(false);
-    setIsDeclineModalVisible(true);
-  };
-
-  const handleReport = () => {
-    setIsModalVisible(false);
-    reportBottomSheetRef.current?.present(); // Open the report bottom sheet
-  };
-
-  const closeDeclineModal = () => {
-    setIsDeclineModalVisible(false);
-    setIsModalVisible(true);
-  };
-
-  const closeReportSubmittedModal = () => {
-    setIsReportSubmittedModalVisible(false);
-    navigation.goBack();
-  };
+  const reportBottomSheetRef = useRef(null);
+  const showToast = useToastStore((state) => state.showToast);
 
   const loadChatMessages = useCallback(async () => {
     try {
       const response = await fetchChatMessages(partner.id, 1, 100);
-
-      // 응답 성공 및 결과 데이터가 빈 배열인지 확인
-      if (response.isSuccess && response.result && response.result.content && response.result.content.length > 0) {
-        console.log('Successfully loaded chat messages:', response.result.content);
-
+      if (response.isSuccess && response.result.content.length > 0) {
         setMessages(response.result.content);
         setDisplayedMessages(response.result.content.slice(0, 100));
       } else if (response.isSuccess && response.result.empty) {
-        // 메시지가 빈 경우 처리
-        console.warn('No messages available.');
         setMessages([]);
         setDisplayedMessages([]);
       } else {
@@ -113,8 +58,8 @@ const ChatDetail: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      setMessages(dummyMessages);
-      setDisplayedMessages(dummyMessages);
+      setMessages([]);
+      setDisplayedMessages([]);
     }
   }, [partner.id]);
 
@@ -141,11 +86,36 @@ const ChatDetail: React.FC = () => {
     return () => {
       if (parent) {
         parent.setOptions({
-          tabBarStyle: undefined, // This will reset to the default style
+          tabBarStyle: undefined,
         });
       }
     };
   }, [navigation]);
+
+  const handleAccept = () => {
+    setIsModalVisible(false);
+    showToast({ content: '채팅이 시작되었습니다.' });
+  };
+
+  const handleDecline = () => {
+    setIsModalVisible(false);
+    setIsDeclineModalVisible(true);
+  };
+
+  const handleReport = () => {
+    setIsModalVisible(false);
+    reportBottomSheetRef.current?.present();
+  };
+
+  const closeDeclineModal = () => {
+    setIsDeclineModalVisible(false);
+    setIsModalVisible(true);
+  };
+
+  const closeReportSubmittedModal = () => {
+    setIsReportSubmittedModalVisible(false);
+    navigation.goBack();
+  };
 
   const loadMoreMessages = () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
@@ -164,86 +134,53 @@ const ChatDetail: React.FC = () => {
       new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate();
 
     return (
-      <S.messageItem>
+      <S.MessageItem>
         {index === 0 ||
         new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
-          <S.dateSeparator>
-            <S.dateText>
+          <S.DateSeparator>
+            <S.DateText>
               {new Date(item.timestamp).toLocaleDateString('ko-KR', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
               })}
-            </S.dateText>
-          </S.dateSeparator>
+            </S.DateText>
+          </S.DateSeparator>
         ) : null}
-        {index === 0 ? (
-          <S.messageItemInner isUserMessage={isUserMessage}>
-            {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
-            <S.messageContent isUserMessage={isUserMessage}>
-              {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
-              <S.messageRow isUserMessage={isUserMessage}>
-                {isUserMessage && (
-                  <S.timestamp isUserMessage={isUserMessage}>
-                    {new Date(postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.timestamp>
-                )}
-                <S.BookChatBubble isUserMessage={isUserMessage}>
-                  {postcard.type.imageUrl && (
-                    <S.BookCover
-                      source={{ uri: postcard.type.imageUrl }}
-                      onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
-                    />
-                  )}
-                  <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
-                    <S.messageBubble isUserMessage={isUserMessage}>
-                      <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
-                    </S.messageBubble>
-                  </TouchableOpacity>
-                </S.BookChatBubble>
-
-                {!isUserMessage && (
-                  <S.timestamp isUserMessage={isUserMessage}>
-                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.timestamp>
-                )}
-              </S.messageRow>
-            </S.messageContent>
-          </S.messageItemInner>
-        ) : (
-          <S.messageItemInner isUserMessage={isUserMessage}>
-            {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
-            <S.messageContent isUserMessage={isUserMessage}>
-              {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
-              <S.messageRow isUserMessage={isUserMessage}>
-                {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
-                {isUserMessage && (
-                  <S.timestamp isUserMessage={isUserMessage}>
-                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.timestamp>
+        <S.MessageItemInner isUserMessage={isUserMessage}>
+          {!isUserMessage && showAvatar && <S.MessageAvatar source={{ url: partner.profileImageUrl }} />}
+          <S.MessageContent isUserMessage={isUserMessage}>
+            {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
+            <S.MessageRow isUserMessage={isUserMessage}>
+              {isUserMessage && (
+                <S.Timestamp isUserMessage={isUserMessage}>
+                  {new Date(postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </S.Timestamp>
+              )}
+              <S.BookChatBubble isUserMessage={isUserMessage}>
+                {postcard.type.imageUrl && index === displayedMessages.length - 1 && (
+                  <S.BookCover
+                    source={{ uri: postcard.type.imageUrl }}
+                    onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
+                  />
                 )}
                 <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
-                  <S.messageBubble isUserMessage={isUserMessage}>
-                    <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
-                  </S.messageBubble>
+                  <S.MessageBubble isUserMessage={isUserMessage}>
+                    <S.MessageText isUserMessage={isUserMessage}>{item.text}</S.MessageText>
+                  </S.MessageBubble>
                 </TouchableOpacity>
-                {!isUserMessage && (
-                  <S.timestamp isUserMessage={isUserMessage}>
-                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.timestamp>
-                )}
-              </S.messageRow>
-            </S.messageContent>
-          </S.messageItemInner>
-        )}
-      </S.messageItem>
-    );
-  };
+              </S.BookChatBubble>
 
-  const handleInfoPress = () => {
-    // 키보드 닫음
-    Keyboard.dismiss();
-    navigation.navigate('ChatInfoScreen', { partner, handleReport });
+              {!isUserMessage && (
+                <S.Timestamp isUserMessage={isUserMessage}>
+                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </S.Timestamp>
+              )}
+            </S.MessageRow>
+          </S.MessageContent>
+        </S.MessageItemInner>
+      </S.MessageItem>
+    );
   };
 
   const scrollToBottom = () => {
@@ -252,22 +189,18 @@ const ChatDetail: React.FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
-      >
-        <S.wrapper>
-          <S.header>
-            <S.backButton onPress={() => navigation.goBack()}>
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        <S.Wrapper>
+          <S.Header>
+            <S.BackButton onPress={() => navigation.goBack()}>
               <Ionicons name="chevron-back" size={24} color="black" />
-            </S.backButton>
-            <S.headerTitle>
-              <S.smallAvatar source={partner.avatar} />
-              <S.headerText>{partner.name}</S.headerText>
-            </S.headerTitle>
-            <InfoButton onPress={handleInfoPress} />
-          </S.header>
+            </S.BackButton>
+            <S.HeaderTitle>
+              <S.SmallAvatar source={{ url: partner.profileImageUrl }} />
+              <S.HeaderText>{partner.name}</S.HeaderText>
+            </S.HeaderTitle>
+            <InfoButton onPress={() => navigation.navigate('ChatInfoScreen', { partner, handleReport })} />
+          </S.Header>
 
           <FlatList
             ref={flatListRef}
@@ -277,17 +210,17 @@ const ChatDetail: React.FC = () => {
             contentContainerStyle={{ paddingVertical: 10 }}
             onEndReached={loadMoreMessages}
             onEndReachedThreshold={0.5}
-            ListFooterComponent={loadingMore ? <S.loadingIndicator /> : null}
             initialNumToRender={20}
             maxToRenderPerBatch={20}
             windowSize={10}
+            inverted
             removeClippedSubviews
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
             scrollEventThrottle={16}
-            // eslint-disable-next-line react/jsx-no-duplicate-props
-            ListHeaderComponent={
+            ListFooterComponent={
+              //  { loadingMore ? <S.LoadingIndicator /> : null}
               <S.ProfileSection>
-                <S.ProfileAvatar source={partner.avatar} />
+                <S.ProfileAvatar source={{ url: partner.profileImageUrl }} />
                 <S.ProfileInfo>
                   <S.ProfileName>{partner.name}</S.ProfileName>
                   <S.ProfileSchool>{partner.school}</S.ProfileSchool>
@@ -301,17 +234,17 @@ const ChatDetail: React.FC = () => {
           />
 
           {showScrollButton && (
-            <S.scrollToBottomButton onPress={scrollToBottom}>
+            <S.ScrollToBottomButton onPress={scrollToBottom}>
               <Icon name="chevron-down" size={24} color="#1D2E61" />
-            </S.scrollToBottomButton>
+            </S.ScrollToBottomButton>
           )}
 
-          <S.inputContainer>
-            <S.textInput placeholder="메시지 보내기" />
-            <S.sendButton>
-              <S.sendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
-            </S.sendButton>
-          </S.inputContainer>
+          <S.InputContainer>
+            <S.TextInput placeholder="메시지 보내기" />
+            <S.SendButton>
+              <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
+            </S.SendButton>
+          </S.InputContainer>
 
           <ChatRequestModal
             visible={isModalVisible}
@@ -320,7 +253,6 @@ const ChatDetail: React.FC = () => {
             onReport={handleReport}
           />
 
-          {/* Replacing ReportModal with CustomBottomSheetModal */}
           <CustomBottomSheetModal ref={reportBottomSheetRef} index={0} snapPoints={['78%']}>
             <ReportOption bottomClose={() => reportBottomSheetRef.current?.close()} reportedMemberId={partner.id} />
           </CustomBottomSheetModal>
@@ -377,7 +309,7 @@ const ChatDetail: React.FC = () => {
               </S.DeclineModal>
             </View>
           </Modal>
-        </S.wrapper>
+        </S.Wrapper>
       </KeyboardAvoidingView>
     </View>
   );
