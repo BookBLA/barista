@@ -108,19 +108,19 @@ const ChatDetail: React.FC = () => {
   }, [scrollY]);
 
   useEffect(() => {
-    // 하단 탭 바를 숨기고 공간을 제거하는 설정
-    navigation.getParent()?.setOptions({
-      tabBarStyle: {
-        display: 'none',
-      },
-    });
+    const parent = navigation.getParent();
+    if (parent) {
+      parent.setOptions({
+        tabBarStyle: { display: 'none' },
+      });
+    }
 
     return () => {
-      navigation.getParent()?.setOptions({
-        tabBarStyle: {
-          display: 'flex',
-        },
-      });
+      if (parent) {
+        parent.setOptions({
+          tabBarStyle: undefined, // This will reset to the default style
+        });
+      }
     };
   }, [navigation]);
 
@@ -197,7 +197,7 @@ const ChatDetail: React.FC = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.select({ ios: 80, android: 100 })}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
         <S.wrapper>
           <S.header>
