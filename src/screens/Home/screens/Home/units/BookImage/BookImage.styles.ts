@@ -1,14 +1,15 @@
 import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
-  height: 258px;
+  flex: 1.5;
+
   position: relative;
 
   overflow: hidden;
 `;
 
 export const BookWrapper = styled.View`
-  padding: 24px 100px;
+  padding: 24px 110px;
 
   z-index: 3;
 `;
@@ -16,6 +17,8 @@ export const BookWrapper = styled.View`
 export const BookImage = styled.Image`
   width: 100%;
   height: 100%;
+
+  border-radius: 10px;
 
   object-fit: fill;
 `;

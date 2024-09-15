@@ -28,7 +28,9 @@ const TermsOfService = () => {
 
   const onClickMovePage = async () => {
     const pushToken = await getPushToken();
-    await postPushToken(pushToken);
+    if (pushToken) {
+      await postPushToken(pushToken);
+    }
     movePage('schoolStudentID')();
   };
 
