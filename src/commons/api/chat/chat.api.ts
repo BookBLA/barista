@@ -1,6 +1,6 @@
 // chat.api.ts
 
-import { Get } from '@commons/configs/axios/http.api';
+import { Get, Post } from '@commons/configs/axios/http.api';
 
 export const fetchChatList = async () => {
   try {
@@ -17,7 +17,7 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
   try {
     const response = await Get(`chat?roomId=${userId}&page=${page}&size=${size}`);
 
-    console.log('response.data:', response);
+    console.log('Chat messages fetched:', JSON.parse(JSON.stringify(response)));
 
     return response;
   } catch (error) {
@@ -33,5 +33,29 @@ export const sendMessageViaWebSocket = (message: any) => {
     console.log('Message sent via WebSocket:', message);
   } catch (error) {
     console.error('Error sending message via WebSocket:', error);
+  }
+};
+
+// Post chat/room/exit?roomId={roomId}
+export const exitChatRoom = async (roomId: string) => {
+  try {
+    const response = await Post(`chat/room/exit?roomId=${roomId}`);
+
+    return response;
+  } catch (error) {
+    console.error('Error exiting chat room:', error);
+    throw error;
+  }
+};
+
+// post chat/room/alert?roomId={roomId}&is_alert={is_alert}
+export const alertChatRoom = async (roomId: string, isAlert: boolean) => {
+  try {
+    const response = await Post(`chat/room/alert?roomId=${roomId}&is_alert=${isAlert}`);
+
+    return response;
+  } catch (error) {
+    console.error('Error alerting chat room:', error);
+    throw error;
   }
 };

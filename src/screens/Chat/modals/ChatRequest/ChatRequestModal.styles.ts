@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end', // 화면 하단에 위치하도록 설정
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 어두운 배경 투명도 설정
   },
   modalContainer: {
     width: '100%',

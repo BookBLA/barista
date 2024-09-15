@@ -17,7 +17,9 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
     handleReport();
   };
 
-  const toggleSwitch = () => setIsNotificationEnabled((previousState) => !previousState);
+  const toggleSwitch = () => {
+    setIsNotificationEnabled((previousState) => !previousState);
+  };
 
   return (
     <View style={styles.container}>

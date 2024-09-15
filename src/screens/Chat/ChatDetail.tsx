@@ -52,9 +52,9 @@ const ChatDetail: React.FC = () => {
     setIsReportModalVisible(false);
   };
 
-  const submitReport = (selectedReasons: string[], otherReason: string) => {
+  const submitReport = (_selectedReasons: string[]) => {
     closeReportModal();
-    setIsReportSubmittedModalVisible(true); // 신고 완료 모달을 표시합니다.
+    setIsReportSubmittedModalVisible(true);
   };
 
   const closeReportSubmittedModal = () => {
@@ -116,7 +116,6 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
-    const isFirstMessage = item.id === '1';
     const isUserMessage = item.sender === 'user';
     const showAvatar =
       index === 0 ||
@@ -125,19 +124,6 @@ const ChatDetail: React.FC = () => {
 
     return (
       <S.messageItem>
-        {isFirstMessage && (
-          <S.ProfileSection>
-            <S.ProfileAvatar source={partner.avatar} />
-            <S.ProfileInfo>
-              <S.ProfileName>{partner.name}</S.ProfileName>
-              <S.ProfileSchool>{partner.school}</S.ProfileSchool>
-              <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-              <S.LibraryButton>
-                <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-              </S.LibraryButton>
-            </S.ProfileInfo>
-          </S.ProfileSection>
-        )}
         {index === 0 ||
         new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
           <S.dateSeparator>
@@ -215,6 +201,20 @@ const ChatDetail: React.FC = () => {
         removeClippedSubviews
         onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
         scrollEventThrottle={16}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
+        ListFooterComponent={
+          <S.ProfileSection>
+            <S.ProfileAvatar source={partner.avatar} />
+            <S.ProfileInfo>
+              <S.ProfileName>{partner.name}</S.ProfileName>
+              <S.ProfileSchool>{partner.school}</S.ProfileSchool>
+              <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+              <S.LibraryButton>
+                <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+              </S.LibraryButton>
+            </S.ProfileInfo>
+          </S.ProfileSection>
+        }
       />
 
       {showScrollButton && (

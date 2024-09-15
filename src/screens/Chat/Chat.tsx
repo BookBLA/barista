@@ -1,4 +1,4 @@
-import { fetchChatList } from '@commons/api/chat/chat.api';
+import { exitChatRoom, fetchChatList } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import WebSocketClient from '@commons/websocket/websocketClient';
@@ -139,6 +139,8 @@ const ChatScreen: React.FC = () => {
               <TouchableOpacity
                 onPress={() => {
                   console.log('채팅방 나가기');
+                  exitChatRoom(selectedChat?.id);
+                  setChats(chats.filter((chat) => chat.id !== selectedChat?.id));
                   closeModal();
                 }}
               >
