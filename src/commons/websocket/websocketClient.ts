@@ -1,5 +1,3 @@
-// websocketClient.ts
-
 import { useErrorMessage } from '@commons/store/appStatus/errorMessage/useErrorMessage';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -7,10 +5,11 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 class WebSocketClient {
   private static instance: WebSocketClient;
   private socket: WebSocket | null = null;
-  private url: string = process.env.EXPO_PUBLIC_WEBSOCKET_URL || 'ws://서버주소/api/chat/send';
+  private url: string = 'ws://dev.bookbla.shop/api/chat/ws/connect';
+  private isConnected: boolean = false; // 연결 상태 추적
 
   private constructor() {
-    this.connect();
+    console.log('WebSocketClient constructor');
   }
 
   public static getInstance(): WebSocketClient {
@@ -20,9 +19,10 @@ class WebSocketClient {
     return WebSocketClient.instance;
   }
 
-  private connect() {
-    if (!this.url.startsWith('ws://') && !this.url.startsWith('wss://')) {
-      this.url = `ws://${this.url}`;
+  public connect() {
+    if (this.isConnected || this.socket?.readyState === WebSocket.OPEN) {
+      console.debug('WebSocket is already connected');
+      return;
     }
 
     const token = useAuthStore.getState().token;
@@ -31,6 +31,7 @@ class WebSocketClient {
     this.socket = new WebSocket(this.url, [], { headers });
 
     this.socket.onopen = () => {
+      this.isConnected = true;
       console.debug('WebSocket connection established');
     };
 
@@ -41,17 +42,19 @@ class WebSocketClient {
     this.socket.onerror = (error) => {
       console.error('WebSocket error:', error);
       useErrorMessage.getState().setErrorMessage('WebSocket 연결 오류가 발생했습니다.');
+      this.isConnected = false;
     };
 
     this.socket.onclose = () => {
       console.debug('WebSocket connection closed');
+      this.isConnected = false;
       useErrorMessage.getState().setErrorMessage('WebSocket 연결이 종료되었습니다.');
     };
   }
 
   public sendMessage(message: any) {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      const jsonMessage = JSON.stringify(message); // 메시지를 JSON 형식으로 직렬화
+      const jsonMessage = JSON.stringify(message);
       this.socket.send(jsonMessage);
       console.debug('WebSocket message sent:', jsonMessage);
     } else {
@@ -61,9 +64,12 @@ class WebSocketClient {
   }
 
   public disconnect() {
-    if (this.socket) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       this.socket.close();
+      this.isConnected = false;
       this.socket = null;
+    } else {
+      console.debug('WebSocket is already closed or not initialized');
     }
   }
 }

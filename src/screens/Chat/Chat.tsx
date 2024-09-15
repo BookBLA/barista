@@ -1,11 +1,12 @@
 import { fetchChatList } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import WebSocketClient from '@commons/websocket/websocketClient';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { Image, Modal, TouchableOpacity, View } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
-import * as S from './Chat.styles';
+import * as S from './Chat.styles'; // 스타일이 올바르게 적용되었는지 확인하세요.
 
 const ChatScreen: React.FC = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
@@ -20,59 +21,38 @@ const ChatScreen: React.FC = () => {
   });
 
   useEffect(() => {
+    const ws = WebSocketClient;
+    ws.connect(); // WebSocket 연결 시작
+
+    return () => {
+      ws.disconnect(); // 컴포넌트가 언마운트될 때만 WebSocket 연결 해제
+    };
+  }, []);
+
+  useEffect(() => {
     const loadChats = async () => {
       try {
         const response = await fetchChatList();
+        console.log('Fetch response:', response);
 
-        if (response.result.length === 0) {
-          setError('채팅 목록이 없습니다.');
-        } else if (response.isSuccess && Array.isArray(response.result)) {
-          setChats(response.result);
+        if (response.isSuccess && Array.isArray(response.result)) {
+          const formattedChats: ChatType[] = response.result.map((chat) => ({
+            id: chat.id.toString(),
+            name: chat.otherMember.name,
+            avatar: { uri: chat.otherMember.profileImageUrl },
+            lastMessage: chat.postcard.message,
+            timestamp: new Date(chat.postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            unreadCount: chat.unreadCount,
+          }));
+
+          setChats(formattedChats);
+          console.log('Formatted chats:', formattedChats);
         } else {
           setError('채팅 목록을 불러올 수 없습니다.');
         }
       } catch (error) {
-        const dummyChats: ChatType[] = [
-          {
-            id: '1',
-            name: '김철수',
-            avatar: require('@assets/images/img/profile_ex2.png'),
-            lastMessage: '안녕하세요!',
-            timestamp: '오후 3:01',
-            unreadCount: 1,
-            smokingStatus: '흡연',
-            school: '서울대학교',
-            mbti: 'INFP',
-            height: 180,
-          },
-          {
-            id: '2',
-            name: '홍길동',
-            avatar: require('@assets/images/img/profile_ex1.png'),
-            lastMessage: '반갑습니다.',
-            timestamp: '오후 3:02',
-            unreadCount: 0,
-            smokingStatus: '비흡연',
-            school: '연세대학교',
-            mbti: 'ENFP',
-            height: 175,
-          },
-          {
-            id: '3',
-            name: '이영희',
-            avatar: require('@assets/images/img/profile_ex3.png'),
-            lastMessage: '만나서 반가워요!',
-            timestamp: '오후 3:03',
-            unreadCount: 0,
-            smokingStatus: '흡연',
-            school: '고려대학교',
-            mbti: 'INTJ',
-            height: 170,
-          },
-        ];
-        setChats(dummyChats);
-        console.error('Failed to fetch chat list:', error);
         setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
+        console.error('Failed to fetch chat list:', error);
       }
     };
 
@@ -123,7 +103,7 @@ const ChatScreen: React.FC = () => {
     return (
       <S.EmptyWrapper>
         <Image
-          source={require('@assets/images/icons/Warning.png')} // 이미지 경로 수정
+          source={require('@assets/images/icons/Warning.png')}
           style={{ width: 100, height: 100, marginBottom: 20 }}
         />
         <S.EmptyText>{error}</S.EmptyText>
@@ -133,7 +113,13 @@ const ChatScreen: React.FC = () => {
 
   return (
     <>
-      <S.ChatList data={chats} renderItem={renderChatItem} keyExtractor={(item: { id: any }) => item.id} />
+      <S.ChatList
+        data={chats}
+        renderItem={renderChatItem}
+        keyExtractor={(item: { id: any }) => item.id}
+        ListEmptyComponent={<S.EmptyText>채팅 목록이 없습니다.</S.EmptyText>}
+        contentContainerStyle={{ flexGrow: 1 }}
+      />
       <Modal visible={isModalVisible} transparent animationType="fade">
         <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={closeModal}>
           <S.ModalContainer>
@@ -141,7 +127,6 @@ const ChatScreen: React.FC = () => {
               <S.ModalText>{selectedChat?.name} 채팅방</S.ModalText>
               <TouchableOpacity
                 onPress={() => {
-                  // 푸시 알람 끄기 로직 구현
                   console.log('푸시 알람 끄기');
                   closeModal();
                 }}
@@ -153,7 +138,6 @@ const ChatScreen: React.FC = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  // 채팅방 나가기 로직 구현
                   console.log('채팅방 나가기');
                   closeModal();
                 }}
