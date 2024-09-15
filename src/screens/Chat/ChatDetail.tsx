@@ -73,6 +73,8 @@ const ChatDetail: React.FC = () => {
 
       // 응답 성공 및 결과 데이터가 빈 배열인지 확인
       if (response.isSuccess && response.result && response.result.content && response.result.content.length > 0) {
+        console.log('Successfully loaded chat messages:', response.result.content);
+
         setMessages(response.result.content);
         setDisplayedMessages(response.result.content.slice(0, 100));
       } else if (response.isSuccess && response.result.empty) {
@@ -85,13 +87,6 @@ const ChatDetail: React.FC = () => {
       }
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      // 오류 발생 시 가짜 메시지 생성
-      const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
-        id: (100 - index).toString(),
-        text: (100 - index) % 3 === 0 ? `파트너의 메시지 ${100 - index}` : `사용자의 메시지 ${100 - index}`,
-        timestamp: new Date(Date.now() - (100 - index) * 60000).toISOString(),
-        sender: (100 - index) % 3 === 0 ? 'partner' : 'user',
-      }));
       setMessages(dummyMessages);
       setDisplayedMessages(dummyMessages);
     }
@@ -144,6 +139,18 @@ const ChatDetail: React.FC = () => {
 
     return (
       <S.messageItem>
+        {index === 0 ||
+        new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
+          <S.dateSeparator>
+            <S.dateText>
+              {new Date(item.timestamp).toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+            </S.dateText>
+          </S.dateSeparator>
+        ) : null}
         <S.messageItemInner isUserMessage={isUserMessage}>
           {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
           <S.messageContent isUserMessage={isUserMessage}>
@@ -210,14 +217,14 @@ const ChatDetail: React.FC = () => {
             onEndReached={loadMoreMessages}
             onEndReachedThreshold={0.5}
             ListFooterComponent={loadingMore ? <S.loadingIndicator /> : null}
-            inverted
             initialNumToRender={20}
             maxToRenderPerBatch={20}
             windowSize={10}
             removeClippedSubviews
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
             scrollEventThrottle={16}
-            ListFooterComponent={
+            // eslint-disable-next-line react/jsx-no-duplicate-props
+            ListHeaderComponent={
               <S.ProfileSection>
                 <S.ProfileAvatar source={partner.avatar} />
                 <S.ProfileInfo>

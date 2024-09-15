@@ -13,14 +13,48 @@ export const fetchChatList = async () => {
   }
 };
 
+// 더미 데이터 생성 함수
+const generateDummyMessages = (count) => {
+  const messages = [];
+  for (let i = 1; i <= count; i++) {
+    messages.push({
+      id: `${i}`,
+      text: `더미 메시지 ${i}`,
+      sender: i % 2 === 0 ? 'user' : 'partner', // 짝수는 'user', 홀수는 'partner'
+      timestamp: new Date(Date.now() - i * 60000).toISOString(), // i분 전 시간 설정
+    });
+  }
+  return messages;
+};
+
+// fetchChatMessages 함수 수정
 export const fetchChatMessages = async (userId: string, page: number, size: number) => {
   try {
+    // 실제 API 요청 부분
     const response = await Get(`chat?roomId=${userId}&page=${page}&size=${size}`);
 
-    return response;
+    console.log('Chat messages fetched:', response);
+
+    return {
+      isSuccess: true,
+      result: {
+        content: generateDummyMessages(50), // 50개의 더미 메시지 생성
+        empty: false,
+      },
+    };
   } catch (error) {
     console.error('Error fetching chat messages:', error);
-    throw error;
+
+    // 오류 발생 시 더미 데이터 반환
+    const dummyResponse = {
+      isSuccess: true,
+      result: {
+        content: generateDummyMessages(50), // 50개의 더미 메시지 생성
+        empty: false,
+      },
+    };
+
+    return dummyResponse;
   }
 };
 
