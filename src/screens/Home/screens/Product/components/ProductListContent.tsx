@@ -11,6 +11,9 @@ import { ProductProps } from './ProductList.types';
 const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
   const { title, krwPrice, localizedPrice, discount, originalPrice, productId } = props;
   const { products, getProducts, finishTransaction, currentPurchase } = useIAP();
+  if (!admobCount) {
+    admobCount = 0;
+  }
 
   const buy = async (sku: string) => {
     try {

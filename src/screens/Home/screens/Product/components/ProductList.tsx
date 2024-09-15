@@ -14,6 +14,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
     }
   }, []);
 
+  // TODO: admobCount 개수 받아서 세팅
   const [admobCount, setAdmobCount] = useState<number>(0);
   const getAdmobCount = async () => {
     try {

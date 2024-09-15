@@ -30,10 +30,6 @@ export default function App() {
       // Initialization complete!
       console.log(adapterStatuses);
     });
-  // RewardedAd.createForAdRequest(TestIds.REWARDED);
-  if (__DEV__) {
-    console.log('Develop');
-  }
 
   return (
     <>
