@@ -19,12 +19,14 @@ import * as S from '@screens/Setting/SettingStack.styles';
 import { useState } from 'react';
 import { ActivityIndicator, Platform } from 'react-native';
 import { getLinkModalConfig } from './configs/linkModalConfig';
+import { useAlarmSetting } from './hooks/useAlarmSetting';
 import { useGetLatestVersion } from './hooks/useGetLatestVersion';
 import { TProps } from './Setting.types';
 
 const Setting = () => {
   useScreenLogger();
   const [link, setLink] = useState('');
+  const { isAlarm, updateAlarmSetting } = useAlarmSetting();
   const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
@@ -104,7 +106,7 @@ const Setting = () => {
                 알림을 끄시면 매칭 확인이 어려워요!
               </CustomText>
             </S.RowWrapper>
-            <CustomSwitch value onValueChange={() => false} />
+            <CustomSwitch value={isAlarm} onValueChange={updateAlarmSetting} />
           </S.BetweenWrapper>
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
