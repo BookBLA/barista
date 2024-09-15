@@ -52,7 +52,7 @@ const Product = () => {
   };
 
   const addProductInfo = async () => {
-    console.log('products1', products);
+    // console.log('products1', products);
     const sortProducts = products.sort((a, b) => {
       return Number(a.price) - Number(b.price);
     });
