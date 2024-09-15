@@ -6,6 +6,7 @@ interface AgreementInfo {
 interface AgreementState {
   agreementInfo: AgreementInfo;
   updateAgreement: (field: keyof AgreementInfo, value: boolean) => void;
+  resetAgreement: () => void;
 }
 
 export const useAgreementStore = create<AgreementState>((set) => ({
@@ -13,4 +14,5 @@ export const useAgreementStore = create<AgreementState>((set) => ({
     adAgreementPolicy: false,
   },
   updateAgreement: (field, value) => set((state) => ({ agreementInfo: { ...state.agreementInfo, [field]: value } })),
+  resetAgreement: () => set({ agreementInfo: { adAgreementPolicy: false } }),
 }));
