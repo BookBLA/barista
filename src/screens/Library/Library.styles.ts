@@ -7,15 +7,6 @@ export const UserInfoContainerView = styled.View`
   margin: 24px 16px;
 `;
 
-export const UserModificationStatusBar = styled.View`
-  background-color: #2ea16a;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  padding: 6px 0;
-  margin-bottom: 8px;
-`;
-
 export const UserInfoView = styled.View`
   flex-direction: row;
   justify-content: center;
