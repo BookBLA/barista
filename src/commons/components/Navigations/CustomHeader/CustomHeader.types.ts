@@ -9,4 +9,5 @@ export interface ICustomHeader {
     onPress: () => void;
   };
   free?: React.ReactNode;
+  backgroundColor?: string;
 }
