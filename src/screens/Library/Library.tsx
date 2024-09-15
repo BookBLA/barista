@@ -4,13 +4,7 @@ import settingIcon from '@assets/images/icons/Setting.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
-import {
-  deleteBook,
-  getBookInfo,
-  getInvitationCode,
-  getMemberStyle,
-  validateSendPostcard,
-} from '@commons/api/postcard/library.api';
+import { deleteBook, getBookInfo, getInvitationCode, validateSendPostcard } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -40,7 +34,7 @@ import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { BookItemList, TBookResponses } from './Library.types';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
-import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import { TBookInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
@@ -86,7 +80,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfoList, setBookInfoList] = useState<TBookResponses[]>([]);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
-  const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
   const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
@@ -106,10 +99,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   //todo 내서재/상대방서재 스타일 정보 Api로 받아와서 추가하기
   const setMyLibraryInfo = useCallback(async () => {
     try {
-      // const memberStyle = await getMemberStyle(result.memberId);
       setBookInfoList(libraryInfo?.bookResponses ?? []);
-
-      // setMemberStyle(memberStyle);
 
       if (libraryInfo?.profileImageUrl) {
         if (libraryInfo.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
@@ -122,7 +112,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   const setYourLibraryInfo = useCallback(async () => {
     try {
-      // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
     } catch {
       console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
@@ -153,11 +142,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       const result = await getBookInfo(memberBookId);
       setBookInfo(result);
     }
-  };
-
-  const fetchTargetMemberStyle = async (targetMemberId: number) => {
-    const result = await getMemberStyle(targetMemberId);
-    setMemberStyle(result);
   };
 
   const handleModifyBookModalRef = useCallback((bookMemberId?: number) => {
@@ -414,13 +398,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
       <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
       <S.UserInfoContainerView>
-        {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
-        {/*  <S.UserModificationStatusBar>*/}
-        {/*    <CustomText size="14px" font="fontMedium" color="#F7F4ED">*/}
-        {/*      사진이 수정되어 승인 대기중입니다.*/}
-        {/*    </CustomText>*/}
-        {/*  </S.UserModificationStatusBar>*/}
-        {/*)}*/}
         <S.UserInfoView>
           {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
           <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
@@ -451,17 +428,17 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
             <S.MemberStyleList>
               <S.MemberStyleView>
                 <CustomText color={colors.textWhite} size={'12px'}>
-                  비흡연자
+                  {libraryInfo?.smokeType}
                 </CustomText>
               </S.MemberStyleView>
               <S.MemberStyleView>
                 <CustomText color={colors.textWhite} size={'12px'}>
-                  ENEJ
+                  {libraryInfo?.mbti}
                 </CustomText>
               </S.MemberStyleView>
               <S.MemberStyleView>
                 <CustomText color={colors.textWhite} size={'12px'}>
-                  176cm
+                  {libraryInfo?.height}cm
                 </CustomText>
               </S.MemberStyleView>
             </S.MemberStyleList>
