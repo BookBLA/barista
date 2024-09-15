@@ -6,7 +6,17 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
 import ReportModal from '@screens/Chat/modals/Report/ReportModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert, Animated, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Animated,
+  FlatList,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
@@ -173,128 +183,130 @@ const ChatDetail: React.FC = () => {
   };
 
   return (
-    <S.wrapper>
-      <S.header>
-        <S.backButton onPress={() => navigation.goBack()}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </S.backButton>
-        <S.headerTitle>
-          <S.smallAvatar source={partner.avatar} />
-          <S.headerText>{partner.name}</S.headerText>
-        </S.headerTitle>
-        <InfoButton onPress={handleInfoPress} />
-      </S.header>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.select({ ios: 80, android: 100 })}
+    >
+      <S.wrapper>
+        <S.header>
+          <S.backButton onPress={() => navigation.goBack()}>
+            <Ionicons name="chevron-back" size={24} color="black" />
+          </S.backButton>
+          <S.headerTitle>
+            <S.smallAvatar source={partner.avatar} />
+            <S.headerText>{partner.name}</S.headerText>
+          </S.headerTitle>
+          <InfoButton onPress={handleInfoPress} />
+        </S.header>
 
-      <FlatList
-        ref={flatListRef}
-        data={displayedMessages}
-        renderItem={renderMessageItem}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={{ paddingVertical: 10 }}
-        onEndReached={loadMoreMessages}
-        onEndReachedThreshold={0.5}
-        ListFooterComponent={loadingMore ? <S.loadingIndicator /> : null}
-        inverted
-        initialNumToRender={20}
-        maxToRenderPerBatch={20}
-        windowSize={10}
-        removeClippedSubviews
-        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-        scrollEventThrottle={16}
-        // eslint-disable-next-line react/jsx-no-duplicate-props
-        ListFooterComponent={
-          <S.ProfileSection>
-            <S.ProfileAvatar source={partner.avatar} />
-            <S.ProfileInfo>
-              <S.ProfileName>{partner.name}</S.ProfileName>
-              <S.ProfileSchool>{partner.school}</S.ProfileSchool>
-              <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-              <S.LibraryButton>
-                <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-              </S.LibraryButton>
-            </S.ProfileInfo>
-          </S.ProfileSection>
-        }
-      />
+        <FlatList
+          ref={flatListRef}
+          data={displayedMessages}
+          renderItem={renderMessageItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingVertical: 10 }}
+          onEndReached={loadMoreMessages}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={loadingMore ? <S.loadingIndicator /> : null}
+          inverted
+          initialNumToRender={20}
+          maxToRenderPerBatch={20}
+          windowSize={10}
+          removeClippedSubviews
+          onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
+          scrollEventThrottle={16}
+          ListFooterComponent={
+            <S.ProfileSection>
+              <S.ProfileAvatar source={partner.avatar} />
+              <S.ProfileInfo>
+                <S.ProfileName>{partner.name}</S.ProfileName>
+                <S.ProfileSchool>{partner.school}</S.ProfileSchool>
+                <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                <S.LibraryButton>
+                  <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+                </S.LibraryButton>
+              </S.ProfileInfo>
+            </S.ProfileSection>
+          }
+        />
 
-      {showScrollButton && (
-        <S.scrollToBottomButton onPress={scrollToBottom}>
-          <Icon name="chevron-down" size={24} color="#1D2E61" />
-        </S.scrollToBottomButton>
-      )}
+        {showScrollButton && (
+          <S.scrollToBottomButton onPress={scrollToBottom}>
+            <Icon name="chevron-down" size={24} color="#1D2E61" />
+          </S.scrollToBottomButton>
+        )}
 
-      <S.inputContainer>
-        <S.textInput placeholder="메시지 보내기" />
-        <S.sendButton>
-          <S.sendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
-        </S.sendButton>
-      </S.inputContainer>
+        <S.inputContainer>
+          <S.textInput placeholder="메시지 보내기" />
+          <S.sendButton>
+            <S.sendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
+          </S.sendButton>
+        </S.inputContainer>
 
-      <ChatRequestModal
-        visible={isModalVisible}
-        onAccept={handleAccept}
-        onDecline={handleDecline}
-        onReport={handleReport}
-      />
+        <ChatRequestModal
+          visible={isModalVisible}
+          onAccept={handleAccept}
+          onDecline={handleDecline}
+          onReport={handleReport}
+        />
 
-      {/* 신고 모달 */}
-      <ReportModal visible={isReportModalVisible} onClose={closeReportModal} onReport={submitReport} />
+        <ReportModal visible={isReportModalVisible} onClose={closeReportModal} onReport={submitReport} />
 
-      {/* 신고 접수 완료 모달 */}
-      <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        >
-          <View style={{ width: 320, padding: 20, backgroundColor: 'white', borderRadius: 15 }}>
-            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10, textAlign: 'center' }}>
-              신고가 접수되었습니다
-            </Text>
-            <Text style={{ marginBottom: 20, color: '#555', textAlign: 'center' }}>
-              최대 24시간 이내에 검토가 완료됩니다
-            </Text>
-            <TouchableOpacity
-              style={{
-                paddingVertical: 14,
-                paddingHorizontal: 46,
-                backgroundColor: '#1D2E61',
-                borderRadius: 20,
-                alignItems: 'center',
-              }}
-              onPress={closeReportSubmittedModal}
-            >
-              <Text style={{ color: 'white', fontWeight: 'bold' }}>확인</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
-
-      {/* 거절 모달 */}
-      <Modal visible={isDeclineModalVisible} transparent animationType="fade">
-        <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-        >
-          <S.DeclineModal>
-            <S.ModalTitle>엽서를 거절하시겠어요?</S.ModalTitle>
-            <S.ModalDescription>
-              엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
-            </S.ModalDescription>
-            <S.ModalButtonContainer>
-              <S.DeclineButton
-                onPress={() => {
-                  showToast({ content: '엽서를 거절했습니다.' });
-                  navigation.goBack();
+        <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          >
+            <View style={{ width: 320, padding: 20, backgroundColor: 'white', borderRadius: 15 }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10, textAlign: 'center' }}>
+                신고가 접수되었습니다
+              </Text>
+              <Text style={{ marginBottom: 20, color: '#555', textAlign: 'center' }}>
+                최대 24시간 이내에 검토가 완료됩니다
+              </Text>
+              <TouchableOpacity
+                style={{
+                  paddingVertical: 14,
+                  paddingHorizontal: 46,
+                  backgroundColor: '#1D2E61',
+                  borderRadius: 20,
+                  alignItems: 'center',
                 }}
+                onPress={closeReportSubmittedModal}
               >
-                <S.DeclineButtonText>거절하기</S.DeclineButtonText>
-              </S.DeclineButton>
-              <S.ReviewButton onPress={closeDeclineModal}>
-                <S.ReviewButtonText>다시 보기</S.ReviewButtonText>
-              </S.ReviewButton>
-            </S.ModalButtonContainer>
-          </S.DeclineModal>
-        </View>
-      </Modal>
-    </S.wrapper>
+                <Text style={{ color: 'white', fontWeight: 'bold' }}>확인</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal visible={isDeclineModalVisible} transparent animationType="fade">
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+          >
+            <S.DeclineModal>
+              <S.ModalTitle>엽서를 거절하시겠어요?</S.ModalTitle>
+              <S.ModalDescription>
+                엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
+              </S.ModalDescription>
+              <S.ModalButtonContainer>
+                <S.DeclineButton
+                  onPress={() => {
+                    showToast({ content: '엽서를 거절했습니다.' });
+                    navigation.goBack();
+                  }}
+                >
+                  <S.DeclineButtonText>거절하기</S.DeclineButtonText>
+                </S.DeclineButton>
+                <S.ReviewButton onPress={closeDeclineModal}>
+                  <S.ReviewButtonText>다시 보기</S.ReviewButtonText>
+                </S.ReviewButton>
+              </S.ModalButtonContainer>
+            </S.DeclineModal>
+          </View>
+        </Modal>
+      </S.wrapper>
+    </KeyboardAvoidingView>
   );
 };
 
