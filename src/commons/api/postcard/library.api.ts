@@ -9,12 +9,12 @@ import {
 } from '@screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 import { ISendPostcardRequest, TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 
-export const getMyLibraryInfo = () => Get('members/library', {}, true);
+export const getMyLibraryInfo = () => Get('/library', {}, true);
 
 export const getYourLibraryInfo = async (targetMemberId: number) => {
   const {
     result: { baseResponse },
-  } = await Get(`members/library/target/${Number(targetMemberId)}`, true);
+  } = await Get(`/library/target/${Number(targetMemberId)}`, true);
 
   return {
     result: baseResponse,
