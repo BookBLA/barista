@@ -3,9 +3,10 @@ import { ChatMessage, User } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
-import ChatRequestModal from '@screens/Chat/modals/ChatRequestModal';
+import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
+import ReportModal from '@screens/Chat/modals/Report/ReportModal';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList, Modal, View } from 'react-native';
+import { Animated, FlatList, Modal, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
@@ -33,6 +34,8 @@ const ChatDetail: React.FC = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
+  const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -43,17 +46,30 @@ const ChatDetail: React.FC = () => {
 
   const handleDecline = () => {
     setIsModalVisible(false);
-    setIsDeclineModalVisible(true); // 거절 모달을 보여줍니다.
+    setIsDeclineModalVisible(true);
   };
 
   const handleReport = () => {
     setIsModalVisible(false);
-    showToast({ content: '신고가 접수되었습니다.' });
+    setIsReportModalVisible(true);
   };
 
   const closeDeclineModal = () => {
     setIsDeclineModalVisible(false);
     setIsModalVisible(true);
+  };
+
+  const closeReportModal = () => {
+    setIsReportModalVisible(false);
+  };
+
+  const submitReport = () => {
+    closeReportModal();
+    setIsReportSubmittedModalVisible(true); // 신고 완료 모달을 표시합니다.
+  };
+
+  const closeReportSubmittedModal = () => {
+    setIsReportSubmittedModalVisible(false);
   };
 
   const loadChatMessages = useCallback(async () => {
@@ -237,6 +253,37 @@ const ChatDetail: React.FC = () => {
         onDecline={handleDecline}
         onReport={handleReport}
       />
+
+      {/* 신고 모달 */}
+      <ReportModal visible={isReportModalVisible} onClose={closeReportModal} onReport={submitReport} />
+
+      {/* 신고 접수 완료 모달 */}
+      <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <View style={{ width: 320, padding: 20, backgroundColor: 'white', borderRadius: 15 }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10, textAlign: 'center' }}>
+              신고가 접수되었습니다
+            </Text>
+            <Text style={{ marginBottom: 20, color: '#555', textAlign: 'center' }}>
+              최대 24시간 이내에 검토가 완료됩니다
+            </Text>
+            <TouchableOpacity
+              style={{
+                paddingVertical: 14,
+                paddingHorizontal: 46,
+                backgroundColor: '#1D2E61',
+                borderRadius: 20,
+                alignItems: 'center',
+              }}
+              onPress={closeReportSubmittedModal}
+            >
+              <Text style={{ color: 'white', fontWeight: 'bold' }}>확인</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
 
       {/* 거절 모달 */}
       <Modal visible={isDeclineModalVisible} transparent animationType="fade">
