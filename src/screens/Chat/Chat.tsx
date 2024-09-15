@@ -47,6 +47,7 @@ const ChatScreen: React.FC = () => {
             }),
             unreadCount: chatRoom.unreadCount,
             partner: chatRoom.otherMember,
+            postcard: chatRoom.postcard,
           }));
 
           setChats(formattedChats);
@@ -83,7 +84,9 @@ const ChatScreen: React.FC = () => {
     <View>
       <LongPressGestureHandler onHandlerStateChange={(event) => handleLongPress(event, item)} minDurationMs={800}>
         <View>
-          <S.ChatItem onPress={() => navigation.navigate('ChatDetail', { partner: item.partner })}>
+          <S.ChatItem
+            onPress={() => navigation.navigate('ChatDetail', { partner: item.partner, postcard: item.postcard })}
+          >
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
               <S.ChatName>{item.name}</S.ChatName>

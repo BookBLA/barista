@@ -132,6 +132,13 @@ export const messageRow = styled.View<{ isUserMessage: boolean }>`
   justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
+export const BookCover = styled.Image`
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+`;
+
 export const messageBubble = styled.View<{ isUserMessage: boolean }>`
   padding: 10px;
   max-width: 100%;
@@ -154,6 +161,11 @@ export const timestamp = styled.Text<{ isUserMessage: boolean }>`
   font-size: 11px;
   color: #999999;
   margin: 0 4px;
+`;
+
+export const BookChatBubble = styled.View`
+  /* 기본 View의 하단 여백을 없애기 위해 padding-bottom: 0 */
+  padding-bottom: 0;
 `;
 
 export const loadingIndicator = styled.ActivityIndicator`

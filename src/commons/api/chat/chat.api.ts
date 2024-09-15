@@ -6,12 +6,43 @@ export const fetchChatList = async () => {
   try {
     const response = await Get('chat/room');
 
+    console.log(`Chat list fetched:`, JSON.stringify(response));
+
     return response;
   } catch (error) {
     console.error('Error fetching chat list:', error);
     throw error;
   }
 };
+
+// const test = {
+//   otherMember: {
+//     memberId: 1,
+//     name: '리준희',
+//     profileImageUrl: 'https://d23uplzpztuo3w.cloudfront.net/default-profile-image/FEMALE-2 copy.png',
+//     profileGender: 'FEMALE',
+//     mbti: 'INTP',
+//     smokeType: 'SOMETIMES',
+//     height: 180,
+//     schoolName: '네이버대학교',
+//   },
+//   postcard: {
+//     postcardId: 38,
+//     type: {
+//       createdAt: '2024-06-09T01:18:31',
+//       lastModifiedAt: null,
+//       id: 2,
+//       price: 0,
+//       name: '기본 엽서 2',
+//       imageUrl: 'https://d23uplzpztuo3w.cloudfront.net/postcard/default-2.png',
+//     },
+//     imageUrl: 'https://d23uplzpztuo3w.cloudfront.net/postcard/default-2.png',
+//     message: '한마디',
+//     status: 'PENDING',
+//   },
+//   id: 6,
+//   unreadCount: 0,
+// };
 
 // 더미 데이터 생성 함수
 const generateDummyMessages = (count) => {

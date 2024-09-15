@@ -27,7 +27,23 @@ import InfoButton from './components/InfoButton/InfoButton';
 const ChatDetail: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { partner } = route.params as { user: { name: string; avatar: any; lastMessage: string } };
+  const { partner, postcard } = route.params as {
+    user: { name: string; avatar: any; lastMessage: string };
+    postcard: {
+      postcardId: number;
+      type: {
+        createdAt: string;
+        lastModifiedAt: string | null;
+        id: number;
+        price: number;
+        name: string;
+        imageUrl: string;
+      };
+      imageUrl: string;
+      message: string;
+      status: string;
+    };
+  };
 
   partner.id = partner.memberId;
   partner.name = partner.name;
@@ -36,6 +52,8 @@ const ChatDetail: React.FC = () => {
   partner.smokingStatus = partner.smokeType;
   partner.height = partner.height;
   partner.school = partner.schoolName;
+
+  console.log(`postcard:`, postcard);
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
@@ -159,30 +177,65 @@ const ChatDetail: React.FC = () => {
             </S.dateText>
           </S.dateSeparator>
         ) : null}
-        <S.messageItemInner isUserMessage={isUserMessage}>
-          {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
-          <S.messageContent isUserMessage={isUserMessage}>
-            {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
-            <S.messageRow isUserMessage={isUserMessage}>
-              {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
-              {isUserMessage && (
-                <S.timestamp isUserMessage={isUserMessage}>
-                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </S.timestamp>
-              )}
-              <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
-                <S.messageBubble isUserMessage={isUserMessage}>
-                  <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
-                </S.messageBubble>
-              </TouchableOpacity>
-              {!isUserMessage && (
-                <S.timestamp isUserMessage={isUserMessage}>
-                  {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </S.timestamp>
-              )}
-            </S.messageRow>
-          </S.messageContent>
-        </S.messageItemInner>
+        {index === 0 ? (
+          <S.messageItemInner isUserMessage={isUserMessage}>
+            {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
+            <S.messageContent isUserMessage={isUserMessage}>
+              {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
+              <S.messageRow isUserMessage={isUserMessage}>
+                {isUserMessage && (
+                  <S.timestamp isUserMessage={isUserMessage}>
+                    {new Date(postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </S.timestamp>
+                )}
+                <S.BookChatBubble isUserMessage={isUserMessage}>
+                  {postcard.type.imageUrl && (
+                    <S.BookCover
+                      source={{ uri: postcard.type.imageUrl }}
+                      onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
+                    />
+                  )}
+                  <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
+                    <S.messageBubble isUserMessage={isUserMessage}>
+                      <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
+                    </S.messageBubble>
+                  </TouchableOpacity>
+                </S.BookChatBubble>
+
+                {!isUserMessage && (
+                  <S.timestamp isUserMessage={isUserMessage}>
+                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </S.timestamp>
+                )}
+              </S.messageRow>
+            </S.messageContent>
+          </S.messageItemInner>
+        ) : (
+          <S.messageItemInner isUserMessage={isUserMessage}>
+            {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
+            <S.messageContent isUserMessage={isUserMessage}>
+              {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
+              <S.messageRow isUserMessage={isUserMessage}>
+                {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
+                {isUserMessage && (
+                  <S.timestamp isUserMessage={isUserMessage}>
+                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </S.timestamp>
+                )}
+                <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
+                  <S.messageBubble isUserMessage={isUserMessage}>
+                    <S.messageText isUserMessage={isUserMessage}>{item.text}</S.messageText>
+                  </S.messageBubble>
+                </TouchableOpacity>
+                {!isUserMessage && (
+                  <S.timestamp isUserMessage={isUserMessage}>
+                    {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </S.timestamp>
+                )}
+              </S.messageRow>
+            </S.messageContent>
+          </S.messageItemInner>
+        )}
       </S.messageItem>
     );
   };
