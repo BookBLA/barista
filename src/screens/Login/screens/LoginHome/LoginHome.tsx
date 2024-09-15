@@ -10,7 +10,7 @@ import React from 'react';
 import { Image, Platform } from 'react-native';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import { useTestLogin } from './hooks/useTestLogin';
-import { useKakaoLogin } from '@screens/Login/screens/LoginHome/hooks/useKakaoLogin';
+import { useKakaoLogin } from '@screens/Login/screens/KakaoLogin/hooks/useKakakoLogin';
 
 const LoginHome = () => {
   useScreenLogger();
