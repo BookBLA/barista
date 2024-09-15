@@ -2,13 +2,12 @@ import { Get, Patch, Post, Put } from '@commons/configs/axios/http.api';
 import {
   MemberProfileCreateRequest,
   MemberProfileImageTypeUpdateRequest,
-  ProfileImageTypeReadResponse
+  ProfileImageTypeReadResponse,
 } from '@commons/types/openapiGenerator';
 
 interface IPatchMemberProfile {
   openKakaoRoomUrl: string;
   name: string;
-  phoneNumber: string;
   schoolName: string;
 }
 

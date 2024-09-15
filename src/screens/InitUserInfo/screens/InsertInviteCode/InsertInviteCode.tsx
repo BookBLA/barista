@@ -79,7 +79,6 @@ const InsertInviteCode = () => {
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
       //schoolStatus Get api 호출
