@@ -1,5 +1,5 @@
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
-import { ChatMessage, User } from '@commons/api/chat/chat.types';
+import { ChatMessage } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
@@ -11,19 +11,19 @@ import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
-const partner = {
-  avatar: require('@assets/images/img/profile_ex1.png'),
-  school: '서울대학교',
-  smokingStatus: '흡연',
-  mbti: 'ENFP',
-  height: 170,
-  nickname: '김서울',
-};
+// const partner = {
+//   avatar: require('@assets/images/img/profile_ex1.png'),
+//   school: '서울대학교',
+//   smokingStatus: '흡연',
+//   mbti: 'ENFP',
+//   height: 170,
+//   nickname: '김서울',
+// };
 
 const ChatDetail: React.FC = () => {
   const route = useRoute();
   const navigation = useNavigation();
-  const { user } = route.params as { user: User };
+  const { partner } = route.params as { user: { name: string; avatar: any; lastMessage: string } };
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
@@ -34,8 +34,8 @@ const ChatDetail: React.FC = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
-  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
+  const [isReportModalVisible, setIsReportModalVisible] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -74,11 +74,10 @@ const ChatDetail: React.FC = () => {
 
   const loadChatMessages = useCallback(async () => {
     try {
-      const response = await fetchChatMessages(user.id);
+      const response = await fetchChatMessages(partner.id);
       if (response.isSuccess && Array.isArray(response.result)) {
         const sortedMessages = response.result.sort(
-          (a: { timestamp: string | number | Date }, b: { timestamp: string | number | Date }) =>
-            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
+          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
         );
         setMessages(sortedMessages);
         setDisplayedMessages(sortedMessages.slice(0, 100));
@@ -101,7 +100,7 @@ const ChatDetail: React.FC = () => {
       setMessages(dummyMessages);
       setDisplayedMessages(dummyMessages);
     }
-  }, [user.id]);
+  }, [partner.id]);
 
   useEffect(() => {
     setIsModalVisible(true);
@@ -136,7 +135,7 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
-    const isFirstMessage = item.id === (1).toString();
+    const isFirstMessage = item.id === '1';
     const isUserMessage = item.sender === 'user';
     const showAvatar =
       index === 0 ||
@@ -149,6 +148,7 @@ const ChatDetail: React.FC = () => {
           <S.ProfileSection>
             <S.ProfileAvatar source={partner.avatar} />
             <S.ProfileInfo>
+              <S.ProfileName>{partner.name}</S.ProfileName>
               <S.ProfileSchool>{partner.school}</S.ProfileSchool>
               <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
               <S.LibraryButton>
@@ -172,7 +172,7 @@ const ChatDetail: React.FC = () => {
         <S.messageItemInner isUserMessage={isUserMessage}>
           {!isUserMessage && showAvatar && <S.messageAvatar source={partner.avatar} />}
           <S.messageContent isUserMessage={isUserMessage}>
-            {!isUserMessage && <S.messageUsername>{partner.nickname}</S.messageUsername>}
+            {!isUserMessage && <S.messageUsername>{partner.name}</S.messageUsername>}
             <S.messageRow isUserMessage={isUserMessage}>
               {isUserMessage && <S.readReceipt source={require('@assets/images/icons/unRead.png')} />}
               {isUserMessage && (
@@ -196,7 +196,7 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleInfoPress = () => {
-    navigation.navigate('ChatInfoScreen', { partner });
+    navigation.navigate('ChatInfoScreen', { partner, handleReport });
   };
 
   const scrollToBottom = () => {
@@ -211,7 +211,7 @@ const ChatDetail: React.FC = () => {
         </S.backButton>
         <S.headerTitle>
           <S.smallAvatar source={partner.avatar} />
-          <S.headerText>{partner.nickname}</S.headerText>
+          <S.headerText>{partner.name}</S.headerText>
         </S.headerTitle>
         <InfoButton onPress={handleInfoPress} />
       </S.header>

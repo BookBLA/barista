@@ -1,3 +1,5 @@
+// ChatInfoScreen.tsx
+
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
@@ -6,17 +8,14 @@ import { styles } from './ChatInfoScreen.styles';
 import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
-  const { user } = route.params;
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true); // 스위치 상태 관리
-  const patner = {
-    avatar: require('@assets/images/img/profile_ex1.png'),
-    school: '서울대학교',
-    smokingStatus: '흡연',
-    mbti: 'ENFP',
-    height: 170,
-    nickname: '김서울',
-  };
+  const { partner, handleReport } = route.params;
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const navigation = useNavigation();
+
+  const reportUser = () => {
+    navigation.goBack();
+    handleReport();
+  };
 
   const toggleSwitch = () => setIsNotificationEnabled((previousState) => !previousState);
 
@@ -30,8 +29,8 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.profileSection}>
-        <Image source={patner.avatar} style={styles.avatar} />
-        <Text style={styles.username}>{patner.nickname}</Text>
+        <Image source={partner.avatar} style={styles.avatar} />
+        <Text style={styles.name}>{partner.name}</Text>
       </View>
 
       <View style={styles.optionsSection}>
@@ -52,13 +51,13 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItem}>
+        <TouchableOpacity style={styles.optionItem} onPress={reportUser}>
           <Ionicons name="alert-circle-outline" size={24} color="#1D2E61" />
           <Text style={styles.optionText}>신고하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItem}>
+        <TouchableOpacity style={styles.optionItem} onPress={() => navigation.navigate('Chat')}>
           <Ionicons name="exit-outline" size={24} color="red" />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>

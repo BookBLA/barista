@@ -37,6 +37,10 @@ const ChatScreen: React.FC = () => {
             lastMessage: '안녕하세요!',
             timestamp: '오후 3:01',
             unreadCount: 1,
+            smokingStatus: '흡연',
+            school: '서울대학교',
+            mbti: 'INFP',
+            height: 180,
           },
           {
             id: '2',
@@ -45,6 +49,10 @@ const ChatScreen: React.FC = () => {
             lastMessage: '반갑습니다.',
             timestamp: '오후 3:02',
             unreadCount: 0,
+            smokingStatus: '비흡연',
+            school: '연세대학교',
+            mbti: 'ENFP',
+            height: 175,
           },
           {
             id: '3',
@@ -53,6 +61,10 @@ const ChatScreen: React.FC = () => {
             lastMessage: '만나서 반가워요!',
             timestamp: '오후 3:03',
             unreadCount: 0,
+            smokingStatus: '흡연',
+            school: '고려대학교',
+            mbti: 'INTJ',
+            height: 170,
           },
         ];
         setChats(dummyChats);
@@ -84,7 +96,7 @@ const ChatScreen: React.FC = () => {
     <View>
       <LongPressGestureHandler onHandlerStateChange={(event) => handleLongPress(event, item)} minDurationMs={800}>
         <View>
-          <S.ChatItem onPress={() => navigation.navigate('ChatDetail', { user: item })}>
+          <S.ChatItem onPress={() => navigation.navigate('ChatDetail', { partner: item })}>
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
               <S.ChatName>{item.name}</S.ChatName>
@@ -114,7 +126,7 @@ const ChatScreen: React.FC = () => {
               <S.ModalText>{selectedChat?.name} 채팅방</S.ModalText>
               <TouchableOpacity
                 onPress={() => {
-                  /* Implement push notifications mute logic here */
+                  // 푸시 알람 끄기 로직 구현
                 }}
               >
                 <S.ButtonContainer>
@@ -124,7 +136,7 @@ const ChatScreen: React.FC = () => {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  /* Implement exit chat room logic here */
+                  // 채팅방 나가기 로직 구현
                 }}
               >
                 <S.ButtonContainer>

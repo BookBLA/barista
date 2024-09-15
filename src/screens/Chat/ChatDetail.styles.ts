@@ -33,11 +33,17 @@ export const ProfileInfo = styled.View`
   align-items: center;
 `;
 
-export const ProfileSchool = styled.Text`
+export const ProfileName = styled.Text`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
   color: #333;
+`;
+
+export const ProfileSchool = styled.Text`
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
 `;
 
 export const ProfileDetails = styled.Text`
