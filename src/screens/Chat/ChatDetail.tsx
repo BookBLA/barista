@@ -71,19 +71,21 @@ const ChatDetail: React.FC = () => {
     try {
       const response = await fetchChatMessages(partner.id, 1, 100);
 
-      console.log('Chat messages fetched:', JSON.stringify(response));
-
-      if (response.isSuccess && Array.isArray(response.result)) {
-        const sortedMessages = response.result.sort(
-          (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime(),
-        );
-        setMessages(sortedMessages);
-        setDisplayedMessages(sortedMessages.slice(0, 100));
+      // 응답 성공 및 결과 데이터가 빈 배열인지 확인
+      if (response.isSuccess && response.result && response.result.content && response.result.content.length > 0) {
+        setMessages(response.result.content);
+        setDisplayedMessages(response.result.content.slice(0, 100));
+      } else if (response.isSuccess && response.result.empty) {
+        // 메시지가 빈 경우 처리
+        console.warn('No messages available.');
+        setMessages([]);
+        setDisplayedMessages([]);
       } else {
-        throw new Error('Failed to load messages');
+        throw new Error('Failed to load messages or unexpected data structure');
       }
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
+      // 오류 발생 시 가짜 메시지 생성
       const dummyMessages = Array.from({ length: 100 }, (_, index) => ({
         id: (100 - index).toString(),
         text: (100 - index) % 3 === 0 ? `파트너의 메시지 ${100 - index}` : `사용자의 메시지 ${100 - index}`,

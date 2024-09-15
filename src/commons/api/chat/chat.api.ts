@@ -17,8 +17,6 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
   try {
     const response = await Get(`chat?roomId=${userId}&page=${page}&size=${size}`);
 
-    console.log('Chat messages fetched:', JSON.parse(JSON.stringify(response)));
-
     return response;
   } catch (error) {
     console.error('Error fetching chat messages:', error);
