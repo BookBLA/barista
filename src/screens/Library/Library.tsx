@@ -29,8 +29,11 @@ import { EStatusCode } from '@commons/types/statusCode';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp, useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
+import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
+import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
@@ -45,9 +48,6 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
-import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -422,8 +422,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
         {/*  </S.UserModificationStatusBar>*/}
         {/*)}*/}
         <S.UserInfoView>
-          {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
-          <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
+          <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
             <S.CircularImage source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }} />
             {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
             {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
