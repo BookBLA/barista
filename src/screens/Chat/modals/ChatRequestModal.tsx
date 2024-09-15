@@ -6,7 +6,9 @@ import { ChatRequestModalProps } from './ChatRequestModal.types';
 
 const ChatRequestModal: React.FC<ChatRequestModalProps> = ({ visible, onAccept, onDecline, onReport }) => {
   return (
-    <Modal transparent visible={visible} animationType="slide">
+    // <Modal transparent visible={visible} animationType="slide"
+    // flash로 아래에서 위로 올라오는 애니메이션을 사용하지 않고, fade로 투명도가 변하는 애니메이션을 사용합니다.
+    <Modal transparent visible={visible} animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.modalContainer}>
           <Text style={styles.title}>닉네임님의 매칭 요청을 수락하시겠어요?</Text>

@@ -77,52 +77,6 @@ export const headerText = styled.Text`
   font-weight: bold;
 `;
 
-export const profileSection = styled.View`
-  flex-direction: row;
-  align-items: center;
-  padding: 15px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e0e0e0;
-`;
-
-export const profileAvatar = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  margin-right: 15px;
-`;
-
-export const profileInfo = styled.View`
-  flex: 1;
-`;
-
-export const profileSchool = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 3px;
-  color: #333;
-`;
-
-export const profileDetails = styled.Text`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 5px;
-`;
-
-export const libraryButton = styled.TouchableOpacity`
-  background-color: #007aff;
-  padding-vertical: 8px;
-  padding-horizontal: 12px;
-  border-radius: 20px;
-  align-self: flex-start;
-`;
-
-export const libraryButtonText = styled.Text`
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 600;
-`;
-
 export const dateSeparator = styled.View`
   align-items: center;
   margin-vertical: 15px;
@@ -184,7 +138,6 @@ export const messageText = styled.Text<{ isUserMessage: boolean }>`
   color: ${(props) => (props.isUserMessage ? '#ffffff' : '#000000')};
 `;
 
-// img
 export const readReceipt = styled.Image`
   width: 16px;
   height: 8px;
@@ -194,16 +147,7 @@ export const readReceipt = styled.Image`
 export const timestamp = styled.Text<{ isUserMessage: boolean }>`
   font-size: 11px;
   color: #999999;
-  margin-top: 2px;
-  align-self: flex-end;
   margin: 0 4px;
-`;
-
-export const readStatus = styled.View<{ isUserMessage: boolean }>`
-  margin-top: 2px;
-  margin-left: 4px;
-  align-self: flex-end;
-  display: ${(props) => (props.isUserMessage ? 'flex' : 'none')};
 `;
 
 export const loadingIndicator = styled.ActivityIndicator`
@@ -258,4 +202,58 @@ export const sendButtonIcon = styled.Image`
 
 export const backButton = styled.TouchableOpacity`
   padding: 5px;
+`;
+
+// Decline Modal Styles
+export const DeclineModal = styled.View`
+  width: 320px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
+`;
+
+export const ModalTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+export const ModalDescription = styled.Text`
+  margin-bottom: 20px;
+  color: #555;
+  text-align: center;
+`;
+
+export const ModalButtonContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  padding-horizontal: 10px;
+`;
+
+export const DeclineButton = styled.TouchableOpacity`
+  padding: 14px 36px;
+  background-color: #f5e1c4;
+  border-radius: 20px;
+  align-items: center;
+  margin-right: 5px;
+`;
+
+export const DeclineButtonText = styled.Text`
+  color: #333;
+  font-weight: bold;
+`;
+
+export const ReviewButton = styled.TouchableOpacity`
+  padding: 14px 36px;
+  background-color: #1d2e61;
+  border-radius: 20px;
+  align-items: center;
+  margin-left: 5px;
+`;
+
+export const ReviewButtonText = styled.Text`
+  color: white;
+  font-weight: bold;
 `;

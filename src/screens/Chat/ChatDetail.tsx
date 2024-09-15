@@ -1,15 +1,12 @@
-// ChatDetail.tsx
-
-import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Animated, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage, User } from '@commons/api/chat/chat.types';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequestModal';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Animated, FlatList, Modal, View } from 'react-native';
+import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
@@ -35,6 +32,7 @@ const ChatDetail: React.FC = () => {
   const showToast = useToastStore((state) => state.showToast);
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -45,12 +43,16 @@ const ChatDetail: React.FC = () => {
 
   const handleDecline = () => {
     setIsModalVisible(false);
-    showToast({ content: '상대방이 채팅 요청을 거절했습니다.' });
+    setIsDeclineModalVisible(true); // 거절 모달을 보여줍니다.
   };
 
   const handleReport = () => {
     setIsModalVisible(false);
     showToast({ content: '신고가 접수되었습니다.' });
+  };
+
+  const closeDeclineModal = () => {
+    setIsDeclineModalVisible(false);
   };
 
   const loadChatMessages = useCallback(async () => {
@@ -97,10 +99,8 @@ const ChatDetail: React.FC = () => {
   }, [scrollY]);
 
   useEffect(() => {
-    // 페이지에 진입할 때 탭을 숨김
     navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
 
-    // 페이지에서 나갈 때 탭을 다시 보이게 설정
     return () => {
       navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
     };
@@ -120,7 +120,6 @@ const ChatDetail: React.FC = () => {
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
     const isFirstMessage = item.id === (1).toString();
-
     const isUserMessage = item.sender === 'user';
     const showAvatar =
       index === 0 ||
@@ -237,6 +236,33 @@ const ChatDetail: React.FC = () => {
         onDecline={handleDecline}
         onReport={handleReport}
       />
+
+      {/* 거절 모달 */}
+      <Modal visible={isDeclineModalVisible} transparent animationType="fade">
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+        >
+          <S.DeclineModal>
+            <S.ModalTitle>엽서를 거절하시겠어요?</S.ModalTitle>
+            <S.ModalDescription>
+              엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
+            </S.ModalDescription>
+            <S.ModalButtonContainer>
+              <S.DeclineButton
+                onPress={() => {
+                  showToast({ content: '엽서를 거절했습니다.' });
+                  closeDeclineModal();
+                }}
+              >
+                <S.DeclineButtonText>거절하기</S.DeclineButtonText>
+              </S.DeclineButton>
+              <S.ReviewButton onPress={closeDeclineModal}>
+                <S.ReviewButtonText>다시 보기</S.ReviewButtonText>
+              </S.ReviewButton>
+            </S.ModalButtonContainer>
+          </S.DeclineModal>
+        </View>
+      </Modal>
     </S.wrapper>
   );
 };
