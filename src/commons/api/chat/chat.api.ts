@@ -89,6 +89,21 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
   }
 };
 
+export const switchAlert = async (roomId: string, isAlert: boolean) => {
+  try {
+    // chat/room/alert?is_alert={is_alert}&roomId={roomId}
+
+    const response = await Post(`chat/room/alert?isAlert=${isAlert}&roomId=${roomId}`);
+
+    console.log('Alert switched:', response);
+
+    return response;
+  } catch (error) {
+    console.error('Error switching alert:', error);
+    throw error;
+  }
+};
+
 // WebSocket을 사용하여 메시지를 JSON으로 전송하는 함수
 export const sendMessageViaWebSocket = (message: any) => {
   try {

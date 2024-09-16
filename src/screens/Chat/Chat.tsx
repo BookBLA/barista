@@ -1,4 +1,4 @@
-import { exitChatRoom, fetchChatList } from '@commons/api/chat/chat.api';
+import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import WebSocketClient from '@commons/websocket/websocketClient';
@@ -15,6 +15,7 @@ const ChatScreen: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
   const [error, setError] = useState('');
   const navigation = useNavigation();
+  const memberID = '1'; // 사용자 ID
 
   useHeaderControl({
     title: '채팅',
@@ -23,12 +24,13 @@ const ChatScreen: React.FC = () => {
 
   useEffect(() => {
     const ws = WebSocketClient;
-    ws.connect(); // WebSocket 연결 시작
+    ws.connect(memberID, ''); // 'roomID'는 구독에 필요하지 않으므로 빈 문자열로 처리
+    ws.subscribeToChat(memberID); // 특정 사용자 채팅 구독
 
     return () => {
-      ws.disconnect(); // 컴포넌트가 언마운트될 때만 WebSocket 연결 해제
+      ws.disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
     };
-  }, []);
+  }, [memberID]);
 
   useEffect(() => {
     const loadChats = async () => {
@@ -70,7 +72,6 @@ const ChatScreen: React.FC = () => {
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
-
     setIsModalVisible(true);
   };
 
@@ -86,15 +87,11 @@ const ChatScreen: React.FC = () => {
   };
 
   const confirmExitChat = () => {
-    // 모달을 닫음
     setIsModalVisible(false);
-
-    // 나가기 확인 모달을 띄움
     setIsExitConfirmVisible(true);
   };
 
   const handleExitChat = () => {
-    // 실제 나가기 기능을 실행
     exitChatRoom(selectedChat?.id);
     setChats(chats.filter((chat) => chat.id !== selectedChat?.id));
     setIsExitConfirmVisible(false);
@@ -157,13 +154,19 @@ const ChatScreen: React.FC = () => {
               <S.ModalText>{selectedChat?.name} 채팅방</S.ModalText>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('푸시 알람 끄기');
+                  switchAlert(selectedChat?.id, !selectedChat?.isAlert);
                   closeModal();
                 }}
               >
                 <S.ButtonContainer>
-                  <S.ModalIcon source={require('@assets/images/icons/unactive_alert.png')} />
-                  <S.ModalOptionText>푸시 알람 끄기</S.ModalOptionText>
+                  <S.ModalIcon
+                    source={
+                      selectedChat?.isAlert
+                        ? require('@assets/images/icons/active_alert.png') // 활성화 알람 이미지
+                        : require('@assets/images/icons/unactive_alert.png') // 비활성화 알람 이미지
+                    }
+                  />
+                  <S.ModalOptionText>푸시 알림 끄기</S.ModalOptionText>
                 </S.ButtonContainer>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmExitChat}>
