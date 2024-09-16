@@ -2,7 +2,6 @@ import homeBright from '@assets/images/icons/HomeBright.png';
 import homeDark from '@assets/images/icons/HomeDark.png';
 import libraryBright from '@assets/images/icons/LibraryBright.png';
 import libraryDark from '@assets/images/icons/LibraryDark.png';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { colors } from '@commons/styles/variablesStyles';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -14,7 +13,6 @@ import { Image, Platform } from 'react-native';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
-  useManageMargin();
 
   return (
     <Tab.Navigator
@@ -31,13 +29,17 @@ const TapScreens = () => {
         tabBarStyle: {
           height: '8%',
           ...Platform.select({
-            ios: {},
+            ios: {
+              paddingTop: 8,
+              paddingBottom: 10,
+            },
             android: {
               paddingTop: 8,
               paddingBottom: 10,
             },
           }),
         },
+        unmountOnBlur: true,
       }}
     >
       <Tab.Screen
@@ -93,6 +95,7 @@ const TapScreens = () => {
               style={{ width: 21, height: 21 }}
             />
           ),
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>
