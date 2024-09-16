@@ -7,8 +7,8 @@ import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
 import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -20,7 +20,7 @@ import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-nat
 import * as S from '../../InitUserInfo.styles';
 
 const InsertInviteCode = () => {
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '초대 코드 입력',
     left: false,
@@ -28,10 +28,11 @@ const InsertInviteCode = () => {
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, handleReset } = useMovePage();
   const { userInfo } = useUserStore();
+  const { resetUserInfo } = useUserStore();
+  const { resetAgreement } = useAgreementStore();
 
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
-  const schoolStatus = 'OPEN'; // 'OPEN' or 'CLOSE'
 
   const callInviteCodeVerifyApi = async () => {
     console.log(isSuccess);
@@ -79,9 +80,10 @@ const InsertInviteCode = () => {
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
+      resetUserInfo();
+      resetAgreement();
       //schoolStatus Get api 호출
       //schoolStatus가 "OPEN"이면 completePage로 이동
       const schoolStatusResponse = await getMemberStatusesApi();

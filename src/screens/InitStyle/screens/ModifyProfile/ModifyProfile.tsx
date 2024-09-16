@@ -1,7 +1,6 @@
 import { getProfileImageType, patchMemberProfileImageApi } from '@commons/api/members/profile/memberProfile.api';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
-import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
@@ -14,15 +13,15 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const ModifyProfile = () => {
   const route = useRoute<Props>();
-  const profileId = route.params?.profileId;
+  const profileUrl = route.params?.profileUrl;
   const showToast = useToastStore((state) => state.showToast);
   useHeaderControl({
     title: '프로필 사진 수정',
     left: true,
   });
-  useManageMargin();
-  const { updateStyleInfo, styleInfo } = useStyleStore();
-  const [profile, setProfile] = useState(styleInfo.profileImageTypeId || profileId);
+  useAppUIManager();
+  // const { updateStyleInfo, styleInfo } = useStyleStore();
+  const [profile, setProfile] = useState(profileUrl);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
 
   useEffect(() => {
@@ -48,7 +47,8 @@ const ModifyProfile = () => {
 
   const callPatchProfileImage = async () => {
     try {
-      const response = await patchMemberProfileImageApi({ profileImageTypeId: styleInfo.profileImageTypeId });
+      const profileImageId = profileList.find((item) => item.profileImageUrl === profile)?.profileImageId;
+      const response = await patchMemberProfileImageApi({ profileImageTypeId: profileImageId as number });
       showToast({ content: '프로필 사진이 수정되었습니다.' });
     } catch (error) {
       console.log('ERROR) patchProfileImageType', error);
@@ -61,13 +61,13 @@ const ModifyProfile = () => {
         <S.ContentStyled style={{ marginBottom: 38, marginTop: 30 }}>프로필 사진을 선택해 주세요</S.ContentStyled>
 
         <Image
-          source={{ uri: profileList.find((item) => item.profileImageId === profile)?.profileImageUrl ?? '' }}
+          source={{ uri: profileList.find((item) => item.profileImageUrl === profile)?.profileImageUrl ?? '' }}
           style={{ width: 161, height: 161, marginBottom: 40 }}
         />
 
         <S.RowStyled style={{ alignItems: 'center', width: '73%' }}>
           {profileList.map((item) =>
-            item.profileImageId === profile ? (
+            item.profileImageUrl === profile ? (
               <LinearGradient
                 key={item.profileImageId}
                 style={{
@@ -84,8 +84,8 @@ const ModifyProfile = () => {
                 <TouchableOpacity
                   key={item.profileImageId}
                   onPress={() => {
-                    setProfile(item.profileImageId);
-                    updateStyleInfo('profileImageTypeId', item.profileImageId);
+                    setProfile(item.profileImageUrl);
+                    // updateStyleInfo('profileImageTypeId', item.profileImageId);
                   }}
                   style={{ borderColor: 'white', borderWidth: 3.5, borderRadius: 100 }}
                 >
@@ -96,8 +96,8 @@ const ModifyProfile = () => {
               <TouchableOpacity
                 key={item.profileImageId}
                 onPress={() => {
-                  setProfile(item.profileImageId);
-                  updateStyleInfo('profileImageTypeId', item.profileImageId);
+                  setProfile(item.profileImageUrl);
+                  // updateStyleInfo('profileImageTypeId', item.profileImageId);
                 }}
               >
                 <Image source={{ uri: item.profileImageUrl }} style={{ width: 53, height: 53 }} />

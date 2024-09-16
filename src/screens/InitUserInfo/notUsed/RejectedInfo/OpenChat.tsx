@@ -1,6 +1,6 @@
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useCounter } from '@commons/store/features/counter/useCounter';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
@@ -10,7 +10,7 @@ import { TitleProgress } from '@screens/InitUserInfo/notUsed/TitleProgress';
 import { Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 
 const OpenChat = () => {
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '채팅방 등록',
     left: false,

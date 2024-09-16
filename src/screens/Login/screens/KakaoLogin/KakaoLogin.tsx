@@ -1,6 +1,6 @@
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { INJECTED_JAVASCRIPT, KAKAO_URL } from '@screens/Login/LoginStack.constants';
 import * as S from '@screens/Login/LoginStack.styles';
@@ -12,7 +12,7 @@ import { useKakaoLogin } from './hooks/useKakakoLogin';
 
 const KakaoLogin = () => {
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   const { movePage } = useMovePage();
   const { handleKakaoLogin } = useKakaoLogin();
   const { authCode, getAuthCode } = useAuthCode();

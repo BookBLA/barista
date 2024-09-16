@@ -3,7 +3,7 @@ import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import React from 'react';
 import { Image, View } from 'react-native';
@@ -13,7 +13,7 @@ import { TitleProgress } from './TitleProgress';
 const CommStyle = () => {
   useScreenLogger();
   const { updateStyleInfo, styleInfo } = useStyleStore();
-  useManageMargin();
+  useAppUIManager();
   const { movePage } = useMovePage();
 
   return (

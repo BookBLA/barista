@@ -1,14 +1,16 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import React, { useEffect, useState } from 'react';
+import { ActivityIndicator } from 'react-native';
 import { initConnection, setup, useIAP, withIAPContext } from 'react-native-iap';
 import { colors } from '../../../../commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
+import { ProductContentProps } from './Product.types';
 import ProductList from './components/ProductList';
-import { ProductContentProps } from './components/ProductList.types';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -19,7 +21,12 @@ const Product = () => {
     free: <Header />,
   });
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
+
   const [productID, setProductID] = useState<ProductContentProps[]>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const getProductsByID = async () => {
     try {
@@ -29,11 +36,12 @@ const Product = () => {
     }
   };
 
-  const { products, getProducts, finishTransaction, currentPurchase } = useIAP();
+  const { products, getProducts } = useIAP();
 
   useEffect(() => {
-    if (products.length !== 0)  {addProductInfo(); }
-    else {
+    if (products.length !== 0) {
+      addProductInfo();
+    } else {
       initPurchase();
     }
   }, [products]);
@@ -65,31 +73,36 @@ const Product = () => {
       }
     });
     setProductID(addDiscount);
+    setLoading(false);
   };
 
   return (
     <S.Wrapper>
-      <S.BodyWrapper>
-        <CustomText
-          size="10"
-          font="fontRegular"
-          color={colors.textGray4}
-          style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16 }}
-        >
-          책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
-          책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
-          책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
-        </CustomText>
-        <ProductList
-          props={{
-            title: '무료 책갈피 받기',
-            krwPrice: '광고 시청 후\n책갈피 10개 받기',
-            productId: 'ad_free_bookmarks',
-          }}
-          index={0}
-        />
-        {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
-      </S.BodyWrapper>
+      {loading ? (
+        <ActivityIndicator size="large" color={colors.primary} /> // 로딩 표시 추가
+      ) : (
+        <S.BodyWrapper>
+          <CustomText
+            size="10"
+            font="fontRegular"
+            color={colors.textGray4}
+            style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16 }}
+          >
+            책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
+            책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
+            책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
+          </CustomText>
+          <ProductList
+            props={{
+              title: '무료 책갈피 받기',
+              krwPrice: '광고 시청 후\n책갈피 10개 받기',
+              productId: 'ad_free_bookmarks',
+            }}
+            index={0}
+          />
+          {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+        </S.BodyWrapper>
+      )}
     </S.Wrapper>
   );
 };

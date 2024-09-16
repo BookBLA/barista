@@ -1,6 +1,6 @@
 import { RouteProp } from '@react-navigation/native';
 
 export type ProfileProps = {
-  ModifyProfile?: { profileId: number };
+  ModifyProfile?: { profileUrl: string };
 };
 export type Props = RouteProp<ProfileProps, 'ModifyProfile'>;

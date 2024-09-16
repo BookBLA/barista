@@ -1,7 +1,7 @@
 import { postMemberStyleApi } from '@commons/api/members/styles/memberStyle.api';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import { colors } from '@commons/styles/variablesStyles';
@@ -13,7 +13,7 @@ import { TitleProgress } from './TitleProgress';
 
 const PersonalQuestion = () => {
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   const [question, setQuestion] = useState('');
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const { handleLimitTextLine } = useLimitTextLine();

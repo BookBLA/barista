@@ -5,13 +5,12 @@ import ModifyMBTI from '@commons/components/Specific/ModifyMBTI/ModifyMBTI';
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
-import { useStyleStore } from '@commons/store/members/style/useStyle';
-import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { MemberInformationReadResponse } from '@commons/types/openapiGenerator';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import * as T from '@screens/InitStyle/InitStyle.styles';
@@ -27,10 +26,9 @@ const ModifyStyle = () => {
   useScreenLogger();
   const { handleLimitTextLine } = useLimitTextLine();
   const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
-  const { updateUserInfo, userInfo } = useUserStore();
-  const { updateStyleInfo, styleInfo, updateStyleInfoGroup } = useStyleStore();
   const showToast = useToastStore((state) => state.showToast);
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
+  const [styleInfo, setStyleInfo]=useState<MemberInformationReadResponse>()
 
   const handleMovePosition = (sectionIndex: number) => {
     let yOffset = 0;
@@ -60,20 +58,12 @@ const ModifyStyle = () => {
     }
   };
 
-  useManageMargin();
+  useAppUIManager();
 
   const callGetStyleApi = async () => {
     try {
       const response = await GetMyInfoApi();
-      updateUserInfo({ name: response.result.name });
-      // updateStyleInfo('mbti', response.result.mbti);
-      // updateStyleInfo('smokeType', response.result.smokeType);
-      // updateStyleInfo('height', response.result.height);
-      updateStyleInfoGroup({
-        mbti: response.result.mbti,
-        smokeType: response.result.smokeType,
-        height: response.result.height,
-      });
+      setStyleInfo(response.result);
       const newMbti = response?.result?.mbti?.split('') ?? ['E', 'S', 'T', 'J']; // Split the mbti string into an array
       setMbti([...newMbti]); // Update the mbti array with the newMbti array
     } catch (error) {
@@ -86,25 +76,22 @@ const ModifyStyle = () => {
   }, []);
 
   const callPutMyInfoApi = async () => {
-    if (styleInfo.height < 140 || styleInfo.height > 230) {
+    if (styleInfo?.height as number < 140 || styleInfo?.height as number > 230) {
       showToast({
         content: '키는 140~230 사이의 값만 가능합니다!',
       });
       return;
     }
     try {
-      console.log('userInfo', userInfo.name);
       const response = await PutMyInfoApi({
-        name: userInfo.name,
+        name: styleInfo?.name as string,
         mbti: mbti.join(''),
-        smokeType: styleInfo.smokeType,
-        height: styleInfo.height,
+        smokeType: styleInfo?.smokeType as string,
+        height: styleInfo?.height as number,
       });
-      console.log('putMyInfoApi', response);
       showToast({
         content: '회원정보가 수정되었습니다.',
       });
-      updateStyleInfo('mbti', mbti.join(''));
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       console.log('ERROR) putMyInfoApi', error);
@@ -117,12 +104,12 @@ const ModifyStyle = () => {
   const handleChange = (input: string) => {
     const sanitizedInput = input.replace(/[^0-9]/g, '');
     const parsedInput = sanitizedInput === '' ? '' : parseInt(sanitizedInput);
-    updateStyleInfo('height', parsedInput);
+    setStyleInfo({ ...styleInfo, height: parsedInput as number });
   };
 
   const handleChangeName = (input: string) => {
     if (isHangul(input) || input === '') {
-      updateUserInfo({ name: input });
+      setStyleInfo({ ...styleInfo, name: input });
     }
   };
 
@@ -181,11 +168,11 @@ const ModifyStyle = () => {
                 </Text>
                 <S.TextFiledStyled
                   maxLength={10} // 최대 길이 제한
-                  defaultValue={userInfo.name}
+                  defaultValue={styleInfo?.name}
                   onChangeText={(text: string) => handleChangeName(text)}
                   placeholder="닉네임"
                   placeholderTextColor={colors.textGray2}
-                  value={userInfo.name}
+                  value={styleInfo?.name}
                 />
               </S.ViewStyled>
               <S.ViewStyled height={320}>
@@ -199,22 +186,22 @@ const ModifyStyle = () => {
                 <S.ContentStyled>흡연 여부를 알려주세요.</S.ContentStyled>
                 <S.RowStyled style={{ width: '90%' }}>
                   <T.ButtonStyled
-                    isSelect={styleInfo.smokeType === '흡연'}
-                    onPress={() => updateStyleInfo('smokeType', '흡연')}
+                    isSelect={styleInfo?.smokeType === '흡연'}
+                    onPress={() => setStyleInfo({ ...styleInfo, smokeType: '흡연' })}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.smokeType === '흡연'}>흡연</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo?.smokeType === '흡연'}>흡연</S.ButtonTextStyled>
                   </T.ButtonStyled>
                   <T.ButtonStyled
-                    isSelect={styleInfo.smokeType === '비흡연'}
-                    onPress={() => updateStyleInfo('smokeType', '비흡연')}
+                    isSelect={styleInfo?.smokeType === '비흡연'}
+                    onPress={() => setStyleInfo({ ...styleInfo, smokeType: '비흡연' })}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.smokeType === '비흡연'}>비흡연</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo?.smokeType === '비흡연'}>비흡연</S.ButtonTextStyled>
                   </T.ButtonStyled>
                   <T.ButtonStyled
-                    isSelect={styleInfo.smokeType === '가끔'}
-                    onPress={() => updateStyleInfo('smokeType', '가끔')}
+                    isSelect={styleInfo?.smokeType === '가끔'}
+                    onPress={() => setStyleInfo({ ...styleInfo, smokeType: '가끔' })}
                   >
-                    <S.ButtonTextStyled isSelect={styleInfo.smokeType === '가끔'}>가끔</S.ButtonTextStyled>
+                    <S.ButtonTextStyled isSelect={styleInfo?.smokeType === '가끔'}>가끔</S.ButtonTextStyled>
                   </T.ButtonStyled>
                 </S.RowStyled>
               </S.ViewStyled>
@@ -222,11 +209,11 @@ const ModifyStyle = () => {
                 <S.ContentStyled style={{ marginBottom: 38 }}>키를 알려주세요</S.ContentStyled>
                 <S.TextFiledStyled
                   maxLength={3} // 최대 길이 제한
-                  defaultValue={styleInfo.height !== 0 ? styleInfo.height.toString() : ''}
+                  defaultValue={styleInfo?.height !== 0 ? styleInfo?.height?.toString() : ''}
                   onChangeText={(text: string) => handleChange(text)}
                   placeholder="nnn cm"
                   placeholderTextColor={colors.textGray2}
-                  value={styleInfo.height !== 0 ? styleInfo.height.toString() : ''}
+                  value={styleInfo?.height !== 0 ? styleInfo?.height?.toString() : ''}
                   keyboardType="numeric"
                 />
               </S.ViewStyled>
