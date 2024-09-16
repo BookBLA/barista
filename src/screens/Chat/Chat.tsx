@@ -4,13 +4,14 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import WebSocketClient from '@commons/websocket/websocketClient';
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { Image, Modal, TouchableOpacity, View } from 'react-native';
+import { Image, Modal, Text, TouchableOpacity, View } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 import * as S from './Chat.styles'; // 스타일이 올바르게 적용되었는지 확인하세요.
 
 const ChatScreen: React.FC = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isExitConfirmVisible, setIsExitConfirmVisible] = useState(false); // 나가기 확인 모달 상태
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
   const [error, setError] = useState('');
   const navigation = useNavigation();
@@ -69,6 +70,7 @@ const ChatScreen: React.FC = () => {
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
+
     setIsModalVisible(true);
   };
 
@@ -81,6 +83,22 @@ const ChatScreen: React.FC = () => {
     if (event.nativeEvent.state === State.ACTIVE) {
       openModal(chat);
     }
+  };
+
+  const confirmExitChat = () => {
+    // 모달을 닫음
+    setIsModalVisible(false);
+
+    // 나가기 확인 모달을 띄움
+    setIsExitConfirmVisible(true);
+  };
+
+  const handleExitChat = () => {
+    // 실제 나가기 기능을 실행
+    exitChatRoom(selectedChat?.id);
+    setChats(chats.filter((chat) => chat.id !== selectedChat?.id));
+    setIsExitConfirmVisible(false);
+    closeModal();
   };
 
   const renderChatItem = ({ item }: { item: ChatType }) => (
@@ -148,14 +166,7 @@ const ChatScreen: React.FC = () => {
                   <S.ModalOptionText>푸시 알람 끄기</S.ModalOptionText>
                 </S.ButtonContainer>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => {
-                  console.log('채팅방 나가기');
-                  exitChatRoom(selectedChat?.id);
-                  setChats(chats.filter((chat) => chat.id !== selectedChat?.id));
-                  closeModal();
-                }}
-              >
+              <TouchableOpacity onPress={confirmExitChat}>
                 <S.ButtonContainer>
                   <S.ModalIcon source={require('@assets/images/icons/exit.png')} />
                   <S.ModalOptionText>채팅방 나가기</S.ModalOptionText>
@@ -164,6 +175,23 @@ const ChatScreen: React.FC = () => {
             </S.ModalContent>
           </S.ModalContainer>
         </TouchableOpacity>
+      </Modal>
+
+      {/* 나가기 확인 모달 */}
+      <Modal visible={isExitConfirmVisible} transparent animationType="fade">
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <View style={{ width: 280, padding: 20, backgroundColor: 'white', borderRadius: 10, paddingBottom: 10 }}>
+            <Text style={{ fontSize: 18, marginBottom: 20 }}>채팅방을 나가시겠어요?</Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+              <TouchableOpacity onPress={() => setIsExitConfirmVisible(false)}>
+                <Text style={{ padding: 10 }}>취소</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={handleExitChat}>
+                <Text style={{ padding: 10, color: 'red' }}>나가기</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
       </Modal>
     </>
   );
