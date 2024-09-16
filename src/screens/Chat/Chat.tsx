@@ -1,12 +1,14 @@
 import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import WebSocketClient from '@commons/websocket/websocketClient';
 import { useNavigation } from '@react-navigation/native';
 import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
 import React, { useEffect, useState } from 'react';
 import { Image, Modal, TouchableOpacity, View } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
+
 import * as S from './Chat.styles';
 
 const ChatScreen: React.FC = () => {
@@ -16,7 +18,8 @@ const ChatScreen: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
   const [error, setError] = useState('');
   const navigation = useNavigation();
-  const memberID = '1'; // 사용자 ID
+  const memberInfo = useMemberStore((state) => state.memberInfo);
+  const memberID = memberInfo.id;
 
   useHeaderControl({
     title: '채팅',
