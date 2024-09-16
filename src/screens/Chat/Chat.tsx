@@ -35,7 +35,10 @@ const ChatScreen: React.FC = () => {
         const response = await fetchChatList();
         console.log('Fetch response:', response);
 
-        if (response.isSuccess && Array.isArray(response.result)) {
+        if (response.isSuccess && response.result.length === 0) {
+          setChats([]);
+          setError('아직 진행 중인 대화가 없어요.\n엽서를 보내 대화를 시작해보세요.');
+        } else if (response.isSuccess && Array.isArray(response.result)) {
           const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
             id: chatRoom.id.toString(),
             name: chatRoom.otherMember.name,
@@ -112,8 +115,8 @@ const ChatScreen: React.FC = () => {
     return (
       <S.EmptyWrapper>
         <Image
-          source={require('@assets/images/icons/Warning.png')}
-          style={{ width: 100, height: 100, marginBottom: 20 }}
+          source={require('@assets/images/icons/Warning03.png')}
+          style={{ width: 51, height: 51, marginBottom: 20 }}
         />
         <S.EmptyText>{error}</S.EmptyText>
       </S.EmptyWrapper>

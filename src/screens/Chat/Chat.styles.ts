@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 export const ChatList = styled.FlatList`
   flex: 1;
-  background-color: #ffffff;
+  background-color: white;
 `;
 
 export const ChatItem = styled.TouchableOpacity`
@@ -102,11 +102,11 @@ export const EmptyWrapper = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
+  background-color: white;
 `;
 
 export const EmptyText = styled.Text`
   font-size: 16px;
-  color: #999;
   text-align: center;
   margin-top: 10px;
 `;
