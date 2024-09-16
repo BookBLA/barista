@@ -1,6 +1,7 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+
 import * as S from './Lock.styles';
 
 const Lock = () => {
@@ -8,7 +9,7 @@ const Lock = () => {
 
   return (
     <S.Wrapper>
-      {/* <S.BlurWrapper /> */}
+      <S.BlurWrapper blurType="light" blurAmount={10} reducedTransparencyFallbackColor="white" />
       <S.InnerWrapper>
         <S.ImageWrapper>
           <S.Image source={icons.lock} />
