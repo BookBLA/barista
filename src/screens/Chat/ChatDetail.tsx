@@ -160,6 +160,7 @@ const ChatDetail: React.FC = () => {
               <S.BookChatBubble isUserMessage={isUserMessage}>
                 {postcard.type.imageUrl && index === displayedMessages.length - 1 && (
                   <S.BookCover
+                    isUserMessage={isUserMessage}
                     source={{ uri: postcard.type.imageUrl }}
                     onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
                   />

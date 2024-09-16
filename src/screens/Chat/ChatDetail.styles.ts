@@ -141,11 +141,12 @@ export const MessageRow = styled.View<{ isUserMessage: boolean }>`
   justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
-export const BookChatBubble = styled.View`
+export const BookChatBubble = styled.View<{ isUserMessage: boolean }>`
   padding-bottom: 0;
 `;
 
-export const BookCover = styled.Image`
+export const BookCover = styled.Image<{ isUserMessage: boolean }>`
+  align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
   width: 100px;
   height: 150px;
   border-radius: 10px;
