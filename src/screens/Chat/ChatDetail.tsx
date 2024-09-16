@@ -67,8 +67,9 @@ const ChatDetail: React.FC = () => {
       console.error('Failed to fetch chat messages:', error);
       setMessages([]);
       setDisplayedMessages([]);
+      showToast({ content: '메시지 로드에 실패했습니다. 다시 시도해주세요.' });
     }
-  }, [partner.id]);
+  }, [partner.id, showToast]);
 
   useEffect(() => {
     setIsModalVisible(true);
@@ -120,35 +121,25 @@ const ChatDetail: React.FC = () => {
 
     if (messageRef) {
       messageRef.measure((fx, fy, width, height, px, py) => {
-        // 모달 크기 설정
         const modalWidth = 140; // 모달의 너비
         const modalHeight = 50; // 모달의 높이
 
-        // 타겟(TouchableOpacity)의 위치와 크기를 기준으로 모달의 위치 계산
         const targetX = px; // 타겟의 X 좌표
         const targetY = py; // 타겟의 Y 좌표
         const targetWidth = width; // 타겟의 너비
         const targetHeight = height; // 타겟의 높이
 
-        // 모달이 텍스트 위에 나타나야 하는 경우
-        const topPositionAbove = targetY - modalHeight - 10; // 위에 나타날 경우, 10px의 여유 공간 추가
+        const topPositionAbove = targetY - modalHeight - 10;
+        const topPositionBelow = targetY + targetHeight + 10;
 
-        // 모달이 텍스트 아래에 나타나야 하는 경우
-        const topPositionBelow = targetY + targetHeight + 10; // 아래에 나타날 경우, 10px의 여유 공간 추가
+        const leftPositionLeft = targetX;
+        const leftPositionRight = targetX + targetWidth - modalWidth;
 
-        // 모달이 화면의 왼쪽에 나타나는 경우
-        const leftPositionLeft = targetX; // 모달이 타겟 왼쪽에 나타날 때
-
-        // 모달이 화면의 오른쪽에 나타나는 경우
-        const leftPositionRight = targetX + targetWidth - modalWidth; // 모달이 타겟 오른쪽에 나타날 때
-
-        // 화면의 높이를 기준으로 상단 또는 하단을 결정
         const isTopHalf = targetY < SCREEN_HEIGHT / 2;
 
-        // 모달의 최종 위치 결정
         setModalPosition({
-          top: isTopHalf ? topPositionBelow : topPositionAbove, // 상단에 있을 때는 아래로, 하단에 있을 때는 위로
-          left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft, // 좌우 위치 계산
+          top: isTopHalf ? topPositionBelow : topPositionAbove,
+          left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
         setSelectedMessage(message.text);
@@ -156,6 +147,7 @@ const ChatDetail: React.FC = () => {
       });
     }
   };
+
   const handleCopy = () => {
     Clipboard.setString(selectedMessage);
     Alert.alert('복사 완료', '메시지가 복사되었습니다.');
@@ -168,15 +160,13 @@ const ChatDetail: React.FC = () => {
 
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
     const isUserMessage = item.sender === 'user';
-    const showAvatar =
-      index === 0 ||
-      displayedMessages[index - 1].sender !== item.sender ||
-      new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate();
 
     return (
       <S.MessageItem>
-        {index === 0 ||
-        new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate() ? (
+        {index === displayedMessages.length - 1 ||
+        (index > 0 &&
+          displayedMessages[index - 1] &&
+          new Date(item.timestamp).getDate() !== new Date(displayedMessages[index - 1].timestamp).getDate()) ? (
           <S.DateSeparator>
             <S.DateText>
               {new Date(item.timestamp).toLocaleDateString('ko-KR', {
@@ -188,10 +178,24 @@ const ChatDetail: React.FC = () => {
           </S.DateSeparator>
         ) : null}
         <S.MessageItemInner isUserMessage={isUserMessage}>
-          {!isUserMessage && showAvatar && <S.MessageAvatar source={{ url: partner.profileImageUrl }} />}
+          {!isUserMessage && <S.MessageAvatar source={{ url: partner.profileImageUrl }} />}
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
+              {isUserMessage && (
+                // <S.isReadIcon
+                //   source={require(
+                //     item.isRead ? '@assets/images/icons/ReadMessage.png' : '@assets/images/icons/UnreadMessage.png',
+                //   )}
+                // />
+                <S.isReadIcon
+                  source={
+                    item.isRead
+                      ? require('@assets/images/icons/ReadMessage.png')
+                      : require('@assets/images/icons/UnreadMessage.png')
+                  }
+                />
+              )}
               {isUserMessage && (
                 <S.Timestamp isUserMessage={isUserMessage}>
                   {new Date(postcard.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -379,7 +383,7 @@ const ChatDetail: React.FC = () => {
                       padding: 8,
                       alignItems: 'center',
                       flexDirection: 'row',
-                      justifyContent: 'space-between', // 아이콘과 텍스트를 양 끝에 배치
+                      justifyContent: 'space-between',
                       width: 140,
                     }}
                     onPress={handleCopy}

@@ -47,7 +47,7 @@ export const fetchChatList = async () => {
 // 더미 데이터 생성 함수
 const generateDummyMessages = (count) => {
   const messages = [];
-  for (let i = 1; i <= count; i++) {
+  for (let i = count; i > 0; i--) {
     messages.push({
       id: `${i}`,
       text: `더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}`,

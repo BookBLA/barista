@@ -95,15 +95,17 @@ export const ProfileDetails = styled.Text`
 `;
 
 export const LibraryButton = styled.TouchableOpacity`
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 10px 15px;
   align-items: center;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: #cccccc;
+  background-color: white;
 `;
 
 export const LibraryButtonText = styled.Text`
+  color: #000000;
   font-size: 14px;
-  color: #007aff;
 `;
 
 export const MessageItem = styled.View`
@@ -227,6 +229,12 @@ export const DateText = styled.Text`
 
 export const LoadingIndicator = styled.ActivityIndicator`
   margin: 20px;
+`;
+
+export const isReadIcon = styled.Image`
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
 `;
 
 export const Timestamp = styled.Text<{ isUserMessage: boolean }>`
