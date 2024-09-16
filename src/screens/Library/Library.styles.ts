@@ -105,7 +105,6 @@ export const BookContainer = styled.View`
 export const BookFloorWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  gap: 20px;
   margin-top: 10px;
   margin-bottom: -2px;
   z-index: 2;
@@ -190,8 +189,8 @@ export const BookImage = styled.Image`
 export const EmptyBookImage = styled.View`
   justify-content: center;
   align-items: center;
-  width: 90%;
-  height: ${deviceHeight / 4 - 40}px;
+  width: 70%;
+  height: ${deviceHeight / 4 - 50}px;
   border-radius: 10px;
   background-color: #49526e;
 `;
