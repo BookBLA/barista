@@ -477,7 +477,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               showsVerticalScrollIndicator
               alwaysBounceVertical={false}
               ListFooterComponent={<View style={{ height: 140 }} />}
-              overScrollMode="never"
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 140 }}
             />
           </S.BookContainer>
         </S.BookListContainerView>
