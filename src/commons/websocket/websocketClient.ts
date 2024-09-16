@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class WebSocketClient {
   private static instance: WebSocketClient;
   private socket: WebSocket | null = null;
-  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect'; // WebSocket 연결 주소
+  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect?id='; // WebSocket 연결 주소
   private isConnected: boolean = false;
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 5;
@@ -25,6 +25,9 @@ class WebSocketClient {
 
   public async connect(memberID: string, roomID: string): Promise<void> {
     console.log('[WebSocketClient] Attempting to connect');
+
+    console.log(`memberID: ${memberID}, roomID: ${roomID}`);
+
     if (this.isConnected) {
       console.warn('[WebSocketClient] Already connected, aborting connection attempt');
       return;
@@ -35,7 +38,7 @@ class WebSocketClient {
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
-      this.socket = new WebSocket(this.url, [], { headers });
+      this.socket = new WebSocket(`${this.url}${memberID}`, [], { headers });
       console.log('[WebSocketClient] WebSocket instance created');
     } catch (error) {
       console.error('[WebSocketClient] Error creating WebSocket:', error);
