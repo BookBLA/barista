@@ -1,3 +1,4 @@
+// ChatStack.tsx
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 import Chat from './Chat';
@@ -15,8 +16,20 @@ const ChatStack = () => {
       }}
     >
       <Stack.Screen name="Chat" component={Chat} />
-      <Stack.Screen name="ChatDetail" component={ChatDetail} />
-      <Stack.Screen name="ChatInfoScreen" component={ChatInfoScreen} />
+      <Stack.Screen
+        name="ChatDetail"
+        component={ChatDetail}
+        options={{
+          tabBarStyle: { display: 'none' }, // 탭바 숨기기
+        }}
+      />
+      <Stack.Screen
+        name="ChatInfoScreen"
+        component={ChatInfoScreen}
+        options={{
+          tabBarStyle: { display: 'none' }, // 탭바 숨기기
+        }}
+      />
     </Stack.Navigator>
   );
 };
