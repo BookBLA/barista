@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class WebSocketClient {
   private static instance: WebSocketClient;
   private socket: WebSocket | null = null;
-  private url: string = 'ws://localhost:8080/api/chat/ws/connect';
+  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect';
   private isConnected: boolean = false;
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 5;
