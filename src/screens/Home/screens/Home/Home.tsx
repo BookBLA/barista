@@ -8,24 +8,25 @@ import Header from './units/Header/Header';
 import MemberCard from './units/MemberCard/MemberCard';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
-import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
 const Home = () => {
-  const { isOpen, toggle } = useToggle(false);
+  const { isOpen, toggle } = useToggle(true);
+  const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
 
   useEffect(() => {
-    let isAlreadyEntry;
     const fetchOnboardingStatus = async () => {
       try {
-        const res = await postOnboardingStatus('HOME');
+        const res = await getOnboardingStatus();
         // @ts-ignore
-        isAlreadyEntry = res.result.onboarding;
+        setIsAlreadyEntry(res.result.homeOnboardingStatus);
       } catch (error) {
         console.error('Failed to fetch onboarding status:', error);
       }
     };
+
     fetchOnboardingStatus();
-  }, []);
+  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
   useScreenLogger();
   useHeaderControl({
@@ -36,7 +37,7 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        <HomeOnboardingModal onClose={toggle} visible={isOpen} />
+        {!isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
 
         <MemberCard />
         {/* <EventCard /> */}
