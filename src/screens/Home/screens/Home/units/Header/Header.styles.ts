@@ -7,6 +7,7 @@ export const HeaderWrapper = styled.View`
   height: 48px;
   padding: 0px 16px;
   margin-bottom: 16px;
+  background-color: '#1D2E61';
 `;
 
 export const LogoWrapper = styled.View`
@@ -16,8 +17,8 @@ export const LogoWrapper = styled.View`
 `;
 
 export const LogoImage = styled.Image`
-  width: 25px;
-  height: 25px;
+  width: 26px;
+  height: 26px;
   margin-right: 4px;
   object-fit: fill;
 `;
@@ -40,15 +41,11 @@ export const IconWrapper = styled.View`
   align-items: center;
 `;
 
-export const IconButton = styled.TouchableOpacity``;
+export const IconButton = styled.TouchableOpacity`
+  margin-right: 5px;
+`;
 
 export const IconImage = styled.Image`
   width: 16.75px;
   height: 21px;
-`;
-
-export const IconText = styled.Text`
-  font-size: 16px;
-  font-family: 'fontExtraLight';
-  margin-right: 8px;
 `;

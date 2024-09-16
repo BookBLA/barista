@@ -8,8 +8,11 @@ export const icons = {
   bang: require('@assets/images/icons/Bang.png'),
   bellOff: require('@assets/images/icons/BellOff.png'),
   bellOn: require('@assets/images/icons/BellOn.png'),
+  bellLightOff: require('@assets/images/icons/BellLightOff.png'),
+  bellLightOn: require('@assets/images/icons/BellLightOn.png'),
   bookmark: require('@assets/images/icons/Bookmark.png'),
   bookmarkAdd: require('@assets/images/icons/BookmarkAdd.png'),
+  bookmarkLightAdd: require('@assets/images/icons/BookmarkLightAdd.png'),
   bookCover: require('@assets/images/icons/BookCover.png'),
   bottomArrow: require('@assets/images/icons/BottomArrow.png'),
 
@@ -147,6 +150,9 @@ export const logos = {
   mainLogo: require('@assets/images/logos/MainLogo.png'),
   mainLogoLight: require('@assets/images/logos/mainLogoLight.png'),
   mainLogoDark: require('@assets/images/logos/mainLogoDark.png'),
+  logoLight: require('@assets/images/logos/logoLight.png'),
+  logoTitleLight: require('@assets/images/logos/LogoTitleLight.png'),
+  logoLight02: require('@assets/images/logos/LogoLight02.png'),
 };
 
 export const buttons = {
