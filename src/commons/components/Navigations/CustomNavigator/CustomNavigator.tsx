@@ -1,7 +1,7 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { useAuthNavigation } from '@commons/hooks/navigations/authNavigation/useAuthNavigation';
 import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName/useInitialRouteName';
-import { useHasMargin } from '@commons/store/ui/hasMargin/useHasMargin';
+import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
@@ -14,12 +14,13 @@ import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePag
 import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
 import LoginStack from '@screens/Login/LoginStack';
 import Notice from '@screens/Notice/Notice';
+import QuizStack from '@screens/Quiz/QuizStack';
 import SettingStack from '@screens/Setting/SettingStack';
 import React from 'react';
 import { Platform, SafeAreaView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
-import QuizStack from '@screens/Quiz/QuizStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -42,21 +43,27 @@ const screens = [
 ];
 
 export const CustomNavigator = () => {
-  const hasMargin = useHasMargin((state) => state.hasMargin);
+  const hasMargin = useAppStatus((state) => state.status.hasMargin);
+  const isBackgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const navigationRef = useAuthNavigation();
   const getInitialRouteName = useInitialRouteName();
+  const insets = useSafeAreaInsets();
 
   return (
     <NavigationContainer ref={navigationRef}>
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: 'white',
-          marginHorizontal: hasMargin ? 16 : 0,
-          marginTop: Platform.OS === 'android' ? getStatusBarHeight() : 0,
+          backgroundColor: isBackgroundColor,
+          paddingHorizontal: hasMargin ? 16 : 0,
+          paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : insets.top,
+          marginBottom: Platform.OS === 'ios' ? insets?.bottom : 0,
         }}
       >
-        <Stack.Navigator initialRouteName={getInitialRouteName()} screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          initialRouteName={getInitialRouteName()}
+          screenOptions={{ headerShown: false, headerTransparent: true, animation: 'none' }}
+        >
           {screens.map(({ name, component }) => (
             <Stack.Screen key={name} name={name} component={component} />
           ))}
