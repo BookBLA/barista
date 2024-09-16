@@ -23,11 +23,16 @@ import { EStatusCode } from '@commons/types/statusCode';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp, useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
+import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
+import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
@@ -39,11 +44,6 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
-import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
-import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -257,6 +257,9 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       await deleteBook(selectedBookId);
       await fetchLibraryInfo();
       await setMyLibraryInfo();
+      showToast({
+        content: '책이 삭제되었습니다.',
+      });
       toggleDeleteBookModal();
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
@@ -370,6 +373,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           {item.books.map((bookItem, index) => (
             <S.BookTouchableOpacity
               key={`book-${index}`}
+              disabled={bookItem.isEmpty}
               onPress={async () => {
                 if (isYourLibrary) {
                   await fetchBookInfo(bookItem.book?.memberBookId);
@@ -404,8 +408,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
         <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
         <S.UserInfoContainerView>
           <S.UserInfoView>
-            {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
-            <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
+            <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
               <S.CircularImage
                 source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
               />
@@ -431,7 +434,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
               <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
 
-              {/*//todo 추후 멤버 스타일 api 연동*/}
               <S.MemberStyleList>
                 <S.MemberStyleView>
                   <CustomText color={colors.textWhite} size={'12px'}>
@@ -478,7 +480,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
         {!isYourLibrary && (
           <TouchableOpacity
             style={S.styles.AddBookButton}
-            onPress={movePage('searchBook', { isRepresentative: false })}
+            onPress={movePage('initBookStack', { screen: 'searchBook' })}
           >
             <S.AddBookButton source={icons.addBook} />
           </TouchableOpacity>

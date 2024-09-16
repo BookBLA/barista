@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Image, View } from 'react-native';
 import adMask from '../../../../../../assets/images/icons/ADMask.png';
-import { ProductProps } from './ProductList.types';
+import { ProductProps } from '../Product.types';
 import ProductListContent from './ProductListContent';
 
 const ProductList: React.FC<ProductProps> = ({ props, index }) => {
@@ -19,7 +19,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
     try {
       const response = await getMemberAdmobApi();
       setAdmobCount(response.result.admobCount ?? 0);
-      console.log('admobCount', response.result.admobCount);
+      // console.log('admobCount', response.result.admobCount);
     } catch (error) {
       console.error(error);
     }

@@ -58,7 +58,6 @@ const StudentId = ({ route }: IProps) => {
     //로직 수정 (이미지 선택시 setState로만 유저 속이기)
     //다음 버튼 누르면 s3 등록
     setImageUrl(result?.assets[0].uri);
-    // updateUserInfo({ studentIdImageUrl: result?.assets[0].uri });
   };
 
   const moveNext = async () => {
@@ -70,25 +69,24 @@ const StudentId = ({ route }: IProps) => {
     }
   };
 
-  const postStudentIdImage=async(imgUrl: string)=>{
-    try{
-      const response=await postStudentIdImageApi(imgUrl);
+  const postStudentIdImage = async (imgUrl: string) => {
+    try {
+      const response = await postStudentIdImageApi(imgUrl);
       console.log('response', response);
       if (isRejected) {
-          handleReset('tapScreens');
-          return;
-        } else {
-          movePage()();
-        }
-        showToast({
-          content: '학생증을 검토 중입니다.',
-        });
-    }
-    catch(error){
+        handleReset('tapScreens');
+        return;
+      } else {
+        movePage()();
+      }
+      showToast({
+        content: '학생증을 검토 중입니다.',
+      });
+    } catch (error) {
       console.log('error', error);
       showToast({
-          content: '학생증 업로드에 실패했습니다.',
-        });
+        content: '학생증 업로드에 실패했습니다.',
+      });
     }
   };
 

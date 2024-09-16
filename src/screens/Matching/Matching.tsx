@@ -2,9 +2,10 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import { IconButton, IconImage } from '@screens/Home/screens/Home/units/Header/Header.styles';
+import { IconButton, IconImage, IconText } from '@screens/Home/screens/Home/units/Header/Header.styles';
 import { useFetchReceivePostcard } from '@screens/Home/screens/Matching/hooks/useFetchReceivePostcard';
 import React, { useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
@@ -12,7 +13,6 @@ import * as S from './Matching.styles';
 import { EmptyPostcard } from './Postcard/EmptyPostcard';
 import { EType } from './Postcard/EmptyPostcard.types';
 import { ReceivePostcard } from './Postcard/Receive/ReceivePostcard';
-import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 
 const Matching = () => {
   useScreenLogger();
@@ -53,7 +53,7 @@ const Matching = () => {
             <IconButton onPress={movePage('product')}>
               <IconImage source={icons.postcard} />
             </IconButton>
-            <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
+            <IconText>{memberPostcard}</IconText>
           </S.postcardCountViewStyled>
         </S.InfoViewStyled>
         {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}

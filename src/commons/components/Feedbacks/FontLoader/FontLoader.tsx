@@ -38,8 +38,7 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
         });
         await SplashScreen.preventAutoHideAsync();
         if (token) {
-          await saveMemberInfo();
-          const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+          const memberStatus = await saveMemberInfo();
           if (memberStatus === 'STYLE') {
             //토큰이 있을 때>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다
             const response = await getMemberStatusesApi();

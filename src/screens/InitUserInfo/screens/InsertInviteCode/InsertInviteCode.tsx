@@ -28,10 +28,11 @@ const InsertInviteCode = () => {
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, handleReset } = useMovePage();
   const { userInfo } = useUserStore();
+  const { resetUserInfo } = useUserStore();
+  const { resetAgreement } = useAgreementStore();
 
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
-  const schoolStatus = 'OPEN'; // 'OPEN' or 'CLOSE'
 
   const callInviteCodeVerifyApi = async () => {
     console.log(isSuccess);
@@ -79,9 +80,10 @@ const InsertInviteCode = () => {
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
+      resetUserInfo();
+      resetAgreement();
       //schoolStatus Get api 호출
       //schoolStatus가 "OPEN"이면 completePage로 이동
       const schoolStatusResponse = await getMemberStatusesApi();
