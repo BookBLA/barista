@@ -82,10 +82,11 @@ const ChatDetail: React.FC = () => {
   }, [scrollY]);
 
   useEffect(() => {
+    // TabBar 숨기기
     const parent = navigation.getParent();
     if (parent) {
       parent.setOptions({
-        tabBarStyle: { display: 'none' },
+        tabBarStyle: { display: 'none', height: 0 },
       });
     }
 
