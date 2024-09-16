@@ -104,12 +104,10 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleDecline = () => {
-    setIsModalVisible(false);
     setIsDeclineModalVisible(true);
   };
 
   const handleReport = () => {
-    setIsModalVisible(false);
     reportBottomSheetRef.current?.present();
   };
 
