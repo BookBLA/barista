@@ -388,33 +388,21 @@ const ChatDetail: React.FC = () => {
                     shadowRadius: 4,
                     elevation: 5,
                     flexDirection: 'row',
-                    alignItems: 'center',
+                    justifyContent: 'space-between',
                   }}
                 >
                   <TouchableOpacity
                     style={{
-                      flex: 0.4,
                       padding: 8,
                       alignItems: 'center',
                       flexDirection: 'row',
+                      justifyContent: 'space-between', // 아이콘과 텍스트를 양 끝에 배치
+                      width: 140,
                     }}
                     onPress={handleCopy}
                   >
-                    <Text
-                      style={{
-                        fontWeight: 'bold',
-                        fontSize: 14,
-                      }}
-                    >
-                      복사하기
-                    </Text>
-                    <Ionicons
-                      name="copy-outline"
-                      size={20}
-                      style={{
-                        marginRight: 8,
-                      }}
-                    />
+                    <Text style={{ fontWeight: 'bold', fontSize: 14 }}>복사하기</Text>
+                    <Ionicons name="copy-outline" size={20} />
                   </TouchableOpacity>
                 </View>
               </View>
