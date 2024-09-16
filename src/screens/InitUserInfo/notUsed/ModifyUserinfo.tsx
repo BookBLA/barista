@@ -4,7 +4,7 @@ import { ModifyTitleBar } from '@commons/components/Navigations/ModifyTitleBar/M
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
@@ -59,7 +59,7 @@ const ModifyUserinfo = () => {
     }
   };
 
-  useManageMargin();
+  useAppUIManager();
 
   const callGetMemberProfileApi = async () => {
     try {

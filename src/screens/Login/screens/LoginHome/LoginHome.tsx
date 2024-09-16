@@ -1,22 +1,23 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import usePushNotifications from '@commons/hooks/notifications/pushNotifications/usePushNotifications';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import { colors } from '@commons/styles/variablesStyles';
 import { buttons, logos } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from '@screens/Login/LoginStack.styles';
+import { useKakaoLogin } from '@screens/Login/screens/KakaoLogin/hooks/useKakakoLogin';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import React from 'react';
 import { Image, Platform } from 'react-native';
 import { useAppleLogin } from './hooks/useAppleLogin';
 import { useTestLogin } from './hooks/useTestLogin';
-import { useKakaoLogin } from '@screens/Login/screens/KakaoLogin/hooks/useKakakoLogin';
 
 const LoginHome = () => {
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager({
+    setBackgroundColor: colors.background,
+  });
   usePushNotifications();
-  const { movePage } = useMovePage();
   const { handleAppleLogin } = useAppleLogin();
   const { handleKakaoLogin } = useKakaoLogin();
   const { handleTestLogin } = useTestLogin();

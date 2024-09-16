@@ -1,8 +1,8 @@
 import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
 import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
@@ -13,7 +13,7 @@ import { TitleProgress } from './TitleProgress';
 
 const OpenChatLink = () => {
   const { movePage, handleReset } = useMovePage();
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '채팅방 등록',
     left: true,

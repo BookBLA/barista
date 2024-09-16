@@ -1,7 +1,7 @@
 import backArrow from '@assets/images/icons/Back.png';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { useHasMargin } from '@commons/store/ui/hasMargin/useHasMargin';
+import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { Image } from 'react-native';
 import * as S from './CustomHeader.styles';
 import { ICustomHeader } from './CustomHeader.types';
@@ -15,7 +15,7 @@ export const CustomHeader: React.FC<ICustomHeader> = ({
   backgroundColor,
 }) => {
   const { movePage } = useMovePage();
-  const hasMargin = useHasMargin((state) => state.hasMargin);
+  const hasMargin = useAppStatus((state) => state.status.hasMargin);
 
   return (
     <>

@@ -12,6 +12,7 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
@@ -32,7 +33,6 @@ import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
-import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
@@ -279,7 +279,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    movePageNoReference('product');
+    movePageNoReference('HomeStack', { screen: 'product' });
   };
 
   const resendPostcardModalConfig = {
@@ -366,6 +366,10 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     isYourLibrary ? [] : [libraryInfo],
   );
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
+
   const renderRow = ({ item }: { item: BookItemList }): JSX.Element => {
     return (
       <View style={{ marginBottom: 36, backgroundColor: '#f0f0f0' }}>
@@ -403,7 +407,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ height: '100%' }}>
-      <StatusBar barStyle="light-content" backgroundColor="#1D2E61" />
       <LinearGradient colors={['#1D2E61', '#5B6CA8']}>
         <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
         <S.UserInfoContainerView>
@@ -436,17 +439,17 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
               <S.MemberStyleList>
                 <S.MemberStyleView>
-                  <CustomText color={colors.textWhite} size={'12px'}>
+                  <CustomText color={colors.textWhite} size="12px">
                     {libraryInfo?.smokeType}
                   </CustomText>
                 </S.MemberStyleView>
                 <S.MemberStyleView>
-                  <CustomText color={colors.textWhite} size={'12px'}>
+                  <CustomText color={colors.textWhite} size="12px">
                     {libraryInfo?.mbti}
                   </CustomText>
                 </S.MemberStyleView>
                 <S.MemberStyleView>
-                  <CustomText color={colors.textWhite} size={'12px'}>
+                  <CustomText color={colors.textWhite} size="12px">
                     {libraryInfo?.height}cm
                   </CustomText>
                 </S.MemberStyleView>
@@ -653,7 +656,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               { label: '취소', action: toggleDeleteBookModal },
             ],
           }}
-        ></CustomModal>
+        />
       </LinearGradient>
     </SafeAreaView>
   );

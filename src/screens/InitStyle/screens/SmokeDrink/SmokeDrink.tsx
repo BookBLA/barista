@@ -3,8 +3,8 @@ import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { Image, View } from 'react-native';
@@ -16,7 +16,7 @@ const SmokeDrink = () => {
     left: false,
   });
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   const { updateStyleInfo, styleInfo } = useStyleStore();
   // const buttonTitles = ['X', '월 1~2회', '주 1회', '주 2회 이상', '매일'];
 

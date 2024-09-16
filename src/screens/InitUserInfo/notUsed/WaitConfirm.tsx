@@ -4,8 +4,8 @@ import { getMemberProfileStatusesApi } from '@commons/api/members/profile/member
 import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
@@ -24,7 +24,7 @@ const WaitConfirm = () => {
   const [rejectList, setRejectList] = useState([]);
 
   const { updateUserInfo, userInfo } = useUserStore();
-  useManageMargin();
+  useAppUIManager();
 
   const addValueToList = (NewValue: number) => {
     // Adding a new value to the list using setRejectList

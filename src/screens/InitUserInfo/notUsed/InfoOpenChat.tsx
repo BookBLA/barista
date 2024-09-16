@@ -1,5 +1,5 @@
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -52,7 +52,7 @@ const PAGES = [
 ];
 
 const InfoOpenChat = () => {
-  useManageMargin();
+  useAppUIManager();
   const { movePage } = useMovePage();
 
   return (
