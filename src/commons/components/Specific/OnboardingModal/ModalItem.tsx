@@ -4,8 +4,14 @@ import { IProps } from './OnboardingModal.types';
 import * as S from './OnboardingModal.styles';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '@commons/styles/variablesStyles';
+import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
-export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
+export const ModalItem: React.FC<IProps> = ({ index, item, where, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
+  const handleModalClose = () => {
+    postOnboardingStatus(where);
+    onClose();
+  };
+
   return (
     <S.Wrapper>
       <S.ImageSection>
@@ -19,7 +25,7 @@ export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSl
 
       {index === -1 ? (
         <>
-          <S.ExitButton underlayColor="ghostwhite" onPress={onClose}>
+          <S.ExitButton underlayColor="ghostwhite" onPress={handleModalClose}>
             <CustomText size="16" color="black">
               닫기
             </CustomText>
@@ -32,7 +38,7 @@ export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSl
           </S.LeftButton>
           <S.PageIndex resizeMode="contain" source={item.indexImage} />
           <S.RightButton
-            onPress={index === 2 ? onClose : onNextSlide}
+            onPress={index === 2 ? handleModalClose : onNextSlide}
             style={{ backgroundColor: index === 2 ? colors.primary02 : 'transparent' }}
           >
             <CustomText color="black">{item.rightButtonText}</CustomText>

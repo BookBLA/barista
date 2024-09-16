@@ -12,6 +12,7 @@ export interface IDataItem {
 export interface IProps {
   index: number;
   item: IDataItem;
+  where: string;
   activeSlide?: number;
   onPrevSlide?: () => void;
   onNextSlide?: () => void;

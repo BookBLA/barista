@@ -1,5 +1,5 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
@@ -17,7 +17,7 @@ const screens = [
 
 const SettingStack = () => {
   const route = useRoute<TProps>();
-  useManageMargin();
+  useAppUIManager();
 
   return (
     <Stack.Navigator initialRouteName="setting" screenOptions={{ headerShown: false, animationEnabled: false }}>

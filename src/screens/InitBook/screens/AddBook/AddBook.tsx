@@ -4,7 +4,7 @@ import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashD
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import { MemberBookReadResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
@@ -19,7 +19,7 @@ import { useFetchMemberBook } from './hooks/useFetchMemberBook';
 
 const AddBook = () => {
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   const route = useRoute<TProps>();
   const { movePage, handleReset } = useMovePage();
   const { data, fetchGetMemberBook } = useFetchMemberBook();

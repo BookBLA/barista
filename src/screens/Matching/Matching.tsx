@@ -5,7 +5,7 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import { IconButton, IconImage, IconText } from '@screens/Home/screens/Home/units/Header/Header.styles';
+import { IconButton, IconImage } from '@screens/Home/screens/Home/units/Header/Header.styles';
 import { useFetchReceivePostcard } from '@screens/Home/screens/Matching/hooks/useFetchReceivePostcard';
 import React, { useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
@@ -50,10 +50,10 @@ const Matching = () => {
         <S.InfoViewStyled>
           <S.InfoTextStyled>받은 엽서 확인 시 소지한 책갈피 5개가 소모 됩니다</S.InfoTextStyled>
           <S.postcardCountViewStyled>
-            <IconButton onPress={movePage('product')}>
+            <IconButton onPress={movePage('HomeStack', { screen: 'product' })}>
               <IconImage source={icons.postcard} />
             </IconButton>
-            <IconText>{memberPostcard}</IconText>
+            <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
           </S.postcardCountViewStyled>
         </S.InfoViewStyled>
         {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}

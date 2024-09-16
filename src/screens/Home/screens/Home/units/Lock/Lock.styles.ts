@@ -1,4 +1,5 @@
 import { colors } from '@commons/styles/variablesStyles';
+import { BlurView } from '@react-native-community/blur';
 import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
@@ -20,7 +21,7 @@ export const Wrapper = styled.View`
   z-index: 1000;
 `;
 
-export const BlurWrapper = styled.Image`
+export const BlurWrapper = styled(BlurView)`
   position: absolute;
   top: 0;
   left: 0;

@@ -1,6 +1,7 @@
 import { postPaymentApi, postPaymentGoogleApi } from '@commons/api/payment/payment.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import React, { useEffect, useState } from 'react';
@@ -32,6 +33,10 @@ const Product = () => {
   useScreenLogger();
   useHeaderControl({
     free: <Header />,
+  });
+
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
   });
 
   const [productID, setProductID] = useState<ProductContentProps[]>();

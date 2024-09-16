@@ -1,14 +1,10 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 import { createStackNavigator } from '@react-navigation/stack';
-import Product from '@screens/Home/screens/Product/Product';
 import Library from '@screens/Library/Library';
 import React from 'react';
 
 const Stack = createStackNavigator();
-const screens = [
-  { name: 'library', component: Library },
-  { name: 'product', component: Product },
-];
+const screens = [{ name: 'library', component: Library }];
 
 const LibraryStack = () => {
   return (
