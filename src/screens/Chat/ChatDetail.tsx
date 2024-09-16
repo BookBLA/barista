@@ -3,7 +3,7 @@ import { ChatMessage } from '@commons/api/chat/chat.types';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -81,23 +81,27 @@ const ChatDetail: React.FC = () => {
     return () => scrollY.removeListener(listener);
   }, [scrollY]);
 
-  useEffect(() => {
-    // TabBar 숨기기
-    const parent = navigation.getParent();
-    if (parent) {
-      parent.setOptions({
-        tabBarStyle: { display: 'none', height: 0 },
-      });
-    }
+  useFocusEffect(
+    useCallback(() => {
+      const parent = navigation.getParent();
 
-    return () => {
       if (parent) {
+        // ChatDetail 화면에 들어왔을 때 탭바 숨김
         parent.setOptions({
-          tabBarStyle: undefined,
+          tabBarStyle: { display: 'none', height: 0 },
         });
       }
-    };
-  }, [navigation]);
+
+      return () => {
+        // ChatDetail 화면을 떠날 때 탭바를 다시 원래 상태로 설정
+        if (parent) {
+          parent.setOptions({
+            tabBarStyle: { display: undefined },
+          });
+        }
+      };
+    }, [navigation]),
+  );
 
   const handleAccept = () => {
     setIsModalVisible(false);
