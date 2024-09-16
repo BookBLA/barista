@@ -91,8 +91,6 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
 
 export const switchAlert = async (roomId: string, isAlert: boolean) => {
   try {
-    // chat/room/alert?is_alert={is_alert}&roomId={roomId}
-
     const response = await Post(`chat/room/alert?isAlert=${isAlert}&roomId=${roomId}`);
 
     console.log('Alert switched:', response);
