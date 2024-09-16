@@ -19,12 +19,7 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({ visible, onAccept, 
       }}
       pointerEvents="box-none" // 모달 바깥 터치가 가능하도록 설정
     >
-      <View
-        style={[
-          styles.modalContainer,
-          { pointerEvents: 'box-only' }, // 모달 내부 터치만 처리하고, 배경 터치 가능하게 설정
-        ]}
-      >
+      <View style={[styles.modalContainer]}>
         <Text style={styles.title}>닉네임님의 매칭 요청을 수락하시겠어요?</Text>
         <Text style={styles.description}>
           수락하면 책갈피 30개가 사용되며 채팅이 시작됩니다. 채팅이 시작되면 받은 엽서 목록에서 사라지며 채팅방으로
