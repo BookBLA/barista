@@ -393,13 +393,14 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
                 bookItem.book && (
                   <S.BookImage
                     source={bookItem.book.bookImageUrl ? { uri: bookItem.book.bookImageUrl } : img.prepareBookImage}
-                    style={{ objectFit: 'contain' }}
+                    style={{ resizeMode: 'contain' }}
                   />
                 )
               )}
             </S.BookTouchableOpacity>
           ))}
         </S.BookFloorWrapper>
+        <S.BookShelvesTop />
         <S.BookShelves style={S.styles.Shadow} />
       </View>
     );

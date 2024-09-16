@@ -88,13 +88,6 @@ export const ProfileImageModificationImage = styled.Image`
   top: 40px;
 `;
 
-export const ProfileModifyButtonText = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  color: ${colors.textBlack};
-  font-family: fontMedium;
-`;
-
 export const BookListContainerView = styled.View`
   align-items: center;
   height: 100%;
@@ -113,11 +106,31 @@ export const BookFloorWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 20px;
-  margin: 0 20px;
+  margin-top: 10px;
+  margin-bottom: -2px;
+  z-index: 2;
+`;
+
+export const BookShelvesTop = styled.View`
+  width: ${deviceWidth * 0.95}px; /* 선반의 너비를 화면의 80%로 설정 */
+  height: 0px; /* 높이는 0으로 설정하고 border로 높이를 생성 */
+  border-bottom-width: 12px; /* 사다리꼴의 높이 */
+  border-left-width: 20px; /* 사다리꼴 왼쪽 기울기 */
+  border-right-width: 20px; /* 사다리꼴 오른쪽 기울기 */
+  border-style: solid;
+  border-bottom-color: #e0e0e0; /* 선반의 색상 */
+  border-left-color: transparent; /* 투명한 색상으로 설정 */
+  border-right-color: transparent; /* 투명한 색상으로 설정 */
+  align-self: center; /* 중앙 정렬 */
+  margin-top: -3px; /* 약간 위로 이동 */
+  z-index: 1;
+  position: relative;
 `;
 
 export const BookShelves = styled.View`
-  width: ${deviceWidth}px;
+  justify-content: center;
+  align-self: center;
+  width: ${deviceWidth * 0.95}px;
   border: 5px solid #ffffff;
 `;
 
@@ -127,11 +140,11 @@ export const styles: any = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 2,
-          height: 3,
+          width: 0,
+          height: 2,
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
       },
       android: {
         elevation: 5,
@@ -168,8 +181,8 @@ export const BookTouchableOpacity = styled.TouchableOpacity`
 `;
 
 export const BookImage = styled.Image`
-  width: 80%;
-  height: ${deviceHeight / 4 - 40}px;
+  width: 70%;
+  height: ${deviceHeight / 4 - 50}px;
   border-radius: 10px;
   object-fit: fill;
 `;
