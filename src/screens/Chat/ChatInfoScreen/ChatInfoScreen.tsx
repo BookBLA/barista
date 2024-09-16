@@ -31,7 +31,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.profileSection}>
-        <Image source={partner.avatar} style={styles.avatar} />
+        <Image source={{ url: partner.profileImageUrl }} style={styles.avatar} />
         <Text style={styles.name}>{partner.name}</Text>
       </View>
 

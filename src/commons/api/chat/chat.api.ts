@@ -50,7 +50,7 @@ const generateDummyMessages = (count) => {
   for (let i = 1; i <= count; i++) {
     messages.push({
       id: `${i}`,
-      text: `더미 메시지 ${i}`,
+      text: `더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}더미 메시지 ${i}`,
       sender: i % 2 === 0 ? 'user' : 'partner', // 짝수는 'user', 홀수는 'partner'
       timestamp: new Date(Date.now() - i * 60000).toISOString(), // i분 전 시간 설정
     });
@@ -69,7 +69,7 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
     return {
       isSuccess: true,
       result: {
-        content: generateDummyMessages(50), // 50개의 더미 메시지 생성
+        content: generateDummyMessages(3), // 50개의 더미 메시지 생성
         empty: false,
       },
     };
@@ -80,7 +80,7 @@ export const fetchChatMessages = async (userId: string, page: number, size: numb
     const dummyResponse = {
       isSuccess: true,
       result: {
-        content: generateDummyMessages(50), // 50개의 더미 메시지 생성
+        content: generateDummyMessages(3), // 50개의 더미 메시지 생성
         empty: false,
       },
     };

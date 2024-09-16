@@ -1,5 +1,3 @@
-// @screens/Chat/ChatDetail.tsx
-
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -12,24 +10,27 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Animated,
+  Clipboard,
+  Dimensions,
   FlatList,
   KeyboardAvoidingView,
   Modal,
   Platform,
   Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
 
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
 const ChatDetail: React.FC = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
   const { partner, postcard } = params as any;
-
-  console.log('ChatInfoScreen partner:', JSON.stringify(partner));
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
@@ -38,6 +39,11 @@ const ChatDetail: React.FC = () => {
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
   const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
+
+  const [isCopyModalVisible, setCopyModalVisible] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [selectedMessage, setSelectedMessage] = useState('');
+  const messageRefs = useRef<{ [key: string]: View | null }>({}); // 각 메시지의 ref를 저장
 
   const flatListRef = useRef<FlatList<ChatMessage>>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -126,6 +132,55 @@ const ChatDetail: React.FC = () => {
     setLoadingMore(false);
   };
 
+  const handleLongPress = (event, message) => {
+    const messageRef = messageRefs.current[message.id]; // 해당 메시지의 ref를 가져옴
+
+    if (messageRef) {
+      messageRef.measure((fx, fy, width, height, px, py) => {
+        // 모달 크기 설정 (조정 필요시 변경)
+        const modalWidth = 100; // 모달의 너비
+        const modalHeight = 40; // 모달의 높이
+
+        // 타겟(TouchableOpacity)의 위치와 크기를 기준으로 모달의 위치 계산
+        const targetX = px; // 타겟의 X 좌표
+        const targetY = py; // 타겟의 Y 좌표
+        const targetWidth = width; // 타겟의 너비
+        const targetHeight = height; // 타겟의 높이
+
+        // 모달이 텍스트 위에 나타나야 하는 경우
+        const topPositionAbove = targetY - modalHeight;
+
+        // 모달이 텍스트 아래에 나타나야 하는 경우
+        const topPositionBelow = targetY + targetHeight;
+
+        // 모달이 화면의 왼쪽에 나타나는 경우
+        const leftPositionLeft = targetX;
+
+        // 모달이 화면의 오른쪽에 나타나는 경우
+        const leftPositionRight = targetX + targetWidth - modalWidth;
+
+        // 모달의 최종 위치 결정
+        setModalPosition({
+          top: targetY < SCREEN_HEIGHT / 2 ? topPositionBelow : topPositionAbove,
+          left: targetX < SCREEN_WIDTH / 2 ? leftPositionLeft : leftPositionRight,
+        });
+
+        setSelectedMessage(message.text);
+        setCopyModalVisible(true);
+      });
+    }
+  };
+
+  const handleCopy = () => {
+    Clipboard.setString(selectedMessage);
+    Alert.alert('복사 완료', '메시지가 복사되었습니다.');
+    setCopyModalVisible(false);
+  };
+
+  const closeModal = () => {
+    setCopyModalVisible(false);
+  };
+
   const renderMessageItem = ({ item, index }: { item: ChatMessage; index: number }) => {
     const isUserMessage = item.sender === 'user';
     const showAvatar =
@@ -160,18 +215,21 @@ const ChatDetail: React.FC = () => {
               <S.BookChatBubble isUserMessage={isUserMessage}>
                 {postcard.type.imageUrl && index === displayedMessages.length - 1 && (
                   <S.BookCover
-                    isUserMessage={isUserMessage}
                     source={{ uri: postcard.type.imageUrl }}
                     onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
                   />
                 )}
-                <TouchableOpacity onLongPress={() => Alert.alert('메시지 길게 누름')}>
+                <TouchableOpacity
+                  ref={(ref) => {
+                    if (ref) messageRefs.current[item.id] = ref; // 각 메시지의 ref를 저장
+                  }}
+                  onLongPress={(event) => handleLongPress(event, item)}
+                >
                   <S.MessageBubble isUserMessage={isUserMessage}>
                     <S.MessageText isUserMessage={isUserMessage}>{item.text}</S.MessageText>
                   </S.MessageBubble>
                 </TouchableOpacity>
               </S.BookChatBubble>
-
               {!isUserMessage && (
                 <S.Timestamp isUserMessage={isUserMessage}>
                   {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -219,7 +277,6 @@ const ChatDetail: React.FC = () => {
             onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
             scrollEventThrottle={16}
             ListFooterComponent={
-              //  { loadingMore ? <S.LoadingIndicator /> : null}
               <S.ProfileSection>
                 <S.ProfileAvatar source={{ url: partner.profileImageUrl }} />
                 <S.ProfileInfo>
@@ -309,6 +366,32 @@ const ChatDetail: React.FC = () => {
                 </S.ModalButtonContainer>
               </S.DeclineModal>
             </View>
+          </Modal>
+
+          <Modal transparent visible={isCopyModalVisible} onRequestClose={closeModal} animationType="fade">
+            <TouchableWithoutFeedback onPress={closeModal}>
+              <View style={{ flex: 1 }}>
+                <View
+                  style={{
+                    position: 'absolute',
+                    top: modalPosition.top,
+                    left: modalPosition.left,
+                    backgroundColor: '#FFF',
+                    padding: 8,
+                    borderRadius: 8,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 4,
+                    elevation: 5,
+                  }}
+                >
+                  <TouchableOpacity onPress={handleCopy}>
+                    <Text style={{ color: '#1D2E61', fontWeight: 'bold' }}>복사하기</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
           </Modal>
         </S.Wrapper>
       </KeyboardAvoidingView>
