@@ -25,6 +25,7 @@ export const ProfileImage = styled.Image`
 export const RightWrapper = styled.View`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   height: 48px;
 
   margin-left: 10px;
