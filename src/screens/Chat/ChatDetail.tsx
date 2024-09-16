@@ -137,9 +137,9 @@ const ChatDetail: React.FC = () => {
 
     if (messageRef) {
       messageRef.measure((fx, fy, width, height, px, py) => {
-        // 모달 크기 설정 (조정 필요시 변경)
-        const modalWidth = 100; // 모달의 너비
-        const modalHeight = 40; // 모달의 높이
+        // 모달 크기 설정
+        const modalWidth = 140; // 모달의 너비
+        const modalHeight = 50; // 모달의 높이
 
         // 타겟(TouchableOpacity)의 위치와 크기를 기준으로 모달의 위치 계산
         const targetX = px; // 타겟의 X 좌표
@@ -148,21 +148,24 @@ const ChatDetail: React.FC = () => {
         const targetHeight = height; // 타겟의 높이
 
         // 모달이 텍스트 위에 나타나야 하는 경우
-        const topPositionAbove = targetY - modalHeight;
+        const topPositionAbove = targetY - modalHeight - 10; // 위에 나타날 경우, 10px의 여유 공간 추가
 
         // 모달이 텍스트 아래에 나타나야 하는 경우
-        const topPositionBelow = targetY + targetHeight;
+        const topPositionBelow = targetY + targetHeight + 10; // 아래에 나타날 경우, 10px의 여유 공간 추가
 
         // 모달이 화면의 왼쪽에 나타나는 경우
-        const leftPositionLeft = targetX;
+        const leftPositionLeft = targetX; // 모달이 타겟 왼쪽에 나타날 때
 
         // 모달이 화면의 오른쪽에 나타나는 경우
-        const leftPositionRight = targetX + targetWidth - modalWidth;
+        const leftPositionRight = targetX + targetWidth - modalWidth; // 모달이 타겟 오른쪽에 나타날 때
+
+        // 화면의 높이를 기준으로 상단 또는 하단을 결정
+        const isTopHalf = targetY < SCREEN_HEIGHT / 2;
 
         // 모달의 최종 위치 결정
         setModalPosition({
-          top: targetY < SCREEN_HEIGHT / 2 ? topPositionBelow : topPositionAbove,
-          left: targetX < SCREEN_WIDTH / 2 ? leftPositionLeft : leftPositionRight,
+          top: isTopHalf ? topPositionBelow : topPositionAbove, // 상단에 있을 때는 아래로, 하단에 있을 때는 위로
+          left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft, // 좌우 위치 계산
         });
 
         setSelectedMessage(message.text);
@@ -170,7 +173,6 @@ const ChatDetail: React.FC = () => {
       });
     }
   };
-
   const handleCopy = () => {
     Clipboard.setString(selectedMessage);
     Alert.alert('복사 완료', '메시지가 복사되었습니다.');
@@ -376,18 +378,43 @@ const ChatDetail: React.FC = () => {
                     position: 'absolute',
                     top: modalPosition.top,
                     left: modalPosition.left,
-                    backgroundColor: '#FFF',
-                    padding: 8,
+                    backgroundColor: '#FFFFFF',
+                    paddingVertical: 8,
+                    paddingHorizontal: 12,
                     borderRadius: 8,
                     shadowColor: '#000',
                     shadowOffset: { width: 0, height: 2 },
-                    shadowOpacity: 0.25,
+                    shadowOpacity: 0.2,
                     shadowRadius: 4,
                     elevation: 5,
+                    flexDirection: 'row',
+                    alignItems: 'center',
                   }}
                 >
-                  <TouchableOpacity onPress={handleCopy}>
-                    <Text style={{ color: '#1D2E61', fontWeight: 'bold' }}>복사하기</Text>
+                  <TouchableOpacity
+                    style={{
+                      flex: 0.4,
+                      padding: 8,
+                      alignItems: 'center',
+                      flexDirection: 'row',
+                    }}
+                    onPress={handleCopy}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: 'bold',
+                        fontSize: 14,
+                      }}
+                    >
+                      복사하기
+                    </Text>
+                    <Ionicons
+                      name="copy-outline"
+                      size={20}
+                      style={{
+                        marginRight: 8,
+                      }}
+                    />
                   </TouchableOpacity>
                 </View>
               </View>
