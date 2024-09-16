@@ -1,4 +1,4 @@
-import LogoDarkBg from '@assets/images/logos/logoDarkBg.png';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
@@ -14,17 +14,19 @@ const Header = () => {
     <S.HeaderWrapper>
       <S.LogoWrapper>
         <S.IconButton>
-          <S.LogoImage source={LogoDarkBg} />
+          <S.LogoImage source={logos.logoLight02} />
         </S.IconButton>
-        <S.LogoTitleImage source={logos.mainLogo} />
+        <S.LogoTitleImage source={logos.logoTitleLight} />
       </S.LogoWrapper>
       <S.IconWrapper>
         <S.IconButton onPress={movePage('product')}>
-          <S.IconImage source={icons.bookmarkAdd} />
+          <S.IconImage source={icons.bookmarkLightAdd} />
         </S.IconButton>
-        <S.IconText>{memberPostcard}</S.IconText>
+        <CustomText color="#fff" font="fontExtraLight" margin="0 8px 0 3px ">
+          {memberPostcard}
+        </CustomText>
         <S.IconButton onPress={movePage('notice')}>
-          <S.IconImage source={data.length ? icons.bellOn : icons.bellOff} />
+          <S.IconImage source={data.length ? icons.bellLightOn : icons.bellLightOff} />
         </S.IconButton>
       </S.IconWrapper>
     </S.HeaderWrapper>
