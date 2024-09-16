@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 class WebSocketClient {
   private static instance: WebSocketClient;
   private socket: WebSocket | null = null;
-  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect';
+  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect'; // WebSocket 연결 주소
   private isConnected: boolean = false;
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 5;
@@ -23,7 +23,7 @@ class WebSocketClient {
     return WebSocketClient.instance;
   }
 
-  public async connect(): Promise<void> {
+  public async connect(memberID: string, roomID: string): Promise<void> {
     console.log('[WebSocketClient] Attempting to connect');
     if (this.isConnected) {
       console.warn('[WebSocketClient] Already connected, aborting connection attempt');
@@ -35,18 +35,18 @@ class WebSocketClient {
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
     try {
-      this.socket = new WebSocket(this.url, [], headers);
+      this.socket = new WebSocket(this.url, [], { headers });
       console.log('[WebSocketClient] WebSocket instance created');
     } catch (error) {
       console.error('[WebSocketClient] Error creating WebSocket:', error);
-      this.handleError('WebSocket 생성 중 오류가 발생했습니다.');
+      this.handleError(new Event('WebSocket 생성 중 오류가 발생했습니다.'));
       return;
     }
 
-    this.socket.onopen = this.handleOpen.bind(this);
+    this.socket.onopen = (event) => this.handleOpen(event, memberID, roomID);
     this.socket.onmessage = this.handleMessage.bind(this);
     this.socket.onerror = this.handleError.bind(this);
-    this.socket.onclose = this.handleClose.bind(this);
+    this.socket.onclose = (event) => this.handleClose(event, memberID, roomID);
 
     console.log('[WebSocketClient] WebSocket event handlers set up');
   }
@@ -61,21 +61,49 @@ class WebSocketClient {
     }
   }
 
-  private handleOpen(event: WebSocketMessageEvent): void {
+  private handleOpen(event: Event, memberID: string, roomID: string): void {
     console.log('[WebSocketClient] Connection opened', event);
     this.isConnected = true;
     this.reconnectAttempts = 0;
     this.closeCode = null;
     this.closeReason = null;
     this.showToast('WebSocket 연결이 설정되었습니다.');
+
+    // 채팅 및 채팅방 구독
+    this.subscribeToChat(memberID);
+    if (roomID) {
+      this.enterChatRoom(roomID, memberID);
+    }
   }
 
-  private handleMessage(event: WebSocketMessageEvent): void {
+  private subscribeToChat(memberID: string): void {
+    // 특정 사용자 채팅 구독
+    const subscribeMessage = {
+      type: 'SUBSCRIBE',
+      destination: `/topic/chat/${memberID}`,
+    };
+
+    this.sendMessage(subscribeMessage);
+    console.log(`[WebSocketClient] Subscribed to /topic/chat/${memberID}`);
+  }
+
+  private enterChatRoom(roomID: string, memberID: string): void {
+    // 특정 채팅방 구독
+    const roomSubscribeMessage = {
+      type: 'SUBSCRIBE',
+      destination: `/topic/chat/room/${roomID}/${memberID}`,
+    };
+
+    this.sendMessage(roomSubscribeMessage);
+    console.log(`[WebSocketClient] Subscribed to /topic/chat/room/${roomID}/${memberID}`);
+  }
+
+  private handleMessage(event: MessageEvent): void {
     console.log('[WebSocketClient] Message received:', event.data);
     try {
       const parsedData = JSON.parse(event.data);
       console.log('[WebSocketClient] Parsed message:', parsedData);
-      // 여기에 메시지 처리 로직을 추가할 수 있습니다.
+      // 메시지 처리 로직 추가
     } catch (error) {
       console.error('[WebSocketClient] Error parsing message:', error);
     }
@@ -84,35 +112,45 @@ class WebSocketClient {
   private handleError(error: Event): void {
     console.error('[WebSocketClient] Error occurred:', error);
     this.setErrorMessage('WebSocket 연결 오류가 발생했습니다.');
-    // WebSocket 오류 이벤트는 연결을 자동으로 닫지 않으므로, 여기서 연결을 명시적으로 닫습니다.
     if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
       this.socket.close();
     }
   }
 
-  private handleClose(event: WebSocketCloseEvent): void {
+  private handleClose(event: CloseEvent, memberID: string, roomID: string): void {
     console.log('[WebSocketClient] Connection closed', event);
     this.isConnected = false;
-    this.closeCode = event.code;
-    this.closeReason = event.reason;
+    this.closeCode = event.code || null;
+    this.closeReason = event.reason || null;
     this.setErrorMessage(`WebSocket 연결이 종료되었습니다. (Code: ${event.code}, Reason: ${event.reason})`);
-    this.attemptReconnect();
+    this.attemptReconnect(memberID, roomID);
   }
 
-  private attemptReconnect(): void {
+  private attemptReconnect(memberID: string, roomID: string): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       console.log(`[WebSocketClient] Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-      setTimeout(() => this.connect(), this.reconnectInterval);
+      setTimeout(() => this.connect(memberID, roomID), this.reconnectInterval);
     } else {
       console.error('[WebSocketClient] Max reconnect attempts reached');
       this.showToast('WebSocket 재연결 시도 횟수를 초과했습니다.');
-      // 재연결 시도를 초기화합니다.
       this.reconnectAttempts = 0;
     }
   }
 
-  public sendMessage(message: any): void {
+  public sendChatMessage(memberID: string, message: any): void {
+    // 채팅 메시지 전송
+    const sendMessage = {
+      type: 'SEND',
+      destination: `/app/chat/${memberID}`, // 채팅 전송 경로
+      payload: message, // 실제 전송할 메시지 내용
+    };
+
+    this.sendMessage(sendMessage);
+    console.log(`[WebSocketClient] Sent message to /app/chat/${memberID}:`, message);
+  }
+
+  private sendMessage(message: any): void {
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       try {
         const jsonMessage = JSON.stringify(message);
@@ -152,12 +190,12 @@ class WebSocketClient {
 
   private setErrorMessage(message: string): void {
     console.error('[WebSocketClient] Error:', message);
-    // 여기에 에러 메시지를 저장하거나 표시하는 로직을 추가하세요.
+    // 에러 메시지를 저장하거나 표시하는 로직을 추가하세요.
   }
 
   private showToast(message: string): void {
     console.log('[WebSocketClient] Toast:', message);
-    // 여기에 토스트 메시지를 표시하는 로직을 추가하세요.
+    // 토스트 메시지를 표시하는 로직을 추가하세요.
   }
 }
 
