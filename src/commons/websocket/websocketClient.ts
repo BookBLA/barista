@@ -103,10 +103,21 @@ class WebSocketClient {
 
   private handleMessage(event: MessageEvent): void {
     console.log('[WebSocketClient] Message received:', event.data);
+
     try {
       const parsedData = JSON.parse(event.data);
       console.log('[WebSocketClient] Parsed message:', parsedData);
-      // 메시지 처리 로직 추가
+
+      // 메시지 타입에 따라 다른 로그를 출력하거나, 다른 동작을 수행할 수 있습니다.
+      if (parsedData.type === 'CHAT') {
+        console.log(`[WebSocketClient] Chat message received:`, parsedData.payload);
+      } else if (parsedData.type === 'ROOM') {
+        console.log(`[WebSocketClient] Room message received:`, parsedData.payload);
+      } else {
+        console.log('[WebSocketClient] Other message received:', parsedData);
+      }
+
+      // 추가로 메시지에 따른 처리 로직을 추가할 수 있습니다.
     } catch (error) {
       console.error('[WebSocketClient] Error parsing message:', error);
     }
