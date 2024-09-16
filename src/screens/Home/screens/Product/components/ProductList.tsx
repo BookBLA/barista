@@ -27,7 +27,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
   return (
     <View
       style={{
-        width: '90%',
+        width: '95%',
         height: 86,
         marginBottom: 10,
         backgroundColor: index === 0 && admobCount === 0 ? colors.textGray1 : 'white',
