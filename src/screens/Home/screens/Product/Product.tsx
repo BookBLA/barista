@@ -31,7 +31,7 @@ const Product = () => {
     }
   };
 
-  const { products, getProducts} = useIAP();
+  const { products, getProducts } = useIAP();
 
   useEffect(() => {
     if (products.length !== 0) {
@@ -52,7 +52,7 @@ const Product = () => {
   };
 
   const addProductInfo = async () => {
-    // console.log('products1', products);
+    console.log('products1', products);
     const sortProducts = products.sort((a, b) => {
       return Number(a.price) - Number(b.price);
     });
@@ -73,33 +73,30 @@ const Product = () => {
 
   return (
     <S.Wrapper>
-       {loading ? (
-          <ActivityIndicator size="large" color={colors.primary} /> // 로딩 표시 추가
-        ) : (
-          <S.BodyWrapper>
-            <CustomText
-              size="10"
-              font="fontRegular"
-              color={colors.textGray4}
-              style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16 }}
-            >
-              책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
-              책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
-              책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
-            </CustomText>
-                <ProductList
-                  props={{
-                    title: '무료 책갈피 받기',
-                    krwPrice: '광고 시청 후\n책갈피 10개 받기',
-                    productId: 'ad_free_bookmarks',
-                  }}
-                  index={0}
-                />
-                {productID?.map((sale, index) => (
-                  <ProductList key={sale.productId} props={sale} index={index + 1} />
-                ))}
-
-          </S.BodyWrapper>
+      {loading ? (
+        <ActivityIndicator size="large" color={colors.primary} /> // 로딩 표시 추가
+      ) : (
+        <S.BodyWrapper>
+          <CustomText
+            size="10"
+            font="fontRegular"
+            color={colors.textGray4}
+            style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16 }}
+          >
+            책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
+            책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
+            책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
+          </CustomText>
+          <ProductList
+            props={{
+              title: '무료 책갈피 받기',
+              krwPrice: '광고 시청 후\n책갈피 10개 받기',
+              productId: 'ad_free_bookmarks',
+            }}
+            index={0}
+          />
+          {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+        </S.BodyWrapper>
       )}
     </S.Wrapper>
   );
