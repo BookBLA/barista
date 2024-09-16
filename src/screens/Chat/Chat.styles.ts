@@ -8,8 +8,6 @@ export const ChatList = styled.FlatList`
 export const ChatItem = styled.TouchableOpacity`
   flex-direction: row;
   padding: 12px 16px;
-  border-bottom-width: 1px;
-  border-bottom-color: #eaeaea;
   align-items: center;
 `;
 
@@ -36,9 +34,14 @@ export const LastMessage = styled.Text`
   color: #888;
 `;
 
+export const TimeUnreadContainer = styled.View`
+  align-items: flex-end;
+  justify-content: flex-start;
+`;
+
 export const Timestamp = styled.Text`
   font-size: 12px;
-  color: #999;
+  color: #858585;
   align-self: flex-end;
 `;
 

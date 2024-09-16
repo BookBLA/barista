@@ -94,12 +94,14 @@ const ChatScreen: React.FC = () => {
                 {item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 15)}...` : item.lastMessage}
               </S.LastMessage>
             </S.ChatInfo>
-            <S.Timestamp>{item.timestamp}</S.Timestamp>
-            {item.unreadCount > 0 && (
-              <S.Badge>
-                <S.BadgeText>{item.unreadCount > 99 ? '100+' : item.unreadCount}</S.BadgeText>
-              </S.Badge>
-            )}
+            <S.TimeUnreadContainer>
+              <S.Timestamp>{item.timestamp}</S.Timestamp>
+              {item.unreadCount > -1 && (
+                <S.Badge>
+                  <S.BadgeText>{item.unreadCount > 99 ? '100+' : item.unreadCount}</S.BadgeText>
+                </S.Badge>
+              )}
+            </S.TimeUnreadContainer>
           </S.ChatItem>
         </View>
       </LongPressGestureHandler>
