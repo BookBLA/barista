@@ -5,8 +5,8 @@ import ModifyMBTI from '@commons/components/Specific/ModifyMBTI/ModifyMBTI';
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useLimitTextLine } from '@commons/hooks/utils/limitTextLine/useLimitTextLine';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
@@ -58,7 +58,7 @@ const ModifyStyle = () => {
     }
   };
 
-  useManageMargin();
+  useAppUIManager();
 
   const callGetStyleApi = async () => {
     try {

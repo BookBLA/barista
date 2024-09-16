@@ -1,6 +1,6 @@
 import { getMemberProfileApi, putMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useCounter } from '@commons/store/features/counter/useCounter';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { useRoute } from '@react-navigation/native';
@@ -13,7 +13,7 @@ import StudentID from './RejectedInfo/StudentID';
 
 const FailedSign = () => {
   const route = useRoute<TProps>();
-  useManageMargin();
+  useAppUIManager();
   const { handleReset } = useMovePage();
   const { userInfo, updateUserInfo } = useUserStore();
   const rejectCase = route.params?.rejectCase ?? [];

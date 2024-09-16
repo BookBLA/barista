@@ -1,6 +1,6 @@
 import { getProfileImageType, patchMemberProfileImageApi } from '@commons/api/members/profile/memberProfile.api';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
@@ -19,7 +19,7 @@ const ModifyProfile = () => {
     title: '프로필 사진 수정',
     left: true,
   });
-  useManageMargin();
+  useAppUIManager();
   // const { updateStyleInfo, styleInfo } = useStyleStore();
   const [profile, setProfile] = useState(profileUrl);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
@@ -47,8 +47,8 @@ const ModifyProfile = () => {
 
   const callPatchProfileImage = async () => {
     try {
-      const profileImageId=profileList.find((item) => item.profileImageUrl === profile)?.profileImageId;
-      const response = await patchMemberProfileImageApi({ profileImageTypeId: profileImageId as number});
+      const profileImageId = profileList.find((item) => item.profileImageUrl === profile)?.profileImageId;
+      const response = await patchMemberProfileImageApi({ profileImageTypeId: profileImageId as number });
       showToast({ content: '프로필 사진이 수정되었습니다.' });
     } catch (error) {
       console.log('ERROR) patchProfileImageType', error);
