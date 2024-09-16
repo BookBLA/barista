@@ -6,9 +6,9 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import { colors } from '@commons/styles/variablesStyles';
 import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
-export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
+export const ModalItem: React.FC<IProps> = ({ index, item, where, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
   const handleModalClose = () => {
-    postOnboardingStatus('HOME');
+    postOnboardingStatus(where);
     onClose();
   };
 
@@ -25,7 +25,7 @@ export const ModalItem: React.FC<IProps> = ({ index, item, activeSlide, onPrevSl
 
       {index === -1 ? (
         <>
-          <S.ExitButton underlayColor="ghostwhite" onPress={onClose}>
+          <S.ExitButton underlayColor="ghostwhite" onPress={handleModalClose}>
             <CustomText size="16" color="black">
               닫기
             </CustomText>

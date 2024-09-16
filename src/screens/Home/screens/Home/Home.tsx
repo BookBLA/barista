@@ -26,7 +26,7 @@ const Home = () => {
     };
 
     fetchOnboardingStatus();
-  }, []); // 컴포넌트가 마운트될 때 한 번만 실행
+  }, []);
 
   useScreenLogger();
   useHeaderControl({

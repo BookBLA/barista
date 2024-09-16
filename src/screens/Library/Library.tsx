@@ -28,7 +28,7 @@ import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo'
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
@@ -44,6 +44,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
+import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -58,6 +59,7 @@ type Props = {
 const Library: React.FC<Props> = ({ route, navigation }) => {
   useScreenLogger();
   const { toggle: onboardingToggle, isOpen: isOnboardingOpen } = useToggle(true);
+  const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -90,6 +92,20 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const { libraryInfo, bookRows, fetchLibraryInfo } = useFetchLibraryInfo(isYourLibrary, targetMemberId);
   const [isDeleteBookModalVisible, setIsDeleteBookModalVisible] = useState(false);
   const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const fetchOnboardingStatus = async () => {
+      try {
+        const res = await getOnboardingStatus();
+        // @ts-ignore
+        setIsAlreadyEntry(res.result.libraryOnboardingStatus);
+      } catch (error) {
+        console.error('Failed to fetch onboarding status:', error);
+      }
+    };
+
+    fetchOnboardingStatus();
+  }, []);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(invitationCode);
@@ -401,7 +417,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     <SafeAreaView style={{ height: '100%' }}>
       <StatusBar barStyle="light-content" backgroundColor="#1D2E61" />
       <LinearGradient colors={['#1D2E61', '#5B6CA8']}>
-        <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
+        {!isAlreadyEntry && <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />}
         <S.UserInfoContainerView>
           <S.UserInfoView>
             {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
