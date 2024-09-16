@@ -50,11 +50,15 @@ export const SchoolNameText = styled.Text`
 export const MemberStyleList = styled.View`
   margin-top: 12px;
   flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
 `;
 
 export const MemberStyleView = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 35px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 4px;
   padding: 8px 16px;
@@ -82,18 +86,6 @@ export const ProfileImageModificationImage = styled.Image`
   position: absolute;
   left: 40px;
   top: 40px;
-`;
-
-export const ProfileHeaderButtonContainer = styled.View`
-  flex-direction: row;
-  gap: 12px;
-`;
-
-export const ProfileModifyButtonWrapper = styled.TouchableOpacity`
-  flex: 1;
-  padding: 12px;
-  border-radius: 20px;
-  background-color: #f0e7cf;
 `;
 
 export const ProfileModifyButtonText = styled.Text`
@@ -169,15 +161,6 @@ export const styles: any = StyleSheet.create({
   },
 });
 
-export const ModalBookListContainer = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  padding-top: 20px;
-  padding-right: 40px;
-  padding-left: 40px;
-  gap: 40px;
-`;
-
 export const BookTouchableOpacity = styled.TouchableOpacity`
   flex: 1;
   justify-content: center;
@@ -198,19 +181,6 @@ export const EmptyBookImage = styled.View`
   height: ${deviceHeight / 4 - 40}px;
   border-radius: 10px;
   background-color: #49526e;
-`;
-
-export const EmptyBookPlusImage = styled.Image`
-  width: 30px;
-  height: 30px;
-`;
-
-export const BookMarkIconImage = styled.Image`
-  width: 15px;
-  height: 30px;
-  position: absolute;
-  left: ${deviceWidth / 3.8}px;
-  top: ${deviceHeight / 500 - 5}px;
 `;
 
 export const ProfileImageBottomSheetContainer = styled.View`
@@ -277,7 +247,6 @@ export const FriendInvitationCode = styled.View`
   background-color: #ecf0f9;
   border-radius: 6px;
   margin-bottom: 20px;
-  //padding: 69px 31px;
 `;
 
 export const CopyCodeButtonWrapper = styled.View`
