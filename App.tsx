@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { initializeKakaoSDK } from '@react-native-kakao/core';
+import { initializeKakaoSDK, getKeyHashAndroid } from '@react-native-kakao/core';
 import 'expo-dev-client';
 import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -19,6 +19,7 @@ import useToast from './src/commons/hooks/utils/toast/useToast';
 export default function App() {
   useToast();
   initializeKakaoSDK(`${process.env.EXPO_PUBLIC_NATIVE_APP_KEY}`);
+  // getKeyHashAndroid().then((result) => console.log('keyhash', result));
   // Core.initializeKakaoSDK(`${process.env.EXPO_PUBLIC_NATIVE_APP_KEY}`, {
   //   web: {
   //     javascriptKey: INJECTED_JAVASCRIPT,

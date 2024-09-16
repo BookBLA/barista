@@ -33,7 +33,7 @@ import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
@@ -44,6 +44,8 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
+import { StatusBar } from 'expo-status-bar';
+import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -58,6 +60,7 @@ type Props = {
 const Library: React.FC<Props> = ({ route, navigation }) => {
   useScreenLogger();
   const { toggle: onboardingToggle, isOpen: isOnboardingOpen } = useToggle(true);
+  const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -90,6 +93,20 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const { libraryInfo, bookRows, fetchLibraryInfo } = useFetchLibraryInfo(isYourLibrary, targetMemberId);
   const [isDeleteBookModalVisible, setIsDeleteBookModalVisible] = useState(false);
   const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const fetchOnboardingStatus = async () => {
+      try {
+        const res = await getOnboardingStatus();
+        // @ts-ignore
+        setIsAlreadyEntry(res.result.libraryOnboardingStatus);
+      } catch (error) {
+        console.error('Failed to fetch onboarding status:', error);
+      }
+    };
+
+    fetchOnboardingStatus();
+  }, []);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(invitationCode);
@@ -408,8 +425,8 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   return (
     <SafeAreaView style={{ height: '100%' }}>
-      <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
       <LinearGradient colors={['#1D2E61', '#5B6CA8']}>
+        {!isAlreadyEntry && <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />}
         <S.UserInfoContainerView>
           <S.UserInfoView>
             <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>

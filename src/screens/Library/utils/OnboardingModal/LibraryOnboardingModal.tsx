@@ -5,6 +5,7 @@ import Modal from 'react-native-modal';
 import { TouchableWithoutFeedback, View } from 'react-native';
 import { ModalItem } from '@commons/components/Specific/OnboardingModal/ModalItem';
 import { ModalProps } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal.types';
+import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
 export const LibraryOnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) => {
   const modalWidth = deviceWidth * 0.9;
@@ -22,7 +23,7 @@ export const LibraryOnboardingModal: React.FC<ModalProps> = ({ onClose, visible 
         style={{ flex: 1, flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}
       >
         <View style={{ width: modalWidth, height: modalHeight }}>
-          <ModalItem index={-1} item={data} onClose={onClose} />
+          <ModalItem index={-1} item={data} where="LIBRARY" onClose={onClose} />
         </View>
       </TouchableWithoutFeedback>
     </Modal>

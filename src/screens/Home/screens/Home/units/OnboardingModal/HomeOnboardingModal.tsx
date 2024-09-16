@@ -100,6 +100,7 @@ export const HomeOnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) 
               key={index}
               index={index}
               item={item}
+              where="HOME"
               activeSlide={activeSlide}
               onPrevSlide={handlePrevSlide}
               onNextSlide={handleNextSlide}
