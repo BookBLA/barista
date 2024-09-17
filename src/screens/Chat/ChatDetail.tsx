@@ -234,7 +234,6 @@ const ChatDetail: React.FC = () => {
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
-      WebSocketClient.disconnect();
       WebSocketClient.unsubscribe(chatRoomID, userId.toString(), handleNewMessage);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
@@ -301,8 +300,6 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleLongPress = (event: any, message: Message, index: number) => {
-    console.log(`message : ${JSON.stringify(message)}`);
-
     // 고유 식별자 생성: senderId, sendTime, index를 조합
     const messageKey = `${message.senderId}-${message.sendTime}-${index}`;
     const messageRef = messageRefs.current[messageKey];
