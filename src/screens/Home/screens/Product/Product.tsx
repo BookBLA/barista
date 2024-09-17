@@ -1,11 +1,12 @@
+import { getMemberPostcardsApi } from '@commons/api/members/default/member.api';
 import { postPaymentApi, postPaymentGoogleApi } from '@commons/api/payment/payment.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Platform } from 'react-native';
+import { ActivityIndicator, Alert, Platform, ScrollView, View } from 'react-native';
 import {
   clearTransactionIOS,
   endConnection,
@@ -14,7 +15,6 @@ import {
   initConnection,
   purchaseErrorListener,
   purchaseUpdatedListener,
-  setup,
   useIAP,
   withIAPContext,
   type ProductPurchase,
@@ -35,12 +35,9 @@ const Product = () => {
     free: <Header />,
   });
 
-  useAppUIManager({
-    setBackgroundColor: colors.primary,
-  });
-
   const [productID, setProductID] = useState<ProductContentProps[]>();
   const [loading, setLoading] = useState<boolean>(true);
+  const { fetchMemberPostcard } = useMemberPostcardStore();
 
   const getProductsByID = async () => {
     try {
@@ -54,12 +51,8 @@ const Product = () => {
 
   useEffect(() => {
     if (products.length !== 0) {
-      Alert.alert('addProductInfo', 'addProductInfo');
       addProductInfo();
     }
-    // else {
-    //   initPurchase();
-    // }
   }, [products]);
 
   let purchaseUpdateSubscription = null;
@@ -99,6 +92,8 @@ const Product = () => {
               }
               const ackResult = await finishTransaction({ purchase, isConsumable: true });
               Alert.alert('finishTransation', JSON.stringify(ackResult, null, 2));
+              const response = await getMemberPostcardsApi();
+              fetchMemberPostcard();
             } catch (error) {
               Alert.alert('ackError: ', JSON.stringify(error, null, 2));
             }
@@ -143,24 +138,6 @@ const Product = () => {
     };
   }, []);
 
-  const initPurchase = async () => {
-    try {
-      setup({ storekitMode: 'STOREKIT2_MODE' });
-      const init = await initConnection();
-      const initCompleted = init === true;
-      if (initCompleted) {
-        if (Platform.OS === 'android') {
-          await flushFailedPurchasesCachedAsPendingAndroid();
-        } else {
-          await clearTransactionIOS();
-        }
-      }
-      await getProductsByID();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const addProductInfo = async () => {
     Alert.alert('addProductInfo', JSON.stringify(products));
     if (Platform.OS === 'android') {
@@ -191,34 +168,38 @@ const Product = () => {
   };
 
   return (
-    <S.Wrapper>
+    <View style={{ flex: 1, paddingTop: 64 }}>
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} /> // 로딩 표시 추가
       ) : (
-        <S.BodyWrapper>
-          <CustomText
-            size="10"
-            font="fontRegular"
-            color={colors.textGray4}
-            style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16 }}
-          >
-            책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
-            책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
-            책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
-          </CustomText>
-          <ProductList
-            props={{
-              title: '무료 책갈피 받기',
-              name: '무료 책갈피 받기',
-              krwPrice: '광고 시청 후\n책갈피 10개 받기',
-              productId: 'ad_free_bookmarks',
-            }}
-            index={0}
-          />
-          {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
-        </S.BodyWrapper>
+        <>
+          <ScrollView style={{ flex: 1 }}>
+            <CustomText
+              size="10"
+              font="fontRegular"
+              color={colors.textGray4}
+              style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16, marginTop: '3%' }}
+            >
+              책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
+              책갈피를 돌려드려요. 결제 후 7일 내 사용하지 않은 책갈피는 환불이 가능합니다.{`\n`}
+              책갈피를 사용한 경우 환불 대상에서 제외되며, 잔여 책갈피의 부분 환불은 불가합니다.
+            </CustomText>
+            <S.BodyWrapper>
+              <ProductList
+                props={{
+                  title: '무료 책갈피 받기',
+                  name: '무료 책갈피 받기',
+                  krwPrice: '광고 시청 후\n책갈피 10개 받기',
+                  productId: 'ad_free_bookmarks',
+                }}
+                index={0}
+              />
+              {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+            </S.BodyWrapper>
+          </ScrollView>
+        </>
       )}
-    </S.Wrapper>
+    </View>
   );
 };
 
