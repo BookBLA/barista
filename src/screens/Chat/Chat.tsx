@@ -99,6 +99,9 @@ const ChatScreen: React.FC = () => {
     if (selectedChat) {
       exitChatRoom(selectedChat.id);
       setChats(chats.filter((chat) => chat.id !== selectedChat.id));
+
+      console.log(JSON.stringify(chats));
+
       setIsExitConfirmVisible(false);
       closeModal();
     }
@@ -109,7 +112,9 @@ const ChatScreen: React.FC = () => {
       <LongPressGestureHandler onHandlerStateChange={(event) => handleLongPress(event, item)} minDurationMs={800}>
         <View>
           <S.ChatItem
-            onPress={() => navigation.navigate('ChatDetail', { partner: item.partner, postcard: item.postcard })}
+            onPress={() =>
+              navigation.navigate('ChatDetail', { partner: item.partner, postcard: item.postcard, chatRoomID: item.id })
+            }
           >
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
@@ -120,7 +125,7 @@ const ChatScreen: React.FC = () => {
             </S.ChatInfo>
             <S.TimeUnreadContainer>
               <S.Timestamp>{item.timestamp}</S.Timestamp>
-              {item.unreadCount > -1 && (
+              {item.unreadCount > 0 && (
                 <S.Badge>
                   <S.BadgeText>{item.unreadCount > 99 ? '100+' : item.unreadCount}</S.BadgeText>
                 </S.Badge>
