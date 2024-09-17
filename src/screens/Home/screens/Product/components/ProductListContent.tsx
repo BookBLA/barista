@@ -1,16 +1,17 @@
 import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import { useEffect } from 'react';
-import { Image, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Image, Platform, View } from 'react-native';
 import { ProductPurchase, requestPurchase, useIAP } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
 import { CustomGradientButton } from '@commons/components/Inputs/CustomGradientButton/CustomGradientButton';
 import { colors } from '@commons/styles/variablesStyles';
 import { ProductProps } from './ProductList.types';
 
-const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
+const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, handleGetRewardedAds }) => {
   const { title, krwPrice, localizedPrice, discount, originalPrice, productId } = props;
   const { products, getProducts, finishTransaction, currentPurchase } = useIAP();
+
   if (!admobCount) {
     admobCount = 0;
   }
@@ -21,8 +22,8 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
         sku,
         andDangerouslyFinishTransactionAutomaticallyIOS: false, // requestPurchase 호출 후 자동으로 finishTransaction을 호출할지 여부
       });
-    } catch (err) {
-      console.error('Purchase failed:', err.code, err.message);
+    } catch (error) {
+      console.error('Purchase failed:', error.code, error.message);
     }
   };
   useEffect(() => {
@@ -107,7 +108,7 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
       </View>
       {index === 0 ? (
         admobCount > 0 ? (
-          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => console.log('애드몹시청')} />
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => handleGetRewardedAds} />
         ) : (
           <CustomButton contents={'무료 0/2'} disabled />
         )

@@ -9,6 +9,9 @@ import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
 import ProductList from './components/ProductList';
 import { ProductContentProps } from './components/ProductList.types';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import { Platform } from 'react-native';
+import { postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -67,6 +70,56 @@ const Product = () => {
     setProductID(addDiscount);
   };
 
+  const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
+  const adUnitId = __DEV__
+    ? TestIds.REWARDED
+    : Platform.OS === 'ios'
+      ? advertiseUnitJson.ios.reload_new_person
+      : advertiseUnitJson.android.reload_new_person;
+
+  const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+  });
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setLoaded(true);
+      console.log('Ad loaded');
+    });
+
+    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+      console.log('User earned reward of ', reward);
+      // TODO: 책갈피 받는 로직 추가
+      rewarded.load();
+    });
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, []);
+
+  const [render, setRender] = useState<boolean>(false);
+  const handleGetRewardedAds = async () => {
+    console.log('click');
+    if (rewarded) {
+      if (loaded) {
+        try {
+          rewarded.show();
+          postReloadAdmobUse('FREEBOOKMARK').then(() => {
+            setRender(!render);
+          });
+        } catch {
+          rewarded.load();
+        }
+      } else {
+        console.log('Ad is not loaded yet, loading ad...');
+      }
+    }
+  };
+
   return (
     <S.Wrapper>
       <S.BodyWrapper>
@@ -87,6 +140,7 @@ const Product = () => {
             productId: 'ad_free_bookmarks',
           }}
           index={0}
+          handleGetRewardedAds={handleGetRewardedAds}
         />
         {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
       </S.BodyWrapper>

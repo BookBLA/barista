@@ -2,6 +2,7 @@ export interface ProductProps {
   props: ProductContentProps;
   index: number;
   admobCount?: number;
+  handleGetRewardedAds?: () => void;
 }
 
 export interface ProductListContentProps {

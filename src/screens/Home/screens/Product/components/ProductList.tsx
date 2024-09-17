@@ -1,30 +1,31 @@
-import { getMemberAdmobApi } from '@commons/api/members/admob/memberAdmob.adpi';
 import { colors } from '@commons/styles/variablesStyles';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useEffect, useState } from 'react';
-import { Image, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Image, Platform, View } from 'react-native';
 import adMask from '../../../../../../assets/images/icons/ADMask.png';
 import { ProductProps } from './ProductList.types';
 import ProductListContent from './ProductListContent';
+import { getReloadAdmobCount } from '@commons/api/admob/reloadAdmob.api';
 
-const ProductList: React.FC<ProductProps> = ({ props, index }) => {
+const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAds }) => {
   useEffect(() => {
     if (index === 0) {
       getAdmobCount();
+      console.log(admobCount);
     }
   }, []);
 
-  // TODO: admobCount 개수 받아서 세팅
   const [admobCount, setAdmobCount] = useState<number>(0);
   const getAdmobCount = async () => {
     try {
-      const response = await getMemberAdmobApi();
-      setAdmobCount(response.result.admobCount ?? 0);
-      console.log('admobCount', response.result.admobCount);
+      getReloadAdmobCount('FREEBOOKMARK').then((res) => {
+        setAdmobCount(res);
+      });
     } catch (error) {
       console.error(error);
     }
   };
+
   return (
     <View
       style={{
@@ -56,7 +57,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index }) => {
             borderRadius: 10, // Adjust as needed
           }}
         >
-          <ProductListContent props={props} index={index} admobCount={admobCount} />
+          <ProductListContent props={props} index={index} admobCount={admobCount} handleGetRewardedAds={handleGetRewardedAds}/>
         </LinearGradient>
       ) : (
         <ProductListContent props={props} index={index} admobCount={admobCount} />
