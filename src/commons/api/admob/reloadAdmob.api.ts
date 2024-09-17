@@ -6,4 +6,8 @@ export const getReloadAdmobCount = async () => {
   return res.result.admobCount;
 };
 
-export const postReloadAdmobUse = () => Post('members/me/admob', {});
+export const postReloadAdmobUse = async () => {
+  const res = await Post('members/me/admob', {});
+  // @ts-ignore
+  return res.result.admobCount;
+};

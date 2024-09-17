@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { ProductPurchase, requestPurchase, useIAP } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
-import { CustomGradientButton } from '../../../../../commons/components/Inputs/CustomGradientButton/CustomGradientButton';
-import { colors } from '../../../../../commons/styles/variablesStyles';
+import { CustomGradientButton } from '@commons/components/Inputs/CustomGradientButton/CustomGradientButton';
+import { colors } from '@commons/styles/variablesStyles';
 import { ProductProps } from './ProductList.types';
 
 const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
