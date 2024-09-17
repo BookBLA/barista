@@ -84,7 +84,7 @@ const TermsOfService = () => {
 
                 {(index === 2 || index === 3 || index === 4 || index === 5) && (
                   <TouchableOpacity onPress={() => handleAgreementLinkPress(index)}>
-                    <Image source={nextArrow} style={{ width: 8, height: 16, marginRight: '0.9%' }} />
+                    <Image source={nextArrow} style={{ width: 8, height: 16 }} />
                   </TouchableOpacity>
                 )}
               </T.RowStyled>
