@@ -6,21 +6,15 @@ import { Image } from 'react-native';
 import * as S from './CustomHeader.styles';
 import { ICustomHeader } from './CustomHeader.types';
 
-export const CustomHeader: React.FC<ICustomHeader> = ({
-  title,
-  left = true,
-  onPressLeft,
-  right,
-  free,
-  backgroundColor,
-}) => {
+export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPressLeft, right, customContent }) => {
   const { movePage } = useMovePage();
   const hasMargin = useAppStatus((state) => state.status.hasMargin);
+  const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
 
   return (
     <>
-      {free ? (
-        <>{free}</>
+      {customContent ? (
+        <>{customContent}</>
       ) : (
         <S.Wrapper hasMargin={hasMargin} backgroundColor={backgroundColor}>
           {left && (

@@ -13,7 +13,7 @@ const Header = () => {
   return (
     <S.HeaderWrapper>
       <S.LogoWrapper>
-        <S.IconButton>
+        <S.IconButton onPress={movePage('home')}>
           <S.LogoImage source={logos.logoLight02} />
         </S.IconButton>
         <S.LogoTitleImage source={logos.logoTitleLight} />

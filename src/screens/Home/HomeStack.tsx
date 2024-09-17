@@ -20,13 +20,7 @@ const HomeStack = () => {
       screenOptions={{ headerShown: false, animationEnabled: false, headerTransparent: true }}
     >
       {screens.map(({ name, component }) => (
-        <Stack.Screen
-          key={name}
-          name={name}
-          component={CustomScreen(component, {
-            isGradient: true,
-          })}
-        />
+        <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
       ))}
     </Stack.Navigator>
   );

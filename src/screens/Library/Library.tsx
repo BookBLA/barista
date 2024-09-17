@@ -381,7 +381,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               libraryInfo,
             }),
           },
-          backgroundColor: '#1D2E61',
         },
     isYourLibrary ? [] : [libraryInfo],
   );
