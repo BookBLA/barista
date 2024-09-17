@@ -46,20 +46,23 @@ const screens = [
 
 export const CustomNavigator = () => {
   const hasMargin = useAppStatus((state) => state.status.hasMargin);
-  const isBackgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
+  const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const navigationRef = useAuthNavigation();
   const getInitialRouteName = useInitialRouteName();
   const insets = useSafeAreaInsets();
+  const marginBottom = Platform.OS === 'ios' ? insets?.bottom : 0;
+  const paddingHorizontal = hasMargin ? (Platform.OS === 'android' ? 0 : 16) : 0;
+  const paddingTop = Platform.OS === 'android' ? getStatusBarHeight() : insets.top;
 
   return (
     <NavigationContainer ref={navigationRef}>
       <SafeAreaView
         style={{
           flex: 1,
-          backgroundColor: isBackgroundColor,
-          paddingHorizontal: hasMargin ? 16 : 0,
-          paddingTop: Platform.OS === 'android' ? getStatusBarHeight() : insets.top,
-          marginBottom: Platform.OS === 'ios' ? insets?.bottom : 0,
+          backgroundColor,
+          paddingHorizontal,
+          paddingTop,
+          marginBottom,
         }}
       >
         <Stack.Navigator
