@@ -90,7 +90,7 @@ const Product = () => {
 
     const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
       console.log('User earned reward of ', reward);
-      // TODO: 책갈피 받는 로직 추가
+      // TODO: 책갈피 받는 로직 추가?
       rewarded.load();
     });
     rewarded.load();
@@ -103,7 +103,6 @@ const Product = () => {
 
   const [render, setRender] = useState<boolean>(false);
   const handleGetRewardedAds = async () => {
-    console.log('click');
     if (rewarded) {
       if (loaded) {
         try {

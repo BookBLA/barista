@@ -108,7 +108,7 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, 
       </View>
       {index === 0 ? (
         admobCount > 0 ? (
-          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => handleGetRewardedAds} />
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={handleGetRewardedAds} />
         ) : (
           <CustomButton contents={'무료 0/2'} disabled />
         )

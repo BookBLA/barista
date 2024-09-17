@@ -2,7 +2,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect, useState } from 'react';
 import { Image, Platform, View } from 'react-native';
-import adMask from '../../../../../../assets/images/icons/ADMask.png';
+import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { ProductProps } from './ProductList.types';
 import ProductListContent from './ProductListContent';
 import { getReloadAdmobCount } from '@commons/api/admob/reloadAdmob.api';
@@ -38,8 +38,8 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
     >
       {index === 0 && (
         <Image
-          source={adMask}
-          style={{ width: '100%', height: 86, zIndex: 5, position: 'absolute', top: 0, left: 0 }}
+          source={img.adMask}
+          style={{ width: 38, height: 38, zIndex: 5, position: 'absolute', top: 0, left: 0 }}
         />
       )}
       {admobCount > 0 ? (
@@ -57,7 +57,12 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
             borderRadius: 10, // Adjust as needed
           }}
         >
-          <ProductListContent props={props} index={index} admobCount={admobCount} handleGetRewardedAds={handleGetRewardedAds}/>
+          <ProductListContent
+            props={props}
+            index={index}
+            admobCount={admobCount}
+            handleGetRewardedAds={handleGetRewardedAds}
+          />
         </LinearGradient>
       ) : (
         <ProductListContent props={props} index={index} admobCount={admobCount} />
