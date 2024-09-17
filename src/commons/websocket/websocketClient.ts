@@ -207,6 +207,30 @@ class WebSocketClientDirect {
     }
   };
 
+  public publishConnectionStatus = (roomId: string, memberId: string, status: boolean) => {
+    if (!this.isConnected || !this.stompConnected || !this.stompClient) {
+      console.error('Cannot publish message, STOMP is not connected');
+      return;
+    }
+
+    // PUBLISH를 할 토픽 엔드포인트 설정
+    const endpoint = `/topic/chat/room/${roomId}/${memberId}`;
+    const messageData = {
+      memberId: 1,
+      status: status ? 'CONNECTED' : 'DISCONNECTED',
+    };
+
+    console.log('Publishing message to endpoint:', endpoint);
+    console.log('Message data:', messageData);
+
+    try {
+      // sendMessage 메서드를 사용하여 PUBLISH 실행
+      this.sendMessage(endpoint, messageData, `status-${Date.now()}`);
+    } catch (error) {
+      console.error('Error publishing message to', endpoint, 'with data:', messageData, 'Error:', error);
+    }
+  };
+
   public unsubscribe(topic: string) {
     if (!this.isConnected || !this.stompConnected || !this.stompClient || !this.subscriptions.has(topic)) {
       console.error('Cannot unsubscribe, STOMP is not connected or not subscribed');

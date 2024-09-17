@@ -224,6 +224,7 @@ const ChatDetail: React.FC = () => {
       handleNewMessage,
       `/app/chat/room/${chatRoomID}/${userId.toString()}`,
     );
+    WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
     // WebSocketClient에 메시지 전송 상태 콜백 추가
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'failed') => {
@@ -241,6 +242,7 @@ const ChatDetail: React.FC = () => {
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
       WebSocketClient.unsubscribe(chatRoomID, userId.toString(), handleNewMessage);
+      WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), false);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
 
