@@ -1,4 +1,4 @@
-// @screends/Chat/ChatDetail.tsx
+// @screens/Chat/ChatDetail.tsx
 
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
@@ -60,8 +60,6 @@ const ChatDetail: React.FC = () => {
   const showToast = useToastStore((state) => state.showToast);
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const userId = memberInfo?.id;
-
-  console.log(`123123123rId : ${userId}`);
 
   // 날짜 파싱 함수 수정
   const parseDate = (dateString: string | undefined) => {
@@ -131,11 +129,13 @@ const ChatDetail: React.FC = () => {
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
-    // WebSocket 연결 설정
-    WebSocketClient.connect(userId, chatRoomID, handleNewMessage);
+    // WebSocket 연결 설정 및 구독
+    WebSocketClient.connect(userId);
+    WebSocketClient.subscribe(chatRoomID, userId);
 
-    // 컴포넌트 언마운트 시 WebSocket 연결 해제
+    // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
+      WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId}`);
       WebSocketClient.disconnect();
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage]);
@@ -301,11 +301,6 @@ const ChatDetail: React.FC = () => {
                     }
                   />
                 )}
-                {isUserMessage && (
-                  <S.Timestamp isUserMessage={isUserMessage}>
-                    {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.Timestamp>
-                )}
                 <S.BookChatBubble isUserMessage={isUserMessage}>
                   {item.type?.imageUrl && (
                     <S.BookCover
@@ -313,23 +308,29 @@ const ChatDetail: React.FC = () => {
                       onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
                     />
                   )}
-                  <TouchableOpacity
-                    ref={(ref) => {
-                      if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
-                    }}
-                    // onLongPress={(event) => handleLongPress(event, 해당 메시지의 index)}
-                    onLongPress={(event) => handleLongPress(event, item, index)}
-                  >
-                    <S.MessageBubble isUserMessage={isUserMessage}>
-                      <S.MessageText isUserMessage={isUserMessage}>{item.message}</S.MessageText>
-                    </S.MessageBubble>
-                  </TouchableOpacity>
+                  <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
+                    {isUserMessage && (
+                      <S.Timestamp isUserMessage={isUserMessage}>
+                        {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </S.Timestamp>
+                    )}
+                    <TouchableOpacity
+                      ref={(ref) => {
+                        if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
+                      }}
+                      onLongPress={(event) => handleLongPress(event, item, index)}
+                    >
+                      <S.MessageBubble isUserMessage={isUserMessage}>
+                        <S.MessageText isUserMessage={isUserMessage}>{item.message}</S.MessageText>
+                      </S.MessageBubble>
+                    </TouchableOpacity>
+                    {!isUserMessage && (
+                      <S.Timestamp isUserMessage={isUserMessage}>
+                        {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </S.Timestamp>
+                    )}
+                  </View>
                 </S.BookChatBubble>
-                {!isUserMessage && (
-                  <S.Timestamp isUserMessage={isUserMessage}>
-                    {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </S.Timestamp>
-                )}
               </S.MessageRow>
             </S.MessageContent>
           </S.MessageItemInner>
