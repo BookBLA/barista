@@ -271,20 +271,23 @@ const ChatDetail: React.FC = () => {
     const isRead = item.isRead; // 서버에서 전달된 읽음 상태 사용
 
     // 날짜 구분자 로직 수정
-    const currentItemDate = parseDate(item.timestamp || item.createdAt).toDateString();
+    const currentItemDate = parseDate(item.sendTime || item.createdAt).toDateString();
     const nextItemDate =
       index < displayedMessages.length - 1
-        ? parseDate(displayedMessages[index + 1].timestamp || displayedMessages[index + 1].createdAt).toDateString()
+        ? parseDate(displayedMessages[index + 1].sendTime || displayedMessages[index + 1].createdAt).toDateString()
         : null;
 
-    const showDateSeparator = index === displayedMessages.length - 1 || currentItemDate !== nextItemDate;
+    const showDateSeparator =
+      index === displayedMessages.length - 1 || (index !== 0 && currentItemDate !== nextItemDate);
 
     console.log(`
-      ==========================
-      item : ${JSON.stringify(item)}
-      index : ${index}
-      ==========================
-    `);
+          ======================
+          currentItemDate : ${currentItemDate}
+          nextItemDate : ${nextItemDate}
+          currentItemDate !== nextItemDate : ${currentItemDate !== nextItemDate}
+          showDateSeparator : ${showDateSeparator}
+          ======================
+        `);
 
     // 엽서 메시지 렌더링
     if (isPostcardItem) {
@@ -359,7 +362,7 @@ const ChatDetail: React.FC = () => {
         {showDateSeparator && (
           <S.DateSeparator>
             <S.DateText>
-              {parseDate(item.timestamp).toLocaleDateString('ko-KR', {
+              {parseDate(item.sendTime || item.createdAt).toLocaleDateString('ko-KR', {
                 year: 'numeric',
                 month: 'long',
                 day: 'numeric',
