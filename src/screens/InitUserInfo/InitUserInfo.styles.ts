@@ -185,7 +185,7 @@ export const MoveButton = styled.TouchableOpacity.attrs({
 })``;
 
 export const InviteCodeContainer = styled.View`
-  width: 295px;
+  width: 100%;
   height: 88px;
   align-items: center;
   justify-content: center;
