@@ -9,6 +9,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
 
 const NamePhone = () => {
@@ -36,34 +37,36 @@ const NamePhone = () => {
     <S.Wrapper>
       {/* <TitleProgress gauge={50} /> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        {/* <KeyboardAwareScrollView
+        <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
-            height: '90%',
+            height: '100%',
+            alignItems: 'center',
           }}
-        > */}
-        <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
-          <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
-          <Text
-            style={{
-              color: colors.textGray3,
-              fontFamily: 'fontLight',
-              fontSize: 12,
-              textAlign: 'center',
-              marginBottom: 20,
-            }}
-          >
-            한국어로 된 닉네임만 가능합니다.
-          </Text>
-          <S.TextFiledStyled
-            maxLength={10} // 최대 길이 제한
-            defaultValue={userInfo.name}
-            onChangeText={(text: string) => handleChangeName(text)}
-            placeholder="닉네임"
-            placeholderTextColor={colors.textGray2}
-            value={name}
-          />
-        </View>
+        >
+          <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
+            <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 20,
+              }}
+            >
+              한국어로 된 닉네임만 가능합니다.
+            </Text>
+            <S.TextFiledStyled
+              maxLength={10} // 최대 길이 제한
+              defaultValue={userInfo.name}
+              onChangeText={(text: string) => handleChangeName(text)}
+              placeholder="닉네임"
+              placeholderTextColor={colors.textGray2}
+              value={name}
+            />
+          </View>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>
