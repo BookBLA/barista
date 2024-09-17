@@ -1,4 +1,4 @@
-// chat.api.ts
+// @commons/api/chat/chat.api.ts
 
 import { Get, Post } from '@commons/configs/axios/http.api';
 
@@ -64,7 +64,7 @@ export const fetchChatMessages = async (roomId: string, page: number, size: numb
     // 실제 API 요청 부분
     const response = await Get(`chat?roomId=${roomId}&page=${page}&size=${size}`);
 
-    console.log('Chat messages fetched:', response);
+    console.log('Chat messages fetched:', JSON.stringify(response));
 
     // return {
     //   isSuccess: true,

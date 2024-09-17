@@ -43,7 +43,7 @@ const ChatScreen: React.FC = () => {
     const loadChats = async () => {
       try {
         const response = await fetchChatList();
-        console.log('Fetch response:', response);
+        console.log('Fetch response:', JSON.stringify(response));
 
         if (response.isSuccess && response.result.length === 0) {
           setChats([]);
@@ -53,12 +53,15 @@ const ChatScreen: React.FC = () => {
             id: chatRoom.id.toString(),
             name: chatRoom.otherMember.name,
             avatar: { uri: chatRoom.otherMember.profileImageUrl },
-            lastMessage: chatRoom.postcard.message,
-            timestamp: new Date(chatRoom.postcard.createdAt).toLocaleTimeString([], {
+            lastMessage: chatRoom.lastChat ? chatRoom.lastChat : chatRoom.postcard.message,
+            timestamp: new Date(
+              chatRoom.lastChatTime ? chatRoom.lastChatTime : chatRoom.postcard.createdAt,
+            ).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             }),
-            unreadCount: chatRoom.unreadCount,
+            // unreadCount: chatRoom.unreadCount, 만약 chatRoom.lastChat 이 없으면 엽서를 보낸 상태이므로 +1
+            unreadCount: chatRoom.lastChat ? chatRoom.unreadCount : chatRoom.unreadCount + 1,
             partner: chatRoom.otherMember,
             postcard: chatRoom.postcard,
             isAlert: chatRoom.isAlert, // isAlert 추가

@@ -1,23 +1,34 @@
+// @commons/websocket/websocketClient.ts
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Client, IMessage } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
 
 class WebSocketClient {
   private static instance: WebSocketClient;
-  private socket: WebSocket | null = null;
-  private url: string = 'wss://dev.bookbla.shop/api/chat/ws/connect?id='; // WebSocket 연결 주소
+  private client: Client;
+  private url: string; // 연결 URL을 동적으로 설정하기 위해 필드 추가
   private isConnected: boolean = false;
   private reconnectAttempts: number = 0;
   private maxReconnectAttempts: number = 5;
   private reconnectInterval: number = 3000; // 3 seconds
-  private closeCode: number | null = null;
-  private closeReason: string | null = null;
+  private memberId: string = '';
+  private roomId: string = '';
 
   private constructor() {
-    console.log('[WebSocketClient] Constructor called');
+    // STOMP 클라이언트 설정
+    this.client = new Client({
+      webSocketFactory: () => new SockJS(this.url), // SockJS를 사용하여 WebSocket을 생성
+      debug: (str) => console.log(`[STOMP DEBUG] ${str}`),
+      reconnectDelay: this.reconnectInterval,
+      onConnect: (frame) => this.handleConnect(frame),
+      onStompError: (frame) => this.handleStompError(frame),
+      onDisconnect: () => this.handleDisconnect(),
+    });
   }
 
   public static getInstance(): WebSocketClient {
     if (!WebSocketClient.instance) {
-      console.log('[WebSocketClient] Creating new instance');
       WebSocketClient.instance = new WebSocketClient();
     }
     return WebSocketClient.instance;
@@ -26,32 +37,22 @@ class WebSocketClient {
   public async connect(memberID: string, roomID: string): Promise<void> {
     console.log('[WebSocketClient] Attempting to connect');
 
-    console.log(`memberID: ${memberID}, roomID: ${roomID}`);
-
     if (this.isConnected) {
       console.warn('[WebSocketClient] Already connected, aborting connection attempt');
       return;
     }
 
+    this.memberId = memberID;
+    this.roomId = roomID;
+    this.url = `wss://dev.bookbla.shop/api/chat/ws/connect?id=${this.memberId}`; // wss로 수정하여 URL 설정
+
     const token = await this.getAuthToken();
     console.log('[WebSocketClient] Token available:', !!token);
     const headers = token ? { Authorization: `Bearer ${token}` } : {};
 
-    try {
-      this.socket = new WebSocket(`${this.url}${memberID}`, [], { headers });
-      console.log('[WebSocketClient] WebSocket instance created');
-    } catch (error) {
-      console.error('[WebSocketClient] Error creating WebSocket:', error);
-      this.handleError(new Event('WebSocket 생성 중 오류가 발생했습니다.'));
-      return;
-    }
-
-    this.socket.onopen = (event) => this.handleOpen(event, memberID, roomID);
-    this.socket.onmessage = this.handleMessage.bind(this);
-    this.socket.onerror = this.handleError.bind(this);
-    this.socket.onclose = (event) => this.handleClose(event, memberID, roomID);
-
-    console.log('[WebSocketClient] WebSocket event handlers set up');
+    // 헤더 설정
+    this.client.connectHeaders = headers;
+    this.client.activate(); // STOMP 클라이언트 활성화
   }
 
   private async getAuthToken(): Promise<string | null> {
@@ -64,152 +65,89 @@ class WebSocketClient {
     }
   }
 
-  private handleOpen(event: Event, memberID: string, roomID: string): void {
-    console.log('[WebSocketClient] Connection opened', event);
+  private handleConnect(frame: any): void {
+    console.log('[WebSocketClient] Connected via STOMP:', frame);
     this.isConnected = true;
     this.reconnectAttempts = 0;
-    this.closeCode = null;
-    this.closeReason = null;
-    this.showToast('WebSocket 연결이 설정되었습니다.');
 
-    // 채팅 및 채팅방 구독
-    this.subscribeToChat(memberID);
-    if (roomID) {
-      this.enterChatRoom(roomID, memberID);
+    // 연결이 완료된 후에 구독 설정
+    this.subscribeToChat();
+    this.subscribeToChatRoom();
+  }
+
+  private subscribeToChat(): void {
+    if (!this.isConnected) {
+      console.error('[WebSocketClient] Cannot subscribe, STOMP client is not connected');
+      return;
     }
+
+    const chatUrl = `/topic/chat/${this.memberId}`; // 채팅 구독 URL
+    this.client.subscribe(chatUrl, (message: IMessage) => this.handleMessage(message));
+    console.log(`[WebSocketClient] Subscribed to ${chatUrl}`);
   }
 
-  private subscribeToChat(memberID: string): void {
-    // 특정 사용자 채팅 구독
-    const subscribeMessage = {
-      type: 'SUBSCRIBE',
-      destination: `/topic/chat/${memberID}`,
-    };
+  private subscribeToChatRoom(): void {
+    if (!this.isConnected) {
+      console.error('[WebSocketClient] Cannot subscribe, STOMP client is not connected');
+      return;
+    }
 
-    this.sendMessage(subscribeMessage);
-    console.log(`[WebSocketClient] Subscribed to /topic/chat/${memberID}`);
+    const roomUrl = `/topic/chat/room/${this.roomId}/${this.memberId}`; // 채팅방 구독 URL
+    this.client.subscribe(roomUrl, (message: IMessage) => this.handleMessage(message));
+    console.log(`[WebSocketClient] Subscribed to ${roomUrl}`);
   }
 
-  private enterChatRoom(roomID: string, memberID: string): void {
-    // 특정 채팅방 구독
-    const roomSubscribeMessage = {
-      type: 'SUBSCRIBE',
-      destination: `/topic/chat/room/${roomID}/${memberID}`,
-    };
-
-    this.sendMessage(roomSubscribeMessage);
-    console.log(`[WebSocketClient] Subscribed to /topic/chat/room/${roomID}/${memberID}`);
-  }
-
-  private handleMessage(event: MessageEvent): void {
-    console.log('[WebSocketClient] Message received:', event.data);
+  private handleMessage(message: IMessage): void {
+    console.log('[WebSocketClient] Message received:', message.body);
 
     try {
-      const parsedData = JSON.parse(event.data);
+      const parsedData = JSON.parse(message.body);
       console.log('[WebSocketClient] Parsed message:', parsedData);
-
-      // 메시지 타입에 따라 다른 로그를 출력하거나, 다른 동작을 수행할 수 있습니다.
-      if (parsedData.type === 'CHAT') {
-        console.log(`[WebSocketClient] Chat message received:`, parsedData.payload);
-      } else if (parsedData.type === 'ROOM') {
-        console.log(`[WebSocketClient] Room message received:`, parsedData.payload);
-      } else {
-        console.log('[WebSocketClient] Other message received:', parsedData);
-      }
-
-      // 추가로 메시지에 따른 처리 로직을 추가할 수 있습니다.
     } catch (error) {
       console.error('[WebSocketClient] Error parsing message:', error);
     }
   }
 
-  private handleError(error: Event): void {
-    console.error('[WebSocketClient] Error occurred:', error);
-    this.setErrorMessage('WebSocket 연결 오류가 발생했습니다.');
-    if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
-      this.socket.close();
-    }
-  }
-
-  private handleClose(event: CloseEvent, memberID: string, roomID: string): void {
-    console.log('[WebSocketClient] Connection closed', event);
+  private handleStompError(frame: any): void {
+    console.error('[WebSocketClient] STOMP error:', frame);
     this.isConnected = false;
-    this.closeCode = event.code || null;
-    this.closeReason = event.reason || null;
-    this.setErrorMessage(`WebSocket 연결이 종료되었습니다. (Code: ${event.code}, Reason: ${event.reason})`);
-    this.attemptReconnect(memberID, roomID);
+    this.attemptReconnect();
   }
 
-  private attemptReconnect(memberID: string, roomID: string): void {
+  private handleDisconnect(): void {
+    console.log('[WebSocketClient] Disconnected');
+    this.isConnected = false;
+    this.attemptReconnect();
+  }
+
+  private attemptReconnect(): void {
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++;
       console.log(`[WebSocketClient] Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})`);
-      setTimeout(() => this.connect(memberID, roomID), this.reconnectInterval);
+      setTimeout(() => this.client.activate(), this.reconnectInterval);
     } else {
       console.error('[WebSocketClient] Max reconnect attempts reached');
-      this.showToast('WebSocket 재연결 시도 횟수를 초과했습니다.');
-      this.reconnectAttempts = 0;
     }
   }
 
-  public sendChatMessage(memberID: string, message: any): void {
-    // 채팅 메시지 전송
-    const sendMessage = {
-      type: 'SEND',
-      destination: `/app/chat/${memberID}`, // 채팅 전송 경로
-      payload: message, // 실제 전송할 메시지 내용
-    };
-
-    this.sendMessage(sendMessage);
-    console.log(`[WebSocketClient] Sent message to /app/chat/${memberID}:`, message);
-  }
-
-  private sendMessage(message: any): void {
-    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
-      try {
-        const jsonMessage = JSON.stringify(message);
-        this.socket.send(jsonMessage);
-        console.log('[WebSocketClient] Message sent:', jsonMessage);
-      } catch (error) {
-        console.error('[WebSocketClient] Error sending message:', error);
-        this.showToast('메시지 전송 중 오류가 발생했습니다.');
-      }
-    } else {
-      console.error('[WebSocketClient] WebSocket is not open. ReadyState:', this.socket?.readyState);
-      this.showToast('WebSocket 연결이 준비되지 않았습니다.');
+  public sendChatMessage(destination: string, message: any): void {
+    if (!this.isConnected) {
+      console.error('[WebSocketClient] Cannot send message, STOMP client is not connected');
+      return;
     }
+
+    this.client.publish({
+      destination,
+      body: JSON.stringify(message),
+    });
+    console.log(`[WebSocketClient] Sent message to ${destination}:`, message);
   }
 
   public disconnect(): void {
-    console.log('[WebSocketClient] Disconnecting');
-    if (this.socket) {
-      if (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING) {
-        this.socket.close();
-      }
-      this.isConnected = false;
-      this.socket = null;
+    if (this.client.active) {
+      this.client.deactivate();
       console.log('[WebSocketClient] Disconnected');
-    } else {
-      console.warn('[WebSocketClient] No active connection to disconnect');
     }
-  }
-
-  public getConnectionStatus(): boolean {
-    return this.isConnected;
-  }
-
-  public getLastCloseInfo(): { code: number | null; reason: string | null } {
-    return { code: this.closeCode, reason: this.closeReason };
-  }
-
-  private setErrorMessage(message: string): void {
-    console.error('[WebSocketClient] Error:', message);
-    // 에러 메시지를 저장하거나 표시하는 로직을 추가하세요.
-  }
-
-  private showToast(message: string): void {
-    console.log('[WebSocketClient] Toast:', message);
-    // 토스트 메시지를 표시하는 로직을 추가하세요.
   }
 }
 

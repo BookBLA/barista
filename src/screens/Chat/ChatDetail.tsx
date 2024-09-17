@@ -1,3 +1,5 @@
+// @screens/Chat/ChatDetail
+
 // 필요한 import 추가
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
@@ -81,13 +83,14 @@ const ChatDetail: React.FC = () => {
       const response = await fetchChatMessages(chatRoomID, 0, 100);
       let fetchedMessages: ChatMessage[] = [];
 
+      // 메시지가 존재할 때만 fetchedMessages에 할당
       if (response.isSuccess && response.result.content.length > 0) {
         fetchedMessages = response.result.content;
       }
 
       // 엽서를 메시지 배열에 포함
       const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' }; // 엽서에 고유한 ID 설정
-      const combinedMessages = [...fetchedMessages, postcardWithId];
+      const combinedMessages = fetchedMessages.length > 0 ? [...fetchedMessages, postcardWithId] : [postcardWithId];
 
       // 메시지와 엽서를 타임스탬프로 정렬
       combinedMessages.sort((a, b) => {
@@ -215,6 +218,9 @@ const ChatDetail: React.FC = () => {
     const isPostcardItem = item.isPostcard;
     const isUserMessage = item.sender === 'user' || (isPostcardItem && item.senderId === userId);
 
+    // 서버에서 받은 읽음 상태를 사용
+    const isRead = item.isRead; // 서버에서 전달된 읽음 상태 사용
+
     // 날짜 구분자 로직 수정
     const currentItemDate = parseDate(item.timestamp || item.createdAt).toDateString();
     const nextItemDate =
@@ -224,6 +230,7 @@ const ChatDetail: React.FC = () => {
 
     const showDateSeparator = index === displayedMessages.length - 1 || currentItemDate !== nextItemDate;
 
+    // 엽서 메시지 렌더링
     if (isPostcardItem) {
       return (
         <S.MessageItem>
@@ -243,10 +250,11 @@ const ChatDetail: React.FC = () => {
             <S.MessageContent isUserMessage={isUserMessage}>
               {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
               <S.MessageRow isUserMessage={isUserMessage}>
+                {/* 서버에서 전달된 읽음 상태 사용 */}
                 {isUserMessage && (
                   <S.isReadIcon
                     source={
-                      true
+                      isRead
                         ? require('@assets/images/icons/ReadMessage.png')
                         : require('@assets/images/icons/UnreadMessage.png')
                     }
@@ -287,6 +295,7 @@ const ChatDetail: React.FC = () => {
       );
     }
 
+    // 일반 메시지 렌더링
     return (
       <S.MessageItem>
         {showDateSeparator && (
@@ -308,7 +317,7 @@ const ChatDetail: React.FC = () => {
               {isUserMessage && (
                 <S.isReadIcon
                   source={
-                    item.isRead
+                    isRead
                       ? require('@assets/images/icons/ReadMessage.png')
                       : require('@assets/images/icons/UnreadMessage.png')
                   }
