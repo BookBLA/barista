@@ -113,11 +113,8 @@ class WebSocketClientDirect {
         this.stompClient.publish({ destination: endpoint, body: message });
         console.log('STOMP message sent:', message);
 
-        // Assume message is sent successfully and emit 'sent' status
+        // Do not emit 'sent' here. Wait for server acknowledgment.
         this.emitSendMessageStatus(messageId, 'sent');
-
-        // Optionally, handle acknowledgment from server to confirm 'sent' status
-        // If server sends a different acknowledgment, update the status accordingly
       } catch (error) {
         console.error('Failed to send STOMP message:', message, 'Error:', error);
         // Emit 'failed' status if sending fails
@@ -185,14 +182,15 @@ class WebSocketClientDirect {
       // Assuming the server sends messages as text
       const decodedMessage = message.body;
       console.log('STOMP message received:', decodedMessage);
-      handleNewMessage(JSON.parse(decodedMessage)); // handleNewMessage를 직접 호출하여 메시지 상태에 반영
-
-      // If server sends acknowledgment for sent messages, handle status updates here
-      // For example, if the server sends a message with type 'ACK', update message status
       const parsedMessage = JSON.parse(decodedMessage);
-      if (parsedMessage.type === 'ACK' && parsedMessage.id) {
-        // Update message status to 'sent' based on messageId
-        this.emitSendMessageStatus(parsedMessage.id, 'sent');
+
+      // Check if the message is an acknowledgment by looking for 'status' field
+      if ('status' in parsedMessage && 'id' in parsedMessage) {
+        const status = parsedMessage.status === 'SUCCESS' ? 'sent' : 'failed';
+        this.emitSendMessageStatus(parsedMessage.id, status);
+      } else {
+        // Regular chat message
+        handleNewMessage(parsedMessage);
       }
     });
 

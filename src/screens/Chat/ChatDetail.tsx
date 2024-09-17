@@ -263,7 +263,7 @@ const ChatDetail: React.FC = () => {
           left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
-        setSelectedMessage(message.content || message.message); // 메시지 내용을 복사할 내용으로 설정
+        setSelectedMessage(message.content || message.text); // 메시지 내용을 복사할 내용으로 설정
         setCopyModalVisible(true);
       });
     }
@@ -414,6 +414,12 @@ const ChatDetail: React.FC = () => {
       );
     }
 
+    console.log(`
+      ============================
+      item : ${JSON.stringify(item)}
+      ============================
+    `);
+
     // 일반 메시지 렌더링
     return (
       <S.MessageItem>
@@ -442,14 +448,14 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && item.sendStatus === 'failed' && (
+              {isUserMessage && item.sendStatus !== 'sent' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
-              {isUserMessage && item.sendStatus === 'failed' && (
+              {isUserMessage && item.sendStatus !== 'sent' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
-                  <Text style={{ color: 'red', marginLeft: 5 }}>다시전송</Text>
+                  <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
               {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
@@ -465,12 +471,6 @@ const ChatDetail: React.FC = () => {
               </TouchableOpacity>
               {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
             </S.MessageRow>
-            {/* '다시전송' 텍스트 추가 */}
-            {isUserMessage && item.sendStatus === 'failed' && (
-              <TouchableOpacity onPress={() => handleResendMessage(item)}>
-                <Text style={{ color: 'red', marginTop: 5 }}>다시전송</Text>
-              </TouchableOpacity>
-            )}
           </S.MessageContent>
         </S.MessageItemInner>
       </S.MessageItem>
@@ -550,7 +550,7 @@ const ChatDetail: React.FC = () => {
               onBlur={() => setInputFocused(false)} // 입력 필드가 비활성화되었을 때 호출
             />
             <S.SendButton
-              onPress={inputFocused ? handleSendMessage : undefined} // 빈 메시지 전송 방지
+              onPress={handleSendMessage}
               style={{ opacity: inputFocused ? 1 : 0.5 }} // inputFocused 상태에 따라 투명도 조정
             >
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
