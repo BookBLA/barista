@@ -31,9 +31,26 @@ const ChatScreen: React.FC = () => {
 
   useEffect(() => {
     const ws = WebSocketClient;
-    ws.connect(); // WebSocket 연결 설정
+    console.log(`
+      ==============================
+      ChatScreen: WebSocket 연결 설정
+      memberID: ${memberID}
+      ==============================
+    `);
+    ws.connect(memberID); // WebSocket 연결 설정
 
+    // 페이지 진입 시 구독 설정
+    ws.subscribe(memberID, memberID);
+
+    // 페이지에서 나갈 때 구독 해제 및 연결 해제
     return () => {
+      console.log(`
+        ==============================
+        ChatScreen: WebSocket 연결 해제
+        ==============================
+      `);
+
+      ws.unsubscribe(`/topic/chat/${memberID}`);
       ws.disconnect(); // Chat 페이지에서 나갈 때만 연결 해제
     };
   }, [memberID]);

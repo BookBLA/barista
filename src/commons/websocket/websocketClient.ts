@@ -1,10 +1,11 @@
-// @commons/websocket/websocketClient.ts
+// WebSocketClient.ts
 
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
   public socket: WebSocket | null = null;
   private isConnected: boolean = false;
   private memberId: string | null = null;
+  private subscriptions: Map<string, () => void> = new Map();
 
   private constructor() {}
 
@@ -15,21 +16,23 @@ class WebSocketClientDirect {
     return WebSocketClientDirect.instance;
   }
 
-  public connect(memberId: string) {
+  public connect(memberId: string, roomId: string) {
     if (this.isConnected) {
       console.log('WebSocket already connected');
       return;
     }
     this.memberId = memberId;
-    const webSocketUrl = `wss://dev.bookbla.shop/api/chat/ws/connect`;
+    const webSocketUrl = `wss://dev.bookbla.shop/api/chat/ws/connect?id=${memberId}`;
     console.log('Attempting to connect to WebSocket at', webSocketUrl);
     this.socket = new WebSocket(webSocketUrl);
 
     this.socket.onopen = () => {
       this.isConnected = true;
       console.log('WebSocket connection established to', webSocketUrl);
-      // Send authentication message after connection is established
       this.sendMessage({ type: 'AUTH', memberId: this.memberId });
+
+      // WebSocket 연결 후 구독을 시도합니다.
+      this.subscribe(roomId, memberId);
     };
 
     this.socket.onerror = (error) => {
@@ -66,20 +69,24 @@ class WebSocketClientDirect {
 
   public disconnect = () => {
     if (this.isConnected && this.socket) {
+      this.unsubscribeAll();
       this.socket.close();
       this.isConnected = false;
       console.log('WebSocket manually disconnected');
     }
   };
 
-  // sendMessage를 화살표 함수로 정의하여 this 컨텍스트 문제 해결
   public sendMessage = (data: any) => {
     if (this.isConnected && this.socket) {
       const message = JSON.stringify(data);
-      this.socket.send(message);
-      console.log('WebSocket message sent:', message);
+      try {
+        this.socket.send(message);
+        console.log('WebSocket message sent:', message);
+      } catch (error) {
+        console.error('Failed to send WebSocket message:', message, 'Error:', error);
+      }
     } else {
-      console.error('Cannot send message, WebSocket is not connected');
+      console.error('Cannot send message, WebSocket is not connected. Message data:', data);
     }
   };
 
@@ -90,25 +97,82 @@ class WebSocketClientDirect {
     }
 
     if (this.isConnected && this.socket) {
-      const endpoint = `/app/chat/${roomId}/${memberId}`;
+      const endpoint = `/app/chat/${memberId}`;
       const messageData = {
-        type: 'CHAT',
         content: message.text,
-        sender: memberId,
-        timestamp: new Date().toISOString(),
+        sendId: memberId,
+        roomId,
+        chatRoomId: roomId,
+        sendTime: new Date().toISOString(),
       };
 
-      // sendMessage 호출 시 this가 올바르게 참조되도록 설정
-      this.sendMessage({
-        endpoint,
-        data: messageData,
-      });
+      console.log('Preparing to send chat message to endpoint:', endpoint);
+      console.log('Message data:', messageData);
 
-      console.log('WebSocket message sent to', endpoint, ':', messageData);
+      try {
+        this.sendMessage({
+          endpoint,
+          data: messageData,
+        });
+        console.log('WebSocket message successfully sent to', endpoint, ':', messageData);
+      } catch (error) {
+        console.error('Error sending WebSocket message to', endpoint, 'with data:', messageData, 'Error:', error);
+      }
     } else {
-      console.error('Cannot send message, WebSocket is not connected');
+      console.error(
+        'Cannot send message, WebSocket is not connected. Room ID:',
+        roomId,
+        'Member ID:',
+        memberId,
+        'Message:',
+        message,
+      );
     }
   };
+
+  public subscribe(roomId: string, memberId: string) {
+    const topic = `/topic/chat/room/${roomId}/${memberId}`;
+    if (!this.isConnected || !this.socket) {
+      console.error('Cannot subscribe, WebSocket is not connected');
+      return;
+    }
+
+    if (this.subscriptions.has(topic)) {
+      console.log(`Already subscribed to ${topic}`);
+      return;
+    }
+
+    const subscriptionMessage = {
+      type: 'SUBSCRIBE',
+      destination: topic,
+    };
+
+    this.sendMessage(subscriptionMessage);
+    console.log(`Subscribed to ${topic}`);
+
+    this.subscriptions.set(topic, () => this.unsubscribe(topic));
+  }
+
+  public unsubscribe(topic: string) {
+    if (!this.isConnected || !this.socket || !this.subscriptions.has(topic)) {
+      console.error('Cannot unsubscribe, WebSocket is not connected or not subscribed');
+      return;
+    }
+
+    const unsubscribeMessage = {
+      type: 'UNSUBSCRIBE',
+      destination: topic,
+    };
+
+    this.sendMessage(unsubscribeMessage);
+    console.log(`Unsubscribed from ${topic}`);
+    this.subscriptions.delete(topic);
+  }
+
+  public unsubscribeAll() {
+    this.subscriptions.forEach((unsubscribe) => unsubscribe());
+    this.subscriptions.clear();
+  }
 }
 
 export default WebSocketClientDirect.getInstance();
