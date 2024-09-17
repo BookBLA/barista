@@ -1,11 +1,30 @@
-// ChatRequestModal.tsx
-import React from 'react';
+import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 필요한 API 함수 import
+import useToastStore from '@commons/store/ui/toast/useToastStore'; // 토스트 메시지를 띄우기 위한 훅
+import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
+import React, { useCallback } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatRequestModal.styles';
 import { ChatRequestModalProps } from './ChatRequestModal.types';
 
-const ChatRequestModal: React.FC<ChatRequestModalProps> = ({ visible, onAccept, onDecline, onReport }) => {
+const ChatRequestModal: React.FC<ChatRequestModalProps> = ({ visible, onAccept, onDecline, onReport, postcard }) => {
   if (!visible) return null; // 모달이 보이지 않을 때는 렌더링하지 않음
+
+  // 엽서 수락 기능 정의
+  const handleAccept = useCallback(async () => {
+    try {
+      // 서버에 엽서 수락 상태 전송
+      await postPostcardStatusUpdate({ postcardId: postcard.postcardId, status: EPostcardStatus.ACCEPT });
+
+      // 엽서 수락 성공 시 처리 (필요 시 추가 처리 가능)
+      useToastStore.getState().showToast({ content: '엽서를 수락하였습니다.' });
+
+      if (onAccept) {
+        onAccept(); // 부모 컴포넌트의 onAccept 호출 (모달 닫기 등 추가 기능)
+      }
+    } catch (error) {
+      console.error('엽서 수락 중 오류 발생:', error);
+    }
+  }, [onAccept]);
 
   return (
     // View를 이용해 Modal처럼 화면에 덮어 씌움
@@ -35,7 +54,8 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({ visible, onAccept, 
             <Text style={styles.declineButtonText}>거절</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.acceptButton} onPress={onAccept}>
+          {/* 수락 버튼에 수락 기능 연결 */}
+          <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
             <Text style={styles.acceptButtonText}>수락</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,7 @@
 // 필요한 import 추가
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
+import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
@@ -9,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
+import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Alert,
@@ -43,12 +45,10 @@ const ChatDetail: React.FC = () => {
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
   const [isReportSubmittedModalVisible, setIsReportSubmittedModalVisible] = useState(false);
   const [showScrollButton, setShowScrollButton] = useState(false);
-
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedMessage, setSelectedMessage] = useState('');
   const messageRefs = useRef<{ [key: string]: View | null }>({});
-
   const flatListRef = useRef<FlatList<any>>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const reportBottomSheetRef = useRef(null);
@@ -128,8 +128,21 @@ const ChatDetail: React.FC = () => {
     // TODO: 채팅 수락 API 호출 등 추가 작업 필요
   };
 
-  const handleDecline = () => {
-    setIsDeclineModalVisible(true);
+  // 엽서 거절 기능을 수행하는 함수
+  const handleDecline = async () => {
+    try {
+      // 엽서 상태를 'REFUSED'로 업데이트하는 API 호출
+      await postPostcardStatusUpdate({ postcardId: postcard.postcardId, status: EPostcardStatus.REFUSED });
+
+      // 성공적으로 거절 시 사용자에게 알림
+      showToast({ content: '엽서를 거절했습니다.' });
+      navigation.goBack(); // 이전 화면으로 이동 또는 다른 적절한 처리
+    } catch (error) {
+      console.error('엽서 거절 중 오류 발생:', error);
+      showToast({ content: '엽서를 거절하는 중 오류가 발생했습니다. 다시 시도해주세요.' });
+    } finally {
+      setIsDeclineModalVisible(false); // 모달을 닫음
+    }
   };
 
   const handleReport = () => {
@@ -400,8 +413,9 @@ const ChatDetail: React.FC = () => {
             <ChatRequestModal
               visible={isModalVisible}
               onAccept={handleAccept}
-              onDecline={handleDecline}
+              onDecline={() => setIsDeclineModalVisible(true)}
               onReport={handleReport}
+              postcard={postcard}
             />
           )}
 
@@ -449,12 +463,7 @@ const ChatDetail: React.FC = () => {
                   엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
                 </S.ModalDescription>
                 <S.ModalButtonContainer>
-                  <S.DeclineButton
-                    onPress={() => {
-                      showToast({ content: '엽서를 거절했습니다.' });
-                      navigation.goBack();
-                    }}
-                  >
+                  <S.DeclineButton onPress={handleDecline}>
                     <S.DeclineButtonText>거절하기</S.DeclineButtonText>
                   </S.DeclineButton>
                   <S.ReviewButton onPress={closeDeclineModal}>
