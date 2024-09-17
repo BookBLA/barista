@@ -1,7 +1,7 @@
 // @commons/websocket/websocketClient.ts
 
 import { Client, StompConfig, StompSubscription } from '@stomp/stompjs';
-import { TextDecoder, TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
+import { TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
 
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
@@ -38,7 +38,7 @@ class WebSocketClientDirect {
         console.log('STOMP connection established:', frame);
         this.isConnected = true;
         this.stompConnected = true;
-        this.subscribe(roomId, memberId, () => {});
+        this.subscribe(roomId, memberId, this.handleNewMessage.bind(this)); // Bind the context
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
@@ -153,7 +153,8 @@ class WebSocketClientDirect {
     }
 
     const subscription = this.stompClient.subscribe(topic, (message) => {
-      const decodedMessage = new TextDecoder().decode(new Uint8Array(message.binaryBody));
+      // Assuming the server sends messages as text
+      const decodedMessage = message.body;
       console.log('STOMP message received:', decodedMessage);
       handleNewMessage(JSON.parse(decodedMessage)); // handleNewMessage를 직접 호출하여 메시지 상태에 반영
     });

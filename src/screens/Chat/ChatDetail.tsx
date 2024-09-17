@@ -72,14 +72,26 @@ const ChatDetail: React.FC = () => {
   };
 
   // 메시지 상태 업데이트 함수 수정
-  const handleNewMessage = useCallback((newMessage: any) => {
-    setMessages((prevMessages) => {
-      const updatedMessages = [newMessage, ...prevMessages];
-      setDisplayedMessages(updatedMessages); // displayedMessages도 동시에 업데이트
-      return updatedMessages; // 메시지 상태를 업데이트
-    });
-    flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 새로운 메시지 수신 시 스크롤 이동
-  }, []);
+  const handleNewMessage = useCallback(
+    (newMessage: any) => {
+      // 필수: 메시지가 현재 채팅방에 속하는지 확인
+      if (newMessage.chatRoomId !== chatRoomID) return;
+
+      console.log(`
+        ============================
+        newMessage : ${JSON.stringify(newMessage)}
+        ============================
+      `);
+
+      setMessages((prevMessages) => {
+        const updatedMessages = [newMessage, ...prevMessages];
+        setDisplayedMessages(updatedMessages); // displayedMessages도 동시에 업데이트
+        return updatedMessages; // 메시지 상태를 업데이트
+      });
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 새로운 메시지 수신 시 스크롤 이동
+    },
+    [chatRoomID],
+  );
 
   useEffect(() => {
     // 메시지 배열이 변경될 때마다 FlatList 강제 리렌더링
@@ -106,12 +118,6 @@ const ChatDetail: React.FC = () => {
         const dateB = parseDate(b.timestamp || b.createdAt);
         return dateB.getTime() - dateA.getTime();
       });
-
-      console.log(`
-        ======================
-        combinedMessages : ${JSON.stringify(combinedMessages)}
-        ======================
-      `);
 
       const postcardIndex = combinedMessages.findIndex((item) => item.id === 'postcard');
       const postcardItem = combinedMessages.splice(postcardIndex, 1);
@@ -233,7 +239,7 @@ const ChatDetail: React.FC = () => {
           left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
-        setSelectedMessage(message.content); // 메시지 내용을 복사할 내용으로 설정
+        setSelectedMessage(message.content || message.message); // 메시지 내용을 복사할 내용으로 설정
         setCopyModalVisible(true);
       });
     }
@@ -257,11 +263,21 @@ const ChatDetail: React.FC = () => {
       text: inputMessage.trim(),
     };
 
-    // WebSocket으로 메시지 전송 시 roomId와 userId가 올바르게 설정되어 있는지 확인
-    console.log(`chatRoomID : ${chatRoomID}, userId : ${userId}, message : ${JSON.stringify(message)}`);
-
     WebSocketClient.sendChatMessage(chatRoomID, userId, message);
     setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
+
+    // Optionally, add the message optimistically to the state
+    const optimisticMessage = {
+      ...message,
+      senderId: userId,
+      chatRoomId: chatRoomID,
+      sendTime: new Date().toISOString(),
+      isRead: false, // 읽음 상태를 false로 설정
+      id: `temp-${Date.now()}`, // Temporary ID
+    };
+    setMessages((prevMessages) => [optimisticMessage, ...prevMessages]);
+    setDisplayedMessages((prevDisplayed) => [optimisticMessage, ...prevDisplayed]);
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
@@ -288,15 +304,9 @@ const ChatDetail: React.FC = () => {
     const formattedTime = parseDate(item.sendTime || item.createdAt).toLocaleTimeString('ko-KR', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true, // 24시간 형식 사용
+      hour12: true, // 12시간 형식 사용
       timeZone: 'Asia/Seoul', // 한국 시간대 지정
     });
-
-    console.log(`
-          ======================
-          item : ${JSON.stringify(item)}
-          ======================
-        `);
 
     // 엽서 메시지 렌더링
     if (isPostcardItem) {
@@ -344,7 +354,7 @@ const ChatDetail: React.FC = () => {
                       onLongPress={(event) => handleLongPress(event, item, index)}
                     >
                       <S.MessageBubble isUserMessage={isUserMessage}>
-                        <S.MessageText isUserMessage={isUserMessage}>{item.message}</S.MessageText>
+                        <S.MessageText isUserMessage={isUserMessage}>{item?.message}</S.MessageText>
                       </S.MessageBubble>
                     </TouchableOpacity>
                     {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
@@ -393,7 +403,7 @@ const ChatDetail: React.FC = () => {
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
                 <S.MessageBubble isUserMessage={isUserMessage}>
-                  <S.MessageText isUserMessage={isUserMessage}>{item.content}</S.MessageText>
+                  <S.MessageText isUserMessage={isUserMessage}>{item.content || item.text}</S.MessageText>
                 </S.MessageBubble>
               </TouchableOpacity>
               {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
