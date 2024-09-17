@@ -98,7 +98,16 @@ const ChatDetail: React.FC = () => {
       `);
 
       setMessages((prevMessages) => {
-        const updatedMessages = [newMessage, ...prevMessages];
+        // 이전 메시지에서 대기 중인 메시지를 업데이트
+        const updatedMessages = prevMessages.map((msg) => {
+          if (msg.id === newMessage.id) {
+            return {
+              ...msg,
+              sendStatus: newMessage.sendStatus,
+            };
+          }
+          return msg;
+        });
         setDisplayedMessages(updatedMessages); // displayedMessages도 동시에 업데이트
         return updatedMessages; // 메시지 상태를 업데이트
       });
