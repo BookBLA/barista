@@ -1,3 +1,5 @@
+// @commons/websocket/websocketClient.ts
+
 import { Client, StompConfig, StompSubscription } from '@stomp/stompjs';
 import { TextDecoder, TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
 
@@ -39,7 +41,7 @@ class WebSocketClientDirect {
         this.isConnected = true;
         this.stompConnected = true;
         this.sendMessage({ type: 'AUTH', memberId: this.memberId });
-        this.subscribe(roomId, memberId);
+        this.subscribe(roomId, memberId, () => {}); // 초기 구독 처리
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
@@ -142,7 +144,7 @@ class WebSocketClientDirect {
     }
   };
 
-  public subscribe(roomId: string, memberId: string) {
+  public subscribe(roomId: string, memberId: string, handleNewMessage: (message: any) => void) {
     const topic = `/topic/chat/${memberId}`;
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {
       console.error('Cannot subscribe, STOMP is not connected');
@@ -157,17 +159,18 @@ class WebSocketClientDirect {
     const subscription = this.stompClient.subscribe(topic, (message) => {
       const decodedMessage = new TextDecoder().decode(new Uint8Array(message.binaryBody)); // 메시지 디코딩
       console.log('STOMP message received:', decodedMessage);
-      this.handleIncomingMessage(decodedMessage);
+      this.handleIncomingMessage(decodedMessage, handleNewMessage); // 메시지 핸들링 콜백 호출
     });
 
     this.subscriptions.set(topic, subscription);
     console.log(`Subscribed to ${topic}`);
   }
 
-  private handleIncomingMessage = (data: string) => {
+  private handleIncomingMessage = (data: string, handleNewMessage: (message: any) => void) => {
     try {
       const parsedData = JSON.parse(data);
       console.log('Parsed message data:', parsedData);
+      handleNewMessage(parsedData); // 수신된 메시지를 전달
     } catch (error) {
       console.error('Failed to parse incoming message:', error);
     }

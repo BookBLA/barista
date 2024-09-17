@@ -59,7 +59,7 @@ const ChatDetail: React.FC = () => {
   const reportBottomSheetRef = useRef(null);
   const showToast = useToastStore((state) => state.showToast);
   const memberInfo = useMemberStore((state) => state.memberInfo);
-  const userId = memberInfo?.id;
+  const userId = parseInt(memberInfo?.id);
 
   // 날짜 파싱 함수 수정
   const parseDate = (dateString: string | undefined) => {
@@ -131,7 +131,7 @@ const ChatDetail: React.FC = () => {
 
     // WebSocket 연결 설정 및 구독
     WebSocketClient.connect(userId);
-    WebSocketClient.subscribe(chatRoomID, userId);
+    WebSocketClient.subscribe(chatRoomID, userId, handleNewMessage); // handleNewMessage를 인자로 전달
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
@@ -254,8 +254,17 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
+    console.log(`
+      --------------------------
+      item : ${JSON.stringify(item)}
+      index : ${index}
+      --------------------------
+    `);
     const isPostcardItem = item.isPostcard;
-    const isUserMessage = item.sender === userId || (isPostcardItem && item.senderId === userId);
+
+    console.log(`isUserMessage : item.sender : ${item.sender}, userId : ${userId}`);
+
+    const isUserMessage = item.senderId === userId || (isPostcardItem && item.senderId === userId);
 
     const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
 
