@@ -250,7 +250,7 @@ const ChatDetail: React.FC = () => {
 
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
     const isPostcardItem = item.isPostcard;
-    const isUserMessage = item.sender === 'user' || (isPostcardItem && item.senderId === userId);
+    const isUserMessage = item.sender === userId || (isPostcardItem && item.senderId === userId);
 
     // 서버에서 받은 읽음 상태를 사용
     const isRead = item.isRead; // 서버에서 전달된 읽음 상태 사용
