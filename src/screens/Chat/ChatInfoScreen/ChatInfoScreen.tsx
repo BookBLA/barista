@@ -1,7 +1,9 @@
 // ChatInfoScreen.tsx
 
+import { exitChatRoom, switchAlert } from '@commons/api/chat/chat.api';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
 import React, { useEffect, useState } from 'react';
 import { Image, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatInfoScreen.styles';
@@ -10,6 +12,7 @@ import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
   const { partner, handleReport, chatRoomID, isAlert } = route.params;
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
+  const [isExitConfirmVisible, setIsExitConfirmVisible] = useState(false);
   const navigation = useNavigation();
 
   // isAlert 상태에 따라 알림 설정을 변경
@@ -23,7 +26,23 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
   };
 
   const toggleSwitch = () => {
-    setIsNotificationEnabled((previousState) => !previousState);
+    const newAlertStatus = !isNotificationEnabled;
+    setIsNotificationEnabled(newAlertStatus);
+    switchAlert(chatRoomID, newAlertStatus);
+  };
+
+  const handleExitChat = async () => {
+    try {
+      await exitChatRoom(chatRoomID);
+      setIsExitConfirmVisible(false);
+      navigation.navigate('Chat', { exitedChatRoomId: chatRoomID });
+    } catch (error) {
+      console.error('Failed to exit chat room:', error);
+    }
+  };
+
+  const confirmExitChat = () => {
+    setIsExitConfirmVisible(true);
   };
 
   return (
@@ -36,7 +55,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.profileSection}>
-        <Image source={{ url: partner.profileImageUrl }} style={styles.avatar} />
+        <Image source={{ uri: partner.profileImageUrl }} style={styles.avatar} />
         <Text style={styles.name}>{partner.name}</Text>
       </View>
 
@@ -64,11 +83,18 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItem} onPress={() => navigation.navigate('Chat')}>
+        <TouchableOpacity style={styles.optionItem} onPress={confirmExitChat}>
           <Ionicons name="exit-outline" size={24} color="red" />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 나가기 확인 모달 */}
+      <ConfirmExitModal
+        isVisible={isExitConfirmVisible}
+        onCancel={() => setIsExitConfirmVisible(false)}
+        onExit={handleExitChat}
+      />
     </View>
   );
 };

@@ -1,9 +1,11 @@
+// Chat.tsx
+
 import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import WebSocketClient from '@commons/websocket/websocketClient';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
 import React, { useEffect, useState } from 'react';
 import { Image, Modal, TouchableOpacity, View } from 'react-native';
@@ -18,6 +20,7 @@ const ChatScreen: React.FC = () => {
   const [selectedChat, setSelectedChat] = useState<ChatType | null>(null);
   const [error, setError] = useState('');
   const navigation = useNavigation();
+  const route = useRoute();
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const memberID = memberInfo.id;
 
@@ -58,7 +61,7 @@ const ChatScreen: React.FC = () => {
             unreadCount: chatRoom.unreadCount,
             partner: chatRoom.otherMember,
             postcard: chatRoom.postcard,
-            isAlert: chatRoom.isAlert,
+            isAlert: chatRoom.isAlert, // isAlert 추가
           }));
 
           setChats(formattedChats);
@@ -74,6 +77,18 @@ const ChatScreen: React.FC = () => {
 
     loadChats();
   }, []);
+
+  // 네비게이션 파라미터를 통해 채팅방 나가기 상태를 확인하고 로컬 상태를 업데이트합니다.
+  useEffect(() => {
+    const exitedChatRoomId = route.params?.exitedChatRoomId;
+
+    if (exitedChatRoomId) {
+      // 채팅 목록에서 해당 채팅방을 제거합니다.
+      setChats((prevChats) => prevChats.filter((chat) => chat.id !== exitedChatRoomId));
+      // 네비게이션 파라미터를 초기화하여 다시 실행되지 않도록 합니다.
+      navigation.setParams({ exitedChatRoomId: null });
+    }
+  }, [route.params?.exitedChatRoomId]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
@@ -99,11 +114,23 @@ const ChatScreen: React.FC = () => {
   const handleExitChat = () => {
     if (selectedChat) {
       exitChatRoom(selectedChat.id);
-      setChats(chats.filter((chat) => chat.id !== selectedChat.id));
-
-      console.log(JSON.stringify(chats));
-
+      setChats((prevChats) => prevChats.filter((chat) => chat.id !== selectedChat.id));
       setIsExitConfirmVisible(false);
+      closeModal();
+    }
+  };
+
+  // 알림 상태 변경 함수
+  const handleSwitchAlert = () => {
+    if (selectedChat) {
+      const newAlertStatus = !selectedChat.isAlert;
+      switchAlert(selectedChat.id, newAlertStatus);
+      // selectedChat 상태 업데이트
+      setSelectedChat({ ...selectedChat, isAlert: newAlertStatus });
+      // chats 상태에서도 해당 채팅의 isAlert 값을 업데이트
+      setChats((prevChats) =>
+        prevChats.map((chat) => (chat.id === selectedChat.id ? { ...chat, isAlert: newAlertStatus } : chat)),
+      );
       closeModal();
     }
   };
@@ -169,13 +196,7 @@ const ChatScreen: React.FC = () => {
           <S.ModalContainer>
             <S.ModalContent>
               <S.ModalText>{selectedChat?.name} 채팅방</S.ModalText>
-              <TouchableOpacity
-                onPress={() => {
-                  switchAlert(selectedChat?.id, !selectedChat?.isAlert);
-                  selectedChat.isAlert = !selectedChat?.isAlert;
-                  closeModal();
-                }}
-              >
+              <TouchableOpacity onPress={handleSwitchAlert}>
                 <S.ButtonContainer>
                   <S.ModalIcon
                     source={
@@ -184,7 +205,7 @@ const ChatScreen: React.FC = () => {
                         : require('@assets/images/icons/unactive_alert.png')
                     }
                   />
-                  <S.ModalOptionText>푸시 알림 끄기</S.ModalOptionText>
+                  <S.ModalOptionText>{selectedChat?.isAlert ? '푸시 알림 끄기' : '푸시 알림 켜기'}</S.ModalOptionText>
                 </S.ButtonContainer>
               </TouchableOpacity>
               <TouchableOpacity onPress={confirmExitChat}>
