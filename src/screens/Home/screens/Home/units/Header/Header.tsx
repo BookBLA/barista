@@ -22,7 +22,7 @@ const Header = () => {
         <S.IconButton onPress={movePage('product')}>
           <S.IconImage source={icons.bookmarkLightAdd} />
         </S.IconButton>
-        <CustomText color="#fff" font="fontExtraLight" margin="0 8px 0 3px ">
+        <CustomText color="#fff" font="fontExtraLight" margin="0 8px 0 3px " onPress={movePage('product')}>
           {memberPostcard}
         </CustomText>
         <S.IconButton onPress={movePage('notice')}>

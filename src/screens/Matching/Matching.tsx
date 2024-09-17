@@ -53,7 +53,9 @@ const Matching = () => {
             <IconButton onPress={movePage('HomeStack', { screen: 'product' })}>
               <IconImage source={icons.postcard} />
             </IconButton>
-            <S.postcardCountTextStyled>{memberPostcard}</S.postcardCountTextStyled>
+            <S.postcardCountTextStyled onPress={movePage('HomeStack', { screen: 'product' })}>
+              {memberPostcard}
+            </S.postcardCountTextStyled>
           </S.postcardCountViewStyled>
         </S.InfoViewStyled>
         {receivedPostcards.length === 0 && <EmptyPostcard type={EType.RECEIVE} />}
