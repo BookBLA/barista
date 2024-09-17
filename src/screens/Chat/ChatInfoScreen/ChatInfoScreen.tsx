@@ -61,7 +61,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
 
       <View style={styles.optionsSection}>
         <View style={styles.optionItem}>
-          <Ionicons name="notifications-outline" size={24} color="#1D2E61" />
+          <Image source={require('@assets/images/icons/alert.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>알림</Text>
           <Switch
             style={styles.switch}
@@ -72,19 +72,19 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
         </View>
 
         <TouchableOpacity style={styles.optionItem}>
-          <Ionicons name="book-outline" size={24} color="#1D2E61" />
+          <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>서재 구경하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItem} onPress={reportUser}>
-          <Ionicons name="alert-circle-outline" size={24} color="#1D2E61" />
+          <Image source={require('@assets/images/icons/report.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>신고하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItem} onPress={confirmExitChat}>
-          <Ionicons name="exit-outline" size={24} color="red" />
+          <Image source={require('@assets/images/icons/color_exit.png')} style={{ width: 24, height: 24 }} />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>
       </View>
