@@ -76,16 +76,24 @@ const ChatDetail: React.FC = () => {
     return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
   };
 
-  // 메시지 상태 업데이트 함수 수정
   const handleNewMessage = useCallback(
     (newMessage: any) => {
-      // 필수: 메시지가 현재 채팅방에 속하는지 확인
-      if (newMessage.chatRoomId !== chatRoomID) return;
-
       console.log(`
         ============================
         newMessage : ${JSON.stringify(newMessage)}
+        newMessage.chatRoomId : ${newMessage.chatRoomId}
+        chatRoomID : ${chatRoomID}
+        newMessage.chatRoomId type : ${typeof newMessage.chatRoomId}
+        chatRoomID type : ${typeof chatRoomID}
+        ${Number(newMessage.chatRoomId)} !== ${chatRoomID} : ${Number(newMessage.chatRoomId) !== chatRoomID}
         ============================
+      `);
+
+      // 메시지가 현재 채팅방에 속하는지 확인 (타입 변환 후 비교)
+      if (Number(newMessage.chatRoomId) !== chatRoomID) return;
+
+      console.log(`
+        newMessage : ${JSON.stringify(newMessage)}
       `);
 
       setMessages((prevMessages) => {
@@ -169,8 +177,8 @@ const ChatDetail: React.FC = () => {
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
-      WebSocketClient.unsubscribe(`/topic/chat/${userId}`);
-      WebSocketClient.disconnect();
+      // 추후 읽기 구독 해제 로직 추가
+      // WebSocketClient.disconnect();
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
 
@@ -414,12 +422,6 @@ const ChatDetail: React.FC = () => {
       );
     }
 
-    console.log(`
-      ============================
-      item : ${JSON.stringify(item)}
-      ============================
-    `);
-
     // 일반 메시지 렌더링
     return (
       <S.MessageItem>
@@ -458,7 +460,9 @@ const ChatDetail: React.FC = () => {
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
-              {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
+              {isUserMessage && item.sendStatus !== 'sent' && (
+                <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
+              )}
               <TouchableOpacity
                 ref={(ref) => {
                   if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장

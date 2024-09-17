@@ -89,8 +89,8 @@ const ChatScreen: React.FC = () => {
 
     // 페이지에서 나갈 때 구독 해제 및 연결 해제
     return () => {
-      ws.unsubscribe(`/topic/chat/${memberID}`);
-      ws.disconnect();
+      // ws.unsubscribe(`/topic/chat/${memberID}`);
+      // ws.disconnect();
     };
   }, [memberID]);
 
@@ -150,7 +150,7 @@ const ChatScreen: React.FC = () => {
               navigation.navigate('ChatDetail', {
                 partner: item.partner,
                 postcard: item.postcard,
-                chatRoomID: item.id,
+                chatRoomID: Number(item.id),
                 isAlert: item.isAlert,
               })
             }
@@ -193,7 +193,7 @@ const ChatScreen: React.FC = () => {
       <S.ChatList
         data={chats}
         renderItem={renderChatItem}
-        keyExtractor={(item: { id: any }) => item.id}
+        keyExtractor={(item: { id: any }) => Number(item.id)}
         ListEmptyComponent={<S.EmptyText>채팅 목록이 없습니다.</S.EmptyText>}
         contentContainerStyle={{ flexGrow: 1 }}
       />

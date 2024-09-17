@@ -30,8 +30,8 @@ class WebSocketClientDirect {
     this.sendMessageStatusCallbacks.push(callback);
   }
 
-  // Method to invoke callbacks
   private emitSendMessageStatus(messageId: string, status: 'sent' | 'failed') {
+    console.log(`emitSendMessageStatus called with messageId: ${messageId}, status: ${status}`);
     this.sendMessageStatusCallbacks.forEach((callback) => callback(messageId, status));
   }
 
@@ -134,7 +134,7 @@ class WebSocketClientDirect {
     }
 
     if (this.isConnected && this.stompConnected && this.stompClient) {
-      const endpoint = `/app/chat/${memberId}`;
+      const endpoint = `/app/chat/${roomId}`; // roomId 사용
       const messageData = {
         content: message.text,
         senderId: parseInt(memberId),
@@ -179,17 +179,17 @@ class WebSocketClientDirect {
     }
 
     const subscription = this.stompClient.subscribe(topic, (message) => {
-      // Assuming the server sends messages as text
       const decodedMessage = message.body;
       console.log('STOMP message received:', decodedMessage);
       const parsedMessage = JSON.parse(decodedMessage);
 
-      // Check if the message is an acknowledgment by looking for 'status' field
+      // Acknowledgement message check
       if ('status' in parsedMessage && 'id' in parsedMessage) {
         const status = parsedMessage.status === 'SUCCESS' ? 'sent' : 'failed';
         this.emitSendMessageStatus(parsedMessage.id, status);
       } else {
-        // Regular chat message
+        // Log message to check if handleNewMessage is being called
+        console.log('Calling handleNewMessage with:', parsedMessage);
         handleNewMessage(parsedMessage);
       }
     });
