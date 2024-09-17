@@ -16,7 +16,6 @@ import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.ty
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 
 import {
-  Alert,
   Animated,
   Clipboard,
   Dimensions,
@@ -64,22 +63,12 @@ const ChatDetail: React.FC = () => {
   // 날짜 파싱 함수 수정
   const parseDate = (dateString: string | undefined) => {
     if (!dateString) {
-      return new Date(0); // 또는 원하는 기본 날짜를 설정
+      return new Date(0); // 기본 날짜 설정
     }
-    let parsedDate = new Date(dateString);
-    if (isNaN(parsedDate.getTime())) {
-      parsedDate = new Date(dateString.replace(' ', 'T'));
-    }
-    if (isNaN(parsedDate.getTime())) {
-      parsedDate = new Date(dateString + 'Z');
-    }
-    if (isNaN(parsedDate.getTime())) {
-      parsedDate = new Date(dateString.replace(' ', 'T') + 'Z');
-    }
-    if (isNaN(parsedDate.getTime())) {
-      parsedDate = new Date(0); // 파싱 실패 시 기본 날짜
-    }
-    return parsedDate;
+
+    // Date 객체 생성 시, 기본적으로 로컬 시간대로 변환되므로 올바르게 변환되도록 수정
+    const parsedDate = new Date(dateString);
+    return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
   };
 
   // 메시지 상태 업데이트 함수 수정
@@ -107,9 +96,9 @@ const ChatDetail: React.FC = () => {
         fetchedMessages = response.result.content;
       }
 
-      // 엽서를 메시지 배열에 포함
+      // 엽서를 메시지 배열에 항상 최상단에 포함
       const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' }; // 엽서에 고유한 ID 설정
-      const combinedMessages = fetchedMessages.length > 0 ? [...fetchedMessages, postcardWithId] : [postcardWithId];
+      const combinedMessages = [postcardWithId, ...fetchedMessages]; // 엽서를 항상 첫 번째로 위치시킴
 
       // 메시지와 엽서를 타임스탬프로 정렬
       combinedMessages.sort((a, b) => {
@@ -117,6 +106,16 @@ const ChatDetail: React.FC = () => {
         const dateB = parseDate(b.timestamp || b.createdAt);
         return dateB.getTime() - dateA.getTime();
       });
+
+      console.log(`
+        ======================
+        combinedMessages : ${JSON.stringify(combinedMessages)}
+        ======================
+      `);
+
+      const postcardIndex = combinedMessages.findIndex((item) => item.id === 'postcard');
+      const postcardItem = combinedMessages.splice(postcardIndex, 1);
+      combinedMessages.push(postcardItem[0]);
 
       setMessages(combinedMessages);
       setDisplayedMessages(combinedMessages.slice(0, 100));
@@ -196,6 +195,13 @@ const ChatDetail: React.FC = () => {
     const currentLength = displayedMessages.length;
     const additionalMessages = messages.slice(currentLength, currentLength + 100);
     setDisplayedMessages((prev) => [...prev, ...additionalMessages]);
+
+    const postcardIndex = additionalMessages.findIndex((item) => item.id === 'postcard');
+    if (postcardIndex !== -1) {
+      const postcardItem = additionalMessages.splice(postcardIndex, 1);
+      setDisplayedMessages((prev) => [postcardItem[0], ...prev]);
+    }
+
     setLoadingMore(false);
   };
 
@@ -235,7 +241,7 @@ const ChatDetail: React.FC = () => {
 
   const handleCopy = () => {
     Clipboard.setString(selectedMessage);
-    Alert.alert('복사 완료', '메시지가 복사되었습니다.');
+    showToast({ content: '메시지가 복사되었습니다.' });
     setCopyModalVisible(false);
   };
 
@@ -261,9 +267,7 @@ const ChatDetail: React.FC = () => {
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
     const isPostcardItem = item.isPostcard;
 
-    console.log(`isPostcardItem : ${isPostcardItem}`);
-
-    const isUserMessage = item.senderId === userId || (isPostcardItem && item.senderId === userId);
+    const isUserMessage = (isPostcardItem && item.senderId === userId) || item.senderId === userId;
 
     const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
 
@@ -280,12 +284,17 @@ const ChatDetail: React.FC = () => {
     const showDateSeparator =
       index === displayedMessages.length - 1 || (index !== 0 && currentItemDate !== nextItemDate);
 
+    // 시간 포맷 변경: 특정 시간대를 지정하여 로컬 시간으로 변환
+    const formattedTime = parseDate(item.sendTime || item.createdAt).toLocaleTimeString('ko-KR', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true, // 24시간 형식 사용
+      timeZone: 'Asia/Seoul', // 한국 시간대 지정
+    });
+
     console.log(`
           ======================
-          currentItemDate : ${currentItemDate}
-          nextItemDate : ${nextItemDate}
-          currentItemDate !== nextItemDate : ${currentItemDate !== nextItemDate}
-          showDateSeparator : ${showDateSeparator}
+          item : ${JSON.stringify(item)}
           ======================
         `);
 
@@ -327,11 +336,7 @@ const ChatDetail: React.FC = () => {
                     />
                   )}
                   <View style={{ flex: 1, flexDirection: 'row', alignItems: 'flex-end' }}>
-                    {isUserMessage && (
-                      <S.Timestamp isUserMessage={isUserMessage}>
-                        {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </S.Timestamp>
-                    )}
+                    {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
                     <TouchableOpacity
                       ref={(ref) => {
                         if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
@@ -342,11 +347,7 @@ const ChatDetail: React.FC = () => {
                         <S.MessageText isUserMessage={isUserMessage}>{item.message}</S.MessageText>
                       </S.MessageBubble>
                     </TouchableOpacity>
-                    {!isUserMessage && (
-                      <S.Timestamp isUserMessage={isUserMessage}>
-                        {parseDate(item.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </S.Timestamp>
-                    )}
+                    {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
                   </View>
                 </S.BookChatBubble>
               </S.MessageRow>
@@ -384,11 +385,7 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && (
-                <S.Timestamp isUserMessage={isUserMessage}>
-                  {parseDate(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </S.Timestamp>
-              )}
+              {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
               <TouchableOpacity
                 ref={(ref) => {
                   if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
@@ -399,11 +396,7 @@ const ChatDetail: React.FC = () => {
                   <S.MessageText isUserMessage={isUserMessage}>{item.content}</S.MessageText>
                 </S.MessageBubble>
               </TouchableOpacity>
-              {!isUserMessage && (
-                <S.Timestamp isUserMessage={isUserMessage}>
-                  {parseDate(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </S.Timestamp>
-              )}
+              {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
             </S.MessageRow>
           </S.MessageContent>
         </S.MessageItemInner>

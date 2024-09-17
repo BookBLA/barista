@@ -324,6 +324,3 @@ export const PostcardMessageContent = styled.View<{ isUserMessage: boolean }>`
   max-width: 70%;
   align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
-
-// 메시지 복사 모달 스타일 (필요 시 추가)
-// ...
