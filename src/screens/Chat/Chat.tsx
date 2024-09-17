@@ -1,4 +1,4 @@
-// Chat.tsx
+// @screens/Chat/Chat.tsx
 
 import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
@@ -31,11 +31,10 @@ const ChatScreen: React.FC = () => {
 
   useEffect(() => {
     const ws = WebSocketClient;
-    ws.connect(memberID, ''); // 'roomID'는 구독에 필요하지 않으므로 빈 문자열로 처리
-    ws.subscribeToChat(memberID); // 특정 사용자 채팅 구독
+    ws.connect(); // WebSocket 연결 설정
 
     return () => {
-      ws.disconnect(); // 컴포넌트가 언마운트될 때 WebSocket 연결 해제
+      ws.disconnect(); // Chat 페이지에서 나갈 때만 연결 해제
     };
   }, [memberID]);
 
@@ -60,11 +59,10 @@ const ChatScreen: React.FC = () => {
               hour: '2-digit',
               minute: '2-digit',
             }),
-            // unreadCount: chatRoom.unreadCount, 만약 chatRoom.lastChat 이 없으면 엽서를 보낸 상태이므로 +1
             unreadCount: chatRoom.lastChat ? chatRoom.unreadCount : chatRoom.unreadCount + 1,
             partner: chatRoom.otherMember,
             postcard: chatRoom.postcard,
-            isAlert: chatRoom.isAlert, // isAlert 추가
+            isAlert: chatRoom.isAlert,
           }));
 
           setChats(formattedChats);
@@ -80,18 +78,6 @@ const ChatScreen: React.FC = () => {
 
     loadChats();
   }, []);
-
-  // 네비게이션 파라미터를 통해 채팅방 나가기 상태를 확인하고 로컬 상태를 업데이트합니다.
-  useEffect(() => {
-    const exitedChatRoomId = route.params?.exitedChatRoomId;
-
-    if (exitedChatRoomId) {
-      // 채팅 목록에서 해당 채팅방을 제거합니다.
-      setChats((prevChats) => prevChats.filter((chat) => chat.id !== exitedChatRoomId));
-      // 네비게이션 파라미터를 초기화하여 다시 실행되지 않도록 합니다.
-      navigation.setParams({ exitedChatRoomId: null });
-    }
-  }, [route.params?.exitedChatRoomId]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
@@ -123,14 +109,11 @@ const ChatScreen: React.FC = () => {
     }
   };
 
-  // 알림 상태 변경 함수
   const handleSwitchAlert = () => {
     if (selectedChat) {
       const newAlertStatus = !selectedChat.isAlert;
       switchAlert(selectedChat.id, newAlertStatus);
-      // selectedChat 상태 업데이트
       setSelectedChat({ ...selectedChat, isAlert: newAlertStatus });
-      // chats 상태에서도 해당 채팅의 isAlert 값을 업데이트
       setChats((prevChats) =>
         prevChats.map((chat) => (chat.id === selectedChat.id ? { ...chat, isAlert: newAlertStatus } : chat)),
       );
@@ -222,7 +205,6 @@ const ChatScreen: React.FC = () => {
         </TouchableOpacity>
       </Modal>
 
-      {/* 나가기 확인 모달 */}
       <ConfirmExitModal
         isVisible={isExitConfirmVisible}
         onCancel={() => setIsExitConfirmVisible(false)}

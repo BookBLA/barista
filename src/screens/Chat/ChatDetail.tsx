@@ -1,6 +1,5 @@
-// @screens/Chat/ChatDetail
+// @screends/Chat/ChatDetail.tsx
 
-// 필요한 import 추가
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
@@ -8,6 +7,7 @@ import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSh
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import WebSocketClient from '@commons/websocket/websocketClient'; // WebSocketClient 추가
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
@@ -24,6 +24,7 @@ import {
   Modal,
   Platform,
   Text,
+  TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
@@ -42,6 +43,7 @@ const ChatDetail: React.FC = () => {
 
   const [messages, setMessages] = useState<any[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<any[]>([]);
+  const [inputMessage, setInputMessage] = useState(''); // 메시지 입력 필드 상태 추가
   const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
@@ -78,10 +80,19 @@ const ChatDetail: React.FC = () => {
     return parsedDate;
   };
 
+  const handleNewMessage = useCallback((message: any) => {
+    // WebSocket을 통해 수신된 메시지를 상태에 추가
+    setMessages((prevMessages) => [message, ...prevMessages]);
+    setDisplayedMessages((prevMessages) => [message, ...prevMessages]);
+    flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 새로운 메시지 수신 시 스크롤 이동
+  }, []);
+
   const loadChatMessages = useCallback(async () => {
     try {
       const response = await fetchChatMessages(chatRoomID, 0, 100);
       let fetchedMessages: ChatMessage[] = [];
+
+      console.log(`response : ${JSON.stringify(response)}`);
 
       // 메시지가 존재할 때만 fetchedMessages에 할당
       if (response.isSuccess && response.result.content.length > 0) {
@@ -115,7 +126,15 @@ const ChatDetail: React.FC = () => {
     // 엽서 상태에 따라 채팅 요청 모달 제어
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
-  }, [loadChatMessages, postcard.status]);
+
+    // WebSocket 연결 설정
+    WebSocketClient.connect(userId, chatRoomID, handleNewMessage);
+
+    // 컴포넌트 언마운트 시 WebSocket 연결 해제
+    return () => {
+      WebSocketClient.disconnect();
+    };
+  }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage]);
 
   useEffect(() => {
     const listener = scrollY.addListener(({ value }) => {
@@ -212,6 +231,21 @@ const ChatDetail: React.FC = () => {
 
   const closeModal = () => {
     setCopyModalVisible(false);
+  };
+
+  // 메시지 전송 처리 함수
+  const handleSendMessage = () => {
+    if (!inputMessage.trim()) return; // 빈 메시지 전송 방지
+
+    const message = {
+      chatRoomId: chatRoomID,
+      sender: userId,
+      text: inputMessage.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    WebSocketClient.sendChatMessage(`/app/chat/send/${chatRoomID}`, message); // WebSocket으로 메시지 전송
+    setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
   };
 
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
@@ -335,7 +369,7 @@ const ChatDetail: React.FC = () => {
                 onLongPress={(event) => handleLongPress(event, item)}
               >
                 <S.MessageBubble isUserMessage={isUserMessage}>
-                  <S.MessageText isUserMessage={isUserMessage}>{item.text}</S.MessageText>
+                  <S.MessageText isUserMessage={isUserMessage}>{item.content}</S.MessageText>
                 </S.MessageBubble>
               </TouchableOpacity>
               {!isUserMessage && (
@@ -412,8 +446,13 @@ const ChatDetail: React.FC = () => {
           )}
 
           <S.InputContainer>
-            <S.TextInput placeholder="메시지 보내기" />
-            <S.SendButton>
+            <TextInput
+              value={inputMessage}
+              onChangeText={setInputMessage}
+              placeholder="메시지 보내기"
+              style={{ flex: 1, padding: 10 }}
+            />
+            <S.SendButton onPress={handleSendMessage}>
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
             </S.SendButton>
           </S.InputContainer>
