@@ -44,7 +44,7 @@ const InitQuiz = ({ route }: IProps) => {
           style={{ width: '100%', marginBottom: 10 }}
           contentContainerStyle={{ flexGrow: 1 }}
           keyboardShouldPersistTaps="handled"
-          extraScrollHeight={100}
+          extraScrollHeight={150}
         >
           <View style={{ width: '100%', height: 'auto', alignItems: 'center' }}>
             <S.ContentStyled style={{ fontSize: 18, marginBottom: 12 }}>이 책을 좋아하는 이유</S.ContentStyled>
