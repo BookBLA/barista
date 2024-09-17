@@ -31,3 +31,5 @@ export const postStudentIdImageApi = (contents: string) => Post(`member-profiles
 
 export const getStudentIdImageStatusApi = () =>
   Get<MemberProfileStudentIdReadResponse>(`/member-profiles/student-id/status`);
+
+export const postNicknameVerifyApi = (name: string) => Post(`member-profiles/verify/name`, { name });
