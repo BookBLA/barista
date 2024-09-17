@@ -5,6 +5,7 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, View } from 'react-native';
 import {
@@ -29,15 +30,18 @@ import ProductList from './components/ProductList';
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
 const Product = () => {
+  const navigation = useNavigation();
   const showToast = useToastStore((state) => state.showToast);
   useScreenLogger();
   useHeaderControl({
-    free: <Header />,
+    customContent: <Header />,
   });
-
   const [productID, setProductID] = useState<ProductContentProps[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const { fetchMemberPostcard } = useMemberPostcardStore();
+  let purchaseUpdateSubscription = null;
+  let purchaseErrorSubscription = null;
+  const { products, getProducts } = useIAP();
 
   const getProductsByID = async () => {
     try {
@@ -47,16 +51,40 @@ const Product = () => {
     }
   };
 
-  const { products, getProducts } = useIAP();
+  const addProductInfo = async () => {
+    Alert.alert('addProductInfo', JSON.stringify(products));
+    if (Platform.OS === 'android') {
+      products.sort((a, b) => {
+        return (
+          Number(a.oneTimePurchaseOfferDetails?.priceAmountMicros) -
+          Number(b.oneTimePurchaseOfferDetails?.priceAmountMicros)
+        );
+      });
+    } else if (Platform.OS === 'ios') {
+      products.sort((a, b) => {
+        return Number(a.price) - Number(b.price);
+      });
+    }
+    const addDiscount = products.map((product) => {
+      if (product.productId === 'bookmarks_10') {
+        return { ...product, krwPrice: '2,500원' };
+      } else if (product.productId === 'bookmarks_35') {
+        return { ...product, discount: '6%', krwPrice: '7,000원', originalPrice: '7,500원' };
+      } else if (product.productId === 'bookmarks_80') {
+        return { ...product, discount: '28%', krwPrice: '14,400원', originalPrice: '20,000원' };
+      } else if (product.productId === 'bookmarks_150') {
+        return { ...product, discount: '40%', krwPrice: '22,500원', originalPrice: '37,500원' };
+      }
+    });
+    setProductID(addDiscount);
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (products.length !== 0) {
       addProductInfo();
     }
   }, [products]);
-
-  let purchaseUpdateSubscription = null;
-  let purchaseErrorSubscription = null;
 
   useEffect(() => {
     Alert.alert('useEffect', 'useEffect');
@@ -75,7 +103,7 @@ const Product = () => {
 
         // success listener
         purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase: ProductPurchase) => {
-          const receipt = purchase.transactionReceipt ? purchase.transactionReceipt : purchase.purchaseToken;
+          const receipt = purchase.transactionReceipt || purchase.purchaseToken;
           Alert.alert('purchaseUpdatedListener', JSON.stringify(purchase, null, 2));
           if (receipt) {
             try {
@@ -137,35 +165,6 @@ const Product = () => {
       endConnection();
     };
   }, []);
-
-  const addProductInfo = async () => {
-    Alert.alert('addProductInfo', JSON.stringify(products));
-    if (Platform.OS === 'android') {
-      products.sort((a, b) => {
-        return (
-          Number(a.oneTimePurchaseOfferDetails?.priceAmountMicros) -
-          Number(b.oneTimePurchaseOfferDetails?.priceAmountMicros)
-        );
-      });
-    } else if (Platform.OS === 'ios') {
-      products.sort((a, b) => {
-        return Number(a.price) - Number(b.price);
-      });
-    }
-    const addDiscount = products.map((product) => {
-      if (product.productId === 'bookmarks_10') {
-        return { ...product, krwPrice: '2,500원' };
-      } else if (product.productId === 'bookmarks_35') {
-        return { ...product, discount: '6%', krwPrice: '7,000원', originalPrice: '7,500원' };
-      } else if (product.productId === 'bookmarks_80') {
-        return { ...product, discount: '28%', krwPrice: '14,400원', originalPrice: '20,000원' };
-      } else if (product.productId === 'bookmarks_150') {
-        return { ...product, discount: '40%', krwPrice: '22,500원', originalPrice: '37,500원' };
-      }
-    });
-    setProductID(addDiscount);
-    setLoading(false);
-  };
 
   return (
     <View style={{ flex: 1, paddingTop: 64 }}>
