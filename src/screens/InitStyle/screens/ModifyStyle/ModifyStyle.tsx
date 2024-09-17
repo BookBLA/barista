@@ -28,7 +28,7 @@ const ModifyStyle = () => {
   const [mbti, setMbti] = useState(['E', 'S', 'T', 'J']);
   const showToast = useToastStore((state) => state.showToast);
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
-  const [styleInfo, setStyleInfo]=useState<MemberInformationReadResponse>()
+  const [styleInfo, setStyleInfo] = useState<MemberInformationReadResponse>();
 
   const handleMovePosition = (sectionIndex: number) => {
     let yOffset = 0;
@@ -76,7 +76,7 @@ const ModifyStyle = () => {
   }, []);
 
   const callPutMyInfoApi = async () => {
-    if (styleInfo?.height as number < 140 || styleInfo?.height as number > 230) {
+    if ((styleInfo?.height as number) < 140 || (styleInfo?.height as number) > 230) {
       showToast({
         content: '키는 140~230 사이의 값만 가능합니다!',
       });
@@ -117,7 +117,7 @@ const ModifyStyle = () => {
     <S.Wrapper>
       <ModifyTitleBar step={0} callPutApi={callPutMyInfoApi} />
       <View style={{ position: 'absolute', bottom: 30, right: 10, zIndex: 2 }}>
-        <TouchableOpacity onPress={() => handleMoveTop}>
+        <TouchableOpacity onPress={() => handleMoveTop()}>
           <Image source={MoveTop} style={{ width: 45, height: 45 }} />
         </TouchableOpacity>
       </View>
