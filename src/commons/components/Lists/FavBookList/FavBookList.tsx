@@ -15,6 +15,9 @@ export const FavBookList: React.FC<FavBookListProps> = ({ representative = false
     try {
       await deleteMemberBookApi(String(item?.memberBookId));
       await fetchGetMemberBook();
+      showToast({
+        content: '책이 삭제되었습니다.',
+      });
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       const { code, message } = error.response.data;
