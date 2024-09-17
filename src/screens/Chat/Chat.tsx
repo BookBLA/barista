@@ -1,5 +1,3 @@
-// @screens/Chat/Chat.tsx
-
 import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
@@ -31,27 +29,23 @@ const ChatScreen: React.FC = () => {
 
   useEffect(() => {
     const ws = WebSocketClient;
-    console.log(`
-      ==============================
-      ChatScreen: WebSocket 연결 설정
-      memberID: ${memberID}
-      ==============================
-    `);
-    ws.connect(memberID); // WebSocket 연결 설정
 
-    // 페이지 진입 시 구독 설정
-    ws.subscribe(memberID, memberID);
+    // WebSocket 연결 시도
+    ws.connect(memberID, memberID);
+
+    // WebSocket 연결이 완료된 후에 구독이 설정되도록 수정됨
+    const handleStompConnect = () => {
+      if (ws.isConnected && ws.stompConnected) {
+        ws.subscribe(memberID, memberID);
+      }
+    };
+
+    ws.onConnect = handleStompConnect; // 연결 후에 구독 설정
 
     // 페이지에서 나갈 때 구독 해제 및 연결 해제
     return () => {
-      console.log(`
-        ==============================
-        ChatScreen: WebSocket 연결 해제
-        ==============================
-      `);
-
       ws.unsubscribe(`/topic/chat/${memberID}`);
-      ws.disconnect(); // Chat 페이지에서 나갈 때만 연결 해제
+      ws.disconnect();
     };
   }, [memberID]);
 
@@ -59,7 +53,6 @@ const ChatScreen: React.FC = () => {
     const loadChats = async () => {
       try {
         const response = await fetchChatList();
-        console.log('Fetch response:', JSON.stringify(response));
 
         if (response.isSuccess && response.result.length === 0) {
           setChats([]);
@@ -83,7 +76,6 @@ const ChatScreen: React.FC = () => {
           }));
 
           setChats(formattedChats);
-          console.log('Formatted chats:', formattedChats);
         } else {
           setError('채팅 목록을 불러올 수 없습니다.');
         }

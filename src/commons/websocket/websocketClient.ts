@@ -1,11 +1,13 @@
-// WebSocketClient.ts
+import { Client, StompConfig, StompSubscription } from '@stomp/stompjs';
+import { TextDecoder, TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
 
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
-  public socket: WebSocket | null = null;
+  private stompClient: Client | null = null;
   private isConnected: boolean = false;
+  private stompConnected: boolean = false;
   private memberId: string | null = null;
-  private subscriptions: Map<string, () => void> = new Map();
+  private subscriptions: Map<string, StompSubscription> = new Map();
 
   private constructor() {}
 
@@ -18,37 +20,148 @@ class WebSocketClientDirect {
 
   public connect(memberId: string, roomId: string) {
     if (this.isConnected) {
-      console.log('WebSocket already connected');
+      console.log('STOMP already connected');
       return;
     }
+
     this.memberId = memberId;
-    const webSocketUrl = `wss://dev.bookbla.shop/api/chat/ws/connect?id=${memberId}`;
-    console.log('Attempting to connect to WebSocket at', webSocketUrl);
-    this.socket = new WebSocket(webSocketUrl);
 
-    this.socket.onopen = () => {
-      this.isConnected = true;
-      console.log('WebSocket connection established to', webSocketUrl);
-      this.sendMessage({ type: 'AUTH', memberId: this.memberId });
-
-      // WebSocket 연결 후 구독을 시도합니다.
-      this.subscribe(roomId, memberId);
+    const stompConfig: StompConfig = {
+      brokerURL: `wss://dev.bookbla.shop/api/chat/ws/connect?id=${memberId}`,
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      connectHeaders: {
+        // 필요한 경우 헤더 추가
+      },
+      onConnect: (frame) => {
+        console.log('STOMP connection established:', frame);
+        this.isConnected = true;
+        this.stompConnected = true;
+        this.sendMessage({ type: 'AUTH', memberId: this.memberId });
+        this.subscribe(roomId, memberId);
+      },
+      onStompError: (frame) => {
+        console.error('STOMP error: Broker reported error:', frame.headers['message']);
+        console.error('STOMP error: Additional details:', frame.body);
+      },
+      onWebSocketClose: (event) => {
+        console.log(`WebSocket closed: code=${event.code}, reason=${event.reason}`);
+        this.isConnected = false;
+        this.stompConnected = false;
+        this.tryReconnect();
+      },
+      onWebSocketError: (error) => {
+        console.error('WebSocket error occurred:', error);
+        this.tryReconnect();
+      },
+      debug: (str) => {
+        console.log('STOMP debug:', str);
+      },
     };
 
-    this.socket.onerror = (error) => {
-      console.error('WebSocket error occurred:', error);
+    this.stompClient = new Client(stompConfig);
+
+    // WebSocket 상태를 확인하기 위해 핸들러 추가
+    this.stompClient.webSocketFactory = () => {
+      const ws = new WebSocket(stompConfig.brokerURL!);
+      ws.onopen = () => console.log('WebSocket connection opened.');
+      ws.onerror = (error) => console.error('WebSocket encountered error:', error);
+      ws.onclose = (event) => console.log('WebSocket closed:', event);
+      return ws;
     };
 
-    this.socket.onclose = (event) => {
+    this.stompClient.activate();
+  }
+
+  private tryReconnect = () => {
+    if (!this.isConnected && this.memberId) {
+      console.log('Attempting to reconnect STOMP...');
+      this.unsubscribeAll();
+      setTimeout(() => this.connect(this.memberId!, ''), 5000);
+    }
+  };
+
+  public disconnect = () => {
+    if (this.isConnected && this.stompClient) {
+      this.unsubscribeAll();
+      this.stompClient.deactivate();
       this.isConnected = false;
-      console.log('WebSocket connection closed:', event.reason);
-      this.tryReconnect();
-    };
+      this.stompConnected = false;
+      console.log('STOMP connection manually disconnected');
+    }
+  };
 
-    this.socket.onmessage = (message) => {
-      console.log('WebSocket message received:', message.data);
-      this.handleIncomingMessage(message.data);
-    };
+  public sendMessage = (endpoint: string, data: any) => {
+    if (this.isConnected && this.stompConnected && this.stompClient) {
+      const message = JSON.stringify(data);
+      try {
+        const encodedMessage = new TextEncoder().encode(message); // 메시지 인코딩
+        this.stompClient.publish({ destination: endpoint, body: message });
+        console.log('STOMP message sent:', message);
+      } catch (error) {
+        console.error('Failed to send STOMP message:', message, 'Error:', error);
+      }
+    } else {
+      console.error('Cannot send message, STOMP is not connected. Message data:', data);
+    }
+  };
+
+  public sendChatMessage = (roomId: string, memberId: string, message: any) => {
+    if (!memberId) {
+      console.error('Error: memberId is undefined. Cannot send chat message.');
+      return;
+    }
+
+    if (this.isConnected && this.stompConnected && this.stompClient) {
+      const endpoint = `/app/chat/${memberId}`;
+      const messageData = {
+        content: message.text,
+        senderId: parseInt(memberId),
+        chatRoomId: parseInt(roomId),
+        sendTime: new Date().toISOString(),
+      };
+
+      console.log('Preparing to send chat message to endpoint:', endpoint);
+      console.log('Message data:', messageData);
+
+      try {
+        this.sendMessage(endpoint, messageData);
+      } catch (error) {
+        console.error('Error sending STOMP message to', endpoint, 'with data:', messageData, 'Error:', error);
+      }
+    } else {
+      console.error(
+        'Cannot send message, STOMP is not connected. Room ID:',
+        roomId,
+        'Member ID:',
+        memberId,
+        'Message:',
+        message,
+      );
+    }
+  };
+
+  public subscribe(roomId: string, memberId: string) {
+    const topic = `/topic/chat/${memberId}`;
+    if (!this.isConnected || !this.stompConnected || !this.stompClient) {
+      console.error('Cannot subscribe, STOMP is not connected');
+      return;
+    }
+
+    if (this.subscriptions.has(topic)) {
+      console.log(`Already subscribed to ${topic}`);
+      return;
+    }
+
+    const subscription = this.stompClient.subscribe(topic, (message) => {
+      const decodedMessage = new TextDecoder().decode(new Uint8Array(message.binaryBody)); // 메시지 디코딩
+      console.log('STOMP message received:', decodedMessage);
+      this.handleIncomingMessage(decodedMessage);
+    });
+
+    this.subscriptions.set(topic, subscription);
+    console.log(`Subscribed to ${topic}`);
   }
 
   private handleIncomingMessage = (data: string) => {
@@ -60,117 +173,22 @@ class WebSocketClientDirect {
     }
   };
 
-  private tryReconnect = () => {
-    if (!this.isConnected && this.memberId) {
-      console.log('Attempting to reconnect WebSocket...');
-      setTimeout(() => this.connect(this.memberId!), 5000); // Reconnect after 5 seconds
-    }
-  };
-
-  public disconnect = () => {
-    if (this.isConnected && this.socket) {
-      this.unsubscribeAll();
-      this.socket.close();
-      this.isConnected = false;
-      console.log('WebSocket manually disconnected');
-    }
-  };
-
-  public sendMessage = (data: any) => {
-    if (this.isConnected && this.socket) {
-      const message = JSON.stringify(data);
-      try {
-        this.socket.send(message);
-        console.log('WebSocket message sent:', message);
-      } catch (error) {
-        console.error('Failed to send WebSocket message:', message, 'Error:', error);
-      }
-    } else {
-      console.error('Cannot send message, WebSocket is not connected. Message data:', data);
-    }
-  };
-
-  public sendChatMessage = (roomId: string, memberId: string, message: any) => {
-    if (!memberId) {
-      console.error('Error: memberId is undefined. Cannot send chat message.');
-      return;
-    }
-
-    if (this.isConnected && this.socket) {
-      const endpoint = `/app/chat/${memberId}`;
-      const messageData = {
-        content: message.text,
-        sendId: memberId,
-        roomId,
-        chatRoomId: roomId,
-        sendTime: new Date().toISOString(),
-      };
-
-      console.log('Preparing to send chat message to endpoint:', endpoint);
-      console.log('Message data:', messageData);
-
-      try {
-        this.sendMessage({
-          endpoint,
-          data: messageData,
-        });
-        console.log('WebSocket message successfully sent to', endpoint, ':', messageData);
-      } catch (error) {
-        console.error('Error sending WebSocket message to', endpoint, 'with data:', messageData, 'Error:', error);
-      }
-    } else {
-      console.error(
-        'Cannot send message, WebSocket is not connected. Room ID:',
-        roomId,
-        'Member ID:',
-        memberId,
-        'Message:',
-        message,
-      );
-    }
-  };
-
-  public subscribe(roomId: string, memberId: string) {
-    const topic = `/topic/chat/room/${roomId}/${memberId}`;
-    if (!this.isConnected || !this.socket) {
-      console.error('Cannot subscribe, WebSocket is not connected');
-      return;
-    }
-
-    if (this.subscriptions.has(topic)) {
-      console.log(`Already subscribed to ${topic}`);
-      return;
-    }
-
-    const subscriptionMessage = {
-      type: 'SUBSCRIBE',
-      destination: topic,
-    };
-
-    this.sendMessage(subscriptionMessage);
-    console.log(`Subscribed to ${topic}`);
-
-    this.subscriptions.set(topic, () => this.unsubscribe(topic));
-  }
-
   public unsubscribe(topic: string) {
-    if (!this.isConnected || !this.socket || !this.subscriptions.has(topic)) {
-      console.error('Cannot unsubscribe, WebSocket is not connected or not subscribed');
+    if (!this.isConnected || !this.stompConnected || !this.stompClient || !this.subscriptions.has(topic)) {
+      console.error('Cannot unsubscribe, STOMP is not connected or not subscribed');
       return;
     }
 
-    const unsubscribeMessage = {
-      type: 'UNSUBSCRIBE',
-      destination: topic,
-    };
-
-    this.sendMessage(unsubscribeMessage);
-    console.log(`Unsubscribed from ${topic}`);
-    this.subscriptions.delete(topic);
+    const subscription = this.subscriptions.get(topic);
+    if (subscription) {
+      subscription.unsubscribe();
+      console.log(`Unsubscribed from ${topic}`);
+      this.subscriptions.delete(topic);
+    }
   }
 
   public unsubscribeAll() {
-    this.subscriptions.forEach((unsubscribe) => unsubscribe());
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
     this.subscriptions.clear();
   }
 }
