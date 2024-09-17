@@ -4,6 +4,8 @@ import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName
 import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChatDetail from '@screens/Chat/ChatDetail';
+import ChatInfoScreen from '@screens/Chat/ChatInfoScreen/ChatInfoScreen';
 import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
 import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
@@ -42,6 +44,8 @@ const screens = [
   { name: 'modifyProfile', component: ModifyProfile },
   { name: 'studentId', component: CustomScreen(StudentId) },
   { name: 'rejectStudentId', component: RejectStudentId },
+  { name: 'ChatDetail', component: ChatDetail },
+  { name: 'ChatInfoScreen', component: ChatInfoScreen },
 ];
 
 export const CustomNavigator = () => {
