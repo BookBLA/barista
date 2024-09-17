@@ -217,7 +217,13 @@ const ChatDetail: React.FC = () => {
 
     // WebSocket 연결 설정 및 구독
     WebSocketClient.connect(userId.toString(), chatRoomID.toString());
-    WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage); // handleNewMessage를 인자로 전달
+    WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage, `/topic/chat/${userId.toString()}`);
+    WebSocketClient.subscribe(
+      chatRoomID,
+      userId.toString(),
+      handleNewMessage,
+      `/app/chat/room/${chatRoomID}/${userId.toString()}`,
+    );
 
     // WebSocketClient에 메시지 전송 상태 콜백 추가
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'failed') => {

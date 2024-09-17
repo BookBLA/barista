@@ -166,8 +166,7 @@ class WebSocketClientDirect {
     }
   };
 
-  public subscribe(roomId: string, memberId: string, handleNewMessage: (message: any) => void) {
-    const topic = `/topic/chat/${memberId}`;
+  public subscribe(roomId: string, memberId: string, handleNewMessage: (message: any) => void, topic: string) {
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {
       console.error('Cannot subscribe, STOMP is not connected');
       return;

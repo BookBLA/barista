@@ -162,7 +162,7 @@ const ChatScreen: React.FC = () => {
     // WebSocket 연결이 완료된 후에 구독이 설정되도록 수정됨
     const handleStompConnect = () => {
       if (ws.isConnected && ws.stompConnected) {
-        ws.subscribe(memberID, memberID, handleNewMessage);
+        ws.subscribe(memberID, memberID, handleNewMessage, `/topic/chat/${memberID}`);
       }
     };
 
