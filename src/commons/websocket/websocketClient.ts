@@ -1,3 +1,5 @@
+// @commons/websocket/websocketClient.ts
+
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
   public socket: WebSocket | null = null;
@@ -46,32 +48,32 @@ class WebSocketClientDirect {
     };
   }
 
-  private handleIncomingMessage(data: string) {
+  private handleIncomingMessage = (data: string) => {
     try {
       const parsedData = JSON.parse(data);
       console.log('Parsed message data:', parsedData);
-      // Additional message handling logic can be added here if needed
     } catch (error) {
       console.error('Failed to parse incoming message:', error);
     }
-  }
+  };
 
-  private tryReconnect() {
+  private tryReconnect = () => {
     if (!this.isConnected && this.memberId) {
       console.log('Attempting to reconnect WebSocket...');
       setTimeout(() => this.connect(this.memberId!), 5000); // Reconnect after 5 seconds
     }
-  }
+  };
 
-  public disconnect() {
+  public disconnect = () => {
     if (this.isConnected && this.socket) {
       this.socket.close();
       this.isConnected = false;
       console.log('WebSocket manually disconnected');
     }
-  }
+  };
 
-  public sendMessage(data: any) {
+  // sendMessage를 화살표 함수로 정의하여 this 컨텍스트 문제 해결
+  public sendMessage = (data: any) => {
     if (this.isConnected && this.socket) {
       const message = JSON.stringify(data);
       this.socket.send(message);
@@ -79,7 +81,34 @@ class WebSocketClientDirect {
     } else {
       console.error('Cannot send message, WebSocket is not connected');
     }
-  }
+  };
+
+  public sendChatMessage = (roomId: string, memberId: string, message: any) => {
+    if (!memberId) {
+      console.error('Error: memberId is undefined. Cannot send chat message.');
+      return;
+    }
+
+    if (this.isConnected && this.socket) {
+      const endpoint = `/app/chat/${roomId}/${memberId}`;
+      const messageData = {
+        type: 'CHAT',
+        content: message.text,
+        sender: memberId,
+        timestamp: new Date().toISOString(),
+      };
+
+      // sendMessage 호출 시 this가 올바르게 참조되도록 설정
+      this.sendMessage({
+        endpoint,
+        data: messageData,
+      });
+
+      console.log('WebSocket message sent to', endpoint, ':', messageData);
+    } else {
+      console.error('Cannot send message, WebSocket is not connected');
+    }
+  };
 }
 
 export default WebSocketClientDirect.getInstance();

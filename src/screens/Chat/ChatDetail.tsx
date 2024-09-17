@@ -59,6 +59,8 @@ const ChatDetail: React.FC = () => {
   const showToast = useToastStore((state) => state.showToast);
   const userId = useUserStore((state) => state.userInfo.id);
 
+  console.log(`123123123rId : ${userId}`);
+
   // 날짜 파싱 함수 수정
   const parseDate = (dateString: string | undefined) => {
     if (!dateString) {
@@ -239,13 +241,13 @@ const ChatDetail: React.FC = () => {
     if (!inputMessage.trim()) return; // 빈 메시지 전송 방지
 
     const message = {
-      chatRoomId: chatRoomID,
-      sender: userId,
       text: inputMessage.trim(),
-      timestamp: new Date().toISOString(),
     };
 
-    WebSocketClient.sendChatMessage(`/app/chat/send/${chatRoomID}`, message); // WebSocket으로 메시지 전송
+    // WebSocket으로 메시지 전송 시 roomId와 userId가 올바르게 설정되어 있는지 확인
+    console.log(`chatRoomID : ${chatRoomID}, userId : ${userId}, message : ${JSON.stringify(message)}`);
+
+    WebSocketClient.sendChatMessage(chatRoomID, userId, message);
     setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
   };
 
