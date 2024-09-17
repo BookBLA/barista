@@ -163,6 +163,24 @@ const ChatDetail: React.FC = () => {
     closeResendModal();
   };
 
+  const handleConnectionStatus = (statusMessage: any) => {
+    if (statusMessage.status === 'CONNECTED') {
+      // 상대방이 접속 중이므로 모든 메시지를 읽음 처리합니다.
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) => ({
+          ...msg,
+          isRead: true,
+        })),
+      );
+      setDisplayedMessages((prevDisplayed) =>
+        prevDisplayed.map((msg) => ({
+          ...msg,
+          isRead: true,
+        })),
+      );
+    }
+  };
+
   useEffect(() => {
     // 메시지 배열이 변경될 때마다 FlatList 강제 리렌더링
     setDisplayedMessages([...messages]);
@@ -221,7 +239,7 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.subscribe(
       chatRoomID,
       userId.toString(),
-      handleNewMessage,
+      handleConnectionStatus,
       `/app/chat/room/${chatRoomID}/${userId.toString()}`,
     );
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
@@ -488,7 +506,7 @@ const ChatDetail: React.FC = () => {
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
-              {isUserMessage && item.sendStatus !== 'sent' && (
+              {isUserMessage && item.sendStatus === 'sent' && (
                 <S.isReadIcon
                   source={
                     isRead
@@ -497,18 +515,18 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && item.sendStatus !== 'failed' && (
+              {isUserMessage && item.sendStatus === 'failed' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
-              {isUserMessage && item.sendStatus !== 'failed' && (
+              {isUserMessage && item.sendStatus === 'failed' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
               {/* Modify the timestamp rendering condition here */}
-              {isUserMessage && item.sendStatus !== 'sent' && (
+              {isUserMessage && item.sendStatus !== 'failed' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
               )}
               <TouchableOpacity
