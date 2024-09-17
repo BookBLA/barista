@@ -52,6 +52,7 @@ const ChatDetail: React.FC = () => {
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedMessage, setSelectedMessage] = useState('');
+  const [inputFocused, setInputFocused] = useState(false); // 입력 필드의 활성화 상태를 관리하는 상태 추가
   const messageRefs = useRef<{ [key: string]: View | null }>({});
   const flatListRef = useRef<FlatList<any>>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -483,8 +484,13 @@ const ChatDetail: React.FC = () => {
               onChangeText={setInputMessage}
               placeholder="메시지 보내기"
               style={{ flex: 1, padding: 10 }}
+              onFocus={() => setInputFocused(true)} // 입력 필드가 활성화되었을 때 호출
+              onBlur={() => setInputFocused(false)} // 입력 필드가 비활성화되었을 때 호출
             />
-            <S.SendButton onPress={handleSendMessage}>
+            <S.SendButton
+              onPress={handleSendMessage}
+              style={{ opacity: inputFocused ? 1 : 0.5 }} // inputFocused 상태에 따라 투명도 조정
+            >
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
             </S.SendButton>
           </S.InputContainer>
