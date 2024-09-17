@@ -3,6 +3,8 @@
 import { Client, StompConfig, StompSubscription } from '@stomp/stompjs';
 import { TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
 
+type SendMessageStatusCallback = (messageId: string, status: 'sent' | 'failed') => void;
+
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
   private stompClient: Client | null = null;
@@ -11,6 +13,9 @@ class WebSocketClientDirect {
   private memberId: string | null = null;
   private subscriptions: Map<string, StompSubscription> = new Map();
 
+  // Array to hold registered callbacks
+  private sendMessageStatusCallbacks: SendMessageStatusCallback[] = [];
+
   private constructor() {}
 
   public static getInstance(): WebSocketClientDirect {
@@ -18,6 +23,16 @@ class WebSocketClientDirect {
       WebSocketClientDirect.instance = new WebSocketClientDirect();
     }
     return WebSocketClientDirect.instance;
+  }
+
+  // Method to register callbacks
+  public onSendMessageStatus(callback: SendMessageStatusCallback) {
+    this.sendMessageStatusCallbacks.push(callback);
+  }
+
+  // Method to invoke callbacks
+  private emitSendMessageStatus(messageId: string, status: 'sent' | 'failed') {
+    this.sendMessageStatusCallbacks.forEach((callback) => callback(messageId, status));
   }
 
   public connect(memberId: string, roomId: string) {
@@ -38,7 +53,7 @@ class WebSocketClientDirect {
         console.log('STOMP connection established:', frame);
         this.isConnected = true;
         this.stompConnected = true;
-        this.subscribe(roomId, memberId, this.handleNewMessage.bind(this)); // Bind the context
+        this.subscribe(roomId, memberId, this.handleNewMessage.bind(this));
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
@@ -90,22 +105,32 @@ class WebSocketClientDirect {
     }
   };
 
-  public sendMessage = (endpoint: string, data: any) => {
+  public sendMessage = (endpoint: string, data: any, messageId: string) => {
     if (this.isConnected && this.stompConnected && this.stompClient) {
       const message = JSON.stringify(data);
       try {
         const encodedMessage = new TextEncoder().encode(message); // 메시지 인코딩
         this.stompClient.publish({ destination: endpoint, body: message });
         console.log('STOMP message sent:', message);
+
+        // Assume message is sent successfully and emit 'sent' status
+        this.emitSendMessageStatus(messageId, 'sent');
+
+        // Optionally, handle acknowledgment from server to confirm 'sent' status
+        // If server sends a different acknowledgment, update the status accordingly
       } catch (error) {
         console.error('Failed to send STOMP message:', message, 'Error:', error);
+        // Emit 'failed' status if sending fails
+        this.emitSendMessageStatus(messageId, 'failed');
       }
     } else {
       console.error('Cannot send message, STOMP is not connected. Message data:', data);
+      // Emit 'failed' status if not connected
+      this.emitSendMessageStatus(data.id, 'failed'); // Ensure data has 'id'
     }
   };
 
-  public sendChatMessage = (roomId: string, memberId: string, message: any) => {
+  public sendChatMessage = (roomId: string, memberId: string, message: any, messageId: string) => {
     if (!memberId) {
       console.error('Error: memberId is undefined. Cannot send chat message.');
       return;
@@ -118,15 +143,17 @@ class WebSocketClientDirect {
         senderId: parseInt(memberId),
         chatRoomId: parseInt(roomId),
         sendTime: new Date().toISOString(),
+        id: messageId, // Include the messageId for tracking
       };
 
       console.log('Preparing to send chat message to endpoint:', endpoint);
       console.log('Message data:', messageData);
 
       try {
-        this.sendMessage(endpoint, messageData);
+        this.sendMessage(endpoint, messageData, messageId);
       } catch (error) {
         console.error('Error sending STOMP message to', endpoint, 'with data:', messageData, 'Error:', error);
+        this.emitSendMessageStatus(messageId, 'failed');
       }
     } else {
       console.error(
@@ -137,6 +164,8 @@ class WebSocketClientDirect {
         'Message:',
         message,
       );
+      // Emit 'failed' status if not connected
+      this.emitSendMessageStatus(message.id, 'failed'); // Ensure message has 'id'
     }
   };
 
@@ -157,6 +186,14 @@ class WebSocketClientDirect {
       const decodedMessage = message.body;
       console.log('STOMP message received:', decodedMessage);
       handleNewMessage(JSON.parse(decodedMessage)); // handleNewMessage를 직접 호출하여 메시지 상태에 반영
+
+      // If server sends acknowledgment for sent messages, handle status updates here
+      // For example, if the server sends a message with type 'ACK', update message status
+      const parsedMessage = JSON.parse(decodedMessage);
+      if (parsedMessage.type === 'ACK' && parsedMessage.id) {
+        // Update message status to 'sent' based on messageId
+        this.emitSendMessageStatus(parsedMessage.id, 'sent');
+      }
     });
 
     this.subscriptions.set(topic, subscription);

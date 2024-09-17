@@ -244,6 +244,11 @@ export const isReadIcon = styled.Image`
   margin-left: 5px;
 `;
 
+export const ErrorIcon = styled.Image`
+  width: 20px;
+  height: 20px;
+`;
+
 // 타임스탬프 스타일
 export const Timestamp = styled.Text<{ isUserMessage: boolean }>`
   font-size: 11px;

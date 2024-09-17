@@ -7,7 +7,7 @@ import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSh
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import WebSocketClient from '@commons/websocket/websocketClient'; // WebSocketClient 추가
+import WebSocketClient from '@commons/websocket/websocketClient'; // Updated WebSocketClient import
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
@@ -35,14 +35,18 @@ import InfoButton from './components/InfoButton/InfoButton';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
+interface Message extends ChatMessage {
+  sendStatus?: 'sent' | 'failed' | 'pending';
+}
+
 const ChatDetail: React.FC = () => {
   const { movePage } = useMovePage();
   const { params } = useRoute();
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
 
-  const [messages, setMessages] = useState<any[]>([]);
-  const [displayedMessages, setDisplayedMessages] = useState<any[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState(''); // 메시지 입력 필드 상태 추가
   const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -124,17 +128,23 @@ const ChatDetail: React.FC = () => {
       const postcardItem = combinedMessages.splice(postcardIndex, 1);
       combinedMessages.push(postcardItem[0]);
 
-      setMessages(combinedMessages);
-      setDisplayedMessages(combinedMessages.slice(0, 100));
+      // 초기 메시지에 sendStatus 추가
+      const messagesWithStatus = combinedMessages.map((msg) => ({
+        ...msg,
+        sendStatus: msg.senderId === userId ? 'sent' : undefined,
+      }));
+
+      setMessages(messagesWithStatus);
+      setDisplayedMessages(messagesWithStatus.slice(0, 100));
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' };
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard', sendStatus: 'sent' };
       const combinedMessages = [postcardWithId]; // 메시지가 없어도 엽서를 표시
       setMessages(combinedMessages);
       setDisplayedMessages(combinedMessages);
       showToast({ content: '메시지 로드에 실패했습니다. 다시 시도해주세요.' });
     }
-  }, [chatRoomID, showToast, postcard]);
+  }, [chatRoomID, showToast, postcard, userId]);
 
   useEffect(() => {
     setIsModalVisible(postcard.status === 'PENDING');
@@ -144,12 +154,25 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.connect(userId.toString(), chatRoomID.toString());
     WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage); // handleNewMessage를 인자로 전달
 
+    // WebSocketClient에 메시지 전송 상태 콜백 추가
+    WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'failed') => {
+      setMessages((prevMessages) =>
+        prevMessages.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
+      );
+      setDisplayedMessages((prevDisplayed) =>
+        prevDisplayed.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
+      );
+      if (status === 'failed') {
+        showToast({ content: '메시지 전송에 실패했습니다. 다시 시도해주세요.' });
+      }
+    });
+
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
       WebSocketClient.unsubscribe(`/topic/chat/${userId}`);
       WebSocketClient.disconnect();
     };
-  }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage]);
+  }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
 
   useEffect(() => {
     const listener = scrollY.addListener(({ value }) => {
@@ -212,7 +235,7 @@ const ChatDetail: React.FC = () => {
     setLoadingMore(false);
   };
 
-  const handleLongPress = (event, message, index) => {
+  const handleLongPress = (event: any, message: Message, index: number) => {
     console.log(`message : ${JSON.stringify(message)}`);
 
     // 고유 식별자 생성: senderId, sendTime, index를 조합
@@ -260,28 +283,51 @@ const ChatDetail: React.FC = () => {
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return; // 빈 메시지 전송 방지
 
+    const messageId = `temp-${Date.now()}`; // Unique temporary ID
     const message = {
       text: inputMessage.trim(),
+      id: messageId, // Include the messageId
     };
 
-    WebSocketClient.sendChatMessage(chatRoomID, userId, message);
-    setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
-
-    // Optionally, add the message optimistically to the state
-    const optimisticMessage = {
+    // Create optimistic message with 'pending' status
+    const optimisticMessage: Message = {
       ...message,
       senderId: userId,
       chatRoomId: chatRoomID,
       sendTime: new Date().toISOString(),
       isRead: false, // 읽음 상태를 false로 설정
-      id: `temp-${Date.now()}`, // Temporary ID
+      id: messageId, // Use the unique messageId
+      sendStatus: 'pending',
     };
     setMessages((prevMessages) => [optimisticMessage, ...prevMessages]);
     setDisplayedMessages((prevDisplayed) => [optimisticMessage, ...prevDisplayed]);
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
+
+    // Attempt to send the message via WebSocketClient
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
+
+    setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
   };
 
-  const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
+  // 메시지 재전송 처리 함수
+  const handleResendMessage = (message: Message) => {
+    // Update sendStatus to 'pending'
+    setMessages((prevMessages) =>
+      prevMessages.map((msg) => (msg.id === message.id ? { ...msg, sendStatus: 'pending' } : msg)),
+    );
+    setDisplayedMessages((prevDisplayed) =>
+      prevDisplayed.map((msg) => (msg.id === message.id ? { ...msg, sendStatus: 'pending' } : msg)),
+    );
+
+    // Re-send the message via WebSocketClient
+    const resendMessage = {
+      text: message.text,
+      id: message.id, // Use the same messageId for tracking
+    };
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), resendMessage, message.id);
+  };
+
+  const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
     const isPostcardItem = item.isPostcard;
 
     const isUserMessage = (isPostcardItem && item.senderId === userId) || item.senderId === userId;
@@ -387,7 +433,7 @@ const ChatDetail: React.FC = () => {
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
-              {isUserMessage && (
+              {isUserMessage && item.sendStatus === 'sent' && (
                 <S.isReadIcon
                   source={
                     isRead
@@ -396,6 +442,16 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
+              {isUserMessage && item.sendStatus === 'failed' && (
+                <TouchableOpacity onPress={() => handleResendMessage(item)}>
+                  <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
+                </TouchableOpacity>
+              )}
+              {isUserMessage && item.sendStatus === 'failed' && (
+                <TouchableOpacity onPress={() => handleResendMessage(item)}>
+                  <Text style={{ color: 'red', marginLeft: 5 }}>다시전송</Text>
+                </TouchableOpacity>
+              )}
               {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
               <TouchableOpacity
                 ref={(ref) => {
@@ -403,12 +459,18 @@ const ChatDetail: React.FC = () => {
                 }}
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
-                <S.MessageBubble isUserMessage={isUserMessage}>
+                <S.MessageBubble isUserMessage={isUserMessage} sendStatus={item.sendStatus}>
                   <S.MessageText isUserMessage={isUserMessage}>{item.content || item.text}</S.MessageText>
                 </S.MessageBubble>
               </TouchableOpacity>
               {!isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
             </S.MessageRow>
+            {/* '다시전송' 텍스트 추가 */}
+            {isUserMessage && item.sendStatus === 'failed' && (
+              <TouchableOpacity onPress={() => handleResendMessage(item)}>
+                <Text style={{ color: 'red', marginTop: 5 }}>다시전송</Text>
+              </TouchableOpacity>
+            )}
           </S.MessageContent>
         </S.MessageItemInner>
       </S.MessageItem>
@@ -488,7 +550,7 @@ const ChatDetail: React.FC = () => {
               onBlur={() => setInputFocused(false)} // 입력 필드가 비활성화되었을 때 호출
             />
             <S.SendButton
-              onPress={handleSendMessage}
+              onPress={inputFocused ? handleSendMessage : undefined} // 빈 메시지 전송 방지
               style={{ opacity: inputFocused ? 1 : 0.5 }} // inputFocused 상태에 따라 투명도 조정
             >
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
