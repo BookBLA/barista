@@ -2,15 +2,20 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatInfoScreen.styles';
 import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
-  const { partner, handleReport } = route.params;
+  const { partner, handleReport, chatRoomID, isAlert } = route.params;
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const navigation = useNavigation();
+
+  // isAlert 상태에 따라 알림 설정을 변경
+  useEffect(() => {
+    setIsNotificationEnabled(isAlert);
+  }, [isAlert]);
 
   const reportUser = () => {
     navigation.goBack();

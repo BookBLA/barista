@@ -31,7 +31,7 @@ const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const ChatDetail: React.FC = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
-  const { partner, postcard } = params as any;
+  const { partner, postcard, chatRoomID, isAlert } = params as any;
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<ChatMessage[]>([]);
@@ -247,7 +247,9 @@ const ChatDetail: React.FC = () => {
               <S.SmallAvatar source={{ url: partner.profileImageUrl }} />
               <S.HeaderText>{partner.name}</S.HeaderText>
             </S.HeaderTitle>
-            <InfoButton onPress={() => navigation.navigate('ChatInfoScreen', { partner, handleReport })} />
+            <InfoButton
+              onPress={() => navigation.navigate('ChatInfoScreen', { partner, handleReport, chatRoomID, isAlert })}
+            />
           </S.Header>
 
           <FlatList

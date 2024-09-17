@@ -114,7 +114,12 @@ const ChatScreen: React.FC = () => {
         <View>
           <S.ChatItem
             onPress={() =>
-              navigation.navigate('ChatDetail', { partner: item.partner, postcard: item.postcard, chatRoomID: item.id })
+              navigation.navigate('ChatDetail', {
+                partner: item.partner,
+                postcard: item.postcard,
+                chatRoomID: item.id,
+                isAlert: item.isAlert,
+              })
             }
           >
             <S.Avatar source={item.avatar} />
