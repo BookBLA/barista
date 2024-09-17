@@ -4,6 +4,8 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
@@ -24,6 +26,7 @@ const StudentId = ({ route }: IProps) => {
   // const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
   const isRejected = route?.params?.isRejected;
+  const { updateMemberInfo } = useMemberStore();
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -79,6 +82,7 @@ const StudentId = ({ route }: IProps) => {
       } else {
         movePage()();
       }
+      updateMemberInfo('studentIdImageStatus', EStudentIdImageStatus.PENDING);
       showToast({
         content: '학생증을 검토 중입니다.',
       });

@@ -9,6 +9,7 @@ import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
 import InitStyleStack from '@screens/InitStyle/initStyle';
 import ModifyProfile from '@screens/InitStyle/screens/ModifyProfile/ModifyProfile';
+import ModifyStyle from '@screens/InitStyle/screens/ModifyStyle/ModifyStyle';
 import InitUserInfoStack from '@screens/InitUserInfo/initUserinfo';
 import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePage';
 import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
@@ -37,6 +38,7 @@ const screens = [
   { name: 'quizStack', component: QuizStack },
   // { name: 'waitConfirm', component: WaitConfirm },
   { name: 'inviteFriends', component: InviteFriends },
+  { name: 'modifyStyle', component: ModifyStyle },
   { name: 'modifyProfile', component: ModifyProfile },
   { name: 'studentId', component: CustomScreen(StudentId) },
   { name: 'rejectStudentId', component: RejectStudentId },

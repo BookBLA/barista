@@ -10,8 +10,9 @@ const RejectStudentId = () => {
   useHeaderControl({
     title: '학생증 인증',
     left: true,
+    onPressLeft: () => handleReset('tapScreens'),
   });
-  const { movePage } = useMovePage();
+  const { movePage, handleReset } = useMovePage();
 
   return (
     <S.Wrapper>

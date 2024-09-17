@@ -13,6 +13,7 @@ export interface ProductListContentProps {
 }
 
 export interface ProductContentProps {
+  name?: string;
   title: string;
   productId: string;
   price?: string;
