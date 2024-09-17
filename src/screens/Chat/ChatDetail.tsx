@@ -94,8 +94,6 @@ const ChatDetail: React.FC = () => {
       const response = await fetchChatMessages(chatRoomID, 0, 100);
       let fetchedMessages: ChatMessage[] = [];
 
-      console.log(`response : ${JSON.stringify(response)}`);
-
       // 메시지가 존재할 때만 fetchedMessages에 할당
       if (response.isSuccess && response.result.content.length > 0) {
         fetchedMessages = response.result.content;
@@ -254,15 +252,9 @@ const ChatDetail: React.FC = () => {
   };
 
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
-    console.log(`
-      --------------------------
-      item : ${JSON.stringify(item)}
-      index : ${index}
-      --------------------------
-    `);
     const isPostcardItem = item.isPostcard;
 
-    console.log(`isUserMessage : item.sender : ${item.sender}, userId : ${userId}`);
+    console.log(`isPostcardItem : ${isPostcardItem}`);
 
     const isUserMessage = item.senderId === userId || (isPostcardItem && item.senderId === userId);
 
@@ -279,6 +271,13 @@ const ChatDetail: React.FC = () => {
         : null;
 
     const showDateSeparator = index === displayedMessages.length - 1 || currentItemDate !== nextItemDate;
+
+    console.log(`
+      ==========================
+      item : ${JSON.stringify(item)}
+      index : ${index}
+      ==========================
+    `);
 
     // 엽서 메시지 렌더링
     if (isPostcardItem) {
@@ -311,9 +310,9 @@ const ChatDetail: React.FC = () => {
                   />
                 )}
                 <S.BookChatBubble isUserMessage={isUserMessage}>
-                  {item.type?.imageUrl && (
+                  {item?.imageUrl && (
                     <S.BookCover
-                      source={{ uri: item.type.imageUrl }}
+                      source={{ uri: item.imageUrl }}
                       onError={(error) => console.error('Image load error:', error.nativeEvent.error)}
                     />
                   )}
