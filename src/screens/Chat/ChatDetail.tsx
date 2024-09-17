@@ -370,9 +370,11 @@ const ChatDetail: React.FC = () => {
                   <S.ProfileAvatar source={{ uri: partner.profileImageUrl }} />
                   <S.ProfileInfo>
                     <S.ProfileName>{partner.name}</S.ProfileName>
-                    <S.ProfileSchool>{partner.school}</S.ProfileSchool>
-                    <S.ProfileDetails>{`${partner.smokingStatus} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-                    <S.LibraryButton onPress={() => movePage('Library', { memberId: partner.id, isYourLibrary: true })}>
+                    <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
+                    <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                    <S.LibraryButton
+                      onPress={() => movePage('Library', { memberId: partner.memberId, isYourLibrary: true })}
+                    >
                       <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
                     </S.LibraryButton>
                   </S.ProfileInfo>
@@ -404,7 +406,10 @@ const ChatDetail: React.FC = () => {
           )}
 
           <CustomBottomSheetModal ref={reportBottomSheetRef} index={0} snapPoints={['78%']}>
-            <ReportOption bottomClose={() => reportBottomSheetRef.current?.close()} reportedMemberId={partner.id} />
+            <ReportOption
+              bottomClose={() => reportBottomSheetRef.current?.close()}
+              reportedMemberId={partner.memberId}
+            />
           </CustomBottomSheetModal>
 
           <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
