@@ -4,6 +4,7 @@ import settingIcon from '@assets/images/icons/Setting.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
+import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 import { deleteBook, getBookInfo, getInvitationCode, validateSendPostcard } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
@@ -44,8 +45,6 @@ import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
-import { StatusBar } from 'expo-status-bar';
-import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -277,16 +276,20 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       showToast({
         content: '책이 삭제되었습니다.',
       });
-      toggleDeleteBookModal();
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       const { code, message } = error.response.data;
-      if (code === EStatusCode.MEMBER_BOOK_005) {
+      if (code === EStatusCode.MEMBER_BOOK_005 || code === EStatusCode.MEMBER_BOOK_004) {
         showToast({
           content: message,
         });
+      } else {
+        showToast({
+          content: '알 수 없는 이유로 삭제에 실패하였습니다.',
+        });
       }
     }
+    toggleDeleteBookModal();
   };
 
   const showDeleteBookModal = async () => {
