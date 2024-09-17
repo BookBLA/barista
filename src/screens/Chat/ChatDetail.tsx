@@ -190,25 +190,26 @@ const ChatDetail: React.FC = () => {
     setLoadingMore(false);
   };
 
-  const handleLongPress = (event, message) => {
-    const messageId = message.id || 'postcard'; // 엽서의 경우 'postcard' 사용
-    const messageRef = messageRefs.current[messageId];
+  const handleLongPress = (event, message, index) => {
+    console.log(`message : ${JSON.stringify(message)}`);
+
+    // 고유 식별자 생성: senderId, sendTime, index를 조합
+    const messageKey = `${message.senderId}-${message.sendTime}-${index}`;
+    const messageRef = messageRefs.current[messageKey];
 
     if (messageRef) {
       messageRef.measure((fx, fy, width, height, px, py) => {
         const modalWidth = 140;
         const modalHeight = 50;
 
-        const targetX = px;
-        const targetY = py;
-        const targetWidth = width;
-        const targetHeight = height;
+        const targetX = px; // 메시지의 X 좌표
+        const targetY = py; // 메시지의 Y 좌표
 
         const topPositionAbove = targetY - modalHeight - 10;
-        const topPositionBelow = targetY + targetHeight + 10;
+        const topPositionBelow = targetY + height + 10;
 
         const leftPositionLeft = targetX;
-        const leftPositionRight = targetX + targetWidth - modalWidth;
+        const leftPositionRight = targetX + width - modalWidth;
 
         const isTopHalf = targetY < SCREEN_HEIGHT / 2;
 
@@ -217,7 +218,7 @@ const ChatDetail: React.FC = () => {
           left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
-        setSelectedMessage(message.text || message.message);
+        setSelectedMessage(message.content); // 메시지 내용을 복사할 내용으로 설정
         setCopyModalVisible(true);
       });
     }
@@ -251,6 +252,8 @@ const ChatDetail: React.FC = () => {
   const renderMessageItem = ({ item, index }: { item: any; index: number }) => {
     const isPostcardItem = item.isPostcard;
     const isUserMessage = item.sender === userId || (isPostcardItem && item.senderId === userId);
+
+    const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
 
     // 서버에서 받은 읽음 상태를 사용
     const isRead = item.isRead; // 서버에서 전달된 읽음 상태 사용
@@ -308,9 +311,10 @@ const ChatDetail: React.FC = () => {
                   )}
                   <TouchableOpacity
                     ref={(ref) => {
-                      if (ref) messageRefs.current['postcard'] = ref; // 엽서의 경우 'postcard' 키 사용
+                      if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
                     }}
-                    onLongPress={(event) => handleLongPress(event, item)}
+                    // onLongPress={(event) => handleLongPress(event, 해당 메시지의 index)}
+                    onLongPress={(event) => handleLongPress(event, item, index)}
                   >
                     <S.MessageBubble isUserMessage={isUserMessage}>
                       <S.MessageText isUserMessage={isUserMessage}>{item.message}</S.MessageText>
@@ -364,9 +368,9 @@ const ChatDetail: React.FC = () => {
               )}
               <TouchableOpacity
                 ref={(ref) => {
-                  if (ref) messageRefs.current[item.id] = ref;
+                  if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
                 }}
-                onLongPress={(event) => handleLongPress(event, item)}
+                onLongPress={(event) => handleLongPress(event, item, index)}
               >
                 <S.MessageBubble isUserMessage={isUserMessage}>
                   <S.MessageText isUserMessage={isUserMessage}>{item.content}</S.MessageText>

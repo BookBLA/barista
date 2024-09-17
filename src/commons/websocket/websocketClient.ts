@@ -1,90 +1,85 @@
-// WebSocketClient.ts
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
-
-class WebSocketClient {
-  private static instance: WebSocketClient;
-  private client: Client;
+class WebSocketClientDirect {
+  private static instance: WebSocketClientDirect;
+  public socket: WebSocket | null = null;
   private isConnected: boolean = false;
+  private memberId: string | null = null;
 
-  private constructor() {
-    this.client = new Client({
-      webSocketFactory: () => new SockJS('https://dev.bookbla.shop/api/chat/ws/connect'),
-      reconnectDelay: 5000,
-      onConnect: () => {
-        this.isConnected = true;
-        console.log('WebSocket successfully connected');
-        // 필요한 초기 구독 설정 등 추가 가능
-      },
-      onDisconnect: () => {
-        this.isConnected = false;
-        console.log('WebSocket disconnected');
-        // 재연결 시도 추가
-        this.tryReconnect();
-      },
-      onStompError: (error) => {
-        this.isConnected = false;
-        console.error('STOMP error:', error);
-        this.tryReconnect();
-      },
-    });
-  }
+  private constructor() {}
 
-  public static getInstance(): WebSocketClient {
-    if (!WebSocketClient.instance) {
-      WebSocketClient.instance = new WebSocketClient();
+  public static getInstance(): WebSocketClientDirect {
+    if (!WebSocketClientDirect.instance) {
+      WebSocketClientDirect.instance = new WebSocketClientDirect();
     }
-    return WebSocketClient.instance;
+    return WebSocketClientDirect.instance;
   }
 
-  public connect(userId: string, roomId: string, onMessageReceived: (message: any) => void) {
-    if (!this.isConnected) {
-      this.client.onConnect = () => {
-        this.isConnected = true;
-        console.log('WebSocket connected');
-        this.subscribeToChat(roomId, onMessageReceived);
-      };
-      this.client.activate();
-    } else {
+  public connect(memberId: string) {
+    if (this.isConnected) {
       console.log('WebSocket already connected');
-      this.subscribeToChat(roomId, onMessageReceived);
+      return;
+    }
+    this.memberId = memberId;
+    const webSocketUrl = `wss://dev.bookbla.shop/api/chat/ws/connect`;
+    console.log('Attempting to connect to WebSocket at', webSocketUrl);
+    this.socket = new WebSocket(webSocketUrl);
+
+    this.socket.onopen = () => {
+      this.isConnected = true;
+      console.log('WebSocket connection established to', webSocketUrl);
+      // Send authentication message after connection is established
+      this.sendMessage({ type: 'AUTH', memberId: this.memberId });
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket error occurred:', error);
+    };
+
+    this.socket.onclose = (event) => {
+      this.isConnected = false;
+      console.log('WebSocket connection closed:', event.reason);
+      this.tryReconnect();
+    };
+
+    this.socket.onmessage = (message) => {
+      console.log('WebSocket message received:', message.data);
+      this.handleIncomingMessage(message.data);
+    };
+  }
+
+  private handleIncomingMessage(data: string) {
+    try {
+      const parsedData = JSON.parse(data);
+      console.log('Parsed message data:', parsedData);
+      // Additional message handling logic can be added here if needed
+    } catch (error) {
+      console.error('Failed to parse incoming message:', error);
     }
   }
 
   private tryReconnect() {
-    // 재연결을 시도하는 로직 추가
-    if (!this.isConnected) {
+    if (!this.isConnected && this.memberId) {
       console.log('Attempting to reconnect WebSocket...');
-      this.client.activate();
+      setTimeout(() => this.connect(this.memberId!), 5000); // Reconnect after 5 seconds
     }
   }
 
   public disconnect() {
-    if (this.isConnected) {
-      this.client.deactivate();
+    if (this.isConnected && this.socket) {
+      this.socket.close();
       this.isConnected = false;
+      console.log('WebSocket manually disconnected');
     }
   }
 
-  public sendChatMessage(destination: string, message: any) {
-    if (this.isConnected) {
-      this.client.publish({ destination, body: JSON.stringify(message) });
-      console.log('Message sent:', message);
+  public sendMessage(data: any) {
+    if (this.isConnected && this.socket) {
+      const message = JSON.stringify(data);
+      this.socket.send(message);
+      console.log('WebSocket message sent:', message);
     } else {
       console.error('Cannot send message, WebSocket is not connected');
-      this.tryReconnect(); // 연결 재시도 후 전송 재시도 가능
-    }
-  }
-
-  public subscribeToChat(roomId: string, callback: (message: any) => void) {
-    if (this.isConnected) {
-      this.client.subscribe(`/topic/chat/${roomId}`, (message) => {
-        callback(JSON.parse(message.body));
-      });
-    } else {
-      console.error('Cannot subscribe, WebSocket is not connected');
     }
   }
 }
 
-export default WebSocketClient.getInstance();
+export default WebSocketClientDirect.getInstance();
