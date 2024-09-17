@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 
 const useHeaderControl = (
-  { title, left, right, onPressLeft, free, backgroundColor }: ICustomHeader,
+  { title, left, right, onPressLeft, customContent }: ICustomHeader,
   dependencies: unknown[] = [],
 ) => {
   const navigation = useNavigation();
@@ -13,14 +13,7 @@ const useHeaderControl = (
     navigation.setOptions({
       headerShown: true,
       header: () => (
-        <CustomHeader
-          left={left}
-          onPressLeft={onPressLeft}
-          title={title}
-          right={right}
-          free={free}
-          backgroundColor={backgroundColor}
-        />
+        <CustomHeader left={left} onPressLeft={onPressLeft} title={title} right={right} customContent={customContent} />
       ),
     });
   }, dependencies);
