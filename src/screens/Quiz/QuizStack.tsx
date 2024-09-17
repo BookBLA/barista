@@ -1,5 +1,4 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
-import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TProps } from '@screens/Quiz/QuizStack.types';
@@ -19,22 +18,22 @@ const screens = [
 
 const QuizStack = () => {
   const route = useRoute<TProps>();
-  useAppUIManager();
 
   return (
-    <Stack.Navigator initialRouteName="stepFirst" screenOptions={{ headerShown: false, animationEnabled: false }}>
-      {screens.map(({ name, component }, index) =>
-        !index ? (
-          <Stack.Screen
-            key={name}
-            name={name}
-            component={CustomScreen(component)}
-            initialParams={{ ...route.params }}
-          />
-        ) : (
-          <Stack.Screen key={name} name={name} component={CustomScreen(component)} />
-        ),
-      )}
+    <Stack.Navigator
+      initialRouteName="stepFirst"
+      screenOptions={{ headerShown: false, animationEnabled: false, headerTransparent: true }}
+    >
+      {screens.map(({ name, component }) => (
+        <Stack.Screen
+          key={name}
+          name={name}
+          component={CustomScreen(component, {
+            isGradient: true,
+          })}
+          initialParams={{ ...route.params }}
+        />
+      ))}
     </Stack.Navigator>
   );
 };

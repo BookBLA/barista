@@ -1,5 +1,5 @@
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { initializeKakaoSDK } from '@react-native-kakao/core';
+import { initializeKakaoSDK, getKeyHashAndroid } from '@react-native-kakao/core';
 import 'expo-dev-client';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
@@ -23,7 +23,7 @@ export default function App() {
   const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const isLight = backgroundColor !== '#fff' ? 'light' : 'dark';
   initializeKakaoSDK(`${process.env.EXPO_PUBLIC_NATIVE_APP_KEY}`);
-  // getKeyHashAndroid().then((result) => console.log('keyhash', result));
+  getKeyHashAndroid().then((result) => console.log('keyhash', result));
   // Core.initializeKakaoSDK(`${process.env.EXPO_PUBLIC_NATIVE_APP_KEY}`, {
   //   web: {
   //     javascriptKey: INJECTED_JAVASCRIPT,

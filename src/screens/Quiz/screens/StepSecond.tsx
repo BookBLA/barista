@@ -10,6 +10,8 @@ import { TProps } from '@screens/Quiz/QuizStack.types';
 import { BookInfo } from '@screens/Quiz/units/BookInfo';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import { colors } from '@commons/styles/variablesStyles';
 
 const StepSecond = () => {
   useScreenLogger();
@@ -44,6 +46,9 @@ const StepSecond = () => {
     };
   }, []);
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
   useHeaderControl({ title: '독서 퀴즈' });
   return (
     <>

@@ -15,6 +15,8 @@ import { getPostcardTypeList } from '@commons/api/postcard/library.api';
 import { postPostcard } from '@commons/api/quiz/sendPostcard.api';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import { colors } from '@commons/styles/variablesStyles';
 
 const StepThird = () => {
   useScreenLogger();
@@ -53,6 +55,9 @@ const StepThird = () => {
     fetchPostcardInfo();
   }, []);
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
   useHeaderControl({ title: '독서 퀴즈' });
   return (
     <S.Wrapper style={{ alignItems: 'center' }}>
