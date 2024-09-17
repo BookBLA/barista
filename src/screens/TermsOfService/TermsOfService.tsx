@@ -1,7 +1,7 @@
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
 import nextButton from '@assets/images/buttons/nextButton.png';
 import nextArrow from '@assets/images/icons/NextArrow.png';
-import { agreementTitles, agreementUrls } from '@commons/contents/agreement/agreementUrls';
+import { AGREEMENT_TITLES, AGREEMENT_URLS } from '@commons/contents/agreement/agreementUrls';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useGetPushToken from '@commons/hooks/notifications/getPushToken/useGetPushToken';
@@ -22,7 +22,7 @@ const TermsOfService = () => {
   const { postPushToken } = usePostPushToken();
 
   const handleAgreementLinkPress = (index: number) => {
-    const url = agreementUrls[index - 2]; // index는 1부터 시작하므로 1을 빼줘야 해당 인덱스의 주소에 접근 가능
+    const url = AGREEMENT_URLS[index - 2]; // index는 1부터 시작하므로 1을 빼줘야 해당 인덱스의 주소에 접근 가능
     Linking.openURL(url);
   };
 
@@ -34,7 +34,7 @@ const TermsOfService = () => {
     movePage('schoolStudentID')();
   };
 
-  const [isChecked, setIsChecked] = useState(Array(agreementTitles.length).fill(false)); // Initialize an array of checkbox states
+  const [isChecked, setIsChecked] = useState(Array(AGREEMENT_TITLES.length).fill(false)); // Initialize an array of checkbox states
   const [isActive, setIsActive] = useState<boolean>(false);
   const handleCheckboxChange = (index: number) => {
     const updatedChecked = [...isChecked];
@@ -69,7 +69,7 @@ const TermsOfService = () => {
         </S.SafeAreaViewStyled>
         <T.ColumnStyled>
           <S.ContentStyled style={{ marginTop: 30, marginBottom: 30 }}>북블라 서비스 동의</S.ContentStyled>
-          {agreementTitles.map((title, index) => (
+          {AGREEMENT_TITLES.map((title, index) => (
             <React.Fragment key={title}>
               <T.RowStyled>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
