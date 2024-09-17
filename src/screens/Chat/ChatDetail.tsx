@@ -55,9 +55,10 @@ const ChatDetail: React.FC = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
-  const [selectedMessage, setSelectedMessage] = useState('');
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null); // 수정: Message 객체로 변경
   const [inputFocused, setInputFocused] = useState(false); // 입력 필드의 활성화 상태를 관리하는 상태 추가
   const messageRefs = useRef<{ [key: string]: View | null }>({});
+  const [isResendModalVisible, setIsResendModalVisible] = useState(false);
   const flatListRef = useRef<FlatList<any>>(null);
   const scrollY = useRef(new Animated.Value(0)).current;
   const reportBottomSheetRef = useRef(null);
@@ -105,6 +106,62 @@ const ChatDetail: React.FC = () => {
     },
     [chatRoomID],
   );
+
+  const closeResendModal = () => {
+    setIsResendModalVisible(false);
+    setSelectedMessage(null); // 모달 닫을 때 선택된 메시지 초기화
+  };
+
+  // handleResendMessage 함수를 수정하여 모달을 표시하는 용도로만 사용
+  const handleResendMessage = (message: Message) => {
+    setSelectedMessage(message); // 선택된 메시지 설정
+    setIsResendModalVisible(true); // 모달을 표시하도록 상태 변경
+  };
+
+  // 메시지 재전송 처리 함수
+  const handleResend = async () => {
+    if (!selectedMessage) return;
+
+    // Update sendStatus to 'pending'
+    setMessages((prevMessages) =>
+      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, sendStatus: 'pending' } : msg)),
+    );
+    setDisplayedMessages((prevDisplayed) =>
+      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, sendStatus: 'pending' } : msg)),
+    );
+
+    try {
+      // Re-send the message via WebSocketClient
+      WebSocketClient.sendChatMessage(
+        chatRoomID,
+        userId.toString(),
+        {
+          text: selectedMessage.text,
+          id: selectedMessage.id, // Use the same messageId for tracking
+        },
+        selectedMessage.id,
+      );
+
+      showToast({ content: '메시지를 다시 보냈습니다.' });
+    } catch (error) {
+      console.error('메시지 재전송 중 오류 발생:', error);
+      showToast({ content: '메시지 재전송에 실패했습니다. 다시 시도해주세요.' });
+    } finally {
+      closeResendModal();
+    }
+  };
+
+  // 메시지 삭제 처리 함수
+  const handleDelete = () => {
+    if (!selectedMessage) return;
+
+    console.log(`selectedMessage : ${JSON.stringify(selectedMessage)}`);
+
+    setMessages((prevMessages) => prevMessages.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
+    setDisplayedMessages((prevDisplayed) => prevDisplayed.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
+    showToast({ content: '메시지를 삭제했습니다.' });
+    closeResendModal();
+  };
 
   useEffect(() => {
     // 메시지 배열이 변경될 때마다 FlatList 강제 리렌더링
@@ -177,8 +234,8 @@ const ChatDetail: React.FC = () => {
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
-      // 추후 읽기 구독 해제 로직 추가
-      // WebSocketClient.disconnect();
+      WebSocketClient.disconnect();
+      WebSocketClient.unsubscribe(chatRoomID, userId.toString(), handleNewMessage);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
 
@@ -271,20 +328,23 @@ const ChatDetail: React.FC = () => {
           left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
-        setSelectedMessage(message.content || message.text); // 메시지 내용을 복사할 내용으로 설정
+        setSelectedMessage(message); // 메시지 객체를 선택된 메시지로 설정
         setCopyModalVisible(true);
       });
     }
   };
 
   const handleCopy = () => {
-    Clipboard.setString(selectedMessage);
-    showToast({ content: '메시지가 복사되었습니다.' });
-    setCopyModalVisible(false);
+    if (selectedMessage) {
+      Clipboard.setString(selectedMessage.content || selectedMessage.text || '');
+      showToast({ content: '메시지가 복사되었습니다.' });
+      setCopyModalVisible(false);
+    }
   };
 
   const closeModal = () => {
     setCopyModalVisible(false);
+    setSelectedMessage(null);
   };
 
   // 메시지 전송 처리 함수
@@ -315,24 +375,6 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
 
     setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
-  };
-
-  // 메시지 재전송 처리 함수
-  const handleResendMessage = (message: Message) => {
-    // Update sendStatus to 'pending'
-    setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === message.id ? { ...msg, sendStatus: 'pending' } : msg)),
-    );
-    setDisplayedMessages((prevDisplayed) =>
-      prevDisplayed.map((msg) => (msg.id === message.id ? { ...msg, sendStatus: 'pending' } : msg)),
-    );
-
-    // Re-send the message via WebSocketClient
-    const resendMessage = {
-      text: message.text,
-      id: message.id, // Use the same messageId for tracking
-    };
-    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), resendMessage, message.id);
   };
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
@@ -441,7 +483,7 @@ const ChatDetail: React.FC = () => {
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
-              {isUserMessage && item.sendStatus === 'sent' && (
+              {isUserMessage && item.sendStatus !== 'sent' && (
                 <S.isReadIcon
                   source={
                     isRead
@@ -450,16 +492,17 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && item.sendStatus !== 'sent' && (
+              {isUserMessage && item.sendStatus !== 'failed' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
-              {isUserMessage && item.sendStatus !== 'sent' && (
+              {isUserMessage && item.sendStatus !== 'failed' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
+              {/* Modify the timestamp rendering condition here */}
               {isUserMessage && item.sendStatus !== 'sent' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
               )}
@@ -663,6 +706,35 @@ const ChatDetail: React.FC = () => {
                 </View>
               </View>
             </TouchableWithoutFeedback>
+          </Modal>
+
+          {/* 수정된 Resend Modal */}
+          <Modal visible={isResendModalVisible} transparent animationType="fade">
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+              }}
+            >
+              <View
+                style={{
+                  width: '100%',
+                  backgroundColor: 'white',
+                  padding: 20,
+                  borderTopLeftRadius: 15,
+                  borderTopRightRadius: 15,
+                }}
+              >
+                <TouchableOpacity onPress={handleResend}>
+                  <Text style={{ paddingVertical: 20 }}>다시 보내기</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleDelete}>
+                  <Text style={{ paddingVertical: 20, color: 'red' }}>삭제하기</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
           </Modal>
         </S.Wrapper>
       </KeyboardAvoidingView>
