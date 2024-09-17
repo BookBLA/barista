@@ -1,11 +1,13 @@
+// @screens/Chat/ChatScreen.tsx
+
 import { exitChatRoom, fetchChatList, switchAlert } from '@commons/api/chat/chat.api';
 import { Chat as ChatType } from '@commons/api/chat/chat.types';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import WebSocketClient from '@commons/websocket/websocketClient';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useRoute } from '@react-navigation/native';
 import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Image, Modal, TouchableOpacity, View } from 'react-native';
 import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 
@@ -27,6 +29,49 @@ const ChatScreen: React.FC = () => {
     left: false,
   });
 
+  // 채팅 목록 로드 함수
+  const loadChats = useCallback(async () => {
+    try {
+      const response = await fetchChatList();
+
+      if (response.isSuccess && response.result.length === 0) {
+        setChats([]);
+        setError('아직 진행 중인 대화가 없어요.\n엽서를 보내 대화를 시작해보세요.');
+      } else if (response.isSuccess && Array.isArray(response.result)) {
+        const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
+          id: chatRoom.id.toString(),
+          name: chatRoom.otherMember.name,
+          avatar: { uri: chatRoom.otherMember.profileImageUrl },
+          lastMessage: chatRoom.lastChat ? chatRoom.lastChat : chatRoom.postcard.message,
+          timestamp: new Date(
+            chatRoom.lastChatTime ? chatRoom.lastChatTime : chatRoom.postcard.createdAt,
+          ).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          unreadCount: chatRoom.lastChat ? chatRoom.unreadCount : chatRoom.unreadCount + 1,
+          partner: chatRoom.otherMember,
+          postcard: chatRoom.postcard,
+          isAlert: chatRoom.isAlert,
+        }));
+
+        setChats(formattedChats);
+      } else {
+        setError('채팅 목록을 불러올 수 없습니다.');
+      }
+    } catch (error) {
+      setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
+      console.error('Failed to fetch chat list:', error);
+    }
+  }, []);
+
+  // 페이지가 포커스될 때마다 채팅 목록 로드
+  useFocusEffect(
+    useCallback(() => {
+      loadChats();
+    }, [loadChats]),
+  );
+
   useEffect(() => {
     const ws = WebSocketClient;
 
@@ -36,7 +81,7 @@ const ChatScreen: React.FC = () => {
     // WebSocket 연결이 완료된 후에 구독이 설정되도록 수정됨
     const handleStompConnect = () => {
       if (ws.isConnected && ws.stompConnected) {
-        ws.subscribe(memberID, memberID);
+        ws.subscribe(memberID, memberID, handleNewMessage);
       }
     };
 
@@ -49,44 +94,10 @@ const ChatScreen: React.FC = () => {
     };
   }, [memberID]);
 
-  useEffect(() => {
-    const loadChats = async () => {
-      try {
-        const response = await fetchChatList();
-
-        if (response.isSuccess && response.result.length === 0) {
-          setChats([]);
-          setError('아직 진행 중인 대화가 없어요.\n엽서를 보내 대화를 시작해보세요.');
-        } else if (response.isSuccess && Array.isArray(response.result)) {
-          const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
-            id: chatRoom.id.toString(),
-            name: chatRoom.otherMember.name,
-            avatar: { uri: chatRoom.otherMember.profileImageUrl },
-            lastMessage: chatRoom.lastChat ? chatRoom.lastChat : chatRoom.postcard.message,
-            timestamp: new Date(
-              chatRoom.lastChatTime ? chatRoom.lastChatTime : chatRoom.postcard.createdAt,
-            ).toLocaleTimeString([], {
-              hour: '2-digit',
-              minute: '2-digit',
-            }),
-            unreadCount: chatRoom.lastChat ? chatRoom.unreadCount : chatRoom.unreadCount + 1,
-            partner: chatRoom.otherMember,
-            postcard: chatRoom.postcard,
-            isAlert: chatRoom.isAlert,
-          }));
-
-          setChats(formattedChats);
-        } else {
-          setError('채팅 목록을 불러올 수 없습니다.');
-        }
-      } catch (error) {
-        setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
-        console.error('Failed to fetch chat list:', error);
-      }
-    };
-
+  // WebSocket에서 새로운 메시지가 들어올 때 채팅 목록을 다시 로드
+  const handleNewMessage = useCallback(() => {
     loadChats();
-  }, []);
+  }, [loadChats]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);

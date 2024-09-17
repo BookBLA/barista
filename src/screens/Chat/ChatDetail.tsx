@@ -82,12 +82,20 @@ const ChatDetail: React.FC = () => {
     return parsedDate;
   };
 
-  const handleNewMessage = useCallback((message: any) => {
-    // WebSocket을 통해 수신된 메시지를 상태에 추가
-    setMessages((prevMessages) => [message, ...prevMessages]);
-    setDisplayedMessages((prevMessages) => [message, ...prevMessages]);
+  // 메시지 상태 업데이트 함수 수정
+  const handleNewMessage = useCallback((newMessage: any) => {
+    setMessages((prevMessages) => {
+      const updatedMessages = [newMessage, ...prevMessages];
+      setDisplayedMessages(updatedMessages); // displayedMessages도 동시에 업데이트
+      return updatedMessages; // 메시지 상태를 업데이트
+    });
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 새로운 메시지 수신 시 스크롤 이동
   }, []);
+
+  useEffect(() => {
+    // 메시지 배열이 변경될 때마다 FlatList 강제 리렌더링
+    setDisplayedMessages([...messages]);
+  }, [messages]);
 
   const loadChatMessages = useCallback(async () => {
     try {
@@ -123,17 +131,16 @@ const ChatDetail: React.FC = () => {
   }, [chatRoomID, showToast, postcard]);
 
   useEffect(() => {
-    // 엽서 상태에 따라 채팅 요청 모달 제어
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
     // WebSocket 연결 설정 및 구독
-    WebSocketClient.connect(userId);
-    WebSocketClient.subscribe(chatRoomID, userId, handleNewMessage); // handleNewMessage를 인자로 전달
+    WebSocketClient.connect(userId.toString(), chatRoomID.toString());
+    WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage); // handleNewMessage를 인자로 전달
 
     // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
-      WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId}`);
+      WebSocketClient.unsubscribe(`/topic/chat/${userId}`);
       WebSocketClient.disconnect();
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage]);

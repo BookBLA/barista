@@ -21,7 +21,7 @@ class WebSocketClientDirect {
   }
 
   public connect(memberId: string, roomId: string) {
-    if (this.isConnected) {
+    if (this.stompConnected) {
       console.log('STOMP already connected');
       return;
     }
@@ -33,15 +33,12 @@ class WebSocketClientDirect {
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
-      connectHeaders: {
-        // 필요한 경우 헤더 추가
-      },
+      connectHeaders: {},
       onConnect: (frame) => {
         console.log('STOMP connection established:', frame);
         this.isConnected = true;
         this.stompConnected = true;
-        this.sendMessage({ type: 'AUTH', memberId: this.memberId });
-        this.subscribe(roomId, memberId, () => {}); // 초기 구독 처리
+        this.subscribe(roomId, memberId, () => {});
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
@@ -64,7 +61,6 @@ class WebSocketClientDirect {
 
     this.stompClient = new Client(stompConfig);
 
-    // WebSocket 상태를 확인하기 위해 핸들러 추가
     this.stompClient.webSocketFactory = () => {
       const ws = new WebSocket(stompConfig.brokerURL!);
       ws.onopen = () => console.log('WebSocket connection opened.');
@@ -157,9 +153,9 @@ class WebSocketClientDirect {
     }
 
     const subscription = this.stompClient.subscribe(topic, (message) => {
-      const decodedMessage = new TextDecoder().decode(new Uint8Array(message.binaryBody)); // 메시지 디코딩
+      const decodedMessage = new TextDecoder().decode(new Uint8Array(message.binaryBody));
       console.log('STOMP message received:', decodedMessage);
-      this.handleIncomingMessage(decodedMessage, handleNewMessage); // 메시지 핸들링 콜백 호출
+      handleNewMessage(JSON.parse(decodedMessage)); // handleNewMessage를 직접 호출하여 메시지 상태에 반영
     });
 
     this.subscriptions.set(topic, subscription);
@@ -170,7 +166,7 @@ class WebSocketClientDirect {
     try {
       const parsedData = JSON.parse(data);
       console.log('Parsed message data:', parsedData);
-      handleNewMessage(parsedData); // 수신된 메시지를 전달
+      handleNewMessage(parsedData);
     } catch (error) {
       console.error('Failed to parse incoming message:', error);
     }
