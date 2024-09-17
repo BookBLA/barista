@@ -36,7 +36,7 @@ import InfoButton from './components/InfoButton/InfoButton';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface Message extends ChatMessage {
-  sendStatus?: 'sent' | 'failed' | 'pending';
+  sendStatus?: 'sent' | 'FAIL' | 'pending';
 }
 
 const ChatDetail: React.FC = () => {
@@ -245,14 +245,14 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
     // WebSocketClient에 메시지 전송 상태 콜백 추가
-    WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'failed') => {
+    WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'FAIL') => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
       );
       setDisplayedMessages((prevDisplayed) =>
         prevDisplayed.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
       );
-      if (status === 'failed') {
+      if (status === 'FAIL') {
         showToast({ content: '메시지 전송에 실패했습니다. 다시 시도해주세요.' });
       }
     });
@@ -515,18 +515,18 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && item.sendStatus === 'failed' && (
+              {isUserMessage && item.sendStatus === 'FAIL' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
-              {isUserMessage && item.sendStatus === 'failed' && (
+              {isUserMessage && item.sendStatus === 'FAIL' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
               {/* Modify the timestamp rendering condition here */}
-              {isUserMessage && item.sendStatus !== 'failed' && (
+              {isUserMessage && item.sendStatus !== 'FAIL' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
               )}
               <TouchableOpacity
