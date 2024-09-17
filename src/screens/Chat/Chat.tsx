@@ -58,6 +58,7 @@ const ChatScreen: React.FC = () => {
             unreadCount: chatRoom.unreadCount,
             partner: chatRoom.otherMember,
             postcard: chatRoom.postcard,
+            isAlert: chatRoom.isAlert,
           }));
 
           setChats(formattedChats);
@@ -166,6 +167,7 @@ const ChatScreen: React.FC = () => {
               <TouchableOpacity
                 onPress={() => {
                   switchAlert(selectedChat?.id, !selectedChat?.isAlert);
+                  selectedChat.isAlert = !selectedChat?.isAlert;
                   closeModal();
                 }}
               >
