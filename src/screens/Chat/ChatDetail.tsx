@@ -5,7 +5,7 @@ import { ChatMessage } from '@commons/api/chat/chat.types';
 import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import WebSocketClient from '@commons/websocket/websocketClient'; // WebSocketClient 추가
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +14,7 @@ import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal'
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+
 import {
   Alert,
   Animated,
@@ -57,7 +58,8 @@ const ChatDetail: React.FC = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const reportBottomSheetRef = useRef(null);
   const showToast = useToastStore((state) => state.showToast);
-  const userId = useUserStore((state) => state.userInfo.id);
+  const memberInfo = useMemberStore((state) => state.memberInfo);
+  const userId = memberInfo?.id;
 
   console.log(`123123123rId : ${userId}`);
 
