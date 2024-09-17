@@ -71,7 +71,11 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.optionItem}>
+        <TouchableOpacity
+          style={styles.optionItem}
+          // onPress={() => movePage('Library', { memberId: partner.memberId, isYourLibrary: true })}
+          onPress={() => navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: true })}
+        >
           <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>서재 구경하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
