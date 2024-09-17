@@ -8,6 +8,7 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EMemberStatus } from '@commons/types/memberStatus';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -55,6 +56,7 @@ const SelectProfile = () => {
       console.log('styleInfo', styleInfo);
       const response = await postMemberStyleApi(styleInfo);
       console.log('postMemberStyleApi', response);
+      updateMemberInfo('memberStatus', EMemberStatus.BOOK);
       handleReset('initBookStack');
       resetStyleInfo();
     } catch (error) {
