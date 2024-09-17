@@ -86,7 +86,8 @@ const ChatDetail: React.FC = () => {
       }
 
       // 엽서를 메시지 배열에 포함
-      const combinedMessages = [...fetchedMessages, { ...postcard, isPostcard: true }];
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' }; // 엽서에 고유한 ID 설정
+      const combinedMessages = [...fetchedMessages, postcardWithId];
 
       // 메시지와 엽서를 타임스탬프로 정렬
       combinedMessages.sort((a, b) => {
@@ -99,7 +100,8 @@ const ChatDetail: React.FC = () => {
       setDisplayedMessages(combinedMessages.slice(0, 100));
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      const combinedMessages = [{ ...postcard, isPostcard: true }]; // 메시지가 없어도 엽서를 표시
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' };
+      const combinedMessages = [postcardWithId]; // 메시지가 없어도 엽서를 표시
       setMessages(combinedMessages);
       setDisplayedMessages(combinedMessages);
       showToast({ content: '메시지 로드에 실패했습니다. 다시 시도해주세요.' });
@@ -154,7 +156,8 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleLongPress = (event, message) => {
-    const messageRef = messageRefs.current[message.id];
+    const messageId = message.id || 'postcard'; // 엽서의 경우 'postcard' 사용
+    const messageRef = messageRefs.current[messageId];
 
     if (messageRef) {
       messageRef.measure((fx, fy, width, height, px, py) => {
@@ -250,7 +253,7 @@ const ChatDetail: React.FC = () => {
                   )}
                   <TouchableOpacity
                     ref={(ref) => {
-                      if (ref) messageRefs.current[item.id || 'postcard'] = ref;
+                      if (ref) messageRefs.current['postcard'] = ref; // 엽서의 경우 'postcard' 키 사용
                     }}
                     onLongPress={(event) => handleLongPress(event, item)}
                   >
