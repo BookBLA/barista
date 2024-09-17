@@ -56,10 +56,10 @@ export const BackButton = styled.TouchableOpacity`
   padding: 5px;
 `;
 
+// 프로필 섹션 스타일
 export const ProfileSection = styled.View`
   align-items: center;
   padding: 10px 0;
-  border-bottom-width: 1px;
   border-bottom-color: #e0e0e0;
   margin-bottom: 20px;
 `;
@@ -108,6 +108,7 @@ export const LibraryButtonText = styled.Text`
   font-size: 14px;
 `;
 
+// 메시지 아이템 스타일
 export const MessageItem = styled.View`
   margin-bottom: 12px;
   padding-horizontal: 15px;
@@ -145,10 +146,10 @@ export const MessageRow = styled.View<{ isUserMessage: boolean }>`
 
 export const BookChatBubble = styled.View<{ isUserMessage: boolean }>`
   padding-bottom: 0;
+  align-items: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
 export const BookCover = styled.Image<{ isUserMessage: boolean }>`
-  align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
   width: 100px;
   height: 150px;
   border-radius: 10px;
@@ -160,6 +161,7 @@ export const MessageBubble = styled.View<{ isUserMessage: boolean }>`
   max-width: 100%;
   border-radius: 18px;
   background-color: ${(props) => (props.isUserMessage ? colors.primary : '#f1f1f1')};
+  margin-top: ${(props) => (props.isUserMessage ? '0px' : '4px')};
 `;
 
 export const MessageText = styled.Text<{ isUserMessage: boolean }>`
@@ -167,6 +169,7 @@ export const MessageText = styled.Text<{ isUserMessage: boolean }>`
   color: ${(props) => (props.isUserMessage ? '#ffffff' : '#000000')};
 `;
 
+// 스크롤 버튼 스타일
 export const ScrollToBottomButton = styled.TouchableOpacity`
   position: absolute;
   right: 20px;
@@ -184,6 +187,7 @@ export const ScrollToBottomButton = styled.TouchableOpacity`
   shadow-radius: 3.84px;
 `;
 
+// 입력 창 스타일
 export const InputContainer = styled.View`
   flex-direction: row;
   padding: ${spacing.small};
@@ -213,6 +217,7 @@ export const SendButtonIcon = styled.Image`
   height: 24px;
 `;
 
+// 날짜 구분자 스타일
 export const DateSeparator = styled.View`
   align-items: center;
   margin-vertical: 15px;
@@ -227,22 +232,26 @@ export const DateText = styled.Text`
   border-radius: 10px;
 `;
 
+// 로딩 인디케이터 스타일
 export const LoadingIndicator = styled.ActivityIndicator`
   margin: 20px;
 `;
 
+// 읽음 여부 아이콘 스타일
 export const isReadIcon = styled.Image`
   width: 12px;
   height: 12px;
   margin-left: 5px;
 `;
 
+// 타임스탬프 스타일
 export const Timestamp = styled.Text<{ isUserMessage: boolean }>`
   font-size: 11px;
   color: #999999;
   margin: 0 4px;
 `;
 
+// 거절 모달 스타일
 export const DeclineModal = styled.View`
   width: 320px;
   padding: 20px;
@@ -295,3 +304,26 @@ export const ReviewButtonText = styled.Text`
   color: white;
   font-weight: bold;
 `;
+
+// 포스트카드 섹션 스타일 추가
+export const PostcardSection = styled.View`
+  padding: 10px 15px;
+  border-bottom-color: ${colors.borderColor};
+  margin-bottom: 20px;
+`;
+
+// 추가로 필요한 스타일 컴포넌트 정의
+export const PostcardMessageContainer = styled.View<{ isUserMessage: boolean }>`
+  flex-direction: row;
+  justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
+  align-items: flex-end;
+  margin-bottom: 12px;
+`;
+
+export const PostcardMessageContent = styled.View<{ isUserMessage: boolean }>`
+  max-width: 70%;
+  align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
+`;
+
+// 메시지 복사 모달 스타일 (필요 시 추가)
+// ...

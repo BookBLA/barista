@@ -59,20 +59,22 @@ const generateDummyMessages = (count) => {
 };
 
 // fetchChatMessages 함수 수정
-export const fetchChatMessages = async (userId: string, page: number, size: number) => {
+export const fetchChatMessages = async (roomId: string, page: number, size: number) => {
   try {
     // 실제 API 요청 부분
-    const response = await Get(`chat?roomId=${userId}&page=${page}&size=${size}`);
+    const response = await Get(`chat?roomId=${roomId}&page=${page}&size=${size}`);
 
     console.log('Chat messages fetched:', response);
 
-    return {
-      isSuccess: true,
-      result: {
-        content: generateDummyMessages(3), // 50개의 더미 메시지 생성
-        empty: false,
-      },
-    };
+    // return {
+    //   isSuccess: true,
+    //   result: {
+    //     content: generateDummyMessages(3), // 50개의 더미 메시지 생성
+    //     empty: false,
+    //   },
+    // };
+
+    return response;
   } catch (error) {
     console.error('Error fetching chat messages:', error);
 
