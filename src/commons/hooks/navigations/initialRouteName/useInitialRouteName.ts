@@ -8,7 +8,7 @@ export const useInitialRouteName = () => {
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const { memberInfo } = useMemberStore();
 
-  const getInitialRouteName = (memberStatusParam?: string) => {
+  const getInitialRouteName = (memberStatusParam?: string, schoolStatus?: string) => {
     const routeMap: TRouteMap = {
       PROFILE: 'initUserinfoStack',
       APPROVAL: 'tapScreens', //학생증 인증 전
@@ -19,7 +19,10 @@ export const useInitialRouteName = () => {
       DEFAULT: 'loginStack',
       REJECTED: 'rejectStudentId', //학생증 거절
     };
-    if (memberInfo.schoolStatus === 'CLOSED') {
+    if (
+      (memberStatusParam === 'STYLE' || memberStatus === 'STYLE') &&
+      (memberInfo.schoolStatus === 'CLOSED' || schoolStatus === 'CLOSED')
+    ) {
       return 'inviteFriends';
     } else return routeMap[memberStatusParam ?? memberStatus ?? 'DEFAULT'];
 
