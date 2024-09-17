@@ -10,6 +10,7 @@ import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
@@ -60,6 +61,7 @@ const SelectProfile = () => {
       handleReset('initBookStack');
       resetStyleInfo();
     } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
       console.log('ERROR) postMemberStyleApi', error);
       showToast({
         content: error.response.data.message,
