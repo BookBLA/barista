@@ -29,9 +29,9 @@ export const styles = StyleSheet.create({
     borderRadius: 40,
     marginBottom: 10,
   },
-  username: {
+  name: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '600',
   },
   optionsSection: {
     paddingHorizontal: 16,
