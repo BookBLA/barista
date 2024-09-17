@@ -30,7 +30,6 @@ const MemberCard = () => {
   const checkStudentId = async () => {
     let studentIdStatusResponse;
     if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {
-      console.log('studentIdStatus', studentIdImageStatus);
       if (!studentIdImageStatus) {
         studentIdStatusResponse = await getStudentIdStatus();
       }
@@ -42,17 +41,16 @@ const MemberCard = () => {
         showToast({
           content: '학생증 인증 대기 중입니다.',
         });
-        // } else if (
-        //   (memberStatus === 'REJECTED' &&
-        //     (studentIdImageStatus === EStudentIdImageStatus.DENIAL ||
-        //       studentIdStatusResponse === EStudentIdImageStatus.DENIAL)) ||
-        //   (memberStatus === 'APPROVAL' &&
-        //     (studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
-        //       studentIdStatusResponse === EStudentIdImageStatus.UNREGISTER))
-        // ) {
-        //   studentIdToggle();
-        // }
-      } else studentIdToggle();
+      } else if (
+        (memberStatus === 'REJECTED' &&
+          (studentIdImageStatus === EStudentIdImageStatus.DENIAL ||
+            studentIdStatusResponse === EStudentIdImageStatus.DENIAL)) ||
+        (memberStatus === 'APPROVAL' &&
+          (studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
+            studentIdStatusResponse === EStudentIdImageStatus.UNREGISTER))
+      ) {
+        studentIdToggle();
+      }
     } else if (memberStatus === 'COMPLETED') {
       movePage('quizStack', { memberBookId, targetMemberId })();
     }
