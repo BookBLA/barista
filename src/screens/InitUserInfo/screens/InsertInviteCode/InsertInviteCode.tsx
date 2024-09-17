@@ -1,21 +1,12 @@
 import nextButton from '@assets/images/buttons/nextButton.png';
-import prevButton from '@assets/images/buttons/prevButton.png';
 import checkCircle from '@assets/images/icons/CheckCircle.png';
 import warningCircle from '@assets/images/icons/WarningCircle.png';
 import { postInviteCodeVerifyApi } from '@commons/api/invitation/invitation.api';
-import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
-import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
-import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
-import useMemberStore from '@commons/store/members/member/useMemberStore';
-import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import { EMemberStatus } from '@commons/types/memberStatus';
-import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
@@ -29,11 +20,7 @@ const InsertInviteCode = () => {
     left: false,
   });
   const showToast = useToastStore((state) => state.showToast);
-  const { movePage, handleReset } = useMovePage();
-  const { userInfo } = useUserStore();
-  const { resetUserInfo } = useUserStore();
-  const { resetAgreement } = useAgreementStore();
-  const { updateMemberInfo } = useMemberStore();
+  const { movePage } = useMovePage();
 
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
@@ -55,58 +42,6 @@ const InsertInviteCode = () => {
     }
   };
 
-  const nextPage = async () => {
-    //postProfileApi 호출 후
-    await callPostPolicyApi();
-    await callPostMemberProfileAPi();
-  };
-
-  const { agreementInfo } = useAgreementStore();
-
-  const callPostPolicyApi = async () => {
-    try {
-      const response = await postPolicyApi({
-        agreedStatuses: {
-          adAgreementPolicy: agreementInfo.adAgreementPolicy,
-        },
-      });
-      console.log('약관 등록 성공', response);
-    } catch (error) {
-      console.log('약관 등록 실패', error);
-    }
-  };
-  const callPostMemberProfileAPi = async () => {
-    try {
-      console.log('userInfo', userInfo);
-      const response = await postMemberProfileApi({
-        name: userInfo.name,
-        birthDate: userInfo.birthDate,
-        gender: userInfo.gender,
-        schoolName: userInfo.schoolName,
-        schoolEmail: userInfo.schoolEmail,
-      });
-      console.log('프로필 등록 성공', response);
-      resetUserInfo();
-      resetAgreement();
-      //schoolStatus Get api 호출
-      //schoolStatus가 "OPEN"이면 completePage로 이동
-      const schoolStatusResponse = await getMemberStatusesApi();
-      const schoolStatus = schoolStatusResponse.result?.schoolStatus;
-      console.log('schoolStatus', schoolStatus);
-      if (schoolStatus === 'OPEN') {
-        updateMemberInfo('memberStatus', EMemberStatus.STYLE);
-        handleReset('completePage');
-      } else if (schoolStatus === 'CLOSED') {
-        handleReset('inviteFriends');
-      }
-    } catch (error) {
-      if (!isAxiosErrorResponse(error)) return;
-      console.log('프로필 등록 실패', error);
-      showToast({
-        content: error.response.data.message,
-      });
-    }
-  };
   return (
     <S.Wrapper>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -192,11 +127,8 @@ const InsertInviteCode = () => {
           </View>
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
-      <S.ButtonArea>
-        <S.MoveButton onPress={movePage()}>
-          <Image source={prevButton} />
-        </S.MoveButton>
-        <S.MoveButton onPress={() => nextPage()}>
+      <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
+        <S.MoveButton onPress={movePage('mbti')}>
           <Image source={nextButton} />
         </S.MoveButton>
       </S.ButtonArea>

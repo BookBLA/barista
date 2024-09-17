@@ -1,4 +1,5 @@
 import nextButton from '@assets/images/buttons/nextButton.png';
+import prevButton from '@assets/images/buttons/prevButton.png';
 import MbtiComponent from '@commons/components/Specific/MbtiComponent/MbtiComonent';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -32,7 +33,6 @@ const Mbti = () => {
 
   return (
     <S.Wrapper>
-      {/* <TitleProgress gauge={16} /> */}
       <View
         style={{
           width: '100%',
@@ -47,7 +47,10 @@ const Mbti = () => {
         </Text>
         <MbtiComponent mbti={mbti} setMbti={setMbti} />
       </View>
-      <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
+      <S.ButtonArea>
+        <S.MoveButton onPress={movePage()}>
+          <Image source={prevButton} />
+        </S.MoveButton>
         <S.MoveButton onPress={() => mbti.length === 4 && nextPage()}>
           <Image source={nextButton} />
         </S.MoveButton>
