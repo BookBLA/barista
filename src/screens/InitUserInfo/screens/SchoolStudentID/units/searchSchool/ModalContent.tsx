@@ -45,7 +45,9 @@ const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value
         <Text style={{ fontFamily: school === item ? 'fontBold' : 'fontMedium', fontSize: 14, margin: 10 }}>
           {item}
         </Text>
-        {school === item && <Image source={checkBlack} style={{ width: 12, height: 8, marginRight: 10 }} />}
+        {school === item && (
+          <Image source={checkBlack} style={{ width: 12, height: 8, marginRight: 10, objectFit: 'contain' }} />
+        )}
       </View>
     </TouchableOpacity>
   );
