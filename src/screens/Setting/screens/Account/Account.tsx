@@ -61,7 +61,10 @@ const Account = () => {
         </CustomText>
         <S.BetweenWrapper>
           <CustomText margin="16px 0">매칭 활성화</CustomText>
-          <CustomSwitch value={memberStatus === EMemberStatus.COMPLETED} onValueChange={onClickEnableMatching} />
+          <CustomSwitch
+            value={memberStatus !== EMemberStatus.MATCHING_DISABLED}
+            onValueChange={onClickEnableMatching}
+          />
         </S.BetweenWrapper>
         <S.BetweenWrapper>
           <S.RowWrapper>
