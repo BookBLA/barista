@@ -36,7 +36,7 @@ import InfoButton from './components/InfoButton/InfoButton';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface Message extends ChatMessage {
-  sendStatus?: 'sent' | 'FAIL' | 'pending';
+  sendStatus?: 'SUCCESS' | 'FAIL' | 'pending';
 }
 
 const ChatDetail: React.FC = () => {
@@ -79,39 +79,35 @@ const ChatDetail: React.FC = () => {
 
   const handleNewMessage = useCallback(
     (newMessage: any) => {
-      console.log(`
-        ============================
-        newMessage : ${JSON.stringify(newMessage)}
-        newMessage.chatRoomId : ${newMessage.chatRoomId}
-        chatRoomID : ${chatRoomID}
-        newMessage.chatRoomId type : ${typeof newMessage.chatRoomId}
-        chatRoomID type : ${typeof chatRoomID}
-        ${Number(newMessage.chatRoomId)} !== ${chatRoomID} : ${Number(newMessage.chatRoomId) !== chatRoomID}
-        ============================
-      `);
-
-      // 메시지가 현재 채팅방에 속하는지 확인 (타입 변환 후 비교)
-      if (Number(newMessage.chatRoomId) !== chatRoomID) return;
-
-      console.log(`
-        newMessage : ${JSON.stringify(newMessage)}
-      `);
+      // 새 메시지 구조 설정
+      const newMessageData: Message = {
+        ...newMessage,
+        sendStatus: 'sent',
+      };
 
       setMessages((prevMessages) => {
-        // 이전 메시지에서 대기 중인 메시지를 업데이트
-        const updatedMessages = prevMessages.map((msg) => {
-          if (msg.id === newMessage.id) {
-            return {
-              ...msg,
-              sendStatus: newMessage.sendStatus,
-            };
-          }
-          return msg;
+        // 새 메시지와 기존 메시지를 병합한 후 최신 메시지가 아래로 가도록 내림차순 정렬
+        const updatedMessages = [newMessageData, ...prevMessages].sort((a, b) => {
+          const dateA = parseDate(a.sendTime || a.createdAt).getTime();
+          const dateB = parseDate(b.sendTime || b.createdAt).getTime();
+          return dateB - dateA; // 최신 메시지가 아래로 오도록 정렬
         });
-        setDisplayedMessages(updatedMessages); // displayedMessages도 동시에 업데이트
-        return updatedMessages; // 메시지 상태를 업데이트
+
+        // 날짜별로 타임스탬프를 추가하여 메시지 배열 업데이트
+        const updatedDisplayedMessages = updatedMessages.reduce<Message[]>((acc, msg, index) => {
+          index < updatedMessages.length - 1
+            ? parseDate(updatedMessages[index + 1].sendTime || updatedMessages[index + 1].createdAt).toDateString()
+            : '';
+
+          acc.push(msg);
+          return acc;
+        }, []);
+
+        setDisplayedMessages(updatedDisplayedMessages);
+        return updatedMessages;
       });
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 새로운 메시지 수신 시 스크롤 이동
+
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 최신 메시지로 스크롤 이동
     },
     [chatRoomID],
   );
@@ -254,7 +250,7 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
     // WebSocketClient에 메시지 전송 상태 콜백 추가
-    WebSocketClient.onSendMessageStatus((messageId: string, status: 'sent' | 'FAIL') => {
+    WebSocketClient.onSendMessageStatus((messageId: string, status: 'SUCCESS' | 'FAIL') => {
       setMessages((prevMessages) =>
         prevMessages.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
       );
@@ -426,8 +422,7 @@ const ChatDetail: React.FC = () => {
         ? parseDate(displayedMessages[index + 1].sendTime || displayedMessages[index + 1].createdAt).toDateString()
         : null;
 
-    const showDateSeparator =
-      index === displayedMessages.length - 1 || (index !== 0 && currentItemDate !== nextItemDate);
+    const showDateSeparator = index === displayedMessages.length - 1 || currentItemDate !== nextItemDate;
 
     // 시간 포맷 변경: 특정 시간대를 지정하여 로컬 시간으로 변환
     const formattedTime = parseDate(item.sendTime || item.createdAt).toLocaleTimeString('ko-KR', {
