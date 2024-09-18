@@ -1,6 +1,7 @@
 // ChatInfoScreen.tsx
 
 import { exitChatRoom, switchAlert } from '@commons/api/chat/chat.api';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
@@ -14,6 +15,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
   const [isExitConfirmVisible, setIsExitConfirmVisible] = useState(false);
   const navigation = useNavigation();
+  const { movePage } = useMovePage();
 
   // isAlert 상태에 따라 알림 설정을 변경
   useEffect(() => {
@@ -73,8 +75,10 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
 
         <TouchableOpacity
           style={styles.optionItem}
-          // onPress={() => movePage('Library', { memberId: partner.memberId, isYourLibrary: true })}
-          onPress={() => navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: true })}
+          onPress={movePage('library', {
+            memberId: partner.id,
+            isYourLibrary: false,
+          })}
         >
           <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>서재 구경하기</Text>

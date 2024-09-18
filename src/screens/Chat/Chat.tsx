@@ -13,73 +13,6 @@ import { LongPressGestureHandler, State } from 'react-native-gesture-handler';
 
 import * as S from './Chat.styles';
 
-// 더미 데이터 정의
-const dummyChats: ChatType[] = [
-  {
-    id: '1',
-    name: '홍길동',
-    avatar: { uri: 'https://placekitten.com/200/200' }, // 임의의 이미지 URL
-    lastMessage: '안녕하세요! 오늘 저녁에 만날까요?',
-    timestamp: '오전 5:11',
-    unreadCount: 2,
-    partner: {
-      id: 'user1',
-      name: '홍길동',
-      profileImageUrl: 'https://placekitten.com/200/200',
-      // 기타 필요한 필드 추가
-    },
-    postcard: {
-      id: 'post1',
-      message: '엽서를 받았어요!',
-      createdAt: '2024-09-17T20:11:05.094Z',
-      // 기타 필요한 필드 추가
-    },
-    isAlert: true,
-  },
-  {
-    id: '2',
-    name: '김철수',
-    avatar: { uri: 'https://placekitten.com/201/201' },
-    lastMessage: '프로젝트 관련해서 미팅이 필요해요.',
-    timestamp: '오전 5:11',
-    unreadCount: 0,
-    partner: {
-      id: 'user2',
-      name: '김철수',
-      profileImageUrl: 'https://placekitten.com/201/201',
-      // 기타 필요한 필드 추가
-    },
-    postcard: {
-      id: 'post2',
-      message: '엽서를 보내주셔서 감사합니다!',
-      createdAt: '2024-09-17T20:11:05.095Z',
-      // 기타 필요한 필드 추가
-    },
-    isAlert: false,
-  },
-  {
-    id: '3',
-    name: '이영희',
-    avatar: { uri: 'https://placekitten.com/202/202' },
-    lastMessage: '이번 주말에 여행 갈래요?',
-    timestamp: '오전 5:11',
-    unreadCount: 5,
-    partner: {
-      id: 'user3',
-      name: '이영희',
-      profileImageUrl: 'https://placekitten.com/202/202',
-      // 기타 필요한 필드 추가
-    },
-    postcard: {
-      id: 'post3',
-      message: '엽서를 잘 받았어요!',
-      createdAt: '2024-09-17T20:11:05.095Z',
-      // 기타 필요한 필드 추가
-    },
-    isAlert: true,
-  },
-];
-
 const ChatScreen: React.FC = () => {
   const [chats, setChats] = useState<ChatType[]>([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -103,15 +36,7 @@ const ChatScreen: React.FC = () => {
 
       if (response.isSuccess) {
         if (response.result.length === 0) {
-          console.log(`
-            ==============================
-            dummyChats: ${JSON.stringify(dummyChats)}
-            ==============================
-          `);
-
-          // 서버에 데이터가 없을 경우 더미 데이터 설정
-          setChats(dummyChats);
-          setError(''); // 에러 상태 초기화
+          setError('아직 진행 중인 대화가 없어요.엽서를 보내 대화를 시작해보세요.');
         } else if (Array.isArray(response.result)) {
           const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
             id: chatRoom.id.toString(),
@@ -130,18 +55,16 @@ const ChatScreen: React.FC = () => {
             isAlert: chatRoom.isAlert,
           }));
 
-          setChats(formattedChats);
-          setError(''); // 에러 상태 초기화
+          // 상태 변경을 강제하기 위해 빈 배열로 설정 후 새롭게 설정
+          setChats([JSON.parse(JSON.stringify(formattedChats))][0]);
+
+          setError('');
         }
       } else {
-        // 서버 응답이 실패한 경우 더미 데이터 설정
-        setChats(dummyChats);
-        setError('더미 데이터를 표시하고 있습니다.\n채팅 목록을 불러올 수 없습니다.');
+        setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
       }
     } catch (err) {
-      // 오류 발생 시 더미 데이터 설정
-      setChats(dummyChats);
-      setError('더미 데이터를 표시하고 있습니다.\n채팅 목록을 불러오는 중 오류가 발생했습니다.');
+      setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
       console.error('Failed to fetch chat list:', err);
     }
   }, []);
@@ -153,32 +76,33 @@ const ChatScreen: React.FC = () => {
     }, [loadChats]),
   );
 
-  useEffect(() => {
-    const ws = WebSocketClient;
+  // 새 메시지를 처리하는 함수
+  const handleNewMessage = useCallback(async (newMessage) => {
+    console.log(`
+    ========================
+    새 메시지 도착
+    newMessage: ${JSON.stringify(newMessage)}
+    =================
+    `);
 
-    // WebSocket 연결 시도
-    ws.connect(memberID, memberID);
-
-    // WebSocket 연결이 완료된 후에 구독이 설정되도록 수정됨
-    const handleStompConnect = () => {
-      if (ws.isConnected && ws.stompConnected) {
-        ws.subscribe(memberID, memberID, handleNewMessage, `/topic/chat/${memberID}`);
-      }
-    };
-
-    ws.onConnect = handleStompConnect; // 연결 후에 구독 설정
-
-    // 페이지에서 나갈 때 구독 해제 및 연결 해제
-    return () => {
-      // ws.unsubscribe(`/topic/chat/${memberID}`);
-      // ws.disconnect();
-    };
-  }, [memberID]);
-
-  // WebSocket에서 새로운 메시지가 들어올 때 채팅 목록을 다시 로드
-  const handleNewMessage = useCallback(() => {
     loadChats();
-  }, [loadChats]);
+  }, []);
+
+  useEffect(() => {
+    // WebSocket 연결 설정
+    const connectWebSocket = () => {
+      WebSocketClient.connect(memberID.toString(), 'chat');
+      WebSocketClient.subscribe('chat', memberID.toString(), handleNewMessage, `/topic/chat/${memberID.toString()}`);
+    };
+
+    connectWebSocket();
+
+    // 컴포넌트 언마운트 시 WebSocket 구독 해제 및 연결 해제
+    return () => {
+      WebSocketClient.unsubscribe('chat', memberID.toString());
+      WebSocketClient.disconnect();
+    };
+  }, [memberID, handleNewMessage]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
