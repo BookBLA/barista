@@ -96,7 +96,7 @@ export const DeleteWrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-  padding: 0 16px;
+  padding: 0px 16px 12px;
 `;
 
 export const CheckBoxImage = styled.Image`
