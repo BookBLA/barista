@@ -25,9 +25,9 @@ import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
 import ProductList from './components/ProductList';
-import { ProductContentProps } from './components/ProductList.types';
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { ProductContentProps } from '@screens/Home/screens/Product/Product.types';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -256,7 +256,9 @@ const Product = () => {
                 admobCount={admobCount}
                 handleGetRewardedAds={handleGetRewardedAds}
               />
-              {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} admobCount={0} />)}
+              {productID?.map((sale, index) => (
+                <ProductList key={sale.productId} props={sale} index={index + 1} admobCount={0} />
+              ))}
             </S.BodyWrapper>
           </ScrollView>
         </>

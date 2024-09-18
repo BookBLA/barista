@@ -1,6 +1,5 @@
 import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import { useEffect, useState } from 'react';
 import { Alert, Image, Platform, View } from 'react-native';
 import { requestPurchase } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
