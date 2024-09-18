@@ -183,7 +183,7 @@ export const BookImage = styled.Image`
   width: 70%;
   height: ${deviceHeight / 4 - 50}px;
   border-radius: 10px;
-  object-fit: fill;
+  object-fit: contain;
 `;
 
 export const EmptyBookImage = styled.View`
