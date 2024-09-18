@@ -19,6 +19,7 @@ interface EmailStatusState {
   setIsActive: (isActive: boolean) => void;
   startTimer: () => void;
   resetTimer: () => void;
+  resetEmailStore: () => void;
 }
 
 const useEmailStatusStore = create<EmailStatusState>((set) => ({
@@ -45,6 +46,9 @@ const useEmailStatusStore = create<EmailStatusState>((set) => ({
   },
   resetTimer: () => {
     set({ time: 300 });
+  },
+  resetEmailStore: () => {
+    set({ isSuccess: IsSuccess.false, code: '', time: 300, isActive: false });
   },
 }));
 

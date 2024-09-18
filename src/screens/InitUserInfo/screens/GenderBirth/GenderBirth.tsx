@@ -10,6 +10,7 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
+import { useEmailStatusStore } from '@commons/store/members/emailStatus/useEmailStatusStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -32,6 +33,7 @@ const GenderBirth = () => {
   const { updateUserInfo, userInfo, resetUserInfo } = useUserStore();
   const { resetAgreement } = useAgreementStore();
   const { updateMemberInfo } = useMemberStore();
+  const { resetEmailStore } = useEmailStatusStore();
   const { movePage, handleReset } = useMovePage();
   const [date, setDate] = useState(new Date('2000-01-01'));
   const showToast = useToastStore((state) => state.showToast);
@@ -87,6 +89,7 @@ const GenderBirth = () => {
       console.log('프로필 등록 성공', response);
       resetUserInfo();
       resetAgreement();
+      resetEmailStore();
       updateMemberInfo('memberStatus', EMemberStatus.STYLE);
       //schoolStatus Get api 호출
       //schoolStatus가 "OPEN"이면 completePage로 이동
