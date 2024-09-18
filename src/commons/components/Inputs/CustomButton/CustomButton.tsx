@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonStyled, ButtonTextStyled } from './CustomButton.styles';
 import { Text } from 'react-native';
+import { ButtonStyled, ButtonTextStyled } from './CustomButton.styles';
 import { IProps } from './CustomButton.types';
 
 export const CustomButton: React.FC<IProps> = ({ contents, onPress, ...rest }) => {

@@ -14,4 +14,5 @@ export const ButtonTextStyled = styled.Text`
   font-family: ${(props: any) => props.fontFamily || 'fontMedium'};
   color: ${(props: any) => props.fontColor || colors.textYellow};
   font-size: ${(props: any) => props.fontSize || '14px'};
+  ${(props: any) => props.transparent && 'background-color: transparent'};
 `;
