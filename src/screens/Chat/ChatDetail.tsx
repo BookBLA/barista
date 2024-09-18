@@ -117,7 +117,17 @@ const ChatDetail: React.FC = () => {
   const handleResend = async () => {
     if (!selectedMessage) return;
 
+    console.log(`
+      ====================
+      Resending Message
+      selectedMessage: ${JSON.stringify(selectedMessage)}
+      =================
+    `);
+
     try {
+      // 선택한 메시지 삭제
+      setMessages((prevMessages) => prevMessages.filter((msg) => msg.id !== selectedMessage.id));
+
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
@@ -130,6 +140,9 @@ const ChatDetail: React.FC = () => {
 
       showToast({ content: '메시지를 다시 보냈습니다.' });
     } catch (error) {
+      // 다시 보내기 실패 시 저장
+      setMessages((prevMessages) => [selectedMessage, ...prevMessages]);
+
       console.error('메시지 재전송 중 오류 발생:', error);
       showToast({ content: '메시지 재전송에 실패했습니다. 다시 시도해주세요.' });
     } finally {
@@ -353,6 +366,7 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.sendChatMessage(123123, userId.toString(), message, messageId);
 
     setInputMessage('');
+    setInputHasValue(false);
   };
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {

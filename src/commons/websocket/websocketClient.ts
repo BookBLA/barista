@@ -123,7 +123,7 @@ class WebSocketClientDirect {
     } else {
       console.error('Cannot send message, STOMP is not connected. Message data:', data);
       // 연결이 안 된 경우 상태를 FAIL로 설정
-      this.emitSendMessageStatus(data.id, 'FAIL');
+      this.emitSendMessageStatus(messageId, 'FAIL');
     }
   };
 
