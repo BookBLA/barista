@@ -214,7 +214,7 @@ class WebSocketClientDirect {
     }
 
     // PUBLISH를 할 토픽 엔드포인트 설정
-    const endpoint = `/topic/chat/room/${roomId}/${memberId}`;
+    const endpoint = `/app/chat/room/${roomId}/${memberId}`;
     const messageData = {
       memberId: 1,
       status: status ? 'CONNECTED' : 'DISCONNECTED',

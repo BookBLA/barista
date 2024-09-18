@@ -1,5 +1,3 @@
-// @screens/Chat/ChatDetail.tsx
-
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
@@ -36,7 +34,7 @@ import InfoButton from './components/InfoButton/InfoButton';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface Message extends ChatMessage {
-  status?: 'SUCCESS' | 'FAIL' | 'pending';
+  status?: 'SUCCESS' | 'FAIL' | 'PENDING';
 }
 
 const ChatDetail: React.FC = () => {
@@ -47,7 +45,7 @@ const ChatDetail: React.FC = () => {
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
-  const [inputMessage, setInputMessage] = useState(''); // 메시지 입력 필드 상태 추가
+  const [inputMessage, setInputMessage] = useState('');
   const [inputHasValue, setInputHasValue] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -56,8 +54,8 @@ const ChatDetail: React.FC = () => {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
-  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null); // 수정: Message 객체로 변경
-  const [inputFocused, setInputFocused] = useState(false); // 입력 필드의 활성화 상태를 관리하는 상태 추가
+  const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
+  const [inputFocused, setInputFocused] = useState(false);
   const messageRefs = useRef<{ [key: string]: View | null }>({});
   const [isResendModalVisible, setIsResendModalVisible] = useState(false);
   const flatListRef = useRef<FlatList<any>>(null);
@@ -67,47 +65,46 @@ const ChatDetail: React.FC = () => {
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const userId = parseInt(memberInfo?.id);
 
-  // 날짜 파싱 함수 수정
   const parseDate = (dateString: string | undefined) => {
     if (!dateString) {
-      return new Date(0); // 기본 날짜 설정
+      return new Date(0);
     }
-
-    // Date 객체 생성 시, 기본적으로 로컬 시간대로 변환되므로 올바르게 변환되도록 수정
     const parsedDate = new Date(dateString);
     return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
   };
 
   const handleNewMessage = useCallback(
     (newMessage: any) => {
-      console.log('New message received:', newMessage);
+      console.log(`
+        ====================
+        New Message Received
+        newMessage: ${JSON.stringify(newMessage)}
+        ====================
+      `);
 
-      // 새 메시지 구조 설정
       const newMessageData: Message = {
         ...newMessage,
-        status: 'sent',
+        status: 'SUCCESS',
       };
 
-      setMessages((prevMessages) => {
-        console.log(`
-          이제부터 메시지 배열을 업데이트합니다.
-          이전 메시지 수: ${prevMessages.length},
-          새 메시지: ${JSON.stringify(newMessageData)}
-        `);
+      // 기존 메시지들 중에서 id가 같은 메시지 대치
+      const updatedMessages = messages.map((msg) => (msg.id === newMessageData.id ? newMessageData : msg));
 
-        // 새 메시지와 기존 메시지를 병합한 후 최신 메시지가 아래로 가도록 내림차순 정렬
+      console.log(`
+        ====================
+        Messages Updated
+        messages: ${JSON.stringify(updatedMessages)}
+        =================
+      `);
+
+      setMessages((prevMessages) => {
         const updatedMessages = [newMessageData, ...prevMessages].sort((a, b) => {
           const dateA = parseDate(a.sendTime || a.createdAt).getTime();
           const dateB = parseDate(b.sendTime || b.createdAt).getTime();
-          return dateB - dateA; // 최신 메시지가 아래로 오도록 정렬
+          return dateB - dateA;
         });
 
-        // 날짜별로 타임스탬프를 추가하여 메시지 배열 업데이트
         const updatedDisplayedMessages = updatedMessages.reduce<Message[]>((acc, msg, index) => {
-          index < updatedMessages.length - 1
-            ? parseDate(updatedMessages[index + 1].sendTime || updatedMessages[index + 1].createdAt).toDateString()
-            : '';
-
           acc.push(msg);
           return acc;
         }, []);
@@ -116,41 +113,38 @@ const ChatDetail: React.FC = () => {
         return updatedMessages;
       });
 
-      flatListRef.current?.scrollToOffset({ offset: 0, animated: true }); // 최신 메시지로 스크롤 이동
+      flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     },
     [chatRoomID],
   );
 
   const closeResendModal = () => {
     setIsResendModalVisible(false);
-    setSelectedMessage(null); // 모달 닫을 때 선택된 메시지 초기화
+    setSelectedMessage(null);
   };
 
-  // handleResendMessage 함수를 수정하여 모달을 표시하는 용도로만 사용
   const handleResendMessage = (message: Message) => {
-    setSelectedMessage(message); // 선택된 메시지 설정
-    setIsResendModalVisible(true); // 모달을 표시하도록 상태 변경
+    setSelectedMessage(message);
+    setIsResendModalVisible(true);
   };
 
-  // 메시지 재전송 처리 함수
   const handleResend = async () => {
     if (!selectedMessage) return;
 
     setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'pending' } : msg)),
+      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'PENDING' } : msg)),
     );
     setDisplayedMessages((prevDisplayed) =>
-      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'pending' } : msg)),
+      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'PENDING' } : msg)),
     );
 
     try {
-      // Re-send the message via WebSocketClient
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
         {
           text: selectedMessage.text,
-          id: selectedMessage.id, // Use the same messageId for tracking
+          id: selectedMessage.id,
         },
         selectedMessage.id,
       );
@@ -164,11 +158,8 @@ const ChatDetail: React.FC = () => {
     }
   };
 
-  // 메시지 삭제 처리 함수
   const handleDelete = () => {
     if (!selectedMessage) return;
-
-    console.log(`selectedMessage : ${JSON.stringify(selectedMessage)}`);
 
     setMessages((prevMessages) => prevMessages.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
     setDisplayedMessages((prevDisplayed) => prevDisplayed.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
@@ -178,7 +169,6 @@ const ChatDetail: React.FC = () => {
 
   const handleConnectionStatus = (statusMessage: any) => {
     if (statusMessage.status === 'CONNECTED') {
-      // 상대방이 접속 중이므로 모든 메시지를 읽음 처리합니다.
       setMessages((prevMessages) =>
         prevMessages.map((msg) => ({
           ...msg,
@@ -195,7 +185,6 @@ const ChatDetail: React.FC = () => {
   };
 
   useEffect(() => {
-    // 메시지 배열이 변경될 때마다 FlatList 강제 리렌더링
     setDisplayedMessages([...messages]);
   }, [messages]);
 
@@ -204,16 +193,13 @@ const ChatDetail: React.FC = () => {
       const response = await fetchChatMessages(chatRoomID, 0, 100);
       let fetchedMessages: ChatMessage[] = [];
 
-      // 메시지가 존재할 때만 fetchedMessages에 할당
       if (response.isSuccess && response.result.content.length > 0) {
         fetchedMessages = response.result.content;
       }
 
-      // 엽서를 메시지 배열에 항상 최상단에 포함
-      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' }; // 엽서에 고유한 ID 설정
-      const combinedMessages = [postcardWithId, ...fetchedMessages]; // 엽서를 항상 첫 번째로 위치시킴
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard' };
+      const combinedMessages = [postcardWithId, ...fetchedMessages];
 
-      // 메시지와 엽서를 타임스탬프로 정렬
       combinedMessages.sort((a, b) => {
         const dateA = parseDate(a.timestamp || a.createdAt);
         const dateB = parseDate(b.timestamp || b.createdAt);
@@ -226,15 +212,15 @@ const ChatDetail: React.FC = () => {
 
       const messagesWithStatus = combinedMessages.map((msg) => ({
         ...msg,
-        status: msg.senderId === userId ? 'sent' : undefined,
+        status: msg.senderId === userId ? 'SUCCESS' : 'PENDING',
       }));
 
       setMessages(messagesWithStatus);
       setDisplayedMessages(messagesWithStatus.slice(0, 100));
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard', status: 'sent' };
-      const combinedMessages = [postcardWithId]; // 메시지가 없어도 엽서를 표시
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard', status: 'SUCCESS' };
+      const combinedMessages = [postcardWithId];
       setMessages(combinedMessages);
       setDisplayedMessages(combinedMessages);
       showToast({ content: '메시지 로드에 실패했습니다. 다시 시도해주세요.' });
@@ -245,7 +231,6 @@ const ChatDetail: React.FC = () => {
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
-    // WebSocket 연결 설정 및 구독
     WebSocketClient.connect(userId.toString(), chatRoomID.toString());
     WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage, `/topic/chat/${userId.toString()}`);
     WebSocketClient.subscribe(
@@ -256,7 +241,6 @@ const ChatDetail: React.FC = () => {
     );
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
-    // WebSocketClient에 메시지 전송 상태 콜백 추가
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'SUCCESS' | 'FAIL') => {
       setMessages((prevMessages) => prevMessages.map((msg) => (msg.id === messageId ? { ...msg, status } : msg)));
       setDisplayedMessages((prevDisplayed) =>
@@ -267,10 +251,9 @@ const ChatDetail: React.FC = () => {
       }
     });
 
-    // 컴포넌트 언마운트 시 WebSocket 연결 해제 및 구독 해제
     return () => {
-      WebSocketClient.unsubscribe(chatRoomID, userId.toString(), handleNewMessage);
       WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), false);
+      WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId.toString()}` as string);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
 
@@ -285,23 +268,19 @@ const ChatDetail: React.FC = () => {
   const handleAccept = () => {
     setIsModalVisible(false);
     showToast({ content: '채팅이 시작되었습니다.' });
-    // TODO: 채팅 수락 API 호출 등 추가 작업 필요
   };
 
-  // 엽서 거절 기능을 수행하는 함수
   const handleDecline = async () => {
     try {
-      // 엽서 상태를 'REFUSED'로 업데이트하는 API 호출
       await postPostcardStatusUpdate({ postcardId: postcard.postcardId, status: EPostcardStatus.REFUSED });
 
-      // 성공적으로 거절 시 사용자에게 알림
       showToast({ content: '엽서를 거절했습니다.' });
-      navigation.goBack(); // 이전 화면으로 이동 또는 다른 적절한 처리
+      navigation.goBack();
     } catch (error) {
       console.error('엽서 거절 중 오류 발생:', error);
       showToast({ content: '엽서를 거절하는 중 오류가 발생했습니다. 다시 시도해주세요.' });
     } finally {
-      setIsDeclineModalVisible(false); // 모달을 닫음
+      setIsDeclineModalVisible(false);
     }
   };
 
@@ -336,7 +315,6 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleLongPress = (event: any, message: Message, index: number) => {
-    // 고유 식별자 생성: senderId, sendTime, index를 조합
     const messageKey = `${message.senderId}-${message.sendTime}-${index}`;
     const messageRef = messageRefs.current[messageKey];
 
@@ -345,8 +323,8 @@ const ChatDetail: React.FC = () => {
         const modalWidth = 140;
         const modalHeight = 50;
 
-        const targetX = px; // 메시지의 X 좌표
-        const targetY = py; // 메시지의 Y 좌표
+        const targetX = px;
+        const targetY = py;
 
         const topPositionAbove = targetY - modalHeight - 10;
         const topPositionBelow = targetY + height + 10;
@@ -361,7 +339,7 @@ const ChatDetail: React.FC = () => {
           left: targetX + modalWidth > SCREEN_WIDTH ? leftPositionRight : leftPositionLeft,
         });
 
-        setSelectedMessage(message); // 메시지 객체를 선택된 메시지로 설정
+        setSelectedMessage(message);
         setCopyModalVisible(true);
       });
     }
@@ -380,34 +358,31 @@ const ChatDetail: React.FC = () => {
     setSelectedMessage(null);
   };
 
-  // 메시지 전송 처리 함수
   const handleSendMessage = () => {
-    if (!inputMessage.trim()) return; // 빈 메시지 전송 방지
+    if (!inputMessage.trim()) return;
 
-    const messageId = `temp-${Date.now()}`; // Unique temporary ID
+    const messageId = `temp-${Date.now()}`;
     const message = {
       text: inputMessage.trim(),
-      id: messageId, // Include the messageId
+      id: messageId,
     };
 
-    // Create optimistic message with 'pending' status
     const optimisticMessage: Message = {
       ...message,
       senderId: userId,
       chatRoomId: chatRoomID,
       sendTime: new Date().toISOString(),
-      isRead: false, // 읽음 상태를 false로 설정
-      id: messageId, // Use the unique messageId
-      status: 'pending',
+      isRead: false,
+      id: messageId,
+      status: 'PENDING',
     };
     setMessages((prevMessages) => [optimisticMessage, ...prevMessages]);
     setDisplayedMessages((prevDisplayed) => [optimisticMessage, ...prevDisplayed]);
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
-    // Attempt to send the message via WebSocketClient
     WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
 
-    setInputMessage(''); // 메시지 전송 후 입력 필드 초기화
+    setInputMessage('');
   };
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
@@ -417,10 +392,8 @@ const ChatDetail: React.FC = () => {
 
     const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
 
-    // 서버에서 받은 읽음 상태를 사용
-    const isRead = item.isRead; // 서버에서 전달된 읽음 상태 사용
+    const isRead = item.isRead;
 
-    // 날짜 구분자 로직 수정
     const currentItemDate = parseDate(item.sendTime || item.createdAt).toDateString();
     const nextItemDate =
       index < displayedMessages.length - 1
@@ -429,15 +402,13 @@ const ChatDetail: React.FC = () => {
 
     const showDateSeparator = index === displayedMessages.length - 1 || currentItemDate !== nextItemDate;
 
-    // 시간 포맷 변경: 특정 시간대를 지정하여 로컬 시간으로 변환
     const formattedTime = parseDate(item.sendTime || item.createdAt).toLocaleTimeString('ko-KR', {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true, // 12시간 형식 사용
-      timeZone: 'Asia/Seoul', // 한국 시간대 지정
+      hour12: true,
+      timeZone: 'Asia/Seoul',
     });
 
-    // 엽서 메시지 렌더링
     if (isPostcardItem) {
       return (
         <S.MessageItem>
@@ -457,11 +428,10 @@ const ChatDetail: React.FC = () => {
             <S.MessageContent isUserMessage={isUserMessage}>
               {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
               <S.MessageRow isUserMessage={isUserMessage}>
-                {/* 서버에서 전달된 읽음 상태 사용 */}
                 {isUserMessage && (
                   <S.isReadIcon
                     source={
-                      isRead
+                      isRead && item.status
                         ? require('@assets/images/icons/ReadMessage.png')
                         : require('@assets/images/icons/UnreadMessage.png')
                     }
@@ -478,7 +448,7 @@ const ChatDetail: React.FC = () => {
                     {isUserMessage && <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>}
                     <TouchableOpacity
                       ref={(ref) => {
-                        if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
+                        if (ref) messageRefs.current[messageKey] = ref;
                       }}
                       onLongPress={(event) => handleLongPress(event, item, index)}
                     >
@@ -496,7 +466,6 @@ const ChatDetail: React.FC = () => {
       );
     }
 
-    // 일반 메시지 렌더링
     return (
       <S.MessageItem>
         {showDateSeparator && (
@@ -515,7 +484,7 @@ const ChatDetail: React.FC = () => {
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
-              {isUserMessage && item.status === 'sent' && (
+              {isUserMessage && item.status === 'SUCCESS' && (
                 <S.isReadIcon
                   source={
                     isRead
@@ -534,13 +503,12 @@ const ChatDetail: React.FC = () => {
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
-              {/* Modify the timestamp rendering condition here */}
               {isUserMessage && item.status !== 'FAIL' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
               )}
               <TouchableOpacity
                 ref={(ref) => {
-                  if (ref) messageRefs.current[messageKey] = ref; // 고유 키로 메시지 참조 저장
+                  if (ref) messageRefs.current[messageKey] = ref;
                 }}
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
@@ -738,7 +706,6 @@ const ChatDetail: React.FC = () => {
             </TouchableWithoutFeedback>
           </Modal>
 
-          {/* 수정된 Resend Modal */}
           <Modal visible={isResendModalVisible} transparent animationType="fade">
             <View
               style={{
