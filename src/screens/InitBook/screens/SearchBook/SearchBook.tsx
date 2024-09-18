@@ -18,6 +18,8 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import { NoSearch } from './units/NoSearch';
+import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
+import { csCenterUrl } from '@commons/contents/agreement/agreementUrls';
 
 const SearchBook = () => {
   useScreenLogger();
@@ -26,7 +28,9 @@ const SearchBook = () => {
     title: '책 검색',
     left: true,
   });
+  const handleLinkPress = useLinkingOpen();
   const { movePage } = useMovePage();
+  const csLink = csCenterUrl;
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
@@ -75,9 +79,29 @@ const SearchBook = () => {
                 position: 'relative',
               }}
             >
-              <CustomText font="fontRegular" size="12px">
-                검색결과 {totalPage}건
-              </CustomText>
+              <T.searchResultTextArea>
+                <CustomText font="fontRegular" size="12px">
+                  검색결과 {totalPage}건
+                </CustomText>
+                <View style={{ flex: 1 }} />
+                <CustomText font="fontRegular" size="12px" color="#A8AAB2">
+                  찾는 책이 없다면{' '}
+                </CustomText>
+                <Text
+                  onPress={handleLinkPress(csLink)}
+                  style={{
+                    color: colors.buttonPrimary,
+                    fontSize: 12,
+                    fontWeight: '500',
+                    textDecorationLine: 'underline',
+                  }}
+                >
+                  고객센터로 문의
+                </Text>
+                <CustomText font="fontReguler" size="12px" color="#A8AAB2">
+                  해주세요!
+                </CustomText>
+              </T.searchResultTextArea>
               {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
                   key={`${item?.isbn ?? 'no-isbn'}-${item.imageUrl ?? index}`}

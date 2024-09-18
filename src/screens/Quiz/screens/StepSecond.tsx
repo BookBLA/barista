@@ -1,7 +1,7 @@
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
-import { Image, Keyboard, Text } from 'react-native';
+import { Image, Keyboard, Text, View } from 'react-native';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -12,6 +12,7 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
+import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 
 const StepSecond = () => {
   useScreenLogger();
@@ -26,7 +27,7 @@ const StepSecond = () => {
   const maxLength = 100;
   const handleTextChange = (inputText: string) => {
     if (inputText.length <= maxLength) {
-      setText(inputText); // 입력된 텍스트를 상태에 저장
+      setText(inputText);
     }
   };
 
@@ -69,7 +70,9 @@ const StepSecond = () => {
           </T.StepImage>
         </T.StepProgressBar>
 
-        <BookInfo params={route.params} key="" name="QuizStack" />
+        <View style={{ paddingTop: isKeyboardVisible ? deviceHeight * 0.05 : 0 }}>
+          {!isKeyboardVisible && <BookInfo params={route.params} key="" name="QuizStack" />}
+        </View>
 
         <T.ReadingQuizTestContainer>
           <T.QuizTitleContainer>

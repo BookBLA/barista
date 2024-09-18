@@ -5,7 +5,7 @@ import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomMod
 import { CustomSwitch } from '@commons/components/Inputs/CustomSwitch/CustomSwitch';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
-import { agreementMainUrl, noticeUrl } from '@commons/contents/agreement/agreementUrls';
+import { agreementMainUrl, csCenterUrl, eventNoticeUrl } from '@commons/contents/agreement/agreementUrls';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -75,7 +75,7 @@ const Setting = () => {
               매칭
             </CustomText>
           </S.MenuButton>
-          <S.MenuButton onPress={handleLinkPress(noticeUrl)}>
+          <S.MenuButton onPress={handleLinkPress(csCenterUrl)}>
             <S.MenuImage source={Support} />
             <CustomText color={colors.primary} size="14px">
               고객센터
@@ -99,7 +99,7 @@ const Setting = () => {
             </S.RowWrapper>
             <CustomSwitch value={isAlarm} onValueChange={updateAlarmSetting} />
           </S.BetweenWrapper>
-          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
+          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(eventNoticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
           <S.BetweenWrapper>

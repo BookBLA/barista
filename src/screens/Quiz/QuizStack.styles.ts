@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export const StepProgressBar = styled.View`
   margin-top: 15px;
-  margin-bottom: auto;
+  margin-bottom: 25px;
   padding: 0 10px;
   width: 45%;
   position: relative;
@@ -96,7 +96,7 @@ export const BookTitleWrapper = styled.View`
   overflow: hidden;
 `;
 
-export const ReadingQuizTestContainer = styled.View`
+export const ReadingQuizTestContainer = styled.KeyboardAvoidingView`
   display: flex;
   background-color: white;
   margin: 20px;
