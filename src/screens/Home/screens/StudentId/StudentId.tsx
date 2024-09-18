@@ -4,6 +4,8 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
@@ -24,6 +26,7 @@ const StudentId = ({ route }: IProps) => {
   // const { updateUserInfo, userInfo } = useUserStore();
   const { movePage, handleReset } = useMovePage();
   const isRejected = route?.params?.isRejected;
+  const { updateMemberInfo } = useMemberStore();
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -58,7 +61,6 @@ const StudentId = ({ route }: IProps) => {
     //로직 수정 (이미지 선택시 setState로만 유저 속이기)
     //다음 버튼 누르면 s3 등록
     setImageUrl(result?.assets[0].uri);
-    // updateUserInfo({ studentIdImageUrl: result?.assets[0].uri });
   };
 
   const moveNext = async () => {
@@ -70,25 +72,25 @@ const StudentId = ({ route }: IProps) => {
     }
   };
 
-  const postStudentIdImage=async(imgUrl: string)=>{
-    try{
-      const response=await postStudentIdImageApi(imgUrl);
+  const postStudentIdImage = async (imgUrl: string) => {
+    try {
+      const response = await postStudentIdImageApi(imgUrl);
       console.log('response', response);
       if (isRejected) {
-          handleReset('tapScreens');
-          return;
-        } else {
-          movePage()();
-        }
-        showToast({
-          content: '학생증을 검토 중입니다.',
-        });
-    }
-    catch(error){
+        handleReset('tapScreens');
+        return;
+      } else {
+        movePage()();
+      }
+      updateMemberInfo('studentIdImageStatus', EStudentIdImageStatus.PENDING);
+      showToast({
+        content: '학생증을 검토 중입니다.',
+      });
+    } catch (error) {
       console.log('error', error);
       showToast({
-          content: '학생증 업로드에 실패했습니다.',
-        });
+        content: '학생증 업로드에 실패했습니다.',
+      });
     }
   };
 

@@ -1,4 +1,4 @@
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { createStackNavigator } from '@react-navigation/stack';
 import React from 'react';
 import TermsOfService from '../TermsOfService/TermsOfService';
@@ -24,7 +24,7 @@ const screens = [
 ];
 
 const InitUserInfoStack = () => {
-  useManageMargin();
+  useAppUIManager();
   return (
     <Stack.Navigator initialRouteName="termsOfService" screenOptions={{ headerShown: false }}>
       {screens.map(({ name, component }) => (

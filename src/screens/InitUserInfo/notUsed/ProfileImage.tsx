@@ -2,9 +2,9 @@ import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText.styles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { colors } from '@commons/styles/variablesStyles';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
@@ -29,7 +29,7 @@ const profileExList = [
 ];
 
 const ProfileImage = () => {
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '프로필 등록',
     left: true,

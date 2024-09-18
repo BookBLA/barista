@@ -3,9 +3,9 @@ import { SearchedBookList } from '@commons/components/Lists/SearchedBookList/Sea
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import usePagination from '@commons/hooks/ui/pagination/usePagination';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
@@ -21,7 +21,7 @@ import { NoSearch } from './units/NoSearch';
 
 const SearchBook = () => {
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '책 검색',
     left: true,
@@ -80,9 +80,9 @@ const SearchBook = () => {
               </CustomText>
               {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
-                  key={item.isbn}
+                  key={`${item?.isbn ?? 'no-isbn'}-${item.imageUrl ?? index}`}
                   item={item}
-                  isSelected={item.isbn === selectedBook?.isbn}
+                  isSelected={item.isbn === selectedBook?.isbn && item.imageUrl === selectedBook.imageUrl}
                   onSelectBook={setSelectedBook}
                 />
               ))}

@@ -7,20 +7,23 @@ import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
 import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { EMemberStatus } from '@commons/types/memberStatus';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
 
 const InsertInviteCode = () => {
-  useManageMargin();
+  useAppUIManager();
   useHeaderControl({
     title: '초대 코드 입력',
     left: false,
@@ -28,10 +31,12 @@ const InsertInviteCode = () => {
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, handleReset } = useMovePage();
   const { userInfo } = useUserStore();
+  const { resetUserInfo } = useUserStore();
+  const { resetAgreement } = useAgreementStore();
+  const { updateMemberInfo } = useMemberStore();
 
   const [code, setCode] = useState('');
   const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
-  const schoolStatus = 'OPEN'; // 'OPEN' or 'CLOSE'
 
   const callInviteCodeVerifyApi = async () => {
     console.log(isSuccess);
@@ -79,15 +84,17 @@ const InsertInviteCode = () => {
         gender: userInfo.gender,
         schoolName: userInfo.schoolName,
         schoolEmail: userInfo.schoolEmail,
-        phoneNumber: userInfo.phoneNumber,
       });
       console.log('프로필 등록 성공', response);
+      resetUserInfo();
+      resetAgreement();
       //schoolStatus Get api 호출
       //schoolStatus가 "OPEN"이면 completePage로 이동
       const schoolStatusResponse = await getMemberStatusesApi();
       const schoolStatus = schoolStatusResponse.result?.schoolStatus;
       console.log('schoolStatus', schoolStatus);
       if (schoolStatus === 'OPEN') {
+        updateMemberInfo('memberStatus', EMemberStatus.STYLE);
         handleReset('completePage');
       } else if (schoolStatus === 'CLOSED') {
         handleReset('inviteFriends');
@@ -103,84 +110,87 @@ const InsertInviteCode = () => {
   return (
     <S.Wrapper>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        {/* <KeyboardAwareScrollView
+        <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
             height: '100%',
           }}
-        > */}
-        <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
-          <S.ContentStyled style={{ marginBottom: 10 }}>초대코드를 입력해 주세요</S.ContentStyled>
-          <Text
-            style={{
-              color: colors.textGray2,
-              fontFamily: 'fontLight',
-              fontSize: 12,
-              textAlign: 'center',
-              marginBottom: 18,
-            }}
-          >
-            친구에게 받은 초대코드를 입력하시면{'\n'}
-            <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>최대 2만원 상당의 혜택</Text>을 드려요!
-            {'\n'}
-            코드가 없다면 다음으로 넘어가 주세요
-          </Text>
-          <S.RowStyled style={{ width: '93%' }}>
-            <S.CodeFiledStyled>
-              <S.InputStyled
-                maxLength={20} // 최대 길이 제한
-                onChangeText={(text: string) => setCode(text)}
-                placeholder="초대 코드"
-                placeholderTextColor={colors.textGray2}
-                editable={isSuccess !== 'true'}
-                value={code}
-                style={{
-                  color: colors.primary,
-                  width: '78%',
-                  textAlign: 'left',
-                  paddingLeft: 5,
-                }}
-              />
-              {isSuccess !== 'false' && (
-                <Image source={isSuccess === 'true' ? checkCircle : warningCircle} style={{ width: 20, height: 20 }} />
-              )}
-            </S.CodeFiledStyled>
-            <S.ButtonStyled
-              onPress={() => callInviteCodeVerifyApi()}
-              disabled={code === '' || isSuccess === 'true'}
+        >
+          <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
+            <S.ContentStyled style={{ marginBottom: 10 }}>초대코드를 입력해 주세요</S.ContentStyled>
+            <Text
               style={{
-                width: 70,
-                marginBottom: 6,
-                backgroundColor: code === '' ? colors.buttonNavStroke : colors.primary,
+                color: colors.textGray2,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 18,
               }}
             >
-              <Text
+              친구에게 받은 초대코드를 입력하시면{'\n'}
+              <Text style={{ color: colors.textGray2, fontFamily: 'fontBold' }}>최대 2만원 상당의 혜택</Text>을 드려요!
+              {'\n'}
+              코드가 없다면 다음으로 넘어가 주세요
+            </Text>
+            <S.RowStyled style={{ width: '93%' }}>
+              <S.CodeFiledStyled>
+                <S.InputStyled
+                  maxLength={20} // 최대 길이 제한
+                  onChangeText={(text: string) => setCode(text)}
+                  placeholder="초대 코드"
+                  placeholderTextColor={colors.textGray2}
+                  editable={isSuccess !== 'true'}
+                  value={code}
+                  style={{
+                    color: colors.primary,
+                    width: '78%',
+                    textAlign: 'left',
+                    paddingLeft: 5,
+                  }}
+                />
+                {isSuccess !== 'false' && (
+                  <Image
+                    source={isSuccess === 'true' ? checkCircle : warningCircle}
+                    style={{ width: 20, height: 20 }}
+                  />
+                )}
+              </S.CodeFiledStyled>
+              <S.ButtonStyled
+                onPress={() => callInviteCodeVerifyApi()}
+                disabled={code === '' || isSuccess === 'true'}
                 style={{
-                  color: code === '' ? colors.textGray2 : colors.secondary,
-                  fontFamily: 'fontMedium',
-                  fontSize: 16,
+                  width: 70,
+                  marginBottom: 6,
+                  backgroundColor: code === '' ? colors.buttonNavStroke : colors.primary,
                 }}
               >
-                확인
-              </Text>
-            </S.ButtonStyled>
-          </S.RowStyled>
-          {isSuccess === 'true' && (
-            <S.RowStyled style={{ justifyContent: 'flex-start', width: deviceWidth * 0.9 }}>
-              <Text style={{ color: '#2EA16A', fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                환영합니다!
-              </Text>
+                <Text
+                  style={{
+                    color: code === '' ? colors.textGray2 : colors.secondary,
+                    fontFamily: 'fontMedium',
+                    fontSize: 16,
+                  }}
+                >
+                  확인
+                </Text>
+              </S.ButtonStyled>
             </S.RowStyled>
-          )}
-          {isSuccess === 'error' && (
-            <S.RowStyled style={{ justifyContent: 'flex-start', width: deviceWidth * 0.9 }}>
-              <Text style={{ color: '#F04C4C', fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                유효하지 않은 초대코드 입니다.
-              </Text>
-            </S.RowStyled>
-          )}
-        </View>
-        {/* </KeyboardAwareScrollView> */}
+            {isSuccess === 'true' && (
+              <S.RowStyled style={{ justifyContent: 'flex-start', width: deviceWidth * 0.9 }}>
+                <Text style={{ color: '#2EA16A', fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                  환영합니다!
+                </Text>
+              </S.RowStyled>
+            )}
+            {isSuccess === 'error' && (
+              <S.RowStyled style={{ justifyContent: 'flex-start', width: deviceWidth * 0.9 }}>
+                <Text style={{ color: '#F04C4C', fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                  유효하지 않은 초대코드 입니다.
+                </Text>
+              </S.RowStyled>
+            )}
+          </View>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>

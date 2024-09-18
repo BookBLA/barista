@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useEffect } from 'react';
 import { Image, View } from 'react-native';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
-import { ProductProps } from './ProductList.types';
+import { ProductProps } from '../Product.types';
 import ProductListContent from './ProductListContent';
 
 const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAds, admobCount }) => {
@@ -19,7 +19,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
       style={{
         width: '90%',
         height: 86,
-        marginBottom: 10,
+        marginBottom: 16,
         backgroundColor: index === 0 && admobCount === 0 ? colors.textGray1 : 'white',
         borderRadius: 10,
       }}

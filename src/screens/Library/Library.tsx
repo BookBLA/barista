@@ -4,13 +4,8 @@ import settingIcon from '@assets/images/icons/Setting.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
-import {
-  deleteBook,
-  getBookInfo,
-  getInvitationCode,
-  getMemberStyle,
-  validateSendPostcard,
-} from '@commons/api/postcard/library.api';
+import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import { deleteBook, getBookInfo, getInvitationCode, validateSendPostcard } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -18,6 +13,7 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
@@ -29,25 +25,26 @@ import { EStatusCode } from '@commons/types/statusCode';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import { RouteProp, useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
+import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
+import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 import { EGender } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { BookItemList, TBookResponses } from './Library.types';
 import { MyBookInfoModify } from './MyBookInfoModify/MyBookInfoModify';
-import { TBookInfo, TMemberStyleInfo } from './MyBookInfoModify/MyBookInfoModify.types';
+import { TBookInfo } from './MyBookInfoModify/MyBookInfoModify.types';
 import { SendPostcardModal } from './SendPostcardModal/SendPostcardModal';
 import { ViewBookInfo } from './ViewBookInfo/ViewBookInfo';
 import BlockModalContent from './utils/BLockModalContent';
 import ReportOption from './utils/ReportOption/ReportOption';
-import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
 
 type RootStackParamList = {
   Library: { postcardId?: number; memberId: number; isYourLibrary: boolean };
@@ -62,6 +59,7 @@ type Props = {
 const Library: React.FC<Props> = ({ route, navigation }) => {
   useScreenLogger();
   const { toggle: onboardingToggle, isOpen: isOnboardingOpen } = useToggle(true);
+  const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const { toggle, isOpen } = useToggle();
   const [selectedImage, setSelectedImage] = useState<string>('');
   const { handleCloseBottomSheet, bottomRef, handleOpenBottomSheet } = useBottomSheet();
@@ -86,7 +84,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const [selectedBookId, setSelectedBookId] = useState(0);
   const [bookInfoList, setBookInfoList] = useState<TBookResponses[]>([]);
   const [bookInfo, setBookInfo] = useState<TBookInfo>();
-  const [memberStyle, setMemberStyle] = useState<TMemberStyleInfo>();
   const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
@@ -95,6 +92,20 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const { libraryInfo, bookRows, fetchLibraryInfo } = useFetchLibraryInfo(isYourLibrary, targetMemberId);
   const [isDeleteBookModalVisible, setIsDeleteBookModalVisible] = useState(false);
   const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const fetchOnboardingStatus = async () => {
+      try {
+        const res = await getOnboardingStatus();
+        // @ts-ignore
+        setIsAlreadyEntry(res.result.libraryOnboardingStatus);
+      } catch (error) {
+        console.error('Failed to fetch onboarding status:', error);
+      }
+    };
+
+    fetchOnboardingStatus();
+  }, []);
 
   const copyToClipboard = async () => {
     await Clipboard.setStringAsync(invitationCode);
@@ -106,10 +117,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   //todo 내서재/상대방서재 스타일 정보 Api로 받아와서 추가하기
   const setMyLibraryInfo = useCallback(async () => {
     try {
-      // const memberStyle = await getMemberStyle(result.memberId);
       setBookInfoList(libraryInfo?.bookResponses ?? []);
-
-      // setMemberStyle(memberStyle);
 
       if (libraryInfo?.profileImageUrl) {
         if (libraryInfo.profileImageStatus === 'PENDING') setIsProfileImageModificationStatus(true);
@@ -122,7 +130,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
 
   const setYourLibraryInfo = useCallback(async () => {
     try {
-      // const result = await getYourLibraryInfo(targetMemberId);
       setIsProfileImageModificationStatus(true);
     } catch {
       console.error('상대방 서재 정보를 불러오는데 실패하였습니다.');
@@ -153,11 +160,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       const result = await getBookInfo(memberBookId);
       setBookInfo(result);
     }
-  };
-
-  const fetchTargetMemberStyle = async (targetMemberId: number) => {
-    const result = await getMemberStyle(targetMemberId);
-    setMemberStyle(result);
   };
 
   const handleModifyBookModalRef = useCallback((bookMemberId?: number) => {
@@ -271,26 +273,33 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
       await deleteBook(selectedBookId);
       await fetchLibraryInfo();
       await setMyLibraryInfo();
-      toggleDeleteBookModal();
+      showToast({
+        content: '책이 삭제되었습니다.',
+      });
     } catch (error) {
       if (!isAxiosErrorResponse(error)) return;
       const { code, message } = error.response.data;
-      if (code === EStatusCode.MEMBER_BOOK_005) {
+      if (code === EStatusCode.MEMBER_BOOK_005 || code === EStatusCode.MEMBER_BOOK_004) {
         showToast({
           content: message,
         });
+      } else {
+        showToast({
+          content: '알 수 없는 이유로 삭제에 실패하였습니다.',
+        });
       }
     }
+    toggleDeleteBookModal();
   };
 
   const showDeleteBookModal = async () => {
-    modifyBookModalRef.current.close();
+    modifyBookModalRef.current?.close();
     toggleDeleteBookModal();
   };
 
   const moveProductScreen = () => {
     toggleEmptyPostcardModal();
-    movePageNoReference('product');
+    movePageNoReference('HomeStack', { screen: 'product' });
   };
 
   const resendPostcardModalConfig = {
@@ -355,7 +364,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   useHeaderControl(
     isYourLibrary
       ? {
-          title: '상대페이지',
+          title: '상대 페이지',
           left: true,
           onPressLeft: movePage(),
           right: {
@@ -364,7 +373,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           },
         }
       : {
-          title: '마이페이지',
+          title: '마이 페이지',
           left: false,
           right: {
             image: settingIcon,
@@ -376,6 +385,10 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     isYourLibrary ? [] : [libraryInfo],
   );
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
+
   const renderRow = ({ item }: { item: BookItemList }): JSX.Element => {
     return (
       <View style={{ marginBottom: 36, backgroundColor: '#f0f0f0' }}>
@@ -383,6 +396,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
           {item.books.map((bookItem, index) => (
             <S.BookTouchableOpacity
               key={`book-${index}`}
+              disabled={bookItem.isEmpty}
               onPress={async () => {
                 if (isYourLibrary) {
                   await fetchBookInfo(bookItem.book?.memberBookId);
@@ -398,101 +412,98 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
                 bookItem.book && (
                   <S.BookImage
                     source={bookItem.book.bookImageUrl ? { uri: bookItem.book.bookImageUrl } : img.prepareBookImage}
-                    style={{ objectFit: 'contain' }}
+                    style={{ resizeMode: 'contain' }}
                   />
                 )
               )}
             </S.BookTouchableOpacity>
           ))}
         </S.BookFloorWrapper>
+        <S.BookShelvesTop />
         <S.BookShelves style={S.styles.Shadow} />
       </View>
     );
   };
 
   return (
-    <SafeAreaView style={{ backgroundColor: '#1D2E61', height: '100%' }}>
-      <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />
-      <S.UserInfoContainerView>
-        {/*{isProfileImageModificationStatus && !isYourLibrary && (*/}
-        {/*  <S.UserModificationStatusBar>*/}
-        {/*    <CustomText size="14px" font="fontMedium" color="#F7F4ED">*/}
-        {/*      사진이 수정되어 승인 대기중입니다.*/}
-        {/*    </CustomText>*/}
-        {/*  </S.UserModificationStatusBar>*/}
-        {/*)}*/}
-        <S.UserInfoView>
-          {/* To Do (미소): 추후에 유저의 profileId로 넘겨줘야함. */}
-          <TouchableOpacity onPress={movePage('modifyProfile', { profileId: 8 })}>
-            <S.CircularImage source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }} />
-            {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
-            {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
-          </TouchableOpacity>
+    <SafeAreaView style={{ height: '100%' }}>
+      <LinearGradient colors={['#1D2E61', '#5B6CA8']}>
+        {!isAlreadyEntry && <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />}
+        <S.UserInfoContainerView>
+          <S.UserInfoView>
+            <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
+              <S.CircularImage
+                source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
+              />
+              {isProfileImageModificationStatus && !isYourLibrary && <S.OverlayImage source={icons.hourGlass} />}
+              {!isYourLibrary && <S.ProfileImageModificationImage source={icons.profileImageSetting} />}
+            </TouchableOpacity>
 
-          <S.UserInfoWrapper>
-            <S.UserInfoNameWrapper>
-              <S.UserNameText>
-                {libraryInfo?.name} | {libraryInfo?.age}
-                <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
-              </S.UserNameText>
+            <S.UserInfoWrapper>
+              <S.UserInfoNameWrapper>
+                <S.UserNameText>
+                  {libraryInfo?.name} | {libraryInfo?.age}
+                  <S.GenderIconStyled source={libraryInfo?.gender === EGender.MALE ? manIcon : womanIcon} />
+                </S.UserNameText>
 
-              {!isYourLibrary && (
-                <S.InviteFriendButtonWrapper>
-                  <TouchableOpacity onPress={toggleInviteFriendModal}>
-                    <S.InviteFriendButtonImage source={icons.inviteFriend} />
-                  </TouchableOpacity>
-                </S.InviteFriendButtonWrapper>
-              )}
-            </S.UserInfoNameWrapper>
+                {!isYourLibrary && (
+                  <S.InviteFriendButtonWrapper>
+                    <TouchableOpacity onPress={toggleInviteFriendModal}>
+                      <S.InviteFriendButtonImage source={icons.inviteFriend} />
+                    </TouchableOpacity>
+                  </S.InviteFriendButtonWrapper>
+                )}
+              </S.UserInfoNameWrapper>
 
-            <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
+              <S.SchoolNameText>{libraryInfo?.school}</S.SchoolNameText>
 
-            {/*//todo 추후 멤버 스타일 api 연동*/}
-            <S.MemberStyleList>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  비흡연자
-                </CustomText>
-              </S.MemberStyleView>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  ENEJ
-                </CustomText>
-              </S.MemberStyleView>
-              <S.MemberStyleView>
-                <CustomText color={colors.textWhite} size={'12px'}>
-                  176cm
-                </CustomText>
-              </S.MemberStyleView>
-            </S.MemberStyleList>
-          </S.UserInfoWrapper>
-        </S.UserInfoView>
-      </S.UserInfoContainerView>
-      <S.BookListContainerView>
-        {isYourLibrary ? (
-          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-            책을 눌러 상대방의 마음을 알아보세요.
-          </CustomText>
-        ) : (
-          <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
-            책을 누르면 좋아하는 이유와 독서퀴즈를 수정할 수 있습니다.
-          </CustomText>
-        )}
+              <S.MemberStyleList>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size="12px">
+                    {libraryInfo?.smokeType}
+                  </CustomText>
+                </S.MemberStyleView>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size="12px">
+                    {libraryInfo?.mbti}
+                  </CustomText>
+                </S.MemberStyleView>
+                <S.MemberStyleView>
+                  <CustomText color={colors.textWhite} size="12px">
+                    {libraryInfo?.height}cm
+                  </CustomText>
+                </S.MemberStyleView>
+              </S.MemberStyleList>
+            </S.UserInfoWrapper>
+          </S.UserInfoView>
+        </S.UserInfoContainerView>
 
-        <S.BookContainer>
-          <FlatList
-            data={bookRows}
-            renderItem={renderRow}
-            keyExtractor={(_, index) => `row-${index}`}
-            showsVerticalScrollIndicator
-            alwaysBounceVertical={false}
-            ListFooterComponent={<View style={{ height: 140 }} />}
-            overScrollMode="never"
-          />
-        </S.BookContainer>
-      </S.BookListContainerView>
+        <S.BookListContainerView>
+          {isYourLibrary ? (
+            <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+              책을 눌러 상대방의 마음을 알아보세요.
+            </CustomText>
+          ) : (
+            <CustomText style={{ marginTop: 24 }} color="rgba(0, 0, 0, 0.5)" size="12px">
+              책을 누르면 좋아하는 이유와 독서퀴즈를 수정할 수 있습니다.
+            </CustomText>
+          )}
+
+          <S.BookContainer>
+            <FlatList
+              data={bookRows}
+              renderItem={renderRow}
+              keyExtractor={(_, index) => `row-${index}`}
+              showsVerticalScrollIndicator
+              alwaysBounceVertical={false}
+              ListFooterComponent={<View style={{ height: 140 }} />}
+              contentContainerStyle={{ flexGrow: 1, paddingBottom: 140 }}
+            />
+          </S.BookContainer>
+        </S.BookListContainerView>
+      </LinearGradient>
       {!isYourLibrary && (
-        <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('searchBook', { isRepresentative: false })}>
+        <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('initBookStack', { screen: 'searchBook' })}>
           <S.AddBookButton source={icons.addBook} />
         </TouchableOpacity>
       )}
@@ -664,7 +675,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
             { label: '취소', action: toggleDeleteBookModal },
           ],
         }}
-      ></CustomModal>
+      />
     </SafeAreaView>
   );
 };

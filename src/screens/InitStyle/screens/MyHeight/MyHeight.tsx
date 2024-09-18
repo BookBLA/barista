@@ -2,8 +2,8 @@ import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
 import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import { colors } from '@commons/styles/variablesStyles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
@@ -16,7 +16,7 @@ const MyHeight = () => {
     title: '스타일',
     left: false,
   });
-  useManageMargin();
+  useAppUIManager();
   const { updateStyleInfo, styleInfo } = useStyleStore();
   const { movePage } = useMovePage();
   const [height, setHeight] = useState<number | ''>(styleInfo.height);

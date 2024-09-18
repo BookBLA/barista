@@ -28,19 +28,6 @@ export type TBookQuizInfo = {
   review: string;
 };
 
-export type TMemberStyleInfo = {
-  memberId?: number;
-  smokeType?: string;
-  contactType?: string;
-  dateCostType?: string;
-  dateStyleType?: string;
-  justFriendType?: string;
-  drinkType?: string;
-  mbti?: string;
-  memberAsk?: string;
-  memberAskId?: number;
-};
-
 export type TInvitationCode = {
   invitationCode: string;
 };

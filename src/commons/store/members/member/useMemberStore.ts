@@ -12,10 +12,10 @@ interface IMemberInfo {
     memberType: string;
     memberStatus: string;
     memberGender: string;
-    studentIdImageStatus: EStudentIdImageStatus;
+    studentIdImageStatus: EStudentIdImageStatus | null;
     schoolStatus: string | null;
   };
-  saveMemberInfo: () => Promise<void>;
+  saveMemberInfo: () => Promise<string>;
   updateMemberInfo: (field: string, value: string | number) => void;
 }
 
@@ -27,7 +27,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
     memberType: '',
     memberStatus: '',
     memberGender: '',
-    studentIdImageStatus: EStudentIdImageStatus.PENDING,
+    studentIdImageStatus: EStudentIdImageStatus.WAITING,
     schoolStatus: null,
   },
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
@@ -42,10 +42,11 @@ const useMemberStore = create<IMemberInfo>((set) => ({
       gender: String(memberGender),
     });
     const memberInfo = response.result;
-    console.log('memberInfo', memberInfo);
+    // console.log('memberInfo', memberInfo);
     if (memberInfo) {
       set({ memberInfo });
     }
+    return memberStatus as string;
   },
 }));
 

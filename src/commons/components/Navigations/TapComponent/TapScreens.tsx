@@ -2,18 +2,17 @@ import homeBright from '@assets/images/icons/HomeBright.png';
 import homeDark from '@assets/images/icons/HomeDark.png';
 import libraryBright from '@assets/images/icons/LibraryBright.png';
 import libraryDark from '@assets/images/icons/LibraryDark.png';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { colors } from '@commons/styles/variablesStyles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import ChatStack from '@screens/Chat/ChatStack';
 import HomeStack from '@screens/Home/HomeStack';
 import LibraryStack from '@screens/Library/LibraryStack';
 import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
-import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
-  useManageMargin();
 
   return (
     <Tab.Navigator
@@ -30,13 +29,17 @@ const TapScreens = () => {
         tabBarStyle: {
           height: '8%',
           ...Platform.select({
-            ios: {},
+            ios: {
+              paddingTop: 8,
+              paddingBottom: 10,
+            },
             android: {
               paddingTop: 8,
               paddingBottom: 10,
             },
           }),
         },
+        unmountOnBlur: true,
       }}
     >
       <Tab.Screen
@@ -66,8 +69,8 @@ const TapScreens = () => {
         }}
       />
       <Tab.Screen
-        name="Chatting"
-        component={MatchingStack}
+        name="chat"
+        component={ChatStack}
         options={{
           tabBarLabel: '채팅',
           tabBarIcon: ({ focused }) => (
@@ -92,6 +95,7 @@ const TapScreens = () => {
               style={{ width: 21, height: 21 }}
             />
           ),
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>

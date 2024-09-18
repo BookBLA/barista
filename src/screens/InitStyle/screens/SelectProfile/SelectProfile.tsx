@@ -3,8 +3,9 @@ import prevButton from '@assets/images/buttons/prevButton.png';
 import { getProfileImageType } from '@commons/api/members/profile/memberProfile.api';
 import { postMemberStyleApi } from '@commons/api/members/styles/memberStyle.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
@@ -19,9 +20,10 @@ const SelectProfile = () => {
     title: '스타일',
     left: false,
   });
-  useManageMargin();
+  useAppUIManager();
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const { movePage, handleReset } = useMovePage();
+  const { updateMemberInfo } = useMemberStore();
   const [profile, setProfile] = useState(styleInfo.profileImageTypeId);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
 

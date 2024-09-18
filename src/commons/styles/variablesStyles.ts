@@ -1,5 +1,6 @@
 export const colors = {
   primary: '#1D2E61',
+  primaryOff: '#1D2E61B3',
   primary02: '#FFEBAC',
   secondary: '#F7E2A4',
   background: '#F7F4ED',
@@ -41,6 +42,7 @@ export const colors = {
   textGray: '#858585',
   textWhite: '#FFFFFF',
   textSub: '#00000099',
+  textOff: '#ffffffB3',
 
   lineDivider: '#D2D6E2',
   textGray1: '#D9D9D9',

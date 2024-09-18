@@ -10,7 +10,6 @@ interface UserInfo {
   gender: MemberProfileCreateRequestGenderEnum;
   birthDate: string;
   name: string;
-  phoneNumber: string;
   schoolName: string;
   schoolEmail: string;
 }
@@ -30,7 +29,6 @@ export const useUserStore = create<UserState>((set, get) => ({
     gender: MemberProfileCreateRequestGenderEnum.Female,
     schoolName: '',
     schoolEmail: '',
-    phoneNumber: '',
   },
   updateUserInfo: async (newUser) => {
     set((state) => ({ userInfo: { ...state.userInfo, ...newUser } }));
@@ -41,7 +39,6 @@ export const useUserStore = create<UserState>((set, get) => ({
         gender: MemberProfileCreateRequestGenderEnum.Female,
         birthDate: '',
         name: '',
-        phoneNumber: '',
         schoolName: '',
         schoolEmail: '',
       },

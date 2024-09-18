@@ -7,15 +7,6 @@ export const UserInfoContainerView = styled.View`
   margin: 24px 16px;
 `;
 
-export const UserModificationStatusBar = styled.View`
-  background-color: #2ea16a;
-  justify-content: center;
-  align-items: center;
-  border-radius: 10px;
-  padding: 6px 0;
-  margin-bottom: 8px;
-`;
-
 export const UserInfoView = styled.View`
   flex-direction: row;
   justify-content: center;
@@ -59,11 +50,15 @@ export const SchoolNameText = styled.Text`
 export const MemberStyleList = styled.View`
   margin-top: 12px;
   flex-direction: row;
+  justify-content: flex-start;
   align-items: center;
   gap: 12px;
 `;
 
 export const MemberStyleView = styled.View`
+  align-items: center;
+  justify-content: center;
+  height: 35px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 4px;
   padding: 8px 16px;
@@ -93,25 +88,6 @@ export const ProfileImageModificationImage = styled.Image`
   top: 40px;
 `;
 
-export const ProfileHeaderButtonContainer = styled.View`
-  flex-direction: row;
-  gap: 12px;
-`;
-
-export const ProfileModifyButtonWrapper = styled.TouchableOpacity`
-  flex: 1;
-  padding: 12px;
-  border-radius: 20px;
-  background-color: #f0e7cf;
-`;
-
-export const ProfileModifyButtonText = styled.Text`
-  text-align: center;
-  font-size: 14px;
-  color: ${colors.textBlack};
-  font-family: fontMedium;
-`;
-
 export const BookListContainerView = styled.View`
   align-items: center;
   height: 100%;
@@ -129,12 +105,31 @@ export const BookContainer = styled.View`
 export const BookFloorWrapper = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  gap: 20px;
-  margin: 0 20px;
+  margin-top: 10px;
+  margin-bottom: -2px;
+  z-index: 2;
+`;
+
+export const BookShelvesTop = styled.View`
+  width: ${deviceWidth * 0.95}px; /* 선반의 너비를 화면의 80%로 설정 */
+  height: 0px; /* 높이는 0으로 설정하고 border로 높이를 생성 */
+  border-bottom-width: 12px; /* 사다리꼴의 높이 */
+  border-left-width: 20px; /* 사다리꼴 왼쪽 기울기 */
+  border-right-width: 20px; /* 사다리꼴 오른쪽 기울기 */
+  border-style: solid;
+  border-bottom-color: #e0e0e0; /* 선반의 색상 */
+  border-left-color: transparent; /* 투명한 색상으로 설정 */
+  border-right-color: transparent; /* 투명한 색상으로 설정 */
+  align-self: center; /* 중앙 정렬 */
+  margin-top: -3px; /* 약간 위로 이동 */
+  z-index: 1;
+  position: relative;
 `;
 
 export const BookShelves = styled.View`
-  width: ${deviceWidth}px;
+  justify-content: center;
+  align-self: center;
+  width: ${deviceWidth * 0.95}px;
   border: 5px solid #ffffff;
 `;
 
@@ -144,11 +139,11 @@ export const styles: any = StyleSheet.create({
       ios: {
         shadowColor: '#000',
         shadowOffset: {
-          width: 2,
-          height: 3,
+          width: 0,
+          height: 2,
         },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
+        shadowOpacity: 0.15,
+        shadowRadius: 5,
       },
       android: {
         elevation: 5,
@@ -178,15 +173,6 @@ export const styles: any = StyleSheet.create({
   },
 });
 
-export const ModalBookListContainer = styled.View`
-  flex-direction: row;
-  justify-content: center;
-  padding-top: 20px;
-  padding-right: 40px;
-  padding-left: 40px;
-  gap: 40px;
-`;
-
 export const BookTouchableOpacity = styled.TouchableOpacity`
   flex: 1;
   justify-content: center;
@@ -194,8 +180,8 @@ export const BookTouchableOpacity = styled.TouchableOpacity`
 `;
 
 export const BookImage = styled.Image`
-  width: 80%;
-  height: ${deviceHeight / 4 - 40}px;
+  width: 70%;
+  height: ${deviceHeight / 4 - 50}px;
   border-radius: 10px;
   object-fit: fill;
 `;
@@ -203,23 +189,10 @@ export const BookImage = styled.Image`
 export const EmptyBookImage = styled.View`
   justify-content: center;
   align-items: center;
-  width: 90%;
-  height: ${deviceHeight / 4 - 40}px;
+  width: 70%;
+  height: ${deviceHeight / 4 - 50}px;
   border-radius: 10px;
   background-color: #49526e;
-`;
-
-export const EmptyBookPlusImage = styled.Image`
-  width: 30px;
-  height: 30px;
-`;
-
-export const BookMarkIconImage = styled.Image`
-  width: 15px;
-  height: 30px;
-  position: absolute;
-  left: ${deviceWidth / 3.8}px;
-  top: ${deviceHeight / 500 - 5}px;
 `;
 
 export const ProfileImageBottomSheetContainer = styled.View`
@@ -286,7 +259,6 @@ export const FriendInvitationCode = styled.View`
   background-color: #ecf0f9;
   border-radius: 6px;
   margin-bottom: 20px;
-  //padding: 69px 31px;
 `;
 
 export const CopyCodeButtonWrapper = styled.View`

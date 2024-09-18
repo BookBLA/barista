@@ -2,7 +2,6 @@ import Library from '@assets/images/icons/LibraryTransparent.png';
 import Matching from '@assets/images/icons/MatchingTransparent.png';
 import Support from '@assets/images/icons/SupportTransparent.png';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
-import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
 import { CustomSwitch } from '@commons/components/Inputs/CustomSwitch/CustomSwitch';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
@@ -17,29 +16,23 @@ import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
 import { useRoute } from '@react-navigation/native';
 import * as S from '@screens/Setting/SettingStack.styles';
 import { useState } from 'react';
-import { ActivityIndicator, Platform } from 'react-native';
 import { getLinkModalConfig } from './configs/linkModalConfig';
-import { useGetLatestVersion } from './hooks/useGetLatestVersion';
+import { useAlarmSetting } from './hooks/useAlarmSetting';
 import { TProps } from './Setting.types';
 
 const Setting = () => {
   useScreenLogger();
   const [link, setLink] = useState('');
+  const { isAlarm, updateAlarmSetting } = useAlarmSetting();
   const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
   const outerLinkModal = useToggle();
   const handleLinkPress = useLinkingOpen();
   const appVersion = getAppVersion();
-  const { data, loading } = useGetLatestVersion();
   useHeaderControl({
     title: '설정',
   });
-
-  const onClickUpdateMove = () => {
-    const url = Platform.OS === 'ios' ? data?.appStoreUrl : data?.googlePlayStoreUrl;
-    handleLinkPress(url)();
-  };
 
   const hanldeOuterLinkModal = (url: string) => {
     setLink(url);
@@ -104,7 +97,7 @@ const Setting = () => {
                 알림을 끄시면 매칭 확인이 어려워요!
               </CustomText>
             </S.RowWrapper>
-            <CustomSwitch value onValueChange={() => false} />
+            <CustomSwitch value={isAlarm} onValueChange={updateAlarmSetting} />
           </S.BetweenWrapper>
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
@@ -116,15 +109,9 @@ const Setting = () => {
                 {`V${appVersion}`}
               </CustomText>
             </S.RowWrapper>
-            {loading ? (
-              <ActivityIndicator size="small" color={colors.primary} />
-            ) : data?.version === appVersion ? (
-              <CustomText margin="20px 4px 0 0" color={colors.textGray2} size="12px">
-                최신 버전
-              </CustomText>
-            ) : (
-              <CustomButton contents="업데이트" padding="8px 12px" onPress={onClickUpdateMove} />
-            )}
+            <CustomText margin="20px 4px 0 0" color={colors.textGray2} size="12px">
+              최신 버전
+            </CustomText>
           </S.BetweenWrapper>
         </S.BottomWrapper>
       </S.Wrapper>

@@ -4,8 +4,8 @@ import prevButton from '@assets/images/buttons/prevButton.png';
 import { postAuthEmailApi, postAuthVerifyApi } from '@commons/api/members/email/memberEmail';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import useManageMargin from '@commons/hooks/ui/manageMargin/useManageMargin';
 import { IsSuccess, useEmailStatusStore } from '@commons/store/members/emailStatus/useEmailStatusStore';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
@@ -23,7 +23,7 @@ const EmailAuth = () => {
     left: false,
   });
   useScreenLogger();
-  useManageMargin();
+  useAppUIManager();
   const showToast = useToastStore((state) => state.showToast);
   const { isSuccess, time, code, isActive, setCode, setIsSuccess, setTime, setIsActive, startTimer, resetTimer } =
     useEmailStatusStore();

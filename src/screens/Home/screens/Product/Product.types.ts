@@ -14,6 +14,7 @@ export interface ProductListContentProps {
 }
 
 export interface ProductContentProps {
+  name?: string;
   title: string;
   productId: string;
   price?: string;
@@ -22,4 +23,9 @@ export interface ProductContentProps {
   originalPrice?: string;
   krwPrice?: string;
   buttonAction?: () => void;
+}
+
+export interface ProductContentContainerProps {
+  index: number;
+  admobCount: number;
 }

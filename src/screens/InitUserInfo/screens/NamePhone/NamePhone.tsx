@@ -9,6 +9,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import { isHangul } from '@commons/utils/data/isHangul/isHangul';
 import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
 
 const NamePhone = () => {
@@ -20,7 +21,6 @@ const NamePhone = () => {
   const { updateUserInfo, userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [name, setName] = useState(userInfo.name);
-  // const [phNum, setPhNum] = useState(userInfo.phoneNumber);
 
   const handleChangeName = (input: string) => {
     if (isHangul(input) || input === '') {
@@ -28,21 +28,8 @@ const NamePhone = () => {
     }
   };
 
-  // const handlePhoneNumberChange = (phNum: string) => {
-  //   const onlyNums = phNum.replace(/[^0-9]/g, '');
-  //   let formattedNumber = '';
-  //   if (onlyNums.length <= 3) {
-  //     formattedNumber = onlyNums;
-  //   } else if (onlyNums.length <= 7) {
-  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3)}`;
-  //   } else {
-  //     formattedNumber = `${onlyNums.slice(0, 3)}-${onlyNums.slice(3, 7)}-${onlyNums.slice(7, 11)}`;
-  //   }
-  //   setPhNum(formattedNumber);
-  // };
-
   const nextPage = () => {
-    updateUserInfo({ name, phoneNumber: '000-0000-0000' });
+    updateUserInfo({ name });
     movePage('genderBirth')();
   };
 
@@ -50,48 +37,36 @@ const NamePhone = () => {
     <S.Wrapper>
       {/* <TitleProgress gauge={50} /> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        {/* <KeyboardAwareScrollView
+        <KeyboardAwareScrollView
           style={{ width: '100%' }}
           contentContainerStyle={{
-            height: '90%',
+            height: '100%',
+            alignItems: 'center',
           }}
-        > */}
-        <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
-          <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
-          <Text
-            style={{
-              color: colors.textGray3,
-              fontFamily: 'fontLight',
-              fontSize: 12,
-              textAlign: 'center',
-              marginBottom: 20,
-            }}
-          >
-            한국어로 된 닉네임만 가능합니다.
-          </Text>
-          <S.TextFiledStyled
-            maxLength={10} // 최대 길이 제한
-            defaultValue={userInfo.name}
-            onChangeText={(text: string) => handleChangeName(text)}
-            placeholder="닉네임"
-            placeholderTextColor={colors.textGray2}
-            value={name}
-          />
-        </View>
-
-        {/* <View style={{ width: '100%', alignItems: 'center' }}>
-            <S.ContentStyled>전화번호를 입력해 주세요.</S.ContentStyled>
+        >
+          <View style={{ width: '100%', alignItems: 'center', marginTop: '34%' }}>
+            <S.ContentStyled style={{ marginBottom: 10 }}>닉네임을 입력해 주세요.</S.ContentStyled>
+            <Text
+              style={{
+                color: colors.textGray3,
+                fontFamily: 'fontLight',
+                fontSize: 12,
+                textAlign: 'center',
+                marginBottom: 20,
+              }}
+            >
+              한국어로 된 닉네임만 가능합니다.
+            </Text>
             <S.TextFiledStyled
-              value={phNum}
-              onChangeText={handlePhoneNumberChange}
-              // onBlur={() => updateUserInfo('phoneNumber', phNum)}
-              keyboardType="numeric" // 숫자 키패드만 허용
-              maxLength={13} // 최대 길이 제한 (하이픈 포함)
-              placeholder="010-1234-5678"
+              maxLength={10} // 최대 길이 제한
+              defaultValue={userInfo.name}
+              onChangeText={(text: string) => handleChangeName(text)}
+              placeholder="닉네임"
               placeholderTextColor={colors.textGray2}
+              value={name}
             />
-          </View> */}
-        {/* </KeyboardAwareScrollView> */}
+          </View>
+        </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
       <S.ButtonArea>
         <S.MoveButton onPress={movePage()}>

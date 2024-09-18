@@ -8,5 +8,5 @@ export interface ICustomHeader {
     image: ImageSourcePropType;
     onPress: () => void;
   };
-  free?: React.ReactNode;
+  customContent?: React.ReactNode;
 }

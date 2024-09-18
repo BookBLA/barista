@@ -1,4 +1,3 @@
-import { TAuthCode } from '@commons/api/auth/login.types';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import { useLogin } from '@commons/hooks/auths/login/useLogin';
 import { login } from '@react-native-kakao/user';

@@ -68,7 +68,7 @@ export const postcardCountViewStyled = styled.View`
 export const postcardCountTextStyled = styled.Text`
   margin-left: 4px;
   font-family: fontExtraLight;
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 export const receivedPostcardViewStyled = styled.View`

@@ -4,11 +4,12 @@ import styled from 'styled-components/native';
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 48px;
-  background-color: #fff;
   ${({ hasMargin }: { hasMargin: boolean }) => !hasMargin && `padding: 0px 16px;`}
+  ${({ backgroundColor }: { backgroundColor: string }) => backgroundColor && `background-color: ${backgroundColor};`}
 `;
 
 export const CenterWrapper = styled.View`
@@ -29,7 +30,7 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const IconImage = styled.Image`
-  width: 24px;
-  height: 24px;
+  width: 21px;
+  height: 20px;
   object-fit: cover;
 `;
