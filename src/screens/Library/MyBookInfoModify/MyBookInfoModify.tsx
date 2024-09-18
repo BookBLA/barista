@@ -152,7 +152,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
         alwaysBounceVertical={false}
         contentContainerStyle={{ flexGrow: 1, paddingBottom: 120 }}
       >
-        <View style={{ margin: '4 8', padding: 16 }}>
+        <View style={{ padding: 16, marginHorizontal: 8, marginBottom: 30, marginTop: 4 }}>
           <S.BookInfoContainer>
             <S.BookWrapper>
               <S.BookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
