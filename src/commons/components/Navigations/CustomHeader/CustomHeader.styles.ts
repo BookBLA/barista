@@ -4,12 +4,11 @@ import styled from 'styled-components/native';
 export const Wrapper = styled.View`
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
+  justify-content: center;
   align-items: center;
   width: 100%;
   height: 48px;
-  padding: 0px 16px;
-  /* ${({ hasMargin }: { hasMargin: boolean }) => !hasMargin && `padding: 0px 16px;`} */
+  ${({ hasMargin }: { hasMargin: boolean }) => !hasMargin && `padding: 0px 16px;`}
   ${({ backgroundColor }: { backgroundColor: string }) => backgroundColor && `background-color: ${backgroundColor};`}
 `;
 
