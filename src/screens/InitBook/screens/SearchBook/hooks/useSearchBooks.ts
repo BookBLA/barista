@@ -15,7 +15,7 @@ export const useSearchBooks = (setTotalPage: Dispatch<SetStateAction<number>>) =
         setTotalPage(totalCount);
       }
       // NOTE: 검색 버튼을 클릭 시에만 TotalPage 변경하기 위해 사용
-      setBookList(bookSearchResponses ?? []);
+      setBookList([...(bookSearchResponses ?? [])]);
     } catch (error) {
       console.error(error);
     }
