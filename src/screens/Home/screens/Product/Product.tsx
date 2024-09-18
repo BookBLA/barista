@@ -5,6 +5,7 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, View } from 'react-native';
 import {
@@ -20,24 +21,29 @@ import {
   type ProductPurchase,
   type PurchaseError,
 } from 'react-native-iap';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
-import { ProductContentProps } from './Product.types';
 import ProductList from './components/ProductList';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { ProductContentProps } from '@screens/Home/screens/Product/Product.types';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
 const Product = () => {
+  const navigation = useNavigation();
   const showToast = useToastStore((state) => state.showToast);
   useScreenLogger();
   useHeaderControl({
-    free: <Header />,
+    customContent: <Header />,
   });
-
   const [productID, setProductID] = useState<ProductContentProps[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const { fetchMemberPostcard } = useMemberPostcardStore();
+  let purchaseUpdateSubscription = null;
+  let purchaseErrorSubscription = null;
+  const { products, getProducts } = useIAP();
 
   const getProductsByID = async () => {
     try {
@@ -47,16 +53,40 @@ const Product = () => {
     }
   };
 
-  const { products, getProducts } = useIAP();
+  const addProductInfo = async () => {
+    Alert.alert('addProductInfo', JSON.stringify(products));
+    if (Platform.OS === 'android') {
+      products.sort((a, b) => {
+        return (
+          Number(a.oneTimePurchaseOfferDetails?.priceAmountMicros) -
+          Number(b.oneTimePurchaseOfferDetails?.priceAmountMicros)
+        );
+      });
+    } else if (Platform.OS === 'ios') {
+      products.sort((a, b) => {
+        return Number(a.price) - Number(b.price);
+      });
+    }
+    const addDiscount = products.map((product) => {
+      if (product.productId === 'bookmarks_10') {
+        return { ...product, krwPrice: '2,500원' };
+      } else if (product.productId === 'bookmarks_35') {
+        return { ...product, discount: '6%', krwPrice: '7,000원', originalPrice: '7,500원' };
+      } else if (product.productId === 'bookmarks_80') {
+        return { ...product, discount: '28%', krwPrice: '14,400원', originalPrice: '20,000원' };
+      } else if (product.productId === 'bookmarks_150') {
+        return { ...product, discount: '40%', krwPrice: '22,500원', originalPrice: '37,500원' };
+      }
+    });
+    setProductID(addDiscount);
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (products.length !== 0) {
       addProductInfo();
     }
   }, [products]);
-
-  let purchaseUpdateSubscription = null;
-  let purchaseErrorSubscription = null;
 
   useEffect(() => {
     Alert.alert('useEffect', 'useEffect');
@@ -75,7 +105,7 @@ const Product = () => {
 
         // success listener
         purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase: ProductPurchase) => {
-          const receipt = purchase.transactionReceipt ? purchase.transactionReceipt : purchase.purchaseToken;
+          const receipt = purchase.transactionReceipt || purchase.purchaseToken;
           Alert.alert('purchaseUpdatedListener', JSON.stringify(purchase, null, 2));
           if (receipt) {
             try {
@@ -138,33 +168,63 @@ const Product = () => {
     };
   }, []);
 
-  const addProductInfo = async () => {
-    Alert.alert('addProductInfo', JSON.stringify(products));
-    if (Platform.OS === 'android') {
-      products.sort((a, b) => {
-        return (
-          Number(a.oneTimePurchaseOfferDetails?.priceAmountMicros) -
-          Number(b.oneTimePurchaseOfferDetails?.priceAmountMicros)
-        );
-      });
-    } else if (Platform.OS === 'ios') {
-      products.sort((a, b) => {
-        return Number(a.price) - Number(b.price);
-      });
-    }
-    const addDiscount = products.map((product) => {
-      if (product.productId === 'bookmarks_10') {
-        return { ...product, krwPrice: '2,500원' };
-      } else if (product.productId === 'bookmarks_35') {
-        return { ...product, discount: '6%', krwPrice: '7,000원', originalPrice: '7,500원' };
-      } else if (product.productId === 'bookmarks_80') {
-        return { ...product, discount: '28%', krwPrice: '14,400원', originalPrice: '20,000원' };
-      } else if (product.productId === 'bookmarks_150') {
-        return { ...product, discount: '40%', krwPrice: '22,500원', originalPrice: '37,500원' };
-      }
+  const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
+  const adUnitId = __DEV__
+    ? TestIds.REWARDED
+    : Platform.OS === 'ios'
+      ? advertiseUnitJson.ios.reload_new_person
+      : advertiseUnitJson.android.reload_new_person;
+
+  const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+  });
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setLoaded(true);
+      console.log('Ad loaded');
     });
-    setProductID(addDiscount);
-    setLoading(false);
+
+    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+      console.log('User earned reward of ', reward);
+      postReloadAdmobUse('FREE_BOOKMARK').then(() => {
+        const response = getMemberPostcardsApi();
+        fetchMemberPostcard();
+      });
+    });
+    getAdmobCount();
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, [rewarded]);
+
+  const [admobCount, setAdmobCount] = useState<number>(0);
+  const getAdmobCount = async () => {
+    try {
+      getReloadAdmobCount().then((res) => {
+        setAdmobCount(res.freeBookmarkAdmobCount ?? 0);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleGetRewardedAds = async () => {
+    if (rewarded) {
+      if (loaded) {
+        try {
+          rewarded.show();
+        } catch {
+          rewarded.load();
+        }
+      } else {
+        console.log('Ad is not loaded yet, loading ad...');
+      }
+    }
   };
 
   return (
@@ -193,8 +253,12 @@ const Product = () => {
                   productId: 'ad_free_bookmarks',
                 }}
                 index={0}
+                admobCount={admobCount}
+                handleGetRewardedAds={handleGetRewardedAds}
               />
-              {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+              {productID?.map((sale, index) => (
+                <ProductList key={sale.productId} props={sale} index={index + 1} admobCount={0} />
+              ))}
             </S.BodyWrapper>
           </ScrollView>
         </>

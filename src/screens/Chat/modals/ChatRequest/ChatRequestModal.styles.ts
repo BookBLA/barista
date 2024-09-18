@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
   overlay: {
     flex: 1,
     justifyContent: 'flex-end', // 화면 하단에 위치하도록 설정
-    backgroundColor: 'rgba(0, 0, 0, 0.6)', // 어두운 배경 투명도 설정
   },
   modalContainer: {
     width: '100%',
@@ -16,14 +15,14 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     color: 'white',
     marginBottom: 10,
     textAlign: 'center',
   },
   description: {
-    fontSize: 14,
+    fontSize: 12,
     color: 'white',
     textAlign: 'center',
     marginBottom: 20,
@@ -65,7 +64,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     paddingVertical: 10,
     marginHorizontal: 5,
-    backgroundColor: '#FFC107',
+    backgroundColor: '#FFEBAC',
     borderRadius: 8,
     alignItems: 'center',
   },

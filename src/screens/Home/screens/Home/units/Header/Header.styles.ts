@@ -46,6 +46,6 @@ export const IconButton = styled.TouchableOpacity`
 `;
 
 export const IconImage = styled.Image`
-  width: 16.75px;
-  height: 21px;
+  width: 24px;
+  height: 24px;
 `;

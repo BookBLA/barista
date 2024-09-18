@@ -4,6 +4,8 @@ import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName
 import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChatDetail from '@screens/Chat/ChatDetail';
+import ChatInfoScreen from '@screens/Chat/ChatInfoScreen/ChatInfoScreen';
 import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
 import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
@@ -42,17 +44,18 @@ const screens = [
   { name: 'modifyProfile', component: ModifyProfile },
   { name: 'studentId', component: CustomScreen(StudentId) },
   { name: 'rejectStudentId', component: RejectStudentId },
+  { name: 'ChatDetail', component: ChatDetail },
+  { name: 'ChatInfoScreen', component: ChatInfoScreen },
 ];
 
 export const CustomNavigator = () => {
-  const hasMargin = useAppStatus((state) => state.status.hasMargin);
   const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const navigationRef = useAuthNavigation();
   const getInitialRouteName = useInitialRouteName();
   const insets = useSafeAreaInsets();
   const marginBottom = Platform.OS === 'ios' ? insets?.bottom : 0;
-  const paddingHorizontal = hasMargin ? (Platform.OS === 'android' ? 0 : 16) : 0;
-  const paddingTop = Platform.OS === 'android' ? getStatusBarHeight() : insets.top;
+  const paddingHorizontal = 0;
+  const paddingTop = Platform.OS === 'android' ? getStatusBarHeight() : 0;
 
   return (
     <NavigationContainer ref={navigationRef}>

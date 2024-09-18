@@ -80,9 +80,9 @@ const SearchBook = () => {
               </CustomText>
               {bookList.map((item: BookSearchResponse, index) => (
                 <SearchedBookList
-                  key={item.isbn}
+                  key={`${item?.isbn ?? 'no-isbn'}-${item.imageUrl ?? index}`}
                   item={item}
-                  isSelected={item.isbn === selectedBook?.isbn}
+                  isSelected={item.isbn === selectedBook?.isbn && item.imageUrl === selectedBook.imageUrl}
                   onSelectBook={setSelectedBook}
                 />
               ))}

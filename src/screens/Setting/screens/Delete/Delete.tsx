@@ -60,7 +60,14 @@ export const Delete = () => {
             <CustomText size="14px">정말 계정을 영구 삭제하시겠습니까?</CustomText>
           </S.TextWrapper>
         </S.RowWrapper>
-        <CustomButton onPress={callDeleteMember(isOpen)} contents="계정 삭제" margin="30px 0 0" />
+        <CustomButton
+          onPress={callDeleteMember(isOpen)}
+          backgroundColor={isOpen ? undefined : colors.primaryOff}
+          fontColor={isOpen ? undefined : colors.textOff}
+          transparent
+          contents="계정 삭제"
+          margin="30px 0 0"
+        />
       </View>
     </S.DeleteWrapper>
   );
