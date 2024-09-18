@@ -162,7 +162,7 @@ class WebSocketClientDirect {
         'Message:',
         message,
       );
-      this.emitSendMessageStatus(message.id, 'FAIL');
+      this.emitSendMessageStatus(messageId, 'FAIL');
     }
   };
 
