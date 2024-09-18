@@ -7,6 +7,8 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useRoute } from '@react-navigation/native';
 import { TCompleteQuiz } from '@screens/Quiz/QuizStack.types';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import { colors } from '@commons/styles/variablesStyles';
 
 const Completion = () => {
   const { movePage } = useMovePage();
@@ -15,6 +17,9 @@ const Completion = () => {
   const { isSuccess } = route.params;
   console.log(route.params);
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
   return (
     <S.Wrapper style={{ alignItems: 'center' }}>
       <T.CompletionContainer>
