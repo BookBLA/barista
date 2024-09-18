@@ -44,6 +44,7 @@ const ChatDetail: React.FC = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
+  const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
@@ -77,24 +78,10 @@ const ChatDetail: React.FC = () => {
 
   const handleNewMessage = useCallback(
     (newMessage: any) => {
-      console.log(`
-        ====================
-        New Message Received
-        newMessage: ${JSON.stringify(newMessage)}
-        ====================
-      `);
-
       const newMessageData: Message = {
         ...newMessage,
         status: newMessage.status,
       };
-
-      console.log(`
-        ====================
-        New Message Data
-        newMessageData: ${JSON.stringify(newMessageData)}
-        ====================
-      `);
 
       setMessages((prevMessages) => [newMessageData, ...prevMessages]);
       setDisplayedMessages((prevDisplayed) => [newMessageData, ...prevDisplayed]);
@@ -109,15 +96,39 @@ const ChatDetail: React.FC = () => {
     setSelectedMessage(null);
   };
 
-  const handleResendMessage = (message: Message) => {
+  const handleResendMessage = (message: Message, index: number) => {
     setSelectedMessage(message);
+    setSelectedMessageIndex(index);
     setIsResendModalVisible(true);
   };
 
   const handleResend = async () => {
-    if (!selectedMessage) return;
+    if (selectedMessageIndex === null || !selectedMessage) return;
+
+    console.log(`
+      ====================
+      Resending Message
+      selectedMessage: ${JSON.stringify(selectedMessage)}
+      selectedMessageIndex: ${selectedMessageIndex}
+      =================
+    `);
 
     try {
+      // Remove the selected message by index from messages
+      setMessages((prevMessages) => {
+        const newMessages = [...prevMessages];
+        newMessages.splice(selectedMessageIndex, 1);
+        return newMessages;
+      });
+
+      // Similarly, remove the selected message from displayedMessages
+      setDisplayedMessages((prevDisplayed) => {
+        const newDisplayed = [...prevDisplayed];
+        newDisplayed.splice(selectedMessageIndex, 1);
+        return newDisplayed;
+      });
+
+      // Resend the message via WebSocket
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
@@ -130,6 +141,10 @@ const ChatDetail: React.FC = () => {
 
       showToast({ content: '메시지를 다시 보냈습니다.' });
     } catch (error) {
+      // If resending fails, re-add the message to the arrays
+      setMessages((prevMessages) => [selectedMessage, ...prevMessages]);
+      setDisplayedMessages((prevDisplayed) => [selectedMessage, ...prevDisplayed]);
+
       console.error('메시지 재전송 중 오류 발생:', error);
       showToast({ content: '메시지 재전송에 실패했습니다. 다시 시도해주세요.' });
     } finally {
@@ -138,10 +153,20 @@ const ChatDetail: React.FC = () => {
   };
 
   const handleDelete = () => {
-    if (!selectedMessage) return;
+    if (selectedMessageIndex === null || !selectedMessage) return;
 
-    setMessages((prevMessages) => prevMessages.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
-    setDisplayedMessages((prevDisplayed) => prevDisplayed.filter((msg) => msg.sendTime !== selectedMessage.sendTime));
+    setMessages((prevMessages) => {
+      const newMessages = [...prevMessages];
+      newMessages.splice(selectedMessageIndex, 1);
+      return newMessages;
+    });
+
+    setDisplayedMessages((prevDisplayed) => {
+      const newDisplayed = [...prevDisplayed];
+      newDisplayed.splice(selectedMessageIndex, 1);
+      return newDisplayed;
+    });
+
     showToast({ content: '메시지를 삭제했습니다.' });
     closeResendModal();
   };
@@ -320,6 +345,7 @@ const ChatDetail: React.FC = () => {
         });
 
         setSelectedMessage(message);
+        setSelectedMessageIndex(index); // Set the selected message index
         setCopyModalVisible(true);
       });
     }
@@ -350,9 +376,30 @@ const ChatDetail: React.FC = () => {
 
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
-    WebSocketClient.sendChatMessage(123123, userId.toString(), message, messageId);
-
     setInputMessage('');
+    setInputHasValue(false);
+
+    // 만약 네트워크 연결 안되어 있으면 실패 상태로 설정
+    if (!WebSocketClient.isConnected) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          ...message,
+          status: 'FAIL',
+        },
+      ]);
+      setDisplayedMessages((prevDisplayed) => [
+        ...prevDisplayed,
+        {
+          ...message,
+          status: 'FAIL',
+        },
+      ]);
+      showToast({ content: '메시지 전송에 실패했습니다. 인터넷 연결을 확인해주세요.' });
+      return;
+    }
+
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
   };
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
@@ -464,12 +511,12 @@ const ChatDetail: React.FC = () => {
                 />
               )}
               {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item)}>
+                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
               {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item)}>
+                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
@@ -500,7 +547,11 @@ const ChatDetail: React.FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={15}
+      >
         <S.Wrapper>
           <S.Header>
             <S.BackButton onPress={() => navigation.goBack()}>
