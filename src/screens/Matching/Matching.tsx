@@ -51,7 +51,7 @@ const Matching = () => {
           <S.InfoTextStyled>받은 엽서 확인 시 소지한 책갈피 5개가 소모 됩니다</S.InfoTextStyled>
           <S.postcardCountViewStyled>
             <IconButton onPress={movePage('HomeStack', { screen: 'product' })}>
-              <IconImage source={icons.postcard} />
+              <IconImage source={icons.postcard} style={{ objectFit: 'contain' }} />
             </IconButton>
             <S.postcardCountTextStyled onPress={movePage('HomeStack', { screen: 'product' })}>
               {memberPostcard}
