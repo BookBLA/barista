@@ -376,7 +376,7 @@ const ChatDetail: React.FC = () => {
 
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
-    WebSocketClient.sendChatMessage(123123, userId.toString(), message, messageId);
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
 
     setInputMessage('');
     setInputHasValue(false);
