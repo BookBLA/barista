@@ -252,7 +252,7 @@ const ChatDetail: React.FC = () => {
       chatRoomID,
       userId.toString(),
       handleConnectionStatus,
-      `/app/chat/room/${chatRoomID}/${userId.toString()}`,
+      `/topic/chat/room/${chatRoomID}/${userId.toString()}`,
     );
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
