@@ -9,6 +9,7 @@ import { FontLoader } from './src/commons/components/Feedbacks/FontLoader/FontLo
 import GlobalErrorModal from './src/commons/components/Feedbacks/GlobalErrorModal/GlobalErrorModal';
 import { CustomNavigator } from './src/commons/components/Navigations/CustomNavigator/CustomNavigator';
 import toastConfig from './src/commons/configs/toast/toastConfig';
+import mobileAds from 'react-native-google-mobile-ads';
 
 // import * as Core from '@react-native-kakao/core';
 // import { INJECTED_JAVASCRIPT } from './src/screens/Login/LoginStack.constants';
@@ -30,6 +31,12 @@ export default function App() {
   //     restApiKey: `${process.env.EXPO_PUBLIC_REST_API_KEY}`,
   //   },
   // });
+  mobileAds()
+    .initialize()
+    .then((adapterStatuses) => {
+      // Initialization complete!
+      console.log(adapterStatuses);
+    });
 
   return (
     <FontLoader>

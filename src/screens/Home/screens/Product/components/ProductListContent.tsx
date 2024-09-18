@@ -3,13 +3,17 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import { Alert, Image, Platform, View } from 'react-native';
 import { requestPurchase } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
-import { CustomGradientButton } from '../../../../../commons/components/Inputs/CustomGradientButton/CustomGradientButton';
-import { colors } from '../../../../../commons/styles/variablesStyles';
+import { CustomGradientButton } from '@commons/components/Inputs/CustomGradientButton/CustomGradientButton';
+import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../Product.styles';
 import { ProductProps } from '../Product.types';
 
-const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
+const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, handleGetRewardedAds }) => {
   const { title, krwPrice, discount, originalPrice, productId, name } = props;
+
+  if (!admobCount) {
+    admobCount = 0;
+  }
 
   const buy = async (sku: string) => {
     Alert.alert('requestPurchase', sku);
@@ -70,12 +74,12 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
       </S.ProductInfoContainer>
       {index === 0 ? (
         admobCount && admobCount > 0 ? (
-          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => console.log('애드몹 시청')} />
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={handleGetRewardedAds} />
         ) : (
-          <CustomButton contents={'무료 0/2'} disabled padding={'9px 18px'} />
+          <CustomButton contents="무료 0/2" disabled padding="9px 18px" />
         )
       ) : (
-        <CustomButton contents={'구매하기'} onPress={() => buy(productId)} padding={'9px 18px'} />
+        <CustomButton contents="구매하기" onPress={() => buy(productId)} padding="9px 18px" />
       )}
     </S.ProductContentContainer>
   );

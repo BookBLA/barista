@@ -21,11 +21,13 @@ import {
   type ProductPurchase,
   type PurchaseError,
 } from 'react-native-iap';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
-import { ProductContentProps } from './Product.types';
 import ProductList from './components/ProductList';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { ProductContentProps } from '@screens/Home/screens/Product/Product.types';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -166,6 +168,65 @@ const Product = () => {
     };
   }, []);
 
+  const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
+  const adUnitId = __DEV__
+    ? TestIds.REWARDED
+    : Platform.OS === 'ios'
+      ? advertiseUnitJson.ios.reload_new_person
+      : advertiseUnitJson.android.reload_new_person;
+
+  const rewarded = RewardedAd.createForAdRequest(adUnitId, {
+    requestNonPersonalizedAdsOnly: true,
+  });
+  const [loaded, setLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
+      setLoaded(true);
+      console.log('Ad loaded');
+    });
+
+    const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
+      console.log('User earned reward of ', reward);
+      postReloadAdmobUse('FREE_BOOKMARK').then(() => {
+        const response = getMemberPostcardsApi();
+        fetchMemberPostcard();
+      });
+    });
+    getAdmobCount();
+    rewarded.load();
+
+    return () => {
+      unsubscribeLoaded();
+      unsubscribeEarned();
+    };
+  }, [rewarded]);
+
+  const [admobCount, setAdmobCount] = useState<number>(0);
+  const getAdmobCount = async () => {
+    try {
+      getReloadAdmobCount().then((res) => {
+        setAdmobCount(res.freeBookmarkAdmobCount ?? 0);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleGetRewardedAds = async () => {
+    if (rewarded) {
+      if (loaded) {
+        try {
+          rewarded.show();
+        } catch {
+          rewarded.load();
+        }
+      } else {
+        console.log('Ad is not loaded yet, loading ad...');
+      }
+    }
+  };
+
   return (
     <View style={{ flex: 1, paddingTop: 64 }}>
       {loading ? (
@@ -192,8 +253,12 @@ const Product = () => {
                   productId: 'ad_free_bookmarks',
                 }}
                 index={0}
+                admobCount={admobCount}
+                handleGetRewardedAds={handleGetRewardedAds}
               />
-              {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+              {productID?.map((sale, index) => (
+                <ProductList key={sale.productId} props={sale} index={index + 1} admobCount={0} />
+              ))}
             </S.BodyWrapper>
           </ScrollView>
         </>
