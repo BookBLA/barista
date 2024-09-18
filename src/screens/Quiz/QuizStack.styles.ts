@@ -96,7 +96,7 @@ export const BookTitleWrapper = styled.View`
   overflow: hidden;
 `;
 
-export const ReadingQuizTestContainer = styled.View`
+export const ReadingQuizTestContainer = styled.KeyboardAvoidingView`
   display: flex;
   background-color: white;
   margin: 20px;
