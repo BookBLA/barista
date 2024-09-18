@@ -1,23 +1,65 @@
+// @screens/Chat/ChatDetail.styles.ts
+
 import styled from 'styled-components/native';
 
-export const wrapper = styled.View`
+// 공통 스타일 변수
+const colors = {
+  primary: '#1D2E61',
+  background: '#ffffff',
+  text: '#333',
+  subText: '#666',
+  borderColor: '#e0e0e0',
+};
+
+const spacing = {
+  small: '10px',
+  medium: '20px',
+  large: '30px',
+};
+
+// 메인 컨테이너
+export const Wrapper = styled.View`
   flex: 1;
-  background-color: #ffffff;
+  background-color: ${colors.background};
 `;
 
-export const header = styled.View`
+// 헤더 스타일
+export const Header = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  padding: 10px;
+  padding: ${spacing.small};
   border-bottom-width: 1px;
-  border-bottom-color: #e0e0e0;
+  border-bottom-color: ${colors.borderColor};
 `;
 
+export const HeaderTitle = styled.View`
+  flex: 1;
+  align-items: center;
+  flex-direction: row;
+  margin-left: ${spacing.small};
+`;
+
+export const SmallAvatar = styled.Image`
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  margin-right: 8px;
+`;
+
+export const HeaderText = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+`;
+
+export const BackButton = styled.TouchableOpacity`
+  padding: 5px;
+`;
+
+// 프로필 섹션 스타일
 export const ProfileSection = styled.View`
   align-items: center;
   padding: 10px 0;
-  border-bottom-width: 1px;
   border-bottom-color: #e0e0e0;
   margin-bottom: 20px;
 `;
@@ -33,11 +75,17 @@ export const ProfileInfo = styled.View`
   align-items: center;
 `;
 
-export const ProfileSchool = styled.Text`
+export const ProfileName = styled.Text`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 5px;
   color: #333;
+`;
+
+export const ProfileSchool = styled.Text`
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
 `;
 
 export const ProfileDetails = styled.Text`
@@ -47,170 +95,82 @@ export const ProfileDetails = styled.Text`
 `;
 
 export const LibraryButton = styled.TouchableOpacity`
-  background-color: #f0f0f0;
-  padding: 10px 20px;
-  border-radius: 20px;
+  padding: 10px 15px;
   align-items: center;
+  border-radius: 10px;
+  border-width: 1px;
+  border-color: #cccccc;
+  background-color: white;
 `;
 
 export const LibraryButtonText = styled.Text`
+  color: #000000;
   font-size: 14px;
-  color: #007aff;
 `;
 
-export const headerTitle = styled.View`
-  flex: 1;
-  align-items: center;
-  flex-direction: row;
-  margin-left: 10px;
-`;
-
-export const smallAvatar = styled.Image`
-  width: 32px;
-  height: 32px;
-  border-radius: 16px;
-  margin-right: 8px;
-`;
-
-export const headerText = styled.Text`
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-export const profileSection = styled.View`
-  flex-direction: row;
-  align-items: center;
-  padding: 15px;
-  border-bottom-width: 1px;
-  border-bottom-color: #e0e0e0;
-`;
-
-export const profileAvatar = styled.Image`
-  width: 60px;
-  height: 60px;
-  border-radius: 30px;
-  margin-right: 15px;
-`;
-
-export const profileInfo = styled.View`
-  flex: 1;
-`;
-
-export const profileSchool = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 3px;
-  color: #333;
-`;
-
-export const profileDetails = styled.Text`
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 5px;
-`;
-
-export const libraryButton = styled.TouchableOpacity`
-  background-color: #007aff;
-  padding-vertical: 8px;
-  padding-horizontal: 12px;
-  border-radius: 20px;
-  align-self: flex-start;
-`;
-
-export const libraryButtonText = styled.Text`
-  font-size: 14px;
-  color: #ffffff;
-  font-weight: 600;
-`;
-
-export const dateSeparator = styled.View`
-  align-items: center;
-  margin-vertical: 15px;
-`;
-
-export const dateText = styled.Text`
-  font-size: 12px;
-  color: #666666;
-  background-color: #f0f0f0;
-  padding-vertical: 3px;
-  padding-horizontal: 8px;
-  border-radius: 10px;
-`;
-
-export const messageItem = styled.View`
+// 메시지 아이템 스타일
+export const MessageItem = styled.View`
   margin-bottom: 12px;
   padding-horizontal: 15px;
 `;
 
-export const messageItemInner = styled.View<{ isUserMessage: boolean }>`
+export const MessageItemInner = styled.View<{ isUserMessage: boolean }>`
   flex-direction: row;
   justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
-export const messageAvatar = styled.Image`
+export const MessageAvatar = styled.Image`
   width: 36px;
   height: 36px;
   margin-right: 10px;
   border-radius: 18px;
 `;
 
-export const messageContent = styled.View<{ isUserMessage: boolean }>`
+export const MessageContent = styled.View<{ isUserMessage: boolean }>`
   flex: 1;
   max-width: 70%;
   align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
-export const messageUsername = styled.Text`
+export const MessageUsername = styled.Text`
   color: #666;
   font-size: 12px;
   margin-bottom: 4px;
 `;
 
-export const messageRow = styled.View<{ isUserMessage: boolean }>`
+export const MessageRow = styled.View<{ isUserMessage: boolean }>`
   align-items: flex-end;
   flex-direction: row;
   justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
 
-export const messageBubble = styled.View<{ isUserMessage: boolean }>`
+export const BookChatBubble = styled.View<{ isUserMessage: boolean }>`
+  padding-bottom: 0;
+  align-items: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
+`;
+
+export const BookCover = styled.Image<{ isUserMessage: boolean }>`
+  width: 100px;
+  height: 150px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+`;
+
+export const MessageBubble = styled.View<{ isUserMessage: boolean }>`
   padding: 10px;
   max-width: 100%;
   border-radius: 18px;
-  background-color: ${(props) => (props.isUserMessage ? '#1D2E61' : '#f1f1f1')};
+  background-color: ${(props) => (props.isUserMessage ? colors.primary : '#f1f1f1')};
+  margin-top: ${(props) => (props.isUserMessage ? '0px' : '4px')};
 `;
 
-export const messageText = styled.Text<{ isUserMessage: boolean }>`
+export const MessageText = styled.Text<{ isUserMessage: boolean }>`
   font-size: 16px;
   color: ${(props) => (props.isUserMessage ? '#ffffff' : '#000000')};
 `;
 
-// img
-export const readReceipt = styled.Image`
-  width: 16px;
-  height: 8px;
-  margin-bottom: 3px;
-`;
-
-export const timestamp = styled.Text<{ isUserMessage: boolean }>`
-  font-size: 11px;
-  color: #999999;
-  margin-top: 2px;
-  align-self: flex-end;
-  margin: 0 4px;
-`;
-
-export const readStatus = styled.View<{ isUserMessage: boolean }>`
-  margin-top: 2px;
-  margin-left: 4px;
-  align-self: flex-end;
-  display: ${(props) => (props.isUserMessage ? 'flex' : 'none')};
-`;
-
-export const loadingIndicator = styled.ActivityIndicator`
-  margin: 20px;
-`;
-
-export const scrollToBottomButton = styled.TouchableOpacity`
+// 스크롤 버튼 스타일
+export const ScrollToBottomButton = styled.TouchableOpacity`
   position: absolute;
   right: 20px;
   bottom: 80px;
@@ -218,7 +178,7 @@ export const scrollToBottomButton = styled.TouchableOpacity`
   height: 40px;
   border-radius: 20px;
   justify-content: center;
-  background-color: #ffffff;
+  background-color: ${colors.background};
   align-items: center;
   elevation: 5;
   shadow-color: #000;
@@ -227,14 +187,15 @@ export const scrollToBottomButton = styled.TouchableOpacity`
   shadow-radius: 3.84px;
 `;
 
-export const inputContainer = styled.View`
+// 입력 창 스타일
+export const InputContainer = styled.View`
   flex-direction: row;
-  padding: 10px;
+  padding: ${spacing.small};
   border-top-width: 1px;
-  border-top-color: #e0e0e0;
+  border-top-color: ${colors.borderColor};
 `;
 
-export const textInput = styled.TextInput`
+export const TextInput = styled.TextInput`
   flex: 1;
   padding: 12px;
   background-color: #f0f0f0;
@@ -243,7 +204,7 @@ export const textInput = styled.TextInput`
   font-size: 16px;
 `;
 
-export const sendButton = styled.TouchableOpacity`
+export const SendButton = styled.TouchableOpacity`
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -251,11 +212,120 @@ export const sendButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-export const sendButtonIcon = styled.Image`
+export const SendButtonIcon = styled.Image`
   width: 24px;
   height: 24px;
 `;
 
-export const backButton = styled.TouchableOpacity`
-  padding: 5px;
+// 날짜 구분자 스타일
+export const DateSeparator = styled.View`
+  align-items: center;
+  margin-vertical: 15px;
+`;
+
+export const DateText = styled.Text`
+  font-size: 12px;
+  color: #666666;
+  background-color: #f0f0f0;
+  padding-vertical: 3px;
+  padding-horizontal: 8px;
+  border-radius: 10px;
+`;
+
+// 로딩 인디케이터 스타일
+export const LoadingIndicator = styled.ActivityIndicator`
+  margin: 20px;
+`;
+
+// 읽음 여부 아이콘 스타일
+export const isReadIcon = styled.Image`
+  width: 12px;
+  height: 12px;
+  margin-left: 5px;
+`;
+
+export const ErrorIcon = styled.Image`
+  width: 20px;
+  height: 20px;
+`;
+
+// 타임스탬프 스타일
+export const Timestamp = styled.Text<{ isUserMessage: boolean }>`
+  font-size: 11px;
+  color: #999999;
+  margin: 0 4px;
+`;
+
+// 거절 모달 스타일
+export const DeclineModal = styled.View`
+  width: 320px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 15px;
+`;
+
+export const ModalTitle = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-align: center;
+`;
+
+export const ModalDescription = styled.Text`
+  margin-bottom: 20px;
+  color: #555;
+  text-align: center;
+`;
+
+export const ModalButtonContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+  padding-horizontal: 10px;
+`;
+
+export const DeclineButton = styled.TouchableOpacity`
+  padding: 14px 36px;
+  background-color: #f5e1c4;
+  border-radius: 20px;
+  align-items: center;
+  margin-right: 5px;
+`;
+
+export const DeclineButtonText = styled.Text`
+  color: #333;
+  font-weight: bold;
+`;
+
+export const ReviewButton = styled.TouchableOpacity`
+  padding: 14px 36px;
+  background-color: ${colors.primary};
+  border-radius: 20px;
+  align-items: center;
+  margin-left: 5px;
+`;
+
+export const ReviewButtonText = styled.Text`
+  color: white;
+  font-weight: bold;
+`;
+
+// 포스트카드 섹션 스타일 추가
+export const PostcardSection = styled.View`
+  padding: 10px 15px;
+  border-bottom-color: ${colors.borderColor};
+  margin-bottom: 20px;
+`;
+
+// 추가로 필요한 스타일 컴포넌트 정의
+export const PostcardMessageContainer = styled.View<{ isUserMessage: boolean }>`
+  flex-direction: row;
+  justify-content: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
+  align-items: flex-end;
+  margin-bottom: 12px;
+`;
+
+export const PostcardMessageContent = styled.View<{ isUserMessage: boolean }>`
+  max-width: 70%;
+  align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;

@@ -1,24 +1,49 @@
+// ChatInfoScreen.tsx
+
+import { exitChatRoom, switchAlert } from '@commons/api/chat/chat.api';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import ConfirmExitModal from '@screens/Chat/modals/ConfimExit/ConfirmExitModal';
+import React, { useEffect, useState } from 'react';
 import { Image, Switch, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatInfoScreen.styles';
 import { ChatInfoScreenProps } from './ChatInfoScreen.types';
 
 const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
-  const { user } = route.params;
-  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true); // 스위치 상태 관리
-  const patner = {
-    avatar: require('@assets/images/img/profile_ex1.png'),
-    school: '서울대학교',
-    smokingStatus: '흡연',
-    mbti: 'ENFP',
-    height: 170,
-    nickname: '김서울',
-  };
+  const { partner, handleReport, chatRoomID, isAlert } = route.params;
+  const [isNotificationEnabled, setIsNotificationEnabled] = useState(true);
+  const [isExitConfirmVisible, setIsExitConfirmVisible] = useState(false);
   const navigation = useNavigation();
 
-  const toggleSwitch = () => setIsNotificationEnabled((previousState) => !previousState);
+  // isAlert 상태에 따라 알림 설정을 변경
+  useEffect(() => {
+    setIsNotificationEnabled(isAlert);
+  }, [isAlert]);
+
+  const reportUser = () => {
+    navigation.goBack();
+    handleReport();
+  };
+
+  const toggleSwitch = () => {
+    const newAlertStatus = !isNotificationEnabled;
+    setIsNotificationEnabled(newAlertStatus);
+    switchAlert(chatRoomID, newAlertStatus);
+  };
+
+  const handleExitChat = async () => {
+    try {
+      await exitChatRoom(chatRoomID);
+      setIsExitConfirmVisible(false);
+      navigation.navigate('Chat', { exitedChatRoomId: chatRoomID });
+    } catch (error) {
+      console.error('Failed to exit chat room:', error);
+    }
+  };
+
+  const confirmExitChat = () => {
+    setIsExitConfirmVisible(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -30,13 +55,13 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
       </View>
 
       <View style={styles.profileSection}>
-        <Image source={patner.avatar} style={styles.avatar} />
-        <Text style={styles.username}>{patner.nickname}</Text>
+        <Image source={{ uri: partner.profileImageUrl }} style={styles.avatar} />
+        <Text style={styles.name}>{partner.name}</Text>
       </View>
 
       <View style={styles.optionsSection}>
         <View style={styles.optionItem}>
-          <Ionicons name="notifications-outline" size={24} color="#1D2E61" />
+          <Image source={require('@assets/images/icons/alert.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>알림</Text>
           <Switch
             style={styles.switch}
@@ -46,23 +71,34 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           />
         </View>
 
-        <TouchableOpacity style={styles.optionItem}>
-          <Ionicons name="book-outline" size={24} color="#1D2E61" />
+        <TouchableOpacity
+          style={styles.optionItem}
+          // onPress={() => movePage('Library', { memberId: partner.memberId, isYourLibrary: true })}
+          onPress={() => navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: true })}
+        >
+          <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>서재 구경하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItem}>
-          <Ionicons name="alert-circle-outline" size={24} color="#1D2E61" />
+        <TouchableOpacity style={styles.optionItem} onPress={reportUser}>
+          <Image source={require('@assets/images/icons/report.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>신고하기</Text>
           <Ionicons name="chevron-forward" size={24} color="#1D2E61" />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.optionItem}>
-          <Ionicons name="exit-outline" size={24} color="red" />
+        <TouchableOpacity style={styles.optionItem} onPress={confirmExitChat}>
+          <Image source={require('@assets/images/icons/color_exit.png')} style={{ width: 24, height: 24 }} />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 나가기 확인 모달 */}
+      <ConfirmExitModal
+        isVisible={isExitConfirmVisible}
+        onCancel={() => setIsExitConfirmVisible(false)}
+        onExit={handleExitChat}
+      />
     </View>
   );
 };
