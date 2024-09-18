@@ -5,10 +5,10 @@ import { postInviteCodeVerifyApi } from '@commons/api/invitation/invitation.api'
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { IsSuccess, useInviteCodeStore } from '@commons/store/members/inviteCode/useInviteCodeStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
-import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
@@ -22,20 +22,22 @@ const InsertInviteCode = () => {
   const showToast = useToastStore((state) => state.showToast);
   const { movePage } = useMovePage();
 
-  const [code, setCode] = useState('');
-  const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
+  const { isSuccess, code, setCode, setIsSuccess } = useInviteCodeStore();
+
+  // const [code, setCode] = useState('');
+  // const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
 
   const callInviteCodeVerifyApi = async () => {
     console.log(isSuccess);
     // 초드코드 확인 api 호출
     try {
-      await postInviteCodeVerifyApi(code);
-      setIsSuccess('true');
+      await postInviteCodeVerifyApi(code as string);
+      setIsSuccess(IsSuccess.true);
       showToast({
         content: '초대코드가 확인되었습니다.',
       });
     } catch (error) {
-      setIsSuccess('error');
+      setIsSuccess(IsSuccess.error);
       showToast({
         content: '유효하지 않은 초대코드 입니다.',
       });
@@ -74,7 +76,7 @@ const InsertInviteCode = () => {
                   onChangeText={(text: string) => setCode(text)}
                   placeholder="초대 코드"
                   placeholderTextColor={colors.textGray2}
-                  editable={isSuccess !== 'true'}
+                  editable={isSuccess !== IsSuccess.true}
                   value={code}
                   style={{
                     color: colors.primary,
@@ -83,7 +85,7 @@ const InsertInviteCode = () => {
                     paddingLeft: 5,
                   }}
                 />
-                {isSuccess !== 'false' && (
+                {isSuccess !== null && (
                   <Image
                     source={isSuccess === 'true' ? checkCircle : warningCircle}
                     style={{ width: 20, height: 20 }}
@@ -92,11 +94,11 @@ const InsertInviteCode = () => {
               </S.CodeFiledStyled>
               <S.ButtonStyled
                 onPress={() => callInviteCodeVerifyApi()}
-                disabled={code === '' || isSuccess === 'true'}
+                disabled={code === '' || code === null || isSuccess === IsSuccess.true}
                 style={{
                   width: 70,
                   marginBottom: 6,
-                  backgroundColor: code === '' ? colors.buttonNavStroke : colors.primary,
+                  backgroundColor: code === '' || code === null ? colors.buttonNavStroke : colors.primary,
                 }}
               >
                 <Text
