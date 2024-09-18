@@ -547,7 +547,11 @@ const ChatDetail: React.FC = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={15}
+      >
         <S.Wrapper>
           <S.Header>
             <S.BackButton onPress={() => navigation.goBack()}>
