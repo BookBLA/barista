@@ -1,4 +1,6 @@
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import { colors } from '@commons/styles/variablesStyles';
 import { createStackNavigator } from '@react-navigation/stack';
 import Library from '@screens/Library/Library';
 import React from 'react';
@@ -14,6 +16,7 @@ const screens = [
 ];
 
 const HomeStack = () => {
+  useAppUIManager({ setBackgroundColor: colors.primary });
   return (
     <Stack.Navigator
       initialRouteName="home"
