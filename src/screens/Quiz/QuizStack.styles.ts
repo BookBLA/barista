@@ -5,7 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 export const StepProgressBar = styled.View`
   margin-top: 15px;
-  margin-bottom: auto;
+  margin-bottom: 25px;
   padding: 0 10px;
   width: 45%;
   position: relative;

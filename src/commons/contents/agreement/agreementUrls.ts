@@ -17,4 +17,6 @@ export const agreementTitles = [
 
 export const agreementMainUrl = 'https://rust-sprite-73f.notion.site/fead23d9ddda4acf8874bec913e3219e';
 
-export const noticeUrl = 'https://pf.kakao.com/_NrxbnG';
+export const csCenterUrl = 'http://pf.kakao.com/_BbqUG/chat';
+
+export const eventNoticeUrl = 'http://pf.kakao.com/_BbqUG';
