@@ -36,8 +36,7 @@ const ChatScreen: React.FC = () => {
 
       if (response.isSuccess) {
         if (response.result.length === 0) {
-          // 서버에 데이터가 없을 경우 더미 데이터 설정
-          setError('아직 진행 중인 대화가 없어요.엽서를 보내 대화를 시작해보세요.'); // 에러 상태 초기화
+          setError('아직 진행 중인 대화가 없어요.엽서를 보내 대화를 시작해보세요.');
         } else if (Array.isArray(response.result)) {
           const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
             id: chatRoom.id.toString(),
@@ -56,14 +55,15 @@ const ChatScreen: React.FC = () => {
             isAlert: chatRoom.isAlert,
           }));
 
-          setChats(formattedChats);
-          setError(''); // 에러 상태 초기화
+          // 상태 변경을 강제하기 위해 빈 배열로 설정 후 새롭게 설정
+          setChats([JSON.parse(JSON.stringify(formattedChats))][0]);
+
+          setError('');
         }
       } else {
         setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
       }
     } catch (err) {
-      // 오류 발생 시 더미 데이터 설정
       setError('채팅 목록을 불러오는 중 오류가 발생했습니다.');
       console.error('Failed to fetch chat list:', err);
     }
@@ -76,32 +76,30 @@ const ChatScreen: React.FC = () => {
     }, [loadChats]),
   );
 
-  useEffect(() => {
-    const ws = WebSocketClient;
+  // 새 메시지를 처리하는 함수
+  const handleNewMessage = useCallback(async (newMessage) => {
+    console.log(`
+    ========================
+    새 메시지 도착
+    newMessage: ${JSON.stringify(newMessage)}
+    =================
+    `);
 
-    // WebSocket 연결 시도
-    ws.connect(memberID, memberID);
-
-    // WebSocket 연결이 완료된 후에 구독이 설정되도록 수정됨
-    const handleStompConnect = () => {
-      if (ws.isConnected && ws.stompConnected) {
-        ws.subscribe(memberID, memberID, handleNewMessage, `/topic/chat/${memberID}`);
-      }
-    };
-
-    ws.onConnect = handleStompConnect; // 연결 후에 구독 설정
-
-    // 페이지에서 나갈 때 구독 해제 및 연결 해제
-    return () => {
-      // ws.unsubscribe(`/topic/chat/${memberID}`);
-      // ws.disconnect();
-    };
-  }, [memberID]);
-
-  // WebSocket에서 새로운 메시지가 들어올 때 채팅 목록을 다시 로드
-  const handleNewMessage = useCallback(() => {
     loadChats();
-  }, [loadChats]);
+  }, []);
+
+  useEffect(() => {
+    // WebSocket 연결 설정
+    const connectWebSocket = () => {
+      WebSocketClient.connect(memberID.toString(), 'chat');
+      WebSocketClient.subscribe('chat', memberID.toString(), handleNewMessage, `/topic/chat/${memberID.toString()}`);
+    };
+
+    connectWebSocket();
+
+    // 컴포넌트 언마운트 시 WebSocket 구독 해제 및 연결 해제
+    return () => {};
+  }, [memberID, handleNewMessage]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);

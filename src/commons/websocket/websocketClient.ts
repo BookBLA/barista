@@ -184,7 +184,7 @@ class WebSocketClientDirect {
 
       // Acknowledgement message check
       if ('status' in parsedMessage && 'id' in parsedMessage) {
-        const status = parsedMessage.status === 'SUCCESS' ? 'sent' : 'failed';
+        const status = parsedMessage.status === 'SUCCESS' ? 'SUCCESS' : 'FAIL';
         this.emitSendMessageStatus(parsedMessage.id, status);
       } else {
         // Log message to check if handleNewMessage is being called
