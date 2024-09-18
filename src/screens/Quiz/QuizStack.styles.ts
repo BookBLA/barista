@@ -13,7 +13,6 @@ export const StepProgressBar = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  background-color: blueviolet;
 `;
 
 export const StepLineFirst = styled(LinearGradient).attrs({
@@ -66,7 +65,7 @@ export const StepName = styled.Text`
   margin-left: -25px;
   bottom: -15px;
   font-size: 10px;
-  color: black;
+  color: white;
   text-align: center;
 `;
 
@@ -76,7 +75,6 @@ export const ReadingQuizInfoContainer = styled.View`
   justify-content: center;
   align-items: center;
   margin: 10px 0;
-  background-color: cornflowerblue;
 `;
 
 export const BookImage = styled.Image`
@@ -96,12 +94,11 @@ export const BookTitleWrapper = styled.View`
   justify-content: space-between;
   align-items: center;
   overflow: hidden;
-  background-color: darkblue;
 `;
 
 export const ReadingQuizTestContainer = styled.View`
   display: flex;
-  background-color: gainsboro;
+  background-color: white;
   margin: 20px;
   padding: 20px;
   width: 90%;
@@ -225,7 +222,7 @@ export const CompletionContainer = styled.View`
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  background-color: cornflowerblue;
+  background-color: white;
 `;
 
 export const CompletionBackground = styled.Image`

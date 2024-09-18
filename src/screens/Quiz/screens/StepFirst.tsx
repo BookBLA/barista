@@ -13,6 +13,7 @@ import { Image, Text } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { postVerifyQuizAnswer } from '@commons/api/quiz/verifyQuizAnswer.api';
+import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 
 const StepFirst = () => {
   useScreenLogger();
@@ -70,6 +71,9 @@ const StepFirst = () => {
     fetchBookInfo(memberBookId);
   }, [memberBookId]);
 
+  useAppUIManager({
+    setBackgroundColor: colors.primary,
+  });
   useHeaderControl({ title: '독서 퀴즈' });
   return (
     <>
@@ -120,6 +124,11 @@ const StepFirst = () => {
                     backgroundColor: colors.buttonCorrect,
                     borderColor: colors.buttonCorrectBorder,
                   },
+                isCorrectAnswer &&
+                  currentPressedAnswer !== 1 && {
+                    backgroundColor: 'white',
+                    borderColor: colors.buttonBorder,
+                  },
                 !isCorrectAnswer && {
                   backgroundColor: currentPressedAnswer === 1 ? colors.buttonBackground : 'white',
                   borderColor: currentPressedAnswer === 1 ? colors.buttonPrimary : colors.buttonBorder,
@@ -159,6 +168,11 @@ const StepFirst = () => {
                     backgroundColor: colors.buttonCorrect,
                     borderColor: colors.buttonCorrectBorder,
                   },
+                isCorrectAnswer &&
+                  currentPressedAnswer !== 2 && {
+                    backgroundColor: 'white',
+                    borderColor: colors.buttonBorder,
+                  },
                 !isCorrectAnswer && {
                   backgroundColor: currentPressedAnswer === 2 ? colors.buttonBackground : 'white',
                   borderColor: currentPressedAnswer === 2 ? colors.buttonPrimary : colors.buttonBorder,
@@ -197,6 +211,11 @@ const StepFirst = () => {
                   currentPressedAnswer === 3 && {
                     backgroundColor: colors.buttonCorrect,
                     borderColor: colors.buttonCorrectBorder,
+                  },
+                isCorrectAnswer &&
+                  currentPressedAnswer !== 3 && {
+                    backgroundColor: 'white',
+                    borderColor: colors.buttonBorder,
                   },
                 !isCorrectAnswer && {
                   backgroundColor: currentPressedAnswer === 3 ? colors.buttonBackground : 'white',
