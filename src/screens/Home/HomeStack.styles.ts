@@ -31,8 +31,9 @@ export const BodyWrapper = styled.View`
   flex-direction: column;
   padding-top: 30;
   align-items: center;
-  flex-grow: 1; /* Allows it to grow and fill the remaining space */
+  flex-grow: 1;
   width: 100%;
+  height: 100%;
   background-color: ${colors.background};
   border-radius: 20px 20px 0 0;
 `;
