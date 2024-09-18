@@ -376,10 +376,30 @@ const ChatDetail: React.FC = () => {
 
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
-    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
-
     setInputMessage('');
     setInputHasValue(false);
+
+    // 만약 네트워크 연결 안되어 있으면 실패 상태로 설정
+    if (!WebSocketClient.isConnected) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          ...message,
+          status: 'FAIL',
+        },
+      ]);
+      setDisplayedMessages((prevDisplayed) => [
+        ...prevDisplayed,
+        {
+          ...message,
+          status: 'FAIL',
+        },
+      ]);
+      showToast({ content: '메시지 전송에 실패했습니다. 인터넷 연결을 확인해주세요.' });
+      return;
+    }
+
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
   };
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
