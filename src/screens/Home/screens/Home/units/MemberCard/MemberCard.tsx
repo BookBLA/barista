@@ -39,7 +39,7 @@ const MemberCard = () => {
           studentIdStatusResponse === EStudentIdImageStatus.PENDING)
       ) {
         showToast({
-          content: '학생증 인증 대기 중입니다.',
+          content: '학생증 승인 대기 중입니다.',
         });
       } else if (
         (memberStatus === 'REJECTED' &&

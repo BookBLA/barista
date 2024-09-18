@@ -11,7 +11,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import * as ImagePicker from 'expo-image-picker';
 import { useState } from 'react';
-import { Alert, Image, Linking, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, Image, Linking, Text, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import { IProps } from './StudentId.types';
 
@@ -27,6 +27,7 @@ const StudentId = ({ route }: IProps) => {
   const { movePage, handleReset } = useMovePage();
   const isRejected = route?.params?.isRejected;
   const { updateMemberInfo } = useMemberStore();
+  const [loading, setLoading] = useState<boolean>(false);
 
   //이미지 업로드 함수
   const [imageUrl, setImageUrl] = useState<string>('');
@@ -65,6 +66,8 @@ const StudentId = ({ route }: IProps) => {
 
   const moveNext = async () => {
     if (imageUrl !== '') {
+      setLoading(true);
+      // useAppUIManager({ setBackgroundColor: 'rgba(0,0,0,0.5)' });
       const uploadedFileUrl = await uploadStudentIdImageToS3(imageUrl, uuid.v4());
       if (uploadedFileUrl) {
         postStudentIdImage(uploadedFileUrl);
@@ -82,9 +85,10 @@ const StudentId = ({ route }: IProps) => {
       } else {
         movePage()();
       }
+      updateMemberInfo('memberStatus', 'APPROVAL');
       updateMemberInfo('studentIdImageStatus', EStudentIdImageStatus.PENDING);
       showToast({
-        content: '학생증을 검토 중입니다.',
+        content: '학생증이 업로드 되었습니다. 승인 대기 중입니다.',
       });
     } catch (error) {
       console.log('error', error);
@@ -96,6 +100,22 @@ const StudentId = ({ route }: IProps) => {
 
   return (
     <S.Wrapper>
+      {loading && (
+        <View
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            // backgroundColor: 'rgba(0,0,0,0.5)',
+            justifyContent: 'flex-end',
+            alignItems: 'center',
+            paddingBottom: 80,
+            zIndex: 100,
+          }}
+        >
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      )}
       <View style={{ width: '100%', alignItems: 'center', marginTop: '50%' }}>
         <S.ContentStyled style={{ marginBottom: 8 }}>학생증 사진을 업로드해 주세요.</S.ContentStyled>
         <Text
