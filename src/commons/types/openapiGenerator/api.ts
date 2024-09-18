@@ -320,6 +320,32 @@ export interface AgreedStatuses {
 /**
  * 
  * @export
+ * @interface AppleNotificationRequest
+ */
+export interface AppleNotificationRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof AppleNotificationRequest
+     */
+    'signedPayload'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface ApplePaymentInAppPurchaseRequest
+ */
+export interface ApplePaymentInAppPurchaseRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ApplePaymentInAppPurchaseRequest
+     */
+    'transactionId': string;
+}
+/**
+ * 
+ * @export
  * @interface BookResponse
  */
 export interface BookResponse {
@@ -401,6 +427,55 @@ export interface BookSearchResponses {
 /**
  * 
  * @export
+ * @interface ChatRoomResponse
+ */
+export interface ChatRoomResponse {
+    /**
+     * 
+     * @type {MemberResponse}
+     * @memberof ChatRoomResponse
+     */
+    'otherMember'?: MemberResponse;
+    /**
+     * 
+     * @type {PostCardResponse}
+     * @memberof ChatRoomResponse
+     */
+    'postcard'?: PostCardResponse;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChatRoomResponse
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ChatRoomResponse
+     */
+    'unreadCount'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatRoomResponse
+     */
+    'lastChat'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof ChatRoomResponse
+     */
+    'lastChatTime'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ChatRoomResponse
+     */
+    'isAlert'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface ContactInfoResponse
  */
 export interface ContactInfoResponse {
@@ -477,6 +552,25 @@ export interface EmailResponse {
 /**
  * 
  * @export
+ * @interface GooglePaymentInAppPurchaseRequest
+ */
+export interface GooglePaymentInAppPurchaseRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof GooglePaymentInAppPurchaseRequest
+     */
+    'productId': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof GooglePaymentInAppPurchaseRequest
+     */
+    'purchaseToken': string;
+}
+/**
+ * 
+ * @export
  * @interface InvitationCodeEntryRequest
  */
 export interface InvitationCodeEntryRequest {
@@ -544,6 +638,40 @@ export interface LoginResponse {
      */
     'deletedAt'?: string;
 }
+/**
+ * 
+ * @export
+ * @interface LoginUser
+ */
+export interface LoginUser {
+    /**
+     * 
+     * @type {number}
+     * @memberof LoginUser
+     */
+    'memberId'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface MemberAdmobRequest
+ */
+export interface MemberAdmobRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberAdmobRequest
+     */
+    'admobType': MemberAdmobRequestAdmobTypeEnum;
+}
+
+export const MemberAdmobRequestAdmobTypeEnum = {
+    NewPerson: 'NEW_PERSON',
+    FreeBookmark: 'FREE_BOOKMARK'
+} as const;
+
+export type MemberAdmobRequestAdmobTypeEnum = typeof MemberAdmobRequestAdmobTypeEnum[keyof typeof MemberAdmobRequestAdmobTypeEnum];
+
 /**
  * 
  * @export
@@ -973,7 +1101,19 @@ export interface MemberBookmarkAdmobResponse {
      * @type {number}
      * @memberof MemberBookmarkAdmobResponse
      */
-    'admobCount'?: number;
+    'bookmarkCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberBookmarkAdmobResponse
+     */
+    'freeBookmarkAdmobCount'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberBookmarkAdmobResponse
+     */
+    'newPersonAdmobCount'?: number;
 }
 /**
  * 
@@ -1109,6 +1249,73 @@ export interface MemberInformationUpdateRequest {
 /**
  * 
  * @export
+ * @interface MemberIntroResponse
+ */
+export interface MemberIntroResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberIntroResponse
+     */
+    'memberId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'memberProfileImageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'memberName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberIntroResponse
+     */
+    'memberAge'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'memberGender'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'memberSchoolName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'bookCoverImageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'bookTitle'?: string;
+    /**
+     * 
+     * @type {Array<string>}
+     * @memberof MemberIntroResponse
+     */
+    'bookAuthors'?: Array<string>;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberIntroResponse
+     */
+    'review'?: string;
+}
+/**
+ * 
+ * @export
  * @interface MemberInvitationResponse
  */
 export interface MemberInvitationResponse {
@@ -1118,6 +1325,32 @@ export interface MemberInvitationResponse {
      * @memberof MemberInvitationResponse
      */
     'invitationCode'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface MemberNameVerifyRequest
+ */
+export interface MemberNameVerifyRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberNameVerifyRequest
+     */
+    'name': string;
+}
+/**
+ * 
+ * @export
+ * @interface MemberNameVerifyResponse
+ */
+export interface MemberNameVerifyResponse {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MemberNameVerifyResponse
+     */
+    'verified'?: boolean;
 }
 /**
  * 
@@ -1143,7 +1376,13 @@ export interface MemberOnboardingStatusResponse {
      * @type {boolean}
      * @memberof MemberOnboardingStatusResponse
      */
-    'onboarding'?: boolean;
+    'homeOnboardingStatus'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MemberOnboardingStatusResponse
+     */
+    'libraryOnboardingStatus'?: boolean;
 }
 /**
  * 
@@ -1285,6 +1524,132 @@ export const MemberPostcardFromResponsePostcardStatusEnum = {
 } as const;
 
 export type MemberPostcardFromResponsePostcardStatusEnum = typeof MemberPostcardFromResponsePostcardStatusEnum[keyof typeof MemberPostcardFromResponsePostcardStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface MemberPostcardToResponse
+ */
+export interface MemberPostcardToResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberPostcardToResponse
+     */
+    'postcardId'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberProfileImageUrl'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberAge'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberGender'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'drinkType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'smokeType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'contactType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'dateStyleType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'dateCostType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'mbti'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'justFriendType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'heightType'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'memberSchoolName'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'receivedTime'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'postcardStatus'?: MemberPostcardToResponsePostcardStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberPostcardToResponse
+     */
+    'postcardImageUrl'?: string;
+}
+
+export const MemberPostcardToResponsePostcardStatusEnum = {
+    Pending: 'PENDING',
+    Read: 'READ',
+    Accept: 'ACCEPT',
+    Refused: 'REFUSED',
+    AllWrong: 'ALL_WRONG'
+} as const;
+
+export type MemberPostcardToResponsePostcardStatusEnum = typeof MemberPostcardToResponsePostcardStatusEnum[keyof typeof MemberPostcardToResponsePostcardStatusEnum];
 
 /**
  * 
@@ -1513,7 +1878,7 @@ export interface MemberReportCreateRequest {
      * @type {string}
      * @memberof MemberReportCreateRequest
      */
-    'etcContents': string;
+    'reportContents'?: string;
 }
 /**
  * 
@@ -1550,7 +1915,7 @@ export interface MemberReportCreateResponse {
      * @type {string}
      * @memberof MemberReportCreateResponse
      */
-    'etcContents'?: string;
+    'reportContents'?: string;
 }
 /**
  * 
@@ -1594,7 +1959,7 @@ export interface MemberReportDetail {
      * @type {string}
      * @memberof MemberReportDetail
      */
-    'etcContents'?: string;
+    'reportContents'?: string;
 }
 /**
  * 
@@ -1687,9 +2052,10 @@ export interface MemberStatusUpdateRequest {
 
 export const MemberStatusUpdateRequestMemberStatusEnum = {
     Profile: 'PROFILE',
-    Approval: 'APPROVAL',
     Style: 'STYLE',
     Book: 'BOOK',
+    Approval: 'APPROVAL',
+    Rejected: 'REJECTED',
     Completed: 'COMPLETED',
     Deleted: 'DELETED',
     Blocked: 'BLOCKED',
@@ -1941,16 +2307,16 @@ export interface MyLibraryReadResponse {
 export interface NotificationResponse {
     /**
      * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'status'?: string;
-    /**
-     * 
      * @type {boolean}
      * @memberof NotificationResponse
      */
     'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'status'?: string;
     /**
      * 
      * @type {string}
@@ -1963,6 +2329,25 @@ export interface NotificationResponse {
      * @memberof NotificationResponse
      */
     'id'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface OrderBookmarkForGoogleRequest
+ */
+export interface OrderBookmarkForGoogleRequest {
+    /**
+     * 
+     * @type {LoginUser}
+     * @memberof OrderBookmarkForGoogleRequest
+     */
+    'loginUser'?: LoginUser;
+    /**
+     * 
+     * @type {GooglePaymentInAppPurchaseRequest}
+     * @memberof OrderBookmarkForGoogleRequest
+     */
+    'request'?: GooglePaymentInAppPurchaseRequest;
 }
 /**
  * 
@@ -2003,12 +2388,6 @@ export interface PageMemberBookProfileResponse {
     'totalElements'?: number;
     /**
      * 
-     * @type {SortObject}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'sort'?: SortObject;
-    /**
-     * 
      * @type {boolean}
      * @memberof PageMemberBookProfileResponse
      */
@@ -2019,6 +2398,12 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'last'?: boolean;
+    /**
+     * 
+     * @type {SortObject}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'sort'?: SortObject;
     /**
      * 
      * @type {number}
@@ -2127,19 +2512,6 @@ export interface PageableObject {
 /**
  * 
  * @export
- * @interface PaymentInAppPurchaseRequest
- */
-export interface PaymentInAppPurchaseRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof PaymentInAppPurchaseRequest
-     */
-    '인앱결제 후 받은 영수증 정보': string;
-}
-/**
- * 
- * @export
  * @interface PaymentPurchaseResponse
  */
 export interface PaymentPurchaseResponse {
@@ -2156,6 +2528,60 @@ export interface PaymentPurchaseResponse {
      */
     'price'?: number;
 }
+/**
+ * 
+ * @export
+ * @interface PostCardResponse
+ */
+export interface PostCardResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof PostCardResponse
+     */
+    'postcardId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostCardResponse
+     */
+    'imageUrl'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostCardResponse
+     */
+    'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostCardResponse
+     */
+    'createdAt'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostCardResponse
+     */
+    'status'?: PostCardResponseStatusEnum;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostCardResponse
+     */
+    'senderId'?: number;
+}
+
+export const PostCardResponseStatusEnum = {
+    Pending: 'PENDING',
+    Read: 'READ',
+    Accept: 'ACCEPT',
+    Refused: 'REFUSED',
+    AllWrong: 'ALL_WRONG'
+} as const;
+
+export type PostCardResponseStatusEnum = typeof PostCardResponseStatusEnum[keyof typeof PostCardResponseStatusEnum];
+
 /**
  * 
  * @export
@@ -2450,31 +2876,37 @@ export interface ReportStatuses {
      * @type {boolean}
      * @memberof ReportStatuses
      */
-    'bookQuizReport'?: boolean;
+    'isNicknameReported'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ReportStatuses
      */
-    'reviewReport'?: boolean;
+    'isBookQuizReported'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ReportStatuses
      */
-    'askReport'?: boolean;
+    'isReviewReported'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ReportStatuses
      */
-    'replyReport'?: boolean;
+    'isConversationReported'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof ReportStatuses
      */
-    'profileImageReport'?: boolean;
+    'isProposalReported'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ReportStatuses
+     */
+    'isOtherReported'?: boolean;
 }
 /**
  * 
@@ -2910,6 +3342,40 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
+         * 
+         * @summary 홈 화면 - 매칭 회원 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendation: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members-match`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 관리자 로그인을 합니다.
          * @summary 관리자 로그인
          * @param {AdminLoginRequest} adminLoginRequest 
@@ -2992,18 +3458,14 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 인앱결제 API입니다
-         * @param {string} payType 인앱결제 유형입니다
-         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {ApplePaymentInAppPurchaseRequest} applePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderBookmark: async (payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'payType' is not null or undefined
-            assertParamExists('orderBookmark', 'payType', payType)
-            // verify required parameter 'paymentInAppPurchaseRequest' is not null or undefined
-            assertParamExists('orderBookmark', 'paymentInAppPurchaseRequest', paymentInAppPurchaseRequest)
-            const localVarPath = `/payments/in-app/{payType}`
-                .replace(`{${"payType"}}`, encodeURIComponent(String(payType)));
+        orderBookmarkForApple: async (applePaymentInAppPurchaseRequest: ApplePaymentInAppPurchaseRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'applePaymentInAppPurchaseRequest' is not null or undefined
+            assertParamExists('orderBookmarkForApple', 'applePaymentInAppPurchaseRequest', applePaymentInAppPurchaseRequest)
+            const localVarPath = `/payments/in-app/apple`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3026,7 +3488,46 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(paymentInAppPurchaseRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(applePaymentInAppPurchaseRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderBookmarkForGoogle: async (orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'orderBookmarkForGoogleRequest' is not null or undefined
+            assertParamExists('orderBookmarkForGoogle', 'orderBookmarkForGoogleRequest', orderBookmarkForGoogleRequest)
+            const localVarPath = `/payments/in-app/google`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(orderBookmarkForGoogleRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4058,6 +4559,18 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 
+         * @summary 홈 화면 - 매칭 회원 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRecommendation(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemberIntroResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecommendation(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.getRecommendation']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 관리자 로그인을 합니다.
          * @summary 관리자 로그인
          * @param {AdminLoginRequest} adminLoginRequest 
@@ -4086,15 +4599,26 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 인앱결제 API입니다
-         * @param {string} payType 인앱결제 유형입니다
-         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {ApplePaymentInAppPurchaseRequest} applePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmark(payType, paymentInAppPurchaseRequest, options);
+        async orderBookmarkForApple(applePaymentInAppPurchaseRequest: ApplePaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmarkForApple(applePaymentInAppPurchaseRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.orderBookmark']?.[localVarOperationServerIndex]?.url;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.orderBookmarkForApple']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.orderBookmarkForGoogle']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -4468,6 +4992,15 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.getMemberStatuses(options).then((request) => request(axios, basePath));
         },
         /**
+         * 
+         * @summary 홈 화면 - 매칭 회원 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecommendation(options?: any): AxiosPromise<Array<MemberIntroResponse>> {
+            return localVarFp.getRecommendation(options).then((request) => request(axios, basePath));
+        },
+        /**
          * 관리자 로그인을 합니다.
          * @summary 관리자 로그인
          * @param {AdminLoginRequest} adminLoginRequest 
@@ -4490,13 +5023,21 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 인앱결제 API입니다
-         * @param {string} payType 인앱결제 유형입니다
-         * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+         * @param {ApplePaymentInAppPurchaseRequest} applePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
-            return localVarFp.orderBookmark(payType, paymentInAppPurchaseRequest, options).then((request) => request(axios, basePath));
+        orderBookmarkForApple(applePaymentInAppPurchaseRequest: ApplePaymentInAppPurchaseRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
+            return localVarFp.orderBookmarkForApple(applePaymentInAppPurchaseRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
+            return localVarFp.orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -4807,6 +5348,17 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
+     * 
+     * @summary 홈 화면 - 매칭 회원 조회
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public getRecommendation(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).getRecommendation(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
      * 관리자 로그인을 합니다.
      * @summary 관리자 로그인
      * @param {AdminLoginRequest} adminLoginRequest 
@@ -4833,14 +5385,24 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary 인앱결제 API입니다
-     * @param {string} payType 인앱결제 유형입니다
-     * @param {PaymentInAppPurchaseRequest} paymentInAppPurchaseRequest 
+     * @param {ApplePaymentInAppPurchaseRequest} applePaymentInAppPurchaseRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public orderBookmark(payType: string, paymentInAppPurchaseRequest: PaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).orderBookmark(payType, paymentInAppPurchaseRequest, options).then((request) => request(this.axios, this.basePath));
+    public orderBookmarkForApple(applePaymentInAppPurchaseRequest: ApplePaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).orderBookmarkForApple(applePaymentInAppPurchaseRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5369,6 +5931,261 @@ export class AwsControllerApi extends BaseAPI {
 
 
 /**
+ * ChatRoomControllerApi - axios parameter creator
+ * @export
+ */
+export const ChatRoomControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exitChatRoom: async (roomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'roomId' is not null or undefined
+            assertParamExists('exitChatRoom', 'roomId', roomId)
+            const localVarPath = `/chat/room/exit`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (roomId !== undefined) {
+                localVarQueryParameter['roomId'] = roomId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatRoomList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/chat/room`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {boolean} isAlert 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setIsAlert: async (isAlert: boolean, roomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'isAlert' is not null or undefined
+            assertParamExists('setIsAlert', 'isAlert', isAlert)
+            // verify required parameter 'roomId' is not null or undefined
+            assertParamExists('setIsAlert', 'roomId', roomId)
+            const localVarPath = `/chat/room/alert`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (isAlert !== undefined) {
+                localVarQueryParameter['isAlert'] = isAlert;
+            }
+
+            if (roomId !== undefined) {
+                localVarQueryParameter['roomId'] = roomId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ChatRoomControllerApi - functional programming interface
+ * @export
+ */
+export const ChatRoomControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ChatRoomControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async exitChatRoom(roomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.exitChatRoom(roomId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.exitChatRoom']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getChatRoomList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChatRoomResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatRoomList(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.getChatRoomList']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {boolean} isAlert 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async setIsAlert(isAlert: boolean, roomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.setIsAlert(isAlert, roomId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.setIsAlert']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * ChatRoomControllerApi - factory interface
+ * @export
+ */
+export const ChatRoomControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ChatRoomControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        exitChatRoom(roomId: number, options?: any): AxiosPromise<object> {
+            return localVarFp.exitChatRoom(roomId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatRoomList(options?: any): AxiosPromise<Array<ChatRoomResponse>> {
+            return localVarFp.getChatRoomList(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {boolean} isAlert 
+         * @param {number} roomId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        setIsAlert(isAlert: boolean, roomId: number, options?: any): AxiosPromise<object> {
+            return localVarFp.setIsAlert(isAlert, roomId, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * ChatRoomControllerApi - object-oriented interface
+ * @export
+ * @class ChatRoomControllerApi
+ * @extends {BaseAPI}
+ */
+export class ChatRoomControllerApi extends BaseAPI {
+    /**
+     * 
+     * @param {number} roomId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatRoomControllerApi
+     */
+    public exitChatRoom(roomId: number, options?: RawAxiosRequestConfig) {
+        return ChatRoomControllerApiFp(this.configuration).exitChatRoom(roomId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatRoomControllerApi
+     */
+    public getChatRoomList(options?: RawAxiosRequestConfig) {
+        return ChatRoomControllerApiFp(this.configuration).getChatRoomList(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {boolean} isAlert 
+     * @param {number} roomId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatRoomControllerApi
+     */
+    public setIsAlert(isAlert: boolean, roomId: number, options?: RawAxiosRequestConfig) {
+        return ChatRoomControllerApiFp(this.configuration).setIsAlert(isAlert, roomId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * MemberBlockControllerApi - axios parameter creator
  * @export
  */
@@ -5735,6 +6552,40 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnboardingStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/members/onboarding`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
          * 책갈피 개수 조회 (기존:\'/members/postcards\')
          * @summary 사용자 Bookmark 개수 조회
          * @param {*} [options] Override http request option.
@@ -5991,12 +6842,15 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 애드몹 시청 종료 후 해당 API 호출
-         * @summary 애드몹 시청
+         * 애드몹 개수 소진 위해 해당 API 호출
+         * @summary 애드몹 소진
+         * @param {MemberAdmobRequest} memberAdmobRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        watchAdmob: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+        watchAdmob: async (memberAdmobRequest: MemberAdmobRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberAdmobRequest' is not null or undefined
+            assertParamExists('watchAdmob', 'memberAdmobRequest', memberAdmobRequest)
             const localVarPath = `/members/me/admob`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -6015,9 +6869,12 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
 
 
     
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memberAdmobRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -6069,6 +6926,18 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getAllMembersProfile(memberBookProfileRequestDto, pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.getAllMembersProfile']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOnboardingStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberOnboardingStatusResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnboardingStatus(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.getOnboardingStatus']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -6159,13 +7028,14 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 애드몹 시청 종료 후 해당 API 호출
-         * @summary 애드몹 시청
+         * 애드몹 개수 소진 위해 해당 API 호출
+         * @summary 애드몹 소진
+         * @param {MemberAdmobRequest} memberAdmobRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async watchAdmob(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberBookmarkAdmobResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.watchAdmob(options);
+        async watchAdmob(memberAdmobRequest: MemberAdmobRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberBookmarkAdmobResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.watchAdmob(memberAdmobRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.watchAdmob']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -6207,6 +7077,15 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
          */
         getAllMembersProfile(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: any): AxiosPromise<PageMemberBookProfileResponse> {
             return localVarFp.getAllMembersProfile(memberBookProfileRequestDto, pageable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnboardingStatus(options?: any): AxiosPromise<MemberOnboardingStatusResponse> {
+            return localVarFp.getOnboardingStatus(options).then((request) => request(axios, basePath));
         },
         /**
          * 책갈피 개수 조회 (기존:\'/members/postcards\')
@@ -6275,13 +7154,14 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.updateOnboardingStatus(memberOnboardingStatusRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 애드몹 시청 종료 후 해당 API 호출
-         * @summary 애드몹 시청
+         * 애드몹 개수 소진 위해 해당 API 호출
+         * @summary 애드몹 소진
+         * @param {MemberAdmobRequest} memberAdmobRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        watchAdmob(options?: any): AxiosPromise<MemberBookmarkAdmobResponse> {
-            return localVarFp.watchAdmob(options).then((request) => request(axios, basePath));
+        watchAdmob(memberAdmobRequest: MemberAdmobRequest, options?: any): AxiosPromise<MemberBookmarkAdmobResponse> {
+            return localVarFp.watchAdmob(memberAdmobRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -6325,6 +7205,17 @@ export class MemberControllerApi extends BaseAPI {
      */
     public getAllMembersProfile(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: RawAxiosRequestConfig) {
         return MemberControllerApiFp(this.configuration).getAllMembersProfile(memberBookProfileRequestDto, pageable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 사용자 온모딩 모달 상태 조회 API
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberControllerApi
+     */
+    public getOnboardingStatus(options?: RawAxiosRequestConfig) {
+        return MemberControllerApiFp(this.configuration).getOnboardingStatus(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6408,14 +7299,15 @@ export class MemberControllerApi extends BaseAPI {
     }
 
     /**
-     * 애드몹 시청 종료 후 해당 API 호출
-     * @summary 애드몹 시청
+     * 애드몹 개수 소진 위해 해당 API 호출
+     * @summary 애드몹 소진
+     * @param {MemberAdmobRequest} memberAdmobRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemberControllerApi
      */
-    public watchAdmob(options?: RawAxiosRequestConfig) {
-        return MemberControllerApiFp(this.configuration).watchAdmob(options).then((request) => request(this.axios, this.basePath));
+    public watchAdmob(memberAdmobRequest: MemberAdmobRequest, options?: RawAxiosRequestConfig) {
+        return MemberControllerApiFp(this.configuration).watchAdmob(memberAdmobRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7093,6 +7985,46 @@ export const MemberProfileControllerApiAxiosParamCreator = function (configurati
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @summary 사용자 닉네임 검증 API
+         * @param {MemberNameVerifyRequest} memberNameVerifyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyMemberName: async (memberNameVerifyRequest: MemberNameVerifyRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberNameVerifyRequest' is not null or undefined
+            assertParamExists('verifyMemberName', 'memberNameVerifyRequest', memberNameVerifyRequest)
+            const localVarPath = `/member-profiles/verify/name`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memberNameVerifyRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -7178,6 +8110,19 @@ export const MemberProfileControllerApiFp = function(configuration?: Configurati
             const localVarOperationServerBasePath = operationServerMap['MemberProfileControllerApi.updateMemberStudentIdImage']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
+        /**
+         * 
+         * @summary 사용자 닉네임 검증 API
+         * @param {MemberNameVerifyRequest} memberNameVerifyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyMemberName(memberNameVerifyRequest: MemberNameVerifyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberNameVerifyResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyMemberName(memberNameVerifyRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberProfileControllerApi.verifyMemberName']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
     }
 };
 
@@ -7244,6 +8189,16 @@ export const MemberProfileControllerApiFactory = function (configuration?: Confi
          */
         updateMemberStudentIdImage(memberProfileStudentIdImageUrlUpdateRequest: MemberProfileStudentIdImageUrlUpdateRequest, options?: any): AxiosPromise<void> {
             return localVarFp.updateMemberStudentIdImage(memberProfileStudentIdImageUrlUpdateRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 사용자 닉네임 검증 API
+         * @param {MemberNameVerifyRequest} memberNameVerifyRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        verifyMemberName(memberNameVerifyRequest: MemberNameVerifyRequest, options?: any): AxiosPromise<MemberNameVerifyResponse> {
+            return localVarFp.verifyMemberName(memberNameVerifyRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -7322,6 +8277,18 @@ export class MemberProfileControllerApi extends BaseAPI {
      */
     public updateMemberStudentIdImage(memberProfileStudentIdImageUrlUpdateRequest: MemberProfileStudentIdImageUrlUpdateRequest, options?: RawAxiosRequestConfig) {
         return MemberProfileControllerApiFp(this.configuration).updateMemberStudentIdImage(memberProfileStudentIdImageUrlUpdateRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 사용자 닉네임 검증 API
+     * @param {MemberNameVerifyRequest} memberNameVerifyRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberProfileControllerApi
+     */
+    public verifyMemberName(memberNameVerifyRequest: MemberNameVerifyRequest, options?: RawAxiosRequestConfig) {
+        return MemberProfileControllerApiFp(this.configuration).verifyMemberName(memberNameVerifyRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7720,6 +8687,7 @@ export const MemberReportControllerApiAxiosParamCreator = function (configuratio
     return {
         /**
          * 
+         * @summary 상대방 신고하기
          * @param {MemberReportCreateRequest} memberReportCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7796,6 +8764,7 @@ export const MemberReportControllerApiAxiosParamCreator = function (configuratio
         },
         /**
          * 
+         * @summary 신고 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7839,6 +8808,7 @@ export const MemberReportControllerApiFp = function(configuration?: Configuratio
     return {
         /**
          * 
+         * @summary 상대방 신고하기
          * @param {MemberReportCreateRequest} memberReportCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7863,6 +8833,7 @@ export const MemberReportControllerApiFp = function(configuration?: Configuratio
         },
         /**
          * 
+         * @summary 신고 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7884,6 +8855,7 @@ export const MemberReportControllerApiFactory = function (configuration?: Config
     return {
         /**
          * 
+         * @summary 상대방 신고하기
          * @param {MemberReportCreateRequest} memberReportCreateRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -7902,6 +8874,7 @@ export const MemberReportControllerApiFactory = function (configuration?: Config
         },
         /**
          * 
+         * @summary 신고 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -7920,6 +8893,7 @@ export const MemberReportControllerApiFactory = function (configuration?: Config
 export class MemberReportControllerApi extends BaseAPI {
     /**
      * 
+     * @summary 상대방 신고하기
      * @param {MemberReportCreateRequest} memberReportCreateRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -7942,6 +8916,7 @@ export class MemberReportControllerApi extends BaseAPI {
 
     /**
      * 
+     * @summary 신고 조회
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemberReportControllerApi
@@ -8068,6 +9043,116 @@ export class MemberTokenControllerApi extends BaseAPI {
 
 
 /**
+ * PaymentSubscriberApi - axios parameter creator
+ * @export
+ */
+export const PaymentSubscriberApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {AppleNotificationRequest} appleNotificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiveAppleNotification: async (appleNotificationRequest: AppleNotificationRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'appleNotificationRequest' is not null or undefined
+            assertParamExists('receiveAppleNotification', 'appleNotificationRequest', appleNotificationRequest)
+            const localVarPath = `/payments/in-app/apple/notification`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(appleNotificationRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * PaymentSubscriberApi - functional programming interface
+ * @export
+ */
+export const PaymentSubscriberApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = PaymentSubscriberApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {AppleNotificationRequest} appleNotificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async receiveAppleNotification(appleNotificationRequest: AppleNotificationRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.receiveAppleNotification(appleNotificationRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PaymentSubscriberApi.receiveAppleNotification']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * PaymentSubscriberApi - factory interface
+ * @export
+ */
+export const PaymentSubscriberApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = PaymentSubscriberApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {AppleNotificationRequest} appleNotificationRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        receiveAppleNotification(appleNotificationRequest: AppleNotificationRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.receiveAppleNotification(appleNotificationRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * PaymentSubscriberApi - object-oriented interface
+ * @export
+ * @class PaymentSubscriberApi
+ * @extends {BaseAPI}
+ */
+export class PaymentSubscriberApi extends BaseAPI {
+    /**
+     * 
+     * @param {AppleNotificationRequest} appleNotificationRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PaymentSubscriberApi
+     */
+    public receiveAppleNotification(appleNotificationRequest: AppleNotificationRequest, options?: RawAxiosRequestConfig) {
+        return PaymentSubscriberApiFp(this.configuration).receiveAppleNotification(appleNotificationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
  * PostcardControllerApi - axios parameter creator
  * @export
  */
@@ -8152,6 +9237,40 @@ export const PostcardControllerApiAxiosParamCreator = function (configuration?: 
          */
         readPostcardsFromMember: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/postcard/from`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 사용자가 받은 엽서 조회
+         * @summary 받은 엽서 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readPostcardsToMember: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/postcard/to`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -8419,6 +9538,18 @@ export const PostcardControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
+         * 사용자가 받은 엽서 조회
+         * @summary 받은 엽서 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async readPostcardsToMember(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemberPostcardToResponse>>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.readPostcardsToMember(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['PostcardControllerApi.readPostcardsToMember']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
          * 
          * @param {SendPostcardRequest} sendPostcardRequest 
          * @param {*} [options] Override http request option.
@@ -8519,6 +9650,15 @@ export const PostcardControllerApiFactory = function (configuration?: Configurat
             return localVarFp.readPostcardsFromMember(options).then((request) => request(axios, basePath));
         },
         /**
+         * 사용자가 받은 엽서 조회
+         * @summary 받은 엽서 조회
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        readPostcardsToMember(options?: any): AxiosPromise<Array<MemberPostcardToResponse>> {
+            return localVarFp.readPostcardsToMember(options).then((request) => request(axios, basePath));
+        },
+        /**
          * 
          * @param {SendPostcardRequest} sendPostcardRequest 
          * @param {*} [options] Override http request option.
@@ -8607,6 +9747,17 @@ export class PostcardControllerApi extends BaseAPI {
      */
     public readPostcardsFromMember(options?: RawAxiosRequestConfig) {
         return PostcardControllerApiFp(this.configuration).readPostcardsFromMember(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 사용자가 받은 엽서 조회
+     * @summary 받은 엽서 조회
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof PostcardControllerApi
+     */
+    public readPostcardsToMember(options?: RawAxiosRequestConfig) {
+        return PostcardControllerApiFp(this.configuration).readPostcardsToMember(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

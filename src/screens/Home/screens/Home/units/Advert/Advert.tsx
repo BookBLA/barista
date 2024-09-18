@@ -5,6 +5,7 @@ import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mo
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { number } from 'yup';
 
 const Advert = () => {
   const [admobCount, setAdmobCount] = useState<number>(0);
@@ -24,8 +25,8 @@ const Advert = () => {
 
   useEffect(() => {
     try {
-      getReloadAdmobCount('NEWPERSON').then((res) => {
-        setAdmobCount(res ?? 0);
+      getReloadAdmobCount().then((res) => {
+        setAdmobCount(res.newPersonAdmobCount ?? 0);
       });
     } catch (error) {
       console.error(error);
@@ -53,8 +54,8 @@ const Advert = () => {
     if (loaded) {
       try {
         rewarded.show();
-        postReloadAdmobUse('NEWPERSON').then((res) => {
-          setAdmobCount(res ?? 0);
+        postReloadAdmobUse('NEW_PERSON').then((res) => {
+          setAdmobCount(res.newPersonAdmobCount ?? 0);
         });
       } catch {
         rewarded.load();
@@ -80,7 +81,7 @@ const Advert = () => {
           <S.RefreshWrapper>
             <S.RefreshImage source={icons.refresh} />
           </S.RefreshWrapper>
-          <CustomText color="#fff">광고 시청 후 새로운 사람 만나기  {admobCount}/2</CustomText>
+          <CustomText color="#fff">광고 시청 후 새로운 사람 만나기 {admobCount}/2</CustomText>
         </S.Button>
       )}
     </S.Wrapper>

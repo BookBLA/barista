@@ -4,14 +4,16 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import React, { useEffect, useState } from 'react';
 import { initConnection, setup, useIAP, withIAPContext } from 'react-native-iap';
-import { colors } from '../../../../commons/styles/variablesStyles';
+import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
 import ProductList from './components/ProductList';
 import { ProductContentProps } from './components/ProductList.types';
 import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import { Platform } from 'react-native';
-import { postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { getMemberPostcardsApi } from '@commons/api/members/default/member.api';
+import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -35,8 +37,9 @@ const Product = () => {
   const { products, getProducts, finishTransaction, currentPurchase } = useIAP();
 
   useEffect(() => {
-    if (products.length !== 0)  {addProductInfo(); }
-    else {
+    if (products.length !== 0) {
+      addProductInfo();
+    } else {
       initPurchase();
     }
   }, [products]);
@@ -81,6 +84,7 @@ const Product = () => {
     requestNonPersonalizedAdsOnly: true,
   });
   const [loaded, setLoaded] = useState<boolean>(false);
+  const { fetchMemberPostcard } = useMemberPostcardStore();
 
   useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
@@ -90,26 +94,36 @@ const Product = () => {
 
     const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
       console.log('User earned reward of ', reward);
-      // TODO: 책갈피 받는 로직 추가?
-      rewarded.load();
+      postReloadAdmobUse('FREE_BOOKMARK').then(() => {
+        const response = getMemberPostcardsApi();
+        fetchMemberPostcard();
+      });
     });
+    getAdmobCount();
     rewarded.load();
 
     return () => {
       unsubscribeLoaded();
       unsubscribeEarned();
     };
-  }, []);
+  }, [rewarded]);
 
-  const [render, setRender] = useState<boolean>(false);
+  const [admobCount, setAdmobCount] = useState<number>(0);
+  const getAdmobCount = async () => {
+    try {
+      getReloadAdmobCount().then((res) => {
+        setAdmobCount(res.freeBookmarkAdmobCount ?? 0);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const handleGetRewardedAds = async () => {
     if (rewarded) {
       if (loaded) {
         try {
           rewarded.show();
-          postReloadAdmobUse('FREEBOOKMARK').then(() => {
-            setRender(!render);
-          });
         } catch {
           rewarded.load();
         }
@@ -139,9 +153,12 @@ const Product = () => {
             productId: 'ad_free_bookmarks',
           }}
           index={0}
+          admobCount={admobCount}
           handleGetRewardedAds={handleGetRewardedAds}
         />
-        {productID?.map((sale, index) => <ProductList key={sale.productId} props={sale} index={index + 1} />)}
+        {productID?.map((sale, index) => (
+          <ProductList key={sale.productId} props={sale} index={index + 1} admobCount={0} />
+        ))}
       </S.BodyWrapper>
     </S.Wrapper>
   );

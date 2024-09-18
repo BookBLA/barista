@@ -1,30 +1,18 @@
 import { colors } from '@commons/styles/variablesStyles';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useEffect, useState } from 'react';
-import { Image, Platform, View } from 'react-native';
+import React, { useEffect } from 'react';
+import { Image, View } from 'react-native';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { ProductProps } from './ProductList.types';
 import ProductListContent from './ProductListContent';
-import { getReloadAdmobCount } from '@commons/api/admob/reloadAdmob.api';
 
-const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAds }) => {
+const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAds, admobCount }) => {
   useEffect(() => {
-    if (index === 0) {
-      getAdmobCount();
+    if (index !== 0) {
+      admobCount = 0;
       console.log(admobCount);
     }
   }, []);
-
-  const [admobCount, setAdmobCount] = useState<number>(0);
-  const getAdmobCount = async () => {
-    try {
-      getReloadAdmobCount('FREEBOOKMARK').then((res) => {
-        setAdmobCount(res);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   return (
     <View
