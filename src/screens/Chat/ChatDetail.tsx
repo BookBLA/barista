@@ -86,7 +86,7 @@ const ChatDetail: React.FC = () => {
 
       const newMessageData: Message = {
         ...newMessage,
-        status: 'SUCCESS', // 수신한 메시지의 상태를 SUCCESS로 설정
+        status: newMessage.status,
       };
 
       console.log(`
@@ -117,19 +117,12 @@ const ChatDetail: React.FC = () => {
   const handleResend = async () => {
     if (!selectedMessage) return;
 
-    setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'PENDING' } : msg)),
-    );
-    setDisplayedMessages((prevDisplayed) =>
-      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'PENDING' } : msg)),
-    );
-
     try {
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
         {
-          text: selectedMessage.text,
+          text: selectedMessage.content,
           id: selectedMessage.id,
         },
         selectedMessage.id,
@@ -352,11 +345,12 @@ const ChatDetail: React.FC = () => {
     const message = {
       text: inputMessage.trim(),
       id: messageId,
+      sendTime: new Date().toISOString(),
     };
 
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
-    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
+    WebSocketClient.sendChatMessage(123123, userId.toString(), message, messageId);
 
     setInputMessage('');
   };
