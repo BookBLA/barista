@@ -65,12 +65,7 @@ const Account = () => {
         </S.BetweenWrapper>
         <S.BetweenWrapper>
           <S.RowWrapper>
-            <CustomText
-              margin="16px 5px 0 0"
-              onPress={movePage('delete', {
-                config: headerConfig,
-              })}
-            >
+            <CustomText margin="16px 5px 0 0" onPress={movePage('delete')}>
               회원 탈퇴
             </CustomText>
           </S.RowWrapper>
