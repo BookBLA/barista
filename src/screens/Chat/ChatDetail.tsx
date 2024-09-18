@@ -36,7 +36,7 @@ import InfoButton from './components/InfoButton/InfoButton';
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface Message extends ChatMessage {
-  sendStatus?: 'SUCCESS' | 'FAIL' | 'pending';
+  status?: 'SUCCESS' | 'FAIL' | 'pending';
 }
 
 const ChatDetail: React.FC = () => {
@@ -48,6 +48,7 @@ const ChatDetail: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState(''); // 메시지 입력 필드 상태 추가
+  const [inputHasValue, setInputHasValue] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isDeclineModalVisible, setIsDeclineModalVisible] = useState(false);
@@ -79,13 +80,21 @@ const ChatDetail: React.FC = () => {
 
   const handleNewMessage = useCallback(
     (newMessage: any) => {
+      console.log('New message received:', newMessage);
+
       // 새 메시지 구조 설정
       const newMessageData: Message = {
         ...newMessage,
-        sendStatus: 'sent',
+        status: 'sent',
       };
 
       setMessages((prevMessages) => {
+        console.log(`
+          이제부터 메시지 배열을 업데이트합니다.
+          이전 메시지 수: ${prevMessages.length},
+          새 메시지: ${JSON.stringify(newMessageData)}
+        `);
+
         // 새 메시지와 기존 메시지를 병합한 후 최신 메시지가 아래로 가도록 내림차순 정렬
         const updatedMessages = [newMessageData, ...prevMessages].sort((a, b) => {
           const dateA = parseDate(a.sendTime || a.createdAt).getTime();
@@ -127,12 +136,11 @@ const ChatDetail: React.FC = () => {
   const handleResend = async () => {
     if (!selectedMessage) return;
 
-    // Update sendStatus to 'pending'
     setMessages((prevMessages) =>
-      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, sendStatus: 'pending' } : msg)),
+      prevMessages.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'pending' } : msg)),
     );
     setDisplayedMessages((prevDisplayed) =>
-      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, sendStatus: 'pending' } : msg)),
+      prevDisplayed.map((msg) => (msg.id === selectedMessage.id ? { ...msg, status: 'pending' } : msg)),
     );
 
     try {
@@ -216,17 +224,16 @@ const ChatDetail: React.FC = () => {
       const postcardItem = combinedMessages.splice(postcardIndex, 1);
       combinedMessages.push(postcardItem[0]);
 
-      // 초기 메시지에 sendStatus 추가
       const messagesWithStatus = combinedMessages.map((msg) => ({
         ...msg,
-        sendStatus: msg.senderId === userId ? 'sent' : undefined,
+        status: msg.senderId === userId ? 'sent' : undefined,
       }));
 
       setMessages(messagesWithStatus);
       setDisplayedMessages(messagesWithStatus.slice(0, 100));
     } catch (error) {
       console.error('Failed to fetch chat messages:', error);
-      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard', sendStatus: 'sent' };
+      const postcardWithId = { ...postcard, isPostcard: true, id: 'postcard', status: 'sent' };
       const combinedMessages = [postcardWithId]; // 메시지가 없어도 엽서를 표시
       setMessages(combinedMessages);
       setDisplayedMessages(combinedMessages);
@@ -251,11 +258,9 @@ const ChatDetail: React.FC = () => {
 
     // WebSocketClient에 메시지 전송 상태 콜백 추가
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'SUCCESS' | 'FAIL') => {
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
-      );
+      setMessages((prevMessages) => prevMessages.map((msg) => (msg.id === messageId ? { ...msg, status } : msg)));
       setDisplayedMessages((prevDisplayed) =>
-        prevDisplayed.map((msg) => (msg.id === messageId ? { ...msg, sendStatus: status } : msg)),
+        prevDisplayed.map((msg) => (msg.id === messageId ? { ...msg, status } : msg)),
       );
       if (status === 'FAIL') {
         showToast({ content: '메시지 전송에 실패했습니다. 다시 시도해주세요.' });
@@ -393,7 +398,7 @@ const ChatDetail: React.FC = () => {
       sendTime: new Date().toISOString(),
       isRead: false, // 읽음 상태를 false로 설정
       id: messageId, // Use the unique messageId
-      sendStatus: 'pending',
+      status: 'pending',
     };
     setMessages((prevMessages) => [optimisticMessage, ...prevMessages]);
     setDisplayedMessages((prevDisplayed) => [optimisticMessage, ...prevDisplayed]);
@@ -510,7 +515,7 @@ const ChatDetail: React.FC = () => {
           <S.MessageContent isUserMessage={isUserMessage}>
             {!isUserMessage && <S.MessageUsername>{partner.name}</S.MessageUsername>}
             <S.MessageRow isUserMessage={isUserMessage}>
-              {isUserMessage && item.sendStatus === 'sent' && (
+              {isUserMessage && item.status === 'sent' && (
                 <S.isReadIcon
                   source={
                     isRead
@@ -519,18 +524,18 @@ const ChatDetail: React.FC = () => {
                   }
                 />
               )}
-              {isUserMessage && item.sendStatus === 'FAIL' && (
+              {isUserMessage && item.status === 'FAIL' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
                 </TouchableOpacity>
               )}
-              {isUserMessage && item.sendStatus === 'FAIL' && (
+              {isUserMessage && item.status === 'FAIL' && (
                 <TouchableOpacity onPress={() => handleResendMessage(item)}>
                   <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
                 </TouchableOpacity>
               )}
               {/* Modify the timestamp rendering condition here */}
-              {isUserMessage && item.sendStatus !== 'FAIL' && (
+              {isUserMessage && item.status !== 'FAIL' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
               )}
               <TouchableOpacity
@@ -539,7 +544,7 @@ const ChatDetail: React.FC = () => {
                 }}
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
-                <S.MessageBubble isUserMessage={isUserMessage} sendStatus={item.sendStatus}>
+                <S.MessageBubble isUserMessage={isUserMessage} sendStatus={item.status}>
                   <S.MessageText isUserMessage={isUserMessage}>{item.content || item.text}</S.MessageText>
                 </S.MessageBubble>
               </TouchableOpacity>
@@ -617,16 +622,14 @@ const ChatDetail: React.FC = () => {
           <S.InputContainer>
             <TextInput
               value={inputMessage}
-              onChangeText={setInputMessage}
+              onChangeText={(text) => {
+                setInputMessage(text);
+                setInputHasValue(text.trim().length > 0);
+              }}
               placeholder="메시지 보내기"
               style={{ flex: 1, padding: 10 }}
-              onFocus={() => setInputFocused(true)} // 입력 필드가 활성화되었을 때 호출
-              onBlur={() => setInputFocused(false)} // 입력 필드가 비활성화되었을 때 호출
             />
-            <S.SendButton
-              onPress={handleSendMessage}
-              style={{ opacity: inputFocused ? 1 : 0.5 }} // inputFocused 상태에 따라 투명도 조정
-            >
+            <S.SendButton onPress={handleSendMessage} style={{ opacity: inputHasValue ? 1 : 0.5 }}>
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
             </S.SendButton>
           </S.InputContainer>
