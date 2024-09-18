@@ -1,3 +1,5 @@
+// @screens/Chat/ChatDetail.tsx
+
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
 import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
@@ -84,34 +86,18 @@ const ChatDetail: React.FC = () => {
 
       const newMessageData: Message = {
         ...newMessage,
-        status: 'SUCCESS',
+        status: 'SUCCESS', // 수신한 메시지의 상태를 SUCCESS로 설정
       };
-
-      // 기존 메시지들 중에서 id가 같은 메시지 대치
-      const updatedMessages = messages.map((msg) => (msg.id === newMessageData.id ? newMessageData : msg));
 
       console.log(`
         ====================
-        Messages Updated
-        messages: ${JSON.stringify(updatedMessages)}
-        =================
+        New Message Data
+        newMessageData: ${JSON.stringify(newMessageData)}
+        ====================
       `);
 
-      setMessages((prevMessages) => {
-        const updatedMessages = [newMessageData, ...prevMessages].sort((a, b) => {
-          const dateA = parseDate(a.sendTime || a.createdAt).getTime();
-          const dateB = parseDate(b.sendTime || b.createdAt).getTime();
-          return dateB - dateA;
-        });
-
-        const updatedDisplayedMessages = updatedMessages.reduce<Message[]>((acc, msg, index) => {
-          acc.push(msg);
-          return acc;
-        }, []);
-
-        setDisplayedMessages(updatedDisplayedMessages);
-        return updatedMessages;
-      });
+      setMessages((prevMessages) => [newMessageData, ...prevMessages]);
+      setDisplayedMessages((prevDisplayed) => [newMessageData, ...prevDisplayed]);
 
       flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
     },
@@ -253,6 +239,7 @@ const ChatDetail: React.FC = () => {
 
     return () => {
       WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), false);
+      WebSocketClient.unsubscribe(`/topic/chat/${userId.toString()}` as string);
       WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId.toString()}` as string);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
@@ -367,17 +354,6 @@ const ChatDetail: React.FC = () => {
       id: messageId,
     };
 
-    const optimisticMessage: Message = {
-      ...message,
-      senderId: userId,
-      chatRoomId: chatRoomID,
-      sendTime: new Date().toISOString(),
-      isRead: false,
-      id: messageId,
-      status: 'PENDING',
-    };
-    setMessages((prevMessages) => [optimisticMessage, ...prevMessages]);
-    setDisplayedMessages((prevDisplayed) => [optimisticMessage, ...prevDisplayed]);
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
 
     WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);

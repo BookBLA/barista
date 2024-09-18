@@ -30,7 +30,7 @@ class WebSocketClientDirect {
     this.sendMessageStatusCallbacks.push(callback);
   }
 
-  private emitSendMessageStatus(messageId: string, status: 'sent' | 'failed') {
+  private emitSendMessageStatus(messageId: string, status: 'SUCCESS' | 'FAIL' | 'PENDING') {
     console.log(`emitSendMessageStatus called with messageId: ${messageId}, status: ${status}`);
     this.sendMessageStatusCallbacks.forEach((callback) => callback(messageId, status));
   }
@@ -113,17 +113,17 @@ class WebSocketClientDirect {
         this.stompClient.publish({ destination: endpoint, body: message });
         console.log('STOMP message sent:', message);
 
-        // Do not emit 'sent' here. Wait for server acknowledgment.
-        this.emitSendMessageStatus(messageId, 'sent');
+        // 메시지 전송 후 상태를 PENDING으로 설정
+        this.emitSendMessageStatus(messageId, 'PENDING');
       } catch (error) {
         console.error('Failed to send STOMP message:', message, 'Error:', error);
-        // Emit 'failed' status if sending fails
-        this.emitSendMessageStatus(messageId, 'failed');
+        // 실패한 경우 상태를 FAIL로 설정
+        this.emitSendMessageStatus(messageId, 'FAIL');
       }
     } else {
       console.error('Cannot send message, STOMP is not connected. Message data:', data);
-      // Emit 'failed' status if not connected
-      this.emitSendMessageStatus(data.id, 'failed'); // Ensure data has 'id'
+      // 연결이 안 된 경우 상태를 FAIL로 설정
+      this.emitSendMessageStatus(data.id, 'FAIL');
     }
   };
 
@@ -134,23 +134,24 @@ class WebSocketClientDirect {
     }
 
     if (this.isConnected && this.stompConnected && this.stompClient) {
-      const endpoint = `/app/chat/${roomId}`; // roomId 사용
+      const endpoint = `/app/chat/${roomId}`;
       const messageData = {
         content: message.text,
         senderId: parseInt(memberId),
         chatRoomId: parseInt(roomId),
         sendTime: new Date().toISOString(),
-        id: messageId, // Include the messageId for tracking
+        id: messageId,
       };
 
       console.log('Preparing to send chat message to endpoint:', endpoint);
       console.log('Message data:', messageData);
 
+      // 메시지 전송을 PENDING 상태로 설정
       try {
         this.sendMessage(endpoint, messageData, messageId);
       } catch (error) {
         console.error('Error sending STOMP message to', endpoint, 'with data:', messageData, 'Error:', error);
-        this.emitSendMessageStatus(messageId, 'failed');
+        this.emitSendMessageStatus(messageId, 'FAIL');
       }
     } else {
       console.error(
@@ -161,8 +162,7 @@ class WebSocketClientDirect {
         'Message:',
         message,
       );
-      // Emit 'failed' status if not connected
-      this.emitSendMessageStatus(message.id, 'failed'); // Ensure message has 'id'
+      this.emitSendMessageStatus(message.id, 'FAIL');
     }
   };
 
@@ -177,24 +177,28 @@ class WebSocketClientDirect {
       return;
     }
 
-    const subscription = this.stompClient.subscribe(topic, (message) => {
-      const decodedMessage = message.body;
-      console.log('STOMP message received:', decodedMessage);
-      const parsedMessage = JSON.parse(decodedMessage);
+    console.log(`Subscribing to topic: ${topic}`); // 구독을 시도하는지 확인
 
-      // Acknowledgement message check
-      if ('status' in parsedMessage && 'id' in parsedMessage) {
-        const status = parsedMessage.status === 'SUCCESS' ? 'SUCCESS' : 'FAIL';
-        this.emitSendMessageStatus(parsedMessage.id, status);
-      } else {
-        // Log message to check if handleNewMessage is being called
-        console.log('Calling handleNewMessage with:', parsedMessage);
+    const subscription = this.stompClient.subscribe(topic, (message) => {
+      // 메시지 수신 로그
+      console.log('Message received in subscription:', message.body);
+
+      try {
+        const decodedMessage = message.body;
+        const parsedMessage = JSON.parse(decodedMessage);
+
+        console.log('Parsed message:', parsedMessage);
+
+        // handleNewMessage 호출
+        console.log('Calling handleNewMessage...');
         handleNewMessage(parsedMessage);
+      } catch (error) {
+        console.error('Error parsing or handling message:', error);
       }
     });
 
     this.subscriptions.set(topic, subscription);
-    console.log(`Subscribed to ${topic}`);
+    console.log(`Subscribed to ${topic}`); // 구독이 정상적으로 완료되었는지 확인
   }
 
   private handleIncomingMessage = (data: string, handleNewMessage: (message: any) => void) => {

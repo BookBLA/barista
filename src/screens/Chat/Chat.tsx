@@ -98,7 +98,10 @@ const ChatScreen: React.FC = () => {
     connectWebSocket();
 
     // 컴포넌트 언마운트 시 WebSocket 구독 해제 및 연결 해제
-    return () => {};
+    return () => {
+      WebSocketClient.unsubscribe('chat', memberID.toString());
+      WebSocketClient.disconnect();
+    };
   }, [memberID, handleNewMessage]);
 
   const openModal = (chat: ChatType) => {

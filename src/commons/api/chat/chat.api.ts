@@ -6,13 +6,6 @@ export const fetchChatList = async () => {
   try {
     const response = await Get('chat/room');
 
-    console.log(`
-    ========================
-    ChatScreen.tsx: fetchChatList
-    response: ${JSON.stringify(response)}
-    =================
-      `);
-
     return response;
   } catch (error) {
     console.error('Error fetching chat list:', error);
@@ -25,6 +18,12 @@ export const fetchChatMessages = async (roomId: string, page: number, size: numb
   try {
     // 실제 API 요청 부분
     const response = await Get(`chat?roomId=${roomId}&page=${page}&size=${size}`);
+
+    console.log(`
+      ===== fetchChatMessages =====
+      response: ${JSON.stringify(response)}
+      =================
+      `);
 
     return response;
   } catch (error) {
