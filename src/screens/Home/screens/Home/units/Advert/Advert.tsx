@@ -6,8 +6,11 @@ import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 import { number } from 'yup';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 const Advert = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const [admobCount, setAdmobCount] = useState<number>(0);
 
   const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
@@ -24,14 +27,6 @@ const Advert = () => {
   console.log('admobCount', admobCount);
 
   useEffect(() => {
-    try {
-      getReloadAdmobCount().then((res) => {
-        setAdmobCount(res.newPersonAdmobCount ?? 0);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
       setLoaded(true);
       console.log('Ad loaded');
@@ -39,30 +34,42 @@ const Advert = () => {
 
     const unsubscribeEarned = rewarded.addAdEventListener(RewardedAdEventType.EARNED_REWARD, (reward) => {
       console.log('User earned reward of ', reward);
+      postReloadAdmobUse('NEW_PERSON').then((res) => {
+        setAdmobCount(res.newPersonAdmobCount ?? 0);
+      });
       // TODO: 다른 상대방 불러오는 보상 부여하는 로직 추가
-      if (admobCount > 0) rewarded.load();
     });
+    getAdmobCount();
     rewarded.load();
 
     return () => {
       unsubscribeLoaded();
       unsubscribeEarned();
     };
-  }, []);
+  }, [rewarded]);
+
+  const getAdmobCount = async () => {
+    try {
+      getReloadAdmobCount().then((res) => {
+        setAdmobCount(res.newPersonAdmobCount ?? 0);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleGetRewardedAds = async () => {
     if (loaded) {
       try {
         rewarded.show();
-        postReloadAdmobUse('NEW_PERSON').then((res) => {
-          setAdmobCount(res.newPersonAdmobCount ?? 0);
-        });
       } catch {
         rewarded.load();
+        showToast({
+          content: '광고가 로딩중입니다.',
+        });
       }
     } else {
       console.log('Ad is not loaded yet, loading ad...');
-      rewarded.load();
     }
   };
 

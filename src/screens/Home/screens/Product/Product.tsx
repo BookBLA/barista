@@ -220,6 +220,9 @@ const Product = () => {
           rewarded.show();
         } catch {
           rewarded.load();
+          showToast({
+            content: '광고가 로딩중입니다.',
+          });
         }
       } else {
         console.log('Ad is not loaded yet, loading ad...');
