@@ -53,7 +53,6 @@ class WebSocketClientDirect {
         console.log('STOMP connection established:', frame);
         this.isConnected = true;
         this.stompConnected = true;
-        this.subscribe(roomId, memberId, this.handleNewMessage.bind(this));
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
