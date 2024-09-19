@@ -2,9 +2,9 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  overlay: {
+  modalOverlay: {
     flex: 1,
-    justifyContent: 'flex-end', // 화면 하단에 위치하도록 설정
+    justifyContent: 'flex-end', // 화면 하단에 고정
   },
   modalContainer: {
     width: '100%',
@@ -13,6 +13,7 @@ export const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     alignItems: 'center',
+    height: 180,
   },
   title: {
     fontSize: 14,

@@ -2,7 +2,7 @@ import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; /
 import useToastStore from '@commons/store/ui/toast/useToastStore'; // 토스트 메시지를 띄우기 위한 훅
 import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import React, { useCallback } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Modal, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './ChatRequestModal.styles';
 import { ChatRequestModalProps } from './ChatRequestModal.types';
 
@@ -34,40 +34,37 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
   }, [onAccept]);
 
   return (
-    // View를 이용해 Modal처럼 화면에 덮어 씌움
-    <View
-      style={{
-        width: '100%',
-        position: 'absolute',
-        bottom: 0,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      pointerEvents="box-none" // 모달 바깥 터치가 가능하도록 설정
+    <Modal
+      visible={visible}
+      animationType="slide" // 슬라이드 애니메이션으로 모달 표시
+      transparent // 배경을 투명하게 설정
+      onRequestClose={onDecline} // 안드로이드 뒤로가기 버튼을 눌렀을 때 모달 닫기
+      // 하단에 위치하도록 설정
     >
-      <View style={[styles.modalContainer]}>
-        <Text style={styles.title}>{partner.name}님의 매칭 요청을 수락하시겠어요?</Text>
-        <Text style={styles.description}>
-          수락하면 책갈피 30개가 사용되며 채팅이 시작됩니다. 채팅이 시작되면 받은 엽서 목록에서 사라지며 채팅방으로
-          이동됩니다. 엽서를 받고 3일 동안 응답하지 않으면 자동으로 거절됩니다.
-        </Text>
+      <View style={styles.modalOverlay}>
+        <View style={styles.modalContainer}>
+          <Text style={styles.title}>{partner.name}님의 매칭 요청을 수락하시겠어요?</Text>
+          <Text style={styles.description}>
+            수락하면 책갈피 30개가 사용되며 채팅이 시작됩니다. 채팅이 시작되면 받은 엽서 목록에서 사라지며 채팅방으로
+            이동됩니다. 엽서를 받고 3일 동안 응답하지 않으면 자동으로 거절됩니다.
+          </Text>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.reportButton} onPress={onReport}>
-            <Text style={styles.reportButtonText}>신고</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.reportButton} onPress={onReport}>
+              <Text style={styles.reportButtonText}>신고</Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity style={styles.declineButton} onPress={onDecline}>
-            <Text style={styles.declineButtonText}>거절</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.declineButton} onPress={onDecline}>
+              <Text style={styles.declineButtonText}>거절</Text>
+            </TouchableOpacity>
 
-          {/* 수락 버튼에 수락 기능 연결 */}
-          <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
-            <Text style={styles.acceptButtonText}>수락</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.acceptButton} onPress={handleAccept}>
+              <Text style={styles.acceptButtonText}>수락</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
-    </View>
+    </Modal>
   );
 };
 
