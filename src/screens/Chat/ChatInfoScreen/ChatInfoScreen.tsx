@@ -37,13 +37,14 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
     try {
       await exitChatRoom(chatRoomID);
       setIsExitConfirmVisible(false);
-      navigation.navigate('Chat', { exitedChatRoomId: chatRoomID });
     } catch (error) {
       console.error('Failed to exit chat room:', error);
     }
   };
 
   const confirmExitChat = () => {
+    navigation.navigate('chat');
+
     setIsExitConfirmVisible(true);
   };
 
@@ -75,10 +76,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
 
         <TouchableOpacity
           style={styles.optionItem}
-          onPress={movePage('library', {
-            memberId: partner.id,
-            isYourLibrary: true,
-          })}
+          onPress={() => navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: false })}
         >
           <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
           <Text style={styles.optionText}>서재 구경하기</Text>
