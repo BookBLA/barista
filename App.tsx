@@ -41,7 +41,7 @@ export default function App() {
   return (
     <FontLoader>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {/*<UpdateModal />*/}
+        <UpdateModal />
         <BottomSheetModalProvider>
           <SafeAreaProvider style={{ flex: 1 }}>
             <StatusBar style={isLight} translucent />
