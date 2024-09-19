@@ -636,6 +636,7 @@ const ChatDetail: React.FC = () => {
               onDecline={() => setIsDeclineModalVisible(true)}
               onReport={handleReport}
               postcard={postcard}
+              partner={partner}
             />
           )}
 
