@@ -59,6 +59,7 @@ const ChatDetail: React.FC = () => {
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
   const [inputFocused, setInputFocused] = useState(false);
+  const [patnerIsConnected, setPartnerIsConnected] = useState(false);
   const messageRefs = useRef<{ [key: string]: View | null }>({});
   const [isResendModalVisible, setIsResendModalVisible] = useState(false);
   const flatListRef = useRef<FlatList<any>>(null);
@@ -173,6 +174,9 @@ const ChatDetail: React.FC = () => {
 
   const handleConnectionStatus = (statusMessage: any) => {
     if (statusMessage.status === 'CONNECTED') {
+      // 앞으로 상대방이 나가기 전까지 모든 메시지를 읽음 처리
+      setPartnerIsConnected(true);
+
       setMessages((prevMessages) =>
         prevMessages.map((msg) => ({
           ...msg,
@@ -185,6 +189,8 @@ const ChatDetail: React.FC = () => {
           isRead: true,
         })),
       );
+    } else if (statusMessage.status === 'DISCONNECTED') {
+      setPartnerIsConnected(false);
     }
   };
 
@@ -448,7 +454,7 @@ const ChatDetail: React.FC = () => {
                 {isUserMessage && (
                   <S.isReadIcon
                     source={
-                      isRead && item.status
+                      patnerIsConnected || (isRead && item.status)
                         ? require('@assets/images/icons/ReadMessage.png')
                         : require('@assets/images/icons/UnreadMessage.png')
                     }
@@ -504,7 +510,7 @@ const ChatDetail: React.FC = () => {
               {isUserMessage && item.status === 'SUCCESS' && (
                 <S.isReadIcon
                   source={
-                    isRead
+                    patnerIsConnected || isRead
                       ? require('@assets/images/icons/ReadMessage.png')
                       : require('@assets/images/icons/UnreadMessage.png')
                   }
