@@ -29,6 +29,12 @@ export const ChatName = styled.Text`
   color: #333;
 `;
 
+export const isAlertIcon = styled.Image`
+  margin-left: 5px;
+  width: 15px;
+  height: 15px;
+`;
+
 export const LastMessage = styled.Text`
   font-size: 14px;
   color: #888;

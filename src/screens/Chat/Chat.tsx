@@ -181,7 +181,13 @@ const ChatScreen: React.FC = () => {
           >
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
-              <S.ChatName>{item.name}</S.ChatName>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <S.ChatName>{item.name}</S.ChatName>
+                <S.isAlertIcon
+                  source={require('@assets/images/icons/unactive_alert.png')}
+                  style={{ display: item.isAlert ? 'flex' : 'none' }}
+                />
+              </View>
               <S.LastMessage>
                 {item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 15)}...` : item.lastMessage}
               </S.LastMessage>
