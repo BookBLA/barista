@@ -106,7 +106,6 @@ export const EmptyWrapper = styled.View`
 `;
 
 export const EmptyText = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   text-align: center;
-  margin-top: 10px;
 `;
