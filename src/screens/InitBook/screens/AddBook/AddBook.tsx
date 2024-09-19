@@ -77,8 +77,20 @@ const AddBook = () => {
           </>
         </S.ColumnStyled>
       </ScrollView>
-      <S.NextButtonStyled onPress={nextPage} disabled={dataLength === 0}>
-        <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>완료</Text>
+      <S.NextButtonStyled
+        onPress={nextPage}
+        disabled={dataLength === 0}
+        style={{ backgroundColor: dataLength === 0 ? colors.buttonNavStroke : colors.primary }}
+      >
+        <Text
+          style={{
+            color: dataLength === 0 ? colors.textGray2 : colors.secondary,
+            fontFamily: 'fontMedium',
+            fontSize: 16,
+          }}
+        >
+          완료
+        </Text>
       </S.NextButtonStyled>
     </S.Wrapper>
   );
