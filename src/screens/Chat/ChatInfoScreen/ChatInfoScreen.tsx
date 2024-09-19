@@ -90,7 +90,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItem} onPress={confirmExitChat}>
-          <Image source={require('@assets/images/icons/color_exit.png')} style={{ width: 24, height: 24 }} />
+          <Image source={require('@assets/images/icons/exit_red.png')} style={{ width: 24, height: 24 }} />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>
       </View>
