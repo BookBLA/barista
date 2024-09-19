@@ -1,11 +1,12 @@
-import { useEffect, useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { useEffect, useRef } from 'react';
 import { BackHandler } from 'react-native';
 
 export const useBottomSheet = () => {
   const bottomRef = useRef<BottomSheetModal>(null);
 
   const handleOpenBottomSheet = () => {
+    console.log('handleOpenBottomSheet');
     bottomRef.current?.present();
   };
 
