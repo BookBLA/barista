@@ -190,7 +190,8 @@ export const ScrollToBottomButton = styled.TouchableOpacity`
 // 입력 창 스타일
 export const InputContainer = styled.View`
   flex-direction: row;
-  padding: ${spacing.small};
+  padding-vertical: 20px;
+  padding-horizontal: 10px;
   border-top-width: 1px;
   border-top-color: ${colors.borderColor};
 `;
@@ -217,19 +218,18 @@ export const SendButtonIcon = styled.Image`
   height: 24px;
 `;
 
-// 날짜 구분자 스타일
 export const DateSeparator = styled.View`
   align-items: center;
   margin-vertical: 15px;
 `;
 
 export const DateText = styled.Text`
+  border-radius: 20px;
   font-size: 12px;
-  color: #666666;
-  background-color: #f0f0f0;
-  padding-vertical: 3px;
-  padding-horizontal: 8px;
-  border-radius: 10px;
+  color: #ffffff;
+  background: #a8aab2;
+  padding-vertical: 4px;
+  padding-horizontal: 10px;
 `;
 
 // 로딩 인디케이터 스타일
@@ -268,13 +268,11 @@ export const ModalTitle = styled.Text`
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
-  text-align: center;
 `;
 
 export const ModalDescription = styled.Text`
   margin-bottom: 20px;
   color: #555;
-  text-align: center;
 `;
 
 export const ModalButtonContainer = styled.View`
@@ -295,6 +293,7 @@ export const DeclineButton = styled.TouchableOpacity`
 export const DeclineButtonText = styled.Text`
   color: #333;
   font-weight: bold;
+  font-size: 14px;
 `;
 
 export const ReviewButton = styled.TouchableOpacity`
@@ -306,7 +305,8 @@ export const ReviewButton = styled.TouchableOpacity`
 `;
 
 export const ReviewButtonText = styled.Text`
-  color: white;
+  color: #ffebac;
+  font-size: 14px;
   font-weight: bold;
 `;
 

@@ -696,7 +696,9 @@ const ChatDetail: React.FC = () => {
               <S.DeclineModal>
                 <S.ModalTitle>엽서를 거절하시겠어요?</S.ModalTitle>
                 <S.ModalDescription>
-                  엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
+                  엽서를 거절하면 받은 엽서 목록에서 사라집니다.
+                  {'\n'}
+                  엽서를 다시 확인해보세요.
                 </S.ModalDescription>
                 <S.ModalButtonContainer>
                   <S.DeclineButton onPress={handleDecline}>
