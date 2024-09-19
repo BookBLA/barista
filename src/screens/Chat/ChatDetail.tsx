@@ -14,7 +14,6 @@ import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal'
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
 import {
   Animated,
   Clipboard,
@@ -29,6 +28,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
@@ -45,6 +45,7 @@ const ChatDetail: React.FC = () => {
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
   const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
@@ -58,7 +59,6 @@ const ChatDetail: React.FC = () => {
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [inputFocused, setInputFocused] = useState(false);
   const [patnerIsConnected, setPartnerIsConnected] = useState(false);
   const messageRefs = useRef<{ [key: string]: View | null }>({});
   const [isResendModalVisible, setIsResendModalVisible] = useState(false);
@@ -68,6 +68,9 @@ const ChatDetail: React.FC = () => {
   const showToast = useToastStore((state) => state.showToast);
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const userId = parseInt(memberInfo?.id);
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0); // 키보드 높이 상태 추가
+  const insets = useSafeAreaInsets(); // 안전 영역 인셋
 
   const parseDate = (dateString: string | undefined) => {
     if (!dateString) {
@@ -122,21 +125,18 @@ const ChatDetail: React.FC = () => {
     `);
 
     try {
-      // Remove the selected message by index from messages
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages];
         newMessages.splice(selectedMessageIndex, 1);
         return newMessages;
       });
 
-      // Similarly, remove the selected message from displayedMessages
       setDisplayedMessages((prevDisplayed) => {
         const newDisplayed = [...prevDisplayed];
         newDisplayed.splice(selectedMessageIndex, 1);
         return newDisplayed;
       });
 
-      // Resend the message via WebSocket
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
@@ -149,7 +149,6 @@ const ChatDetail: React.FC = () => {
 
       showToast({ content: '메시지를 다시 보냈습니다.' });
     } catch (error) {
-      // If resending fails, re-add the message to the arrays
       setMessages((prevMessages) => [selectedMessage, ...prevMessages]);
       setDisplayedMessages((prevDisplayed) => [selectedMessage, ...prevDisplayed]);
 
@@ -181,9 +180,7 @@ const ChatDetail: React.FC = () => {
 
   const handleConnectionStatus = (statusMessage: any) => {
     if (statusMessage.status === 'CONNECTED') {
-      // 앞으로 상대방이 나가기 전까지 모든 메시지를 읽음 처리
       setPartnerIsConnected(true);
-
       setMessages((prevMessages) =>
         prevMessages.map((msg) => ({
           ...msg,
@@ -207,7 +204,8 @@ const ChatDetail: React.FC = () => {
 
   const loadChatMessages = useCallback(async () => {
     try {
-      const response = await fetchChatMessages(chatRoomID, 0, 100);
+      setPage((prevPage) => prevPage + 1);
+      const response = await fetchChatMessages(chatRoomID, page, 100);
       let fetchedMessages: ChatMessage[] = [];
 
       if (response.isSuccess && response.result.content.length > 0) {
@@ -309,20 +307,32 @@ const ChatDetail: React.FC = () => {
     navigation.goBack();
   };
 
-  const loadMoreMessages = () => {
+  const loadMoreMessages = async () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
+
     setLoadingMore(true);
-    const currentLength = displayedMessages.length;
-    const additionalMessages = messages.slice(currentLength, currentLength + 100);
-    setDisplayedMessages((prev) => [...prev, ...additionalMessages]);
 
-    const postcardIndex = additionalMessages.findIndex((item) => item.id === 'postcard');
-    if (postcardIndex !== -1) {
-      const postcardItem = additionalMessages.splice(postcardIndex, 1);
-      setDisplayedMessages((prev) => [postcardItem[0], ...prev]);
+    try {
+      const response = await fetchChatMessages(chatRoomID, page + 1, 100); // 다음 페이지 요청
+      if (response.isSuccess && response.result.content.length > 0) {
+        const newMessages: ChatMessage[] = response.result.content;
+
+        const updatedMessages = [...messages, ...newMessages];
+        updatedMessages.sort(
+          (a, b) => parseDate(b.timestamp || b.createdAt).getTime() - parseDate(a.timestamp || a.createdAt).getTime(),
+        );
+
+        setMessages(updatedMessages);
+        setDisplayedMessages((prevDisplayed) => [...prevDisplayed, ...newMessages]);
+
+        setPage((prevPage) => prevPage + 1);
+      }
+    } catch (error) {
+      console.error('추가 메시지를 불러오는 중 오류가 발생했습니다:', error);
+      showToast({ content: '추가 메시지를 불러오는 중 오류가 발생했습니다.' });
+    } finally {
+      setLoadingMore(false);
     }
-
-    setLoadingMore(false);
   };
 
   const handleLongPress = (event: any, message: Message, index: number) => {
@@ -351,7 +361,7 @@ const ChatDetail: React.FC = () => {
         });
 
         setSelectedMessage(message);
-        setSelectedMessageIndex(index); // Set the selected message index
+        setSelectedMessageIndex(index);
         setCopyModalVisible(true);
       });
     }
@@ -385,7 +395,6 @@ const ChatDetail: React.FC = () => {
     setInputMessage('');
     setInputHasValue(false);
 
-    // 만약 네트워크 연결 안되어 있으면 실패 상태로 설정
     if (!WebSocketClient.isConnected) {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -410,11 +419,9 @@ const ChatDetail: React.FC = () => {
 
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
     const isPostcardItem = item.isPostcard;
-
     const isUserMessage = (isPostcardItem && item.senderId === userId) || item.senderId === userId;
 
     const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
-
     const isRead = item.isRead;
 
     const currentItemDate = parseDate(item.sendTime || item.createdAt).toDateString();
@@ -556,7 +563,7 @@ const ChatDetail: React.FC = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={15}
+        keyboardVerticalOffset={insets.top} // 안전 영역을 고려한 오프셋 추가
       >
         <S.Wrapper>
           <S.Header>
@@ -597,7 +604,7 @@ const ChatDetail: React.FC = () => {
                     <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
                     <S.LibraryButton
                       onPress={() =>
-                        navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: true })
+                        navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: false })
                       }
                     >
                       <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
@@ -622,7 +629,15 @@ const ChatDetail: React.FC = () => {
                 setInputHasValue(text.trim().length > 0);
               }}
               placeholder="메시지 보내기"
-              style={{ flex: 1, padding: 10 }}
+              // style={{ flex: 1, padding: 10, background: #ecedef }}
+              style={{
+                flex: 1,
+                // padding: '10 20',
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: '#ecedef',
+                borderRadius: 20,
+              }}
             />
             <S.SendButton onPress={handleSendMessage} style={{ opacity: inputHasValue ? 1 : 0.5 }}>
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
