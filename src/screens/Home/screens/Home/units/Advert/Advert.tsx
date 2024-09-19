@@ -14,11 +14,10 @@ const Advert = () => {
   const [admobCount, setAdmobCount] = useState<number>(0);
 
   const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
-  const adUnitId = __DEV__
-    ? TestIds.REWARDED
-    : Platform.OS === 'ios'
-      ? advertiseUnitJson.ios.reload_new_person
-      : advertiseUnitJson.android.reload_new_person;
+  const platform =
+    Platform.OS === 'ios' ? advertiseUnitJson.ios.reload_new_person : advertiseUnitJson.android.reload_new_person;
+  const adUnitId = platform === 'test' ? TestIds.REWARDED : platform;
+  console.log(adUnitId);
 
   const rewarded = RewardedAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
