@@ -165,11 +165,10 @@ const Product = () => {
   }, []);
 
   const advertiseUnitJson = JSON.parse(`${process.env.EXPO_PUBLIC_GOOGLE_ADMOB_ADVERTISE_UNIT}`);
-  const adUnitId = __DEV__
-    ? TestIds.REWARDED
-    : Platform.OS === 'ios'
-      ? advertiseUnitJson.ios.reload_new_person
-      : advertiseUnitJson.android.reload_new_person;
+  const platform =
+    Platform.OS === 'ios' ? advertiseUnitJson.ios.attendance_bookmark : advertiseUnitJson.android.attendance_bookmark;
+  const adUnitId = platform === 'test' ? TestIds.REWARDED : platform;
+  console.log(adUnitId);
 
   const rewarded = RewardedAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
@@ -216,6 +215,9 @@ const Product = () => {
           rewarded.show();
         } catch {
           rewarded.load();
+          showToast({
+            content: '광고가 로딩중입니다.',
+          });
         }
       } else {
         console.log('Ad is not loaded yet, loading ad...');

@@ -11,7 +11,6 @@ import { CustomNavigator } from './src/commons/components/Navigations/CustomNavi
 import toastConfig from './src/commons/configs/toast/toastConfig';
 import mobileAds from 'react-native-google-mobile-ads';
 
-// import * as Core from '@react-native-kakao/core';
 // import { INJECTED_JAVASCRIPT } from './src/screens/Login/LoginStack.constants';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -41,7 +40,7 @@ export default function App() {
   return (
     <FontLoader>
       <GestureHandlerRootView style={{ flex: 1 }}>
-        {/*<UpdateModal />*/}
+        <UpdateModal />
         <BottomSheetModalProvider>
           <SafeAreaProvider style={{ flex: 1 }}>
             <StatusBar style={isLight} translucent />

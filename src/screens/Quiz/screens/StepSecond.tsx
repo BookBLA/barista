@@ -1,5 +1,4 @@
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { Image, Keyboard, Text, View } from 'react-native';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
@@ -53,7 +52,7 @@ const StepSecond = () => {
   useHeaderControl({ title: '독서 퀴즈' });
   return (
     <>
-      <S.Wrapper style={{ alignItems: 'center' }}>
+      <T.Wrapper onPress={() => Keyboard.dismiss()} style={{ alignItems: 'center' }}>
         <T.StepProgressBar>
           <T.StepLineSecond />
           <T.StepImage>
@@ -103,7 +102,7 @@ const StepSecond = () => {
             <T.NextButtonText>다음</T.NextButtonText>
           </T.NextButton>
         )}
-      </S.Wrapper>
+      </T.Wrapper>
     </>
   );
 };

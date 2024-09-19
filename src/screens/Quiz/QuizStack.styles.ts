@@ -3,6 +3,16 @@ import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensio
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
 
+export const Wrapper = styled.Pressable`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+  padding: 64px 16px 20px;
+`;
+
 export const StepProgressBar = styled.View`
   margin-top: 15px;
   margin-bottom: 25px;
