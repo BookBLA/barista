@@ -4,8 +4,15 @@ export const Wrapper = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 
-  padding: 14px 0 16px 16px;
+  padding: 14px 16px 16px 16px;
+`;
+
+export const LeftContainer = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 `;
 
 export const LeftWrapper = styled.View`
@@ -26,6 +33,7 @@ export const RightWrapper = styled.View`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 70%;
   height: 48px;
 
   margin-left: 10px;
@@ -50,4 +58,18 @@ export const GenderImage = styled.Image`
   height: 20px;
 
   object-fit: fill;
+`;
+
+export const IconButton = styled.TouchableOpacity`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ReportIconImage = styled.Image`
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 `;
