@@ -20,3 +20,6 @@ export const AGREEMENT_MAIN_URL = 'https://rust-sprite-73f.notion.site/fead23d9d
 export const NOTICE_URL = 'http://pf.kakao.com/_BbqUG/chat';
 
 export const EVENT_URL = 'http://pf.kakao.com/_BbqUG';
+export const csCenterUrl = 'http://pf.kakao.com/_BbqUG/chat';
+
+export const eventNoticeUrl = 'http://pf.kakao.com/_BbqUG';

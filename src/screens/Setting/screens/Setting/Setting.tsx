@@ -5,7 +5,7 @@ import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomMod
 import { CustomSwitch } from '@commons/components/Inputs/CustomSwitch/CustomSwitch';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
-import { AGREEMENT_MAIN_URL, EVENT_URL, NOTICE_URL } from '@commons/contents/agreement/agreementUrls';
+import { agreementMainUrl, noticeUrl } from '@commons/contents/agreement/agreementUrls';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -75,7 +75,7 @@ const Setting = () => {
               매칭
             </CustomText>
           </S.MenuButton>
-          <S.MenuButton onPress={handleLinkPress(NOTICE_URL)}>
+          <S.MenuButton onPress={handleLinkPress(noticeUrl)}>
             <S.MenuImage source={Support} />
             <CustomText color={colors.primary} size="14px">
               고객센터
@@ -87,7 +87,7 @@ const Setting = () => {
           <CustomText onPress={movePage('account')} margin="16px 0">
             계정
           </CustomText>
-          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(AGREEMENT_MAIN_URL)}>
+          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(agreementMainUrl)}>
             약관 및 정책
           </CustomText>
           <S.BetweenWrapper>
@@ -99,7 +99,7 @@ const Setting = () => {
             </S.RowWrapper>
             <CustomSwitch value={isAlarm} onValueChange={updateAlarmSetting} />
           </S.BetweenWrapper>
-          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(EVENT_URL)}>
+          <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(noticeUrl)}>
             이벤트 및 공지사항
           </CustomText>
           <S.BetweenWrapper>

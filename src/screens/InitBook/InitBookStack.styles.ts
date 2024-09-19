@@ -116,6 +116,10 @@ export const ColumnStyled = styled.View`
   /* background-color: pink; */
 `;
 
+export const searchResultTextArea = styled.View`
+  flex-direction: row;
+`;
+
 export const TextButtonStyled = styled.TouchableOpacity`
   width: auto;
   /* height: 38px; */
