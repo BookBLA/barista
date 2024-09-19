@@ -12,6 +12,7 @@ class WebSocketClientDirect {
   private stompConnected: boolean = false;
   private memberId: string | null = null;
   private subscriptions: Map<string, StompSubscription> = new Map();
+  private handleIncomingMessage: (message: any) => void = () => {};
 
   // Array to hold registered callbacks
   private sendMessageStatusCallbacks: SendMessageStatusCallback[] = [];
@@ -35,7 +36,7 @@ class WebSocketClientDirect {
     this.sendMessageStatusCallbacks.forEach((callback) => callback(messageId, status));
   }
 
-  public connect(memberId: string, roomId: string) {
+  public async connect(memberId: string) {
     if (this.stompConnected) {
       console.log('STOMP already connected');
       return;
@@ -83,7 +84,7 @@ class WebSocketClientDirect {
       return ws;
     };
 
-    this.stompClient.activate();
+    await this.stompClient.activate();
   }
 
   private tryReconnect = () => {
@@ -165,11 +166,13 @@ class WebSocketClientDirect {
     }
   };
 
-  public subscribe(roomId: string, memberId: string, handleNewMessage: (message: any) => void, topic: string) {
+  public subscribe(handleNewMessage: (message: any) => void, topic: string) {
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {
       console.error('Cannot subscribe, STOMP is not connected');
       return;
     }
+
+    this.handleIncomingMessage = handleNewMessage;
 
     if (this.subscriptions.has(topic)) {
       console.log(`Already subscribed to ${topic}`);
@@ -179,18 +182,15 @@ class WebSocketClientDirect {
     console.log(`Subscribing to topic: ${topic}`); // 구독을 시도하는지 확인
 
     const subscription = this.stompClient.subscribe(topic, (message) => {
-      // 메시지 수신 로그
       console.log('Message received in subscription:', message.body);
 
       try {
         const decodedMessage = message.body;
         const parsedMessage = JSON.parse(decodedMessage);
 
-        console.log('Parsed message:', parsedMessage);
-
         // handleNewMessage 호출
         console.log('Calling handleNewMessage...');
-        handleNewMessage(parsedMessage);
+        this.handleIncomingMessage(parsedMessage);
       } catch (error) {
         console.error('Error parsing or handling message:', error);
       }
@@ -199,16 +199,6 @@ class WebSocketClientDirect {
     this.subscriptions.set(topic, subscription);
     console.log(`Subscribed to ${topic}`); // 구독이 정상적으로 완료되었는지 확인
   }
-
-  private handleIncomingMessage = (data: string, handleNewMessage: (message: any) => void) => {
-    try {
-      const parsedData = JSON.parse(data);
-      console.log('Parsed message data:', parsedData);
-      handleNewMessage(parsedData);
-    } catch (error) {
-      console.error('Failed to parse incoming message:', error);
-    }
-  };
 
   public publishConnectionStatus = (roomId: string, memberId: string, status: boolean) => {
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {

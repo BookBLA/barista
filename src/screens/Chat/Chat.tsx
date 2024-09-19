@@ -22,7 +22,7 @@ const ChatScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const memberInfo = useMemberStore((state) => state.memberInfo);
-  const memberID = memberInfo.id;
+  const userId = memberInfo.id;
 
   useHeaderControl({
     title: '채팅',
@@ -77,32 +77,51 @@ const ChatScreen: React.FC = () => {
   );
 
   // 새 메시지를 처리하는 함수
-  const handleNewMessage = useCallback(async (newMessage) => {
+  const handleNewMessage = useCallback(async (newMessage: any) => {
     console.log(`
-    ========================
-    새 메시지 도착
-    newMessage: ${JSON.stringify(newMessage)}
-    =================
+      ====================
+      New message received!123123
+
+      New message: ${JSON.stringify(newMessage)}
+      Before chats: ${JSON.stringify(chats)}
+      ====================
     `);
 
-    loadChats();
+    await loadChats();
+
+    // newMessage.chatRoomId에 해당하는 채팅방의 unreadCount를 1 증가시키고, lastMessage를 업데이트
+    const updatedChats = chats.map((chat) => {
+      if (chat.id === newMessage.chatRoomId.toString()) {
+        return {
+          ...chat,
+          lastMessage: newMessage.content,
+          timestamp: new Date(newMessage.sendTime).toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+          }),
+          unreadCount: chat.unreadCount + 1,
+        };
+      }
+
+      return chat;
+    });
+
+    setChats(updatedChats);
   }, []);
 
   useEffect(() => {
     // WebSocket 연결 설정
-    const connectWebSocket = () => {
-      WebSocketClient.connect(memberID.toString(), 'chat');
-      WebSocketClient.subscribe('chat', memberID.toString(), handleNewMessage, `/topic/chat/${memberID.toString()}`);
+    const connectWebSocket = async () => {
+      WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
     };
 
     connectWebSocket();
 
     // 컴포넌트 언마운트 시 WebSocket 구독 해제 및 연결 해제
     return () => {
-      WebSocketClient.unsubscribe('chat', memberID.toString());
-      WebSocketClient.disconnect();
+      WebSocketClient.unsubscribe(`/topic/chat/${userId.toString()}` as string);
     };
-  }, [memberID, handleNewMessage]);
+  }, [userId, handleNewMessage]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);

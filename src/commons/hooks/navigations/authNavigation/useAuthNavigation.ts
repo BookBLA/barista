@@ -18,10 +18,16 @@ export const useAuthNavigation = () => {
       });
     } else {
       const decodeToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-      const memberId = decodeToken.sub;
+      const userId = decodeToken.sub;
 
-      if (memberId) {
-        WebSocketClient.connect(memberId!);
+      const showInAppNotification = (message: any) => {
+        console.log('Received message:', message);
+      };
+
+      if (userId) {
+        WebSocketClient.connect(userId!);
+
+        WebSocketClient.subscribe(showInAppNotification, `/topic/member/${userId}`);
       }
     }
   }, [token]);

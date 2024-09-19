@@ -79,6 +79,13 @@ const ChatDetail: React.FC = () => {
 
   const handleNewMessage = useCallback(
     (newMessage: any) => {
+      console.log(`
+        ====================
+        New Message Received
+        newMessage: ${JSON.stringify(newMessage)}
+        =================
+      `);
+
       const newMessageData: Message = {
         ...newMessage,
         status: newMessage.status,
@@ -241,14 +248,8 @@ const ChatDetail: React.FC = () => {
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
-    WebSocketClient.connect(userId.toString(), chatRoomID.toString());
-    WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage, `/topic/chat/${userId.toString()}`);
-    WebSocketClient.subscribe(
-      chatRoomID,
-      userId.toString(),
-      handleConnectionStatus,
-      `/topic/chat/room/${chatRoomID}/${userId.toString()}`,
-    );
+    WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
+    WebSocketClient.subscribe(handleConnectionStatus, `/topic/chat/room/${chatRoomID}/${userId.toString()}`);
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'SUCCESS' | 'FAIL') => {
@@ -263,7 +264,6 @@ const ChatDetail: React.FC = () => {
 
     return () => {
       WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), false);
-      WebSocketClient.unsubscribe(`/topic/chat/${userId.toString()}` as string);
       WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId.toString()}` as string);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
