@@ -27,7 +27,7 @@ const useMemberStore = create<IMemberInfo>((set) => ({
     memberType: '',
     memberStatus: '',
     memberGender: '',
-    studentIdImageStatus: EStudentIdImageStatus.WAITING,
+    studentIdImageStatus: null,
     schoolStatus: null,
   },
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
