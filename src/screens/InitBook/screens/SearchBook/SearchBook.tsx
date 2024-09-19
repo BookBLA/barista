@@ -1,7 +1,9 @@
 import Pagination from '@commons/components/Layouts/Pagination/Pagination';
 import { SearchedBookList } from '@commons/components/Lists/SearchedBookList/SearchedBookList';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { CS_CENTTER_URL } from '@commons/contents/agreement/agreementUrls';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { useHandleMoveTop } from '@commons/hooks/ui/handleMoveTop/useHandleMoveTop';
@@ -18,8 +20,6 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import { NoSearch } from './units/NoSearch';
-import { useLinkingOpen } from '@commons/hooks/navigations/linkingOpen/useLinkingOpen';
-import { csCenterUrl } from '@commons/contents/agreement/agreementUrls';
 
 const SearchBook = () => {
   useScreenLogger();
@@ -30,7 +30,7 @@ const SearchBook = () => {
   });
   const handleLinkPress = useLinkingOpen();
   const { movePage } = useMovePage();
-  const csLink = csCenterUrl;
+  const csLink = CS_CENTTER_URL;
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
     usePagination();
