@@ -19,6 +19,17 @@ export const fetchChatList = async () => {
   }
 };
 
+export const fetchPenddingChatList = async () => {
+  try {
+    const response = await Get('chat/room/pending');
+
+    return response;
+  } catch (error) {
+    console.error('Error fetching pending chat list:', error);
+    throw error;
+  }
+};
+
 // fetchChatMessages 함수 수정
 export const fetchChatMessages = async (roomId: string, page: number, size: number) => {
   try {

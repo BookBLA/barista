@@ -13,7 +13,7 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Linking, TouchableOpacity, View } from 'react-native';
 import {
   CircularImage,
@@ -61,6 +61,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isNoPostcardModalVisible, setModalVisible] = useState(false);
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
+  const [penddingChatList, setPenddingChatList] = useState([]);
   const { movePageNoReference } = useMovePage();
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
@@ -69,6 +70,16 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     isOpen,
     studentIdToggle,
   });
+
+  const loadPenddingChat = () => {
+    const response = fetchPenddingChatList();
+
+    setPenddingChatList(response.result);
+  };
+
+  useEffect(() => {
+    loadPenddingChat();
+  }, []);
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -79,15 +90,15 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-    //   movePageNoReference('receivePostcardDetail', rest);
-    // } else {
-    //   if (memberPostcard > 0) {
-    //     toggleCheckBeforeSendPostcardModal();
-    //   } else {
-    //     toggleNoPostcardModal();
-    //   }
-    // }
+    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+      movePageNoReference('receivePostcardDetail', rest);
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
     studentIdToggle;
     console.log('studentIdToggle', studentIdToggle);
   };
@@ -105,7 +116,14 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
+
     movePageNoReference('receivePostcardDetail', rest);
+    // navigation.navigate('ChatDetail', {
+    //   partner: item.partner,
+    //   postcard: item.postcard,
+    //   chatRoomID: Number(item.id),
+    //   isAlert: item.isAlert,
+    // })
   };
 
   const checkBeforeSendPostcardModalConfig = {
