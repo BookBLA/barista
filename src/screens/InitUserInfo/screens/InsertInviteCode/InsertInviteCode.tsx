@@ -103,7 +103,7 @@ const InsertInviteCode = () => {
               >
                 <Text
                   style={{
-                    color: code === '' ? colors.textGray2 : colors.secondary,
+                    color: code === '' || code === null ? colors.textGray2 : colors.secondary,
                     fontFamily: 'fontMedium',
                     fontSize: 16,
                   }}
