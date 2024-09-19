@@ -1,13 +1,22 @@
 import notYetNextButton from '@assets/images/buttons/NotYetNextButton.png';
 import nextButton from '@assets/images/buttons/nextButton.png';
 import prevButton from '@assets/images/buttons/prevButton.png';
+import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
+import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
+import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
+import { useEmailStatusStore } from '@commons/store/members/emailStatus/useEmailStatusStore';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import React, { useState } from 'react';
 import { Image, Text } from 'react-native';
 import * as S from '../../InitUserInfo.styles';
@@ -21,11 +30,13 @@ const GenderBirth = () => {
   });
   useScreenLogger();
   const { isOpen, toggle } = useToggle();
-  const { updateUserInfo, userInfo } = useUserStore();
-  const { movePage } = useMovePage();
+  const { updateUserInfo, userInfo, resetUserInfo } = useUserStore();
+  const { resetAgreement } = useAgreementStore();
+  const { updateMemberInfo } = useMemberStore();
+  const { resetEmailStore } = useEmailStatusStore();
+  const { movePage, handleReset } = useMovePage();
   const [date, setDate] = useState(new Date('2000-01-01'));
-
-  console.log('userInfo', userInfo);
+  const showToast = useToastStore((state) => state.showToast);
 
   const dateSelect = () => {
     const dateString = date.toISOString().slice(0, 10);
@@ -44,6 +55,59 @@ const GenderBirth = () => {
       { label: '취소', action: toggle, color: 'black', bgColor: colors.buttonMain },
       { label: '확인', action: dateSelect, color: colors.secondary },
     ],
+  };
+
+  const nextPage = async () => {
+    await callPostPolicyApi();
+    await callPostMemberProfileAPi();
+  };
+
+  const { agreementInfo } = useAgreementStore();
+
+  const callPostPolicyApi = async () => {
+    try {
+      const response = await postPolicyApi({
+        agreedStatuses: {
+          adAgreementPolicy: agreementInfo.adAgreementPolicy,
+        },
+      });
+      console.log('약관 등록 성공', response);
+    } catch (error) {
+      console.log('약관 등록 실패', error);
+    }
+  };
+  const callPostMemberProfileAPi = async () => {
+    try {
+      console.log('userInfo', userInfo);
+      const response = await postMemberProfileApi({
+        name: userInfo.name,
+        birthDate: userInfo.birthDate,
+        gender: userInfo.gender,
+        schoolName: userInfo.schoolName,
+        schoolEmail: userInfo.schoolEmail,
+      });
+      console.log('프로필 등록 성공', response);
+      resetUserInfo();
+      resetAgreement();
+      resetEmailStore();
+      updateMemberInfo('memberStatus', EMemberStatus.STYLE);
+      //schoolStatus Get api 호출
+      //schoolStatus가 "OPEN"이면 completePage로 이동
+      const schoolStatusResponse = await getMemberStatusesApi();
+      const schoolStatus = schoolStatusResponse.result?.schoolStatus;
+      console.log('schoolStatus', schoolStatus);
+      if (schoolStatus === 'OPEN') {
+        handleReset('completePage');
+      } else if (schoolStatus === 'CLOSED') {
+        handleReset('inviteFriends');
+      }
+    } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
+      console.log('프로필 등록 실패', error);
+      showToast({
+        content: error.response.data.message,
+      });
+    }
   };
 
   return (
@@ -117,10 +181,10 @@ const GenderBirth = () => {
         <S.MoveButton onPress={movePage()}>
           <Image source={prevButton} />
         </S.MoveButton>
-        {userInfo.gender === '' || userInfo.birthDate === '' ? (
+        {userInfo.birthDate === '' ? (
           <Image source={notYetNextButton} />
         ) : (
-          <S.MoveButton onPress={movePage('insertInviteCode')}>
+          <S.MoveButton onPress={nextPage}>
             <Image source={nextButton} />
           </S.MoveButton>
         )}

@@ -4,7 +4,6 @@ import React from 'react';
 import TermsOfService from '../TermsOfService/TermsOfService';
 import EmailAuth from './screens/EmailAuth/EmailAuth';
 import GenderBirth from './screens/GenderBirth/GenderBirth';
-import InsertInviteCode from './screens/InsertInviteCode/InsertInviteCode';
 import NamePhone from './screens/NamePhone/NamePhone';
 import SchoolStudentID from './screens/SchoolStudentID/SchoolStudentID';
 
@@ -16,7 +15,6 @@ const screens = [
   { name: 'emailAuth', component: EmailAuth },
   { name: 'namePhone', component: NamePhone },
   { name: 'genderBirth', component: GenderBirth },
-  { name: 'insertInviteCode', component: InsertInviteCode },
 
   // { name: 'profileImage', component: ProfileImage },
   // { name: 'openChatLink', component: OpenChatLink },

@@ -5,10 +5,13 @@ import { postMemberStyleApi } from '@commons/api/members/styles/memberStyle.api'
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { useInviteCodeStore } from '@commons/store/members/inviteCode/useInviteCodeStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { EMemberStatus } from '@commons/types/memberStatus';
 import { ProfileImageResponse } from '@commons/types/openapiGenerator';
+import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
@@ -24,6 +27,7 @@ const SelectProfile = () => {
   const { updateStyleInfo, styleInfo, resetStyleInfo } = useStyleStore();
   const { movePage, handleReset } = useMovePage();
   const { updateMemberInfo } = useMemberStore();
+  const { resetInviteCodeStore } = useInviteCodeStore();
   const [profile, setProfile] = useState(styleInfo.profileImageTypeId);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
 
@@ -55,9 +59,12 @@ const SelectProfile = () => {
       console.log('styleInfo', styleInfo);
       const response = await postMemberStyleApi(styleInfo);
       console.log('postMemberStyleApi', response);
+      updateMemberInfo('memberStatus', EMemberStatus.BOOK);
       handleReset('initBookStack');
       resetStyleInfo();
+      resetInviteCodeStore();
     } catch (error) {
+      if (!isAxiosErrorResponse(error)) return;
       console.log('ERROR) postMemberStyleApi', error);
       showToast({
         content: error.response.data.message,

@@ -1,23 +1,14 @@
 import nextButton from '@assets/images/buttons/nextButton.png';
-import prevButton from '@assets/images/buttons/prevButton.png';
 import checkCircle from '@assets/images/icons/CheckCircle.png';
 import warningCircle from '@assets/images/icons/WarningCircle.png';
 import { postInviteCodeVerifyApi } from '@commons/api/invitation/invitation.api';
-import { getMemberStatusesApi } from '@commons/api/members/default/member.api';
-import { postPolicyApi } from '@commons/api/members/policy/memberPolicy';
-import { postMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import { useAgreementStore } from '@commons/store/appStatus/agreement/useAgreement';
-import useMemberStore from '@commons/store/members/member/useMemberStore';
-import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
+import { IsSuccess, useInviteCodeStore } from '@commons/store/members/inviteCode/useInviteCodeStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import { EMemberStatus } from '@commons/types/memberStatus';
-import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
-import { useState } from 'react';
 import { Image, Keyboard, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
@@ -29,84 +20,30 @@ const InsertInviteCode = () => {
     left: false,
   });
   const showToast = useToastStore((state) => state.showToast);
-  const { movePage, handleReset } = useMovePage();
-  const { userInfo } = useUserStore();
-  const { resetUserInfo } = useUserStore();
-  const { resetAgreement } = useAgreementStore();
-  const { updateMemberInfo } = useMemberStore();
+  const { movePage } = useMovePage();
 
-  const [code, setCode] = useState('');
-  const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
+  const { isSuccess, code, setCode, setIsSuccess } = useInviteCodeStore();
+
+  // const [code, setCode] = useState('');
+  // const [isSuccess, setIsSuccess] = useState('false'); //false: 초기, true: 성공, 'error': 실패
 
   const callInviteCodeVerifyApi = async () => {
     console.log(isSuccess);
     // 초드코드 확인 api 호출
     try {
-      await postInviteCodeVerifyApi(code);
-      setIsSuccess('true');
+      await postInviteCodeVerifyApi(code as string);
+      setIsSuccess(IsSuccess.true);
       showToast({
         content: '초대코드가 확인되었습니다.',
       });
     } catch (error) {
-      setIsSuccess('error');
+      setIsSuccess(IsSuccess.error);
       showToast({
         content: '유효하지 않은 초대코드 입니다.',
       });
     }
   };
 
-  const nextPage = async () => {
-    //postProfileApi 호출 후
-    await callPostPolicyApi();
-    await callPostMemberProfileAPi();
-  };
-
-  const { agreementInfo } = useAgreementStore();
-
-  const callPostPolicyApi = async () => {
-    try {
-      const response = await postPolicyApi({
-        agreedStatuses: {
-          adAgreementPolicy: agreementInfo.adAgreementPolicy,
-        },
-      });
-      console.log('약관 등록 성공', response);
-    } catch (error) {
-      console.log('약관 등록 실패', error);
-    }
-  };
-  const callPostMemberProfileAPi = async () => {
-    try {
-      console.log('userInfo', userInfo);
-      const response = await postMemberProfileApi({
-        name: userInfo.name,
-        birthDate: userInfo.birthDate,
-        gender: userInfo.gender,
-        schoolName: userInfo.schoolName,
-        schoolEmail: userInfo.schoolEmail,
-      });
-      console.log('프로필 등록 성공', response);
-      resetUserInfo();
-      resetAgreement();
-      //schoolStatus Get api 호출
-      //schoolStatus가 "OPEN"이면 completePage로 이동
-      const schoolStatusResponse = await getMemberStatusesApi();
-      const schoolStatus = schoolStatusResponse.result?.schoolStatus;
-      console.log('schoolStatus', schoolStatus);
-      if (schoolStatus === 'OPEN') {
-        updateMemberInfo('memberStatus', EMemberStatus.STYLE);
-        handleReset('completePage');
-      } else if (schoolStatus === 'CLOSED') {
-        handleReset('inviteFriends');
-      }
-    } catch (error) {
-      if (!isAxiosErrorResponse(error)) return;
-      console.log('프로필 등록 실패', error);
-      showToast({
-        content: error.response.data.message,
-      });
-    }
-  };
   return (
     <S.Wrapper>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -139,7 +76,7 @@ const InsertInviteCode = () => {
                   onChangeText={(text: string) => setCode(text)}
                   placeholder="초대 코드"
                   placeholderTextColor={colors.textGray2}
-                  editable={isSuccess !== 'true'}
+                  editable={isSuccess !== IsSuccess.true}
                   value={code}
                   style={{
                     color: colors.primary,
@@ -148,7 +85,7 @@ const InsertInviteCode = () => {
                     paddingLeft: 5,
                   }}
                 />
-                {isSuccess !== 'false' && (
+                {isSuccess !== null && (
                   <Image
                     source={isSuccess === 'true' ? checkCircle : warningCircle}
                     style={{ width: 20, height: 20 }}
@@ -157,16 +94,16 @@ const InsertInviteCode = () => {
               </S.CodeFiledStyled>
               <S.ButtonStyled
                 onPress={() => callInviteCodeVerifyApi()}
-                disabled={code === '' || isSuccess === 'true'}
+                disabled={code === '' || code === null || isSuccess === IsSuccess.true}
                 style={{
                   width: 70,
                   marginBottom: 6,
-                  backgroundColor: code === '' ? colors.buttonNavStroke : colors.primary,
+                  backgroundColor: code === '' || code === null ? colors.buttonNavStroke : colors.primary,
                 }}
               >
                 <Text
                   style={{
-                    color: code === '' ? colors.textGray2 : colors.secondary,
+                    color: code === '' || code === null ? colors.textGray2 : colors.secondary,
                     fontFamily: 'fontMedium',
                     fontSize: 16,
                   }}
@@ -192,11 +129,8 @@ const InsertInviteCode = () => {
           </View>
         </KeyboardAwareScrollView>
       </TouchableWithoutFeedback>
-      <S.ButtonArea>
-        <S.MoveButton onPress={movePage()}>
-          <Image source={prevButton} />
-        </S.MoveButton>
-        <S.MoveButton onPress={() => nextPage()}>
+      <S.ButtonArea style={{ justifyContent: 'flex-end' }}>
+        <S.MoveButton onPress={movePage('mbti')}>
           <Image source={nextButton} />
         </S.MoveButton>
       </S.ButtonArea>

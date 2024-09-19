@@ -412,7 +412,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
                 bookItem.book && (
                   <S.BookImage
                     source={bookItem.book.bookImageUrl ? { uri: bookItem.book.bookImageUrl } : img.prepareBookImage}
-                    style={{ resizeMode: 'contain' }}
                   />
                 )
               )}

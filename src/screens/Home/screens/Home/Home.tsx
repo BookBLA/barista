@@ -1,11 +1,9 @@
 import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import usePushNotifications from '@commons/hooks/notifications/pushNotifications/usePushNotifications';
-import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
-import { colors } from '@commons/styles/variablesStyles';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import * as S from '@screens/Home/HomeStack.styles';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
@@ -34,9 +32,6 @@ const Home = () => {
     fetchOnboardingStatus();
   }, []);
 
-  useAppUIManager({
-    setBackgroundColor: colors.primary,
-  });
   useScreenLogger();
   useHeaderControl({
     customContent: <Header />,

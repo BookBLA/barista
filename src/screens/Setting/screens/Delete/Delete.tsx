@@ -6,19 +6,15 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { colors } from '@commons/styles/variablesStyles';
-import { useRoute } from '@react-navigation/native';
 import * as S from '@screens/Setting/SettingStack.styles';
 import { TouchableOpacity, View } from 'react-native';
-import { TProps } from './Delete.types';
 import { useDeleteMember } from './hooks/useDeleteMember';
 
 export const Delete = () => {
   useScreenLogger();
-  const route = useRoute<TProps>();
-  const { config } = route.params;
   const { toggle, isOpen } = useToggle();
   const { callDeleteMember } = useDeleteMember();
-  useHeaderControl(config);
+  useHeaderControl({ title: '회원 탈퇴', left: true });
 
   return (
     <S.DeleteWrapper>

@@ -23,7 +23,7 @@ export const CustomHeader: React.FC<ICustomHeader> = ({ title, left = true, onPr
             </S.Button>
           )}
           <S.CenterWrapper left={left}>
-            <CustomText size="14px" margin="12px 0 " color={backgroundColor ? 'white' : 'black'}>
+            <CustomText size="14px" margin="12px 0 " color={backgroundColor === '#fff' ? 'black' : 'white'}>
               {title}
             </CustomText>
           </S.CenterWrapper>

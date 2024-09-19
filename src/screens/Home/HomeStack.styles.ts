@@ -31,6 +31,7 @@ export const BodyWrapper = styled.View`
   flex-direction: column;
   padding-top: 30;
   align-items: center;
+  flex-grow: 1;
   width: 100%;
   height: 100%;
   background-color: ${colors.background};

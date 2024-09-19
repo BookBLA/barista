@@ -13,11 +13,12 @@ export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?
   return (
     <View
       style={{
-        width: '98%',
+        width: '100%',
         flexDirection: 'row',
         alignItems: 'center',
-        height: '9%',
+        height: 48,
         justifyContent: 'space-between',
+        paddingHorizontal: 16,
       }}
     >
       <TouchableOpacity onPress={movePage()} style={{ width: 35 }}>
@@ -35,7 +36,7 @@ export const ModifyTitleBar = ({ step, callPutApi }: { step: number; callPutApi?
       >
         <S.TitleStyled>{titleList[step]}</S.TitleStyled>
       </View>
-      <T.TextButtonStyled style={{ width: 35 }} onPress={callPutApi}>
+      <T.TextButtonStyled onPress={callPutApi}>
         <CustomText color={colors.textLinkBlue} font="fontSemiBold" size="14px">
           저장
         </CustomText>

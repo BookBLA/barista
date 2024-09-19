@@ -52,7 +52,7 @@ const AddBook = () => {
             <S.RowStyled style={{ width: 'auto', marginBottom: 7 }}>
               <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>첫 4권</Text>
               <LightText>을 등록하시면</LightText>
-              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>매칭에 필요한</Text>
+              <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}> 매칭에 필요한</Text>
             </S.RowStyled>
             <S.RowStyled style={{ width: 'auto' }}>
               <Text style={{ color: colors.textGray3, fontFamily: 'fontBold', fontSize: 14 }}>책갈피</Text>
@@ -77,7 +77,7 @@ const AddBook = () => {
           </>
         </S.ColumnStyled>
       </ScrollView>
-      <S.NextButtonStyled onPress={nextPage}>
+      <S.NextButtonStyled onPress={nextPage} disabled={dataLength === 0}>
         <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 16 }}>완료</Text>
       </S.NextButtonStyled>
     </S.Wrapper>

@@ -5,7 +5,6 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, Platform, ScrollView, View } from 'react-native';
 import {
@@ -32,7 +31,6 @@ import { ProductContentProps } from '@screens/Home/screens/Product/Product.types
 const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
 const Product = () => {
-  const navigation = useNavigation();
   const showToast = useToastStore((state) => state.showToast);
   useScreenLogger();
   useHeaderControl({
@@ -89,7 +87,6 @@ const Product = () => {
   }, [products]);
 
   useEffect(() => {
-    Alert.alert('useEffect', 'useEffect');
     const connection = async () => {
       try {
         const init = await initConnection();
@@ -144,7 +141,6 @@ const Product = () => {
         });
 
         await getProductsByID();
-        Alert.alert('getProductsByID', JSON.stringify(products));
       } catch (error) {
         console.log('connection error: ', error);
         Alert.alert('connection error', JSON.stringify(error));
@@ -240,7 +236,7 @@ const Product = () => {
             <CustomText
               size="10"
               font="fontRegular"
-              color={colors.textGray4}
+              color={'white'}
               style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16, marginTop: '3%' }}
             >
               책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}
