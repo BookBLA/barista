@@ -224,6 +224,8 @@ const ChatScreen: React.FC = () => {
         renderItem={renderChatItem}
         keyExtractor={(item: { id: any }) => Number(item.id)}
         contentContainerStyle={{ flexGrow: 1 }}
+        onEndReachedThreshold={0.1}
+        onEndReached={loadChats}
       />
       <Modal visible={isModalVisible} transparent animationType="fade">
         <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={closeModal}>
