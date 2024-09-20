@@ -445,7 +445,7 @@ const ChatDetail: React.FC = () => {
           {showDateSeparator && (
             <S.DateSeparator>
               <S.DateText>
-                {parseDate(item.createdAt).toLocaleDateString('ko-KR', {
+                {parseDate(item.sendTime || item.createdAt).toLocaleDateString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -568,7 +568,8 @@ const ChatDetail: React.FC = () => {
         <S.Wrapper>
           <S.Header>
             <S.BackButton onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back" size={24} color="black" />
+              {/* 이미지 */}
+              <S.BackButtonIcon source={require('@assets/images/icons/BackButton.png')} />
             </S.BackButton>
             <S.HeaderTitle>
               <S.SmallAvatar source={{ uri: partner.profileImageUrl }} />
@@ -579,41 +580,49 @@ const ChatDetail: React.FC = () => {
             />
           </S.Header>
 
-          <FlatList
-            ref={flatListRef}
-            data={displayedMessages}
-            renderItem={renderMessageItem}
-            keyExtractor={(item, index) => item.id || `postcard-${index}`}
-            contentContainerStyle={{ paddingVertical: 10 }}
-            onEndReached={loadMoreMessages}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={20}
-            maxToRenderPerBatch={20}
-            windowSize={10}
-            inverted
-            removeClippedSubviews
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-            scrollEventThrottle={16}
-            ListFooterComponent={
-              <>
-                <S.ProfileSection>
-                  <S.ProfileAvatar source={{ uri: partner.profileImageUrl }} />
-                  <S.ProfileInfo>
-                    <S.ProfileName>{partner.name}</S.ProfileName>
-                    <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
-                    <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-                    <S.LibraryButton
-                      onPress={() =>
-                        navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: false })
-                      }
-                    >
-                      <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-                    </S.LibraryButton>
-                  </S.ProfileInfo>
-                </S.ProfileSection>
-              </>
-            }
-          />
+          <S.Body>
+            <FlatList
+              ref={flatListRef}
+              data={displayedMessages}
+              renderItem={renderMessageItem}
+              keyExtractor={(item, index) => item.id || `postcard-${index}`}
+              ListFooterComponent={<View style={{ height: 20 }} />} // 스크롤의 부드러운 상단 위치를 위한 여유 공간 추가
+              onEndReached={loadMoreMessages}
+              onEndReachedThreshold={0.5}
+              initialNumToRender={20}
+              maxToRenderPerBatch={20}
+              windowSize={10}
+              inverted // 리스트를 inverted로 유지
+              removeClippedSubviews
+              contentContainerStyle={{
+                flexGrow: 1, // 메시지가 적을 때 상단에 고정
+                justifyContent: 'flex-end',
+              }}
+              onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+                useNativeDriver: false,
+              })}
+              scrollEventThrottle={16}
+              ListFooterComponent={
+                <>
+                  <S.ProfileSection>
+                    <S.ProfileAvatar source={{ uri: partner.profileImageUrl }} />
+                    <S.ProfileInfo>
+                      <S.ProfileName>{partner.name}</S.ProfileName>
+                      <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
+                      <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                      <S.LibraryButton
+                        onPress={() =>
+                          navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: false })
+                        }
+                      >
+                        <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+                      </S.LibraryButton>
+                    </S.ProfileInfo>
+                  </S.ProfileSection>
+                </>
+              }
+            />
+          </S.Body>
 
           {showScrollButton && (
             <S.ScrollToBottomButton onPress={scrollToBottom}>

@@ -33,6 +33,10 @@ export const Header = styled.View`
   border-bottom-color: ${colors.borderColor};
 `;
 
+export const Body = styled.View`
+  flex: 1;
+`;
+
 export const HeaderTitle = styled.View`
   flex: 1;
   align-items: center;
@@ -56,12 +60,17 @@ export const BackButton = styled.TouchableOpacity`
   padding: 5px;
 `;
 
+export const BackButtonIcon = styled.Image`
+  width: 32px;
+  height: 32px;
+`;
+
 // 프로필 섹션 스타일
 export const ProfileSection = styled.View`
   align-items: center;
   padding: 10px 0;
   border-bottom-color: #e0e0e0;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 export const ProfileAvatar = styled.Image`
@@ -95,7 +104,8 @@ export const ProfileDetails = styled.Text`
 `;
 
 export const LibraryButton = styled.TouchableOpacity`
-  padding: 10px 15px;
+  /* ho */
+  padding: 6px 10px;
   align-items: center;
   border-radius: 10px;
   border-width: 1px;
@@ -173,7 +183,7 @@ export const MessageText = styled.Text<{ isUserMessage: boolean }>`
 export const ScrollToBottomButton = styled.TouchableOpacity`
   position: absolute;
   right: 20px;
-  bottom: 80px;
+  bottom: 100px;
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -219,15 +229,18 @@ export const SendButtonIcon = styled.Image`
 `;
 
 export const DateSeparator = styled.View`
+  background: #a8aab2;
   align-items: center;
-  margin-vertical: 15px;
+  margin-vertical: 3px;
+  border-radius: 20px;
+  width: 120px;
+  align-self: center;
+  justify-content: center;
 `;
 
 export const DateText = styled.Text`
-  border-radius: 20px;
   font-size: 12px;
   color: #ffffff;
-  background: #a8aab2;
   padding-vertical: 4px;
   padding-horizontal: 10px;
 `;
