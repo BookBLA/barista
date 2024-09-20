@@ -1,6 +1,7 @@
 import { useErrorMessage } from '@commons/store/appStatus/errorMessage/useErrorMessage';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { ResponseData } from '@commons/types/responseData';
 import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
 import axios from 'axios';
 import * as Device from 'expo-device';
@@ -66,12 +67,6 @@ const config = {
     accept: 'application/json',
   },
 };
-
-export interface ResponseData<T> {
-  code: string;
-  isSuccess: boolean;
-  result: T;
-}
 
 const handleError = (error: unknown, showToast: boolean) => {
   if (axios.isAxiosError(error)) {
