@@ -31,7 +31,7 @@ const UpdateModal = () => {
         <CustomText font="fontMedium" margin="5px 0">
           더 나은 서비스 이용을 위해
         </CustomText>
-        <CustomText font="fontMedium">최신 버전(${data.version})으로 업데이트 부탁드려요</CustomText>
+        <CustomText font="fontMedium">최신 버전(v.0.0.0)으로 업데이트 부탁드려요</CustomText>
         <S.ButtonWrapper>
           <CustomButton contents="업데이트" borderRadius="5px" onPress={handleLinkPress(getStoreUrl)} />
         </S.ButtonWrapper>
