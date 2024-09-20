@@ -40,7 +40,6 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
       visible={visible}
       animationType="slide" // 슬라이드 애니메이션으로 모달 표시
       transparent // 배경을 투명하게 설정
-      onRequestClose={onDecline} // 안드로이드 뒤로가기 버튼을 눌렀을 때 모달 닫기
       // 하단에 위치하도록 설정
     >
       <View style={styles.modalOverlay}>
