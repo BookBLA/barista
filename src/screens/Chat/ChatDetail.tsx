@@ -2,12 +2,12 @@
 
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
-import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
+import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import WebSocketClient from '@commons/websocket/websocketClient'; // Updated WebSocketClient import
+import WebSocketClient from '@commons/websocket/websocketClient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
@@ -44,9 +44,10 @@ const ChatDetail: React.FC = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
+
+  // 상태들
   const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
   const [page, setPage] = useState(0);
-
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -69,7 +70,6 @@ const ChatDetail: React.FC = () => {
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const userId = parseInt(memberInfo?.id);
 
-  const [keyboardHeight, setKeyboardHeight] = useState(0); // 키보드 높이 상태 추가
   const insets = useSafeAreaInsets(); // 안전 영역 인셋
 
   const parseDate = (dateString: string | undefined) => {
@@ -80,6 +80,7 @@ const ChatDetail: React.FC = () => {
     return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
   };
 
+  // 새 메시지 처리
   const handleNewMessage = useCallback(
     (newMessage: any) => {
       console.log(`
@@ -102,17 +103,20 @@ const ChatDetail: React.FC = () => {
     [chatRoomID],
   );
 
+  // 메시지 재전송 모달 닫기
   const closeResendModal = () => {
     setIsResendModalVisible(false);
     setSelectedMessage(null);
   };
 
+  // 메시지 재전송 요청
   const handleResendMessage = (message: Message, index: number) => {
     setSelectedMessage(message);
     setSelectedMessageIndex(index);
     setIsResendModalVisible(true);
   };
 
+  // 메시지 재전송
   const handleResend = async () => {
     if (selectedMessageIndex === null || !selectedMessage) return;
 
@@ -159,6 +163,7 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 메시지 삭제
   const handleDelete = () => {
     if (selectedMessageIndex === null || !selectedMessage) return;
 
@@ -178,6 +183,7 @@ const ChatDetail: React.FC = () => {
     closeResendModal();
   };
 
+  // WebSocket 연결 상태 처리
   const handleConnectionStatus = (statusMessage: any) => {
     if (statusMessage.status === 'CONNECTED') {
       setPartnerIsConnected(true);
@@ -202,6 +208,7 @@ const ChatDetail: React.FC = () => {
     setDisplayedMessages([...messages]);
   }, [messages]);
 
+  // 채팅 메시지 불러오기
   const loadChatMessages = useCallback(async () => {
     try {
       setPage((prevPage) => prevPage + 1);
@@ -243,7 +250,7 @@ const ChatDetail: React.FC = () => {
   }, [chatRoomID, showToast, postcard, userId]);
 
   useEffect(() => {
-    setIsModalVisible(postcard.status === 'PENDING');
+    setIsModalVisible(true);
     loadChatMessages();
 
     WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
@@ -274,11 +281,13 @@ const ChatDetail: React.FC = () => {
     return () => scrollY.removeListener(listener);
   }, [scrollY]);
 
+  // 엽서 수락
   const handleAccept = () => {
     setIsModalVisible(false);
     showToast({ content: '채팅이 시작되었습니다.' });
   };
 
+  // 엽서 거절
   const handleDecline = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId: postcard.postcardId, status: EPostcardStatus.REFUSED });
@@ -293,20 +302,25 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 신고 처리
   const handleReport = () => {
-    reportBottomSheetRef.current?.present();
+    setIsModalVisible(false); // ChatRequestModal 닫기
+    reportBottomSheetRef.current?.present(); // 신고 모달 열기
   };
 
+  // 엽서 거절 모달 닫기
   const closeDeclineModal = () => {
     setIsDeclineModalVisible(false);
     setIsModalVisible(true);
   };
 
+  // 신고 접수 모달 닫기
   const closeReportSubmittedModal = () => {
     setIsReportSubmittedModalVisible(false);
     navigation.goBack();
   };
 
+  // 메시지 더 불러오기
   const loadMoreMessages = async () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
 
@@ -335,6 +349,7 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 메시지 길게 누르기
   const handleLongPress = (event: any, message: Message, index: number) => {
     const messageKey = `${message.senderId}-${message.sendTime}-${index}`;
     const messageRef = messageRefs.current[messageKey];
@@ -367,6 +382,7 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 메시지 복사하기
   const handleCopy = () => {
     if (selectedMessage) {
       Clipboard.setString(selectedMessage.content || selectedMessage.text || '');
@@ -375,11 +391,13 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 복사 모달 닫기
   const closeModal = () => {
     setCopyModalVisible(false);
     setSelectedMessage(null);
   };
 
+  // 메시지 보내기
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
@@ -417,6 +435,7 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
   };
 
+  // 메시지 렌더링
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
     const isPostcardItem = item.isPostcard;
     const isUserMessage = (isPostcardItem && item.senderId === userId) || item.senderId === userId;
@@ -524,14 +543,14 @@ const ChatDetail: React.FC = () => {
                 />
               )}
               {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                  <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
-                </TouchableOpacity>
-              )}
-              {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                  <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
+                    <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
+                    <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
+                  </TouchableOpacity>
+                </>
               )}
               {isUserMessage && item.status !== 'FAIL' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
@@ -554,6 +573,7 @@ const ChatDetail: React.FC = () => {
     );
   };
 
+  // 스크롤 아래로
   const scrollToBottom = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
@@ -638,10 +658,8 @@ const ChatDetail: React.FC = () => {
                 setInputHasValue(text.trim().length > 0);
               }}
               placeholder="메시지 보내기"
-              // style={{ flex: 1, padding: 10, background: #ecedef }}
               style={{
                 flex: 1,
-                // padding: '10 20',
                 paddingVertical: 10,
                 paddingHorizontal: 20,
                 backgroundColor: '#ecedef',
@@ -653,17 +671,22 @@ const ChatDetail: React.FC = () => {
             </S.SendButton>
           </S.InputContainer>
 
+          {/* ChatRequestModal을 상태에 따라 렌더링 */}
           {isModalVisible && (
             <ChatRequestModal
               visible={isModalVisible}
               onAccept={handleAccept}
-              onDecline={() => setIsDeclineModalVisible(true)}
+              onDecline={() => {
+                setIsModalVisible(false);
+                setIsDeclineModalVisible(true);
+              }}
               onReport={handleReport}
               postcard={postcard}
               partner={partner}
             />
           )}
 
+          {/* 신고 모달 */}
           <CustomBottomSheetModal ref={reportBottomSheetRef} index={0} snapPoints={['78%']}>
             <ReportOption
               bottomClose={() => reportBottomSheetRef.current?.close()}
@@ -671,6 +694,7 @@ const ChatDetail: React.FC = () => {
             />
           </CustomBottomSheetModal>
 
+          {/* 신고 접수 모달 */}
           <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
             <View
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
@@ -698,6 +722,7 @@ const ChatDetail: React.FC = () => {
             </View>
           </Modal>
 
+          {/* 엽서 거절 모달 */}
           <Modal visible={isDeclineModalVisible} transparent animationType="fade">
             <View
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
@@ -721,6 +746,7 @@ const ChatDetail: React.FC = () => {
             </View>
           </Modal>
 
+          {/* 메시지 복사 모달 */}
           <Modal transparent visible={isCopyModalVisible} onRequestClose={closeModal} animationType="fade">
             <TouchableWithoutFeedback onPress={closeModal}>
               <View style={{ flex: 1 }}>
@@ -760,6 +786,7 @@ const ChatDetail: React.FC = () => {
             </TouchableWithoutFeedback>
           </Modal>
 
+          {/* 메시지 재전송 모달 */}
           <Modal visible={isResendModalVisible} transparent animationType="fade">
             <View
               style={{

@@ -1,3 +1,5 @@
+// @screens/Chat/modals/ChatRequest/ChatRequestModal
+
 import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 필요한 API 함수 import
 import useToastStore from '@commons/store/ui/toast/useToastStore'; // 토스트 메시지를 띄우기 위한 훅
 import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';

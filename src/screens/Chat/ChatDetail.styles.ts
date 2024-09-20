@@ -279,48 +279,50 @@ export const DeclineModal = styled.View`
 
 export const ModalTitle = styled.Text`
   font-size: 18px;
-  font-weight: bold;
   margin-bottom: 10px;
 `;
 
 export const ModalDescription = styled.Text`
+  margin-top: 5px;
   margin-bottom: 20px;
-  color: #555;
+  font-size: 12px;
 `;
 
 export const ModalButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
-  padding-horizontal: 10px;
+  /* padding-horizontal: 10px; */
 `;
 
 export const DeclineButton = styled.TouchableOpacity`
-  padding: 14px 36px;
+  flex: 1;
+  padding: 14px 0;
   background-color: #f5e1c4;
   border-radius: 20px;
-  align-items: center;
   margin-right: 5px;
 `;
 
 export const DeclineButtonText = styled.Text`
-  color: #333;
-  font-weight: bold;
+  color: #0000000;
   font-size: 14px;
+  text-align: center;
+  font-weight: 500;
 `;
 
 export const ReviewButton = styled.TouchableOpacity`
-  padding: 14px 36px;
+  flex: 1;
+  padding: 14px 0;
   background-color: ${colors.primary};
   border-radius: 20px;
-  align-items: center;
   margin-left: 5px;
 `;
 
 export const ReviewButtonText = styled.Text`
   color: #ffebac;
   font-size: 14px;
-  font-weight: bold;
+  text-align: center;
+  font-weight: 500;
 `;
 
 // 포스트카드 섹션 스타일 추가
