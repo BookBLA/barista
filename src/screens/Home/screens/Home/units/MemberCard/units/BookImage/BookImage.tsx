@@ -1,13 +1,12 @@
-import { example } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './BookImage.styles';
 
-const BookImage = () => {
+const BookImage = ({ bookImage }: { bookImage: string }) => {
   return (
     <S.Wrapper>
       <S.BookWrapper>
-        <S.BookImage source={example.book} />
+        <S.BookImage source={{ uri: bookImage }} />
       </S.BookWrapper>
-      <S.BookBackground source={example.book} />
+      <S.BookBackground source={{ uri: bookImage }} />
       <S.TransparentBackground />
     </S.Wrapper>
   );
