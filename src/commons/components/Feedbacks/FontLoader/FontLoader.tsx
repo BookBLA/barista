@@ -5,9 +5,9 @@ import useMemberStore from '@commons/store/members/member/useMemberStore';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
-import { IFontLoaderProps } from './LoaderProvider';
+import { IFontLoaderProps } from './FontLoader.types';
 
-export const LoaderProvider: React.FC<IFontLoaderProps> = ({ children }) => {
+export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
   const initializeToken = useAuthStore((state) => state.initializeToken);
   const saveMemberInfo = useMemberStore((state) => state.saveMemberInfo);
