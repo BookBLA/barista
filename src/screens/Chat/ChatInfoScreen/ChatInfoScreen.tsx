@@ -78,7 +78,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           style={styles.optionItem}
           onPress={movePage('library', {
             memberId: partner.id,
-            isYourLibrary: true,
+            isYourLibrary: false, // 상대방 라이브러리이므로 false로 설정
           })}
         >
           <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
