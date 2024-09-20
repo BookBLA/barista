@@ -21,6 +21,7 @@ export const fetchChatList = async () => {
 
 export const fetchPenddingChatList = async () => {
   try {
+    return;
     const response = await Get('chat/room/pending');
 
     return response;
