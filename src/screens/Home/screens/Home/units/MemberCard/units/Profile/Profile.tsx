@@ -12,7 +12,7 @@ const Profile = ({ memberData, handleReport }: { handleReport: () => void; membe
     <S.Wrapper>
       <S.LeftContainer>
         <S.LeftWrapper>
-          <S.ProfileImage source={memberData?.memberProfileImageUrl} />
+          <S.ProfileImage source={{ url: memberData?.memberProfileImageUrl }} />
         </S.LeftWrapper>
         <S.RightWrapper>
           <S.InfoWrapper>
