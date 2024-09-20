@@ -14,7 +14,7 @@ import toastConfig from './src/commons/configs/toast/toastConfig';
 
 // import { INJECTED_JAVASCRIPT } from './src/screens/Login/LoginStack.constants';
 
-import { LoaderProvider } from './src/commons/components/Feedbacks/FontLoader/FontLoader';
+import { LoaderProvider } from './src/commons/components/Feedbacks/LoaderProvider/LoaderProvider';
 import { useInitializeApp } from './src/commons/hooks/appStatus/useInitializeApp';
 import useToast from './src/commons/hooks/utils/toast/useToast';
 import { useAppStatus } from './src/commons/store/ui/appStatus/useAppStatus';
