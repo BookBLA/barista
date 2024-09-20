@@ -3,7 +3,7 @@
 import { Client, StompConfig, StompSubscription } from '@stomp/stompjs';
 import { TextEncoder } from 'text-encoding'; // text-encoding 라이브러리 임포트
 
-type SendMessageStatusCallback = (messageId: string, status: 'sent' | 'failed') => void;
+type SendMessageStatusCallback = (messageId: string, status: 'SUCCESS' | 'FAIL') => void;
 
 class WebSocketClientDirect {
   private static instance: WebSocketClientDirect;
@@ -12,6 +12,7 @@ class WebSocketClientDirect {
   private stompConnected: boolean = false;
   private memberId: string | null = null;
   private subscriptions: Map<string, StompSubscription> = new Map();
+  private handleIncomingMessage: (message: any) => void = () => {};
 
   // Array to hold registered callbacks
   private sendMessageStatusCallbacks: SendMessageStatusCallback[] = [];
@@ -35,7 +36,7 @@ class WebSocketClientDirect {
     this.sendMessageStatusCallbacks.forEach((callback) => callback(messageId, status));
   }
 
-  public connect(memberId: string, roomId: string) {
+  public async connect(memberId: string) {
     if (this.stompConnected) {
       console.log('STOMP already connected');
       return;
@@ -53,7 +54,6 @@ class WebSocketClientDirect {
         console.log('STOMP connection established:', frame);
         this.isConnected = true;
         this.stompConnected = true;
-        this.subscribe(roomId, memberId, this.handleNewMessage.bind(this));
       },
       onStompError: (frame) => {
         console.error('STOMP error: Broker reported error:', frame.headers['message']);
@@ -84,14 +84,14 @@ class WebSocketClientDirect {
       return ws;
     };
 
-    this.stompClient.activate();
+    await this.stompClient.activate();
   }
 
   private tryReconnect = () => {
     if (!this.isConnected && this.memberId) {
       console.log('Attempting to reconnect STOMP...');
       this.unsubscribeAll();
-      setTimeout(() => this.connect(this.memberId!, ''), 5000);
+      setTimeout(() => this.connect(this.memberId!), 5000); // 두 번째 인자 제거
     }
   };
 
@@ -136,7 +136,7 @@ class WebSocketClientDirect {
     if (this.isConnected && this.stompConnected && this.stompClient) {
       const endpoint = `/app/chat/${roomId}`;
       const messageData = {
-        content: message.text,
+        content: message.content || message.text || '',
         senderId: parseInt(memberId),
         chatRoomId: parseInt(roomId),
         sendTime: new Date().toISOString(),
@@ -166,50 +166,47 @@ class WebSocketClientDirect {
     }
   };
 
-  public subscribe(roomId: string, memberId: string, handleNewMessage: (message: any) => void, topic: string) {
+  private topicCallbacks: Map<string, (message: any) => void> = new Map();
+
+  public subscribe(handleNewMessage: (message: any) => void, topic: string) {
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {
       console.error('Cannot subscribe, STOMP is not connected');
       return;
     }
 
+    // 콜백 업데이트 또는 새로 설정
+    this.topicCallbacks.set(topic, handleNewMessage);
+
     if (this.subscriptions.has(topic)) {
-      console.log(`Already subscribed to ${topic}`);
+      console.log(`Already subscribed to ${topic}, updated callback`);
       return;
     }
 
-    console.log(`Subscribing to topic: ${topic}`); // 구독을 시도하는지 확인
+    console.log(`Subscribing to topic: ${topic}`);
 
     const subscription = this.stompClient.subscribe(topic, (message) => {
-      // 메시지 수신 로그
       console.log('Message received in subscription:', message.body);
 
       try {
         const decodedMessage = message.body;
         const parsedMessage = JSON.parse(decodedMessage);
 
-        console.log('Parsed message:', parsedMessage);
-
-        // handleNewMessage 호출
-        console.log('Calling handleNewMessage...');
-        handleNewMessage(parsedMessage);
+        // 토픽별 콜백 호출
+        const callback = this.topicCallbacks.get(topic);
+        if (callback) {
+          console.log('Calling handleNewMessage for topic:', topic);
+          callback(parsedMessage);
+        } else {
+          console.error('No callback found for topic:', topic);
+        }
       } catch (error) {
         console.error('Error parsing or handling message:', error);
       }
     });
 
     this.subscriptions.set(topic, subscription);
-    console.log(`Subscribed to ${topic}`); // 구독이 정상적으로 완료되었는지 확인
+    console.log(`Subscribed to ${topic}`);
   }
-
-  private handleIncomingMessage = (data: string, handleNewMessage: (message: any) => void) => {
-    try {
-      const parsedData = JSON.parse(data);
-      console.log('Parsed message data:', parsedData);
-      handleNewMessage(parsedData);
-    } catch (error) {
-      console.error('Failed to parse incoming message:', error);
-    }
-  };
 
   public publishConnectionStatus = (roomId: string, memberId: string, status: boolean) => {
     if (!this.isConnected || !this.stompConnected || !this.stompClient) {
@@ -220,7 +217,7 @@ class WebSocketClientDirect {
     // PUBLISH를 할 토픽 엔드포인트 설정
     const endpoint = `/app/chat/room/${roomId}/${memberId}`;
     const messageData = {
-      memberId: 1,
+      memberId: parseInt(memberId),
       status: status ? 'CONNECTED' : 'DISCONNECTED',
     };
 
@@ -250,7 +247,10 @@ class WebSocketClientDirect {
   }
 
   public unsubscribeAll() {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+    this.subscriptions.forEach((subscription, topic) => {
+      subscription.unsubscribe();
+      console.log(`Unsubscribed from ${topic}`);
+    });
     this.subscriptions.clear();
   }
 }

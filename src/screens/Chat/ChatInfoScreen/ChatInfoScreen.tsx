@@ -37,13 +37,14 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
     try {
       await exitChatRoom(chatRoomID);
       setIsExitConfirmVisible(false);
-      navigation.navigate('Chat', { exitedChatRoomId: chatRoomID });
     } catch (error) {
       console.error('Failed to exit chat room:', error);
     }
   };
 
   const confirmExitChat = () => {
+    navigation.navigate('chat');
+
     setIsExitConfirmVisible(true);
   };
 
@@ -77,7 +78,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
           style={styles.optionItem}
           onPress={movePage('library', {
             memberId: partner.id,
-            isYourLibrary: true,
+            isYourLibrary: false, // 상대방 라이브러리이므로 false로 설정
           })}
         >
           <Image source={require('@assets/images/icons/library.png')} style={{ width: 24, height: 24 }} />
@@ -92,7 +93,7 @@ const ChatInfoScreen: React.FC<ChatInfoScreenProps> = ({ route }) => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.optionItem} onPress={confirmExitChat}>
-          <Image source={require('@assets/images/icons/color_exit.png')} style={{ width: 24, height: 24 }} />
+          <Image source={require('@assets/images/icons/exit_red.png')} style={{ width: 24, height: 24 }} />
           <Text style={[styles.optionText, styles.leaveText]}>채팅방 나가기</Text>
         </TouchableOpacity>
       </View>

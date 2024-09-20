@@ -23,7 +23,17 @@ const reportStatusKeys = {
 
 type TReportStatusKeys = keyof typeof reportStatusKeys;
 
-const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => void; reportedMemberId: number }) => {
+const ReportOption = ({
+  bottomClose,
+  reportedMemberId,
+  onClose,
+  onReport,
+}: {
+  bottomClose: () => void;
+  reportedMemberId: number;
+  onClose: () => void;
+  onReport: () => void;
+}) => {
   const [isChecked, setIsChecked] = useState(Array(reportCases.length).fill(false));
   const { toggle, isOpen } = useToggle();
   const [etcContents, setEtcContents] = useState('');
@@ -60,6 +70,15 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
       });
     }
   };
+
+  // 화면 나갈때 onClose 호출
+  useEffect(() => {
+    return () => {
+      console.log('ReportOption unmount');
+
+      onClose();
+    };
+  }, []);
 
   return (
     <View style={{ width: '100%', alignItems: 'center', height: '100%' }}>
@@ -103,9 +122,7 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
           ))}
         </View>
         <InputStyled
-          placeholder={
-            '신고 사유를 입력해주세요. 신고 사유에 맞지 않는 신고일 경우, 해당 신고는 처리되지 않습니다. 누적 신고횟수 3회 이상인 유저는 서비스 이용이 불가능하며, 프로필은 자동으로 차단됩니다.'
-          }
+          placeholder="신고 사유를 입력해주세요. 신고 사유에 맞지 않는 신고일 경우, 해당 신고는 처리되지 않습니다. 누적 신고횟수 3회 이상인 유저는 서비스 이용이 불가능하며, 프로필은 자동으로 차단됩니다."
           placeholderTextColor={colors.textGray}
           onChangeText={(text: string) => setEtcContents(text)}
         />
@@ -130,7 +147,15 @@ const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => vo
             onClose: toggle,
             mode: 'round',
             contents: <ReportModalContent />,
-            buttons: [{ label: '확인', action: bottomClose }],
+            buttons: [
+              {
+                label: '확인',
+                action: () => {
+                  bottomClose();
+                  onReport();
+                },
+              },
+            ],
           }}
         />
       </KeyboardAwareScrollView>

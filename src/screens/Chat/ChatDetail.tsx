@@ -2,19 +2,18 @@
 
 import { fetchChatMessages } from '@commons/api/chat/chat.api';
 import { ChatMessage } from '@commons/api/chat/chat.types';
-import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api'; // 엽서 상태 업데이트 API import
+import { postPostcardStatusUpdate } from '@commons/api/matching/matching.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import WebSocketClient from '@commons/websocket/websocketClient'; // Updated WebSocketClient import
+import WebSocketClient from '@commons/websocket/websocketClient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ChatRequestModal from '@screens/Chat/modals/ChatRequest/ChatRequestModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import { EPostcardStatus } from '@screens/Matching/Postcard/Send/SendPostcard.types';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-
 import {
   Animated,
   Clipboard,
@@ -29,6 +28,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/Feather';
 import * as S from './ChatDetail.styles';
 import InfoButton from './components/InfoButton/InfoButton';
@@ -44,8 +44,9 @@ const ChatDetail: React.FC = () => {
   const { params } = useRoute();
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
-  const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
 
+  const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
   const [messages, setMessages] = useState<Message[]>([]);
   const [displayedMessages, setDisplayedMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -58,7 +59,7 @@ const ChatDetail: React.FC = () => {
   const [isCopyModalVisible, setCopyModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
   const [selectedMessage, setSelectedMessage] = useState<Message | null>(null);
-  const [inputFocused, setInputFocused] = useState(false);
+  const [patnerIsConnected, setPartnerIsConnected] = useState(false);
   const messageRefs = useRef<{ [key: string]: View | null }>({});
   const [isResendModalVisible, setIsResendModalVisible] = useState(false);
   const flatListRef = useRef<FlatList<any>>(null);
@@ -68,6 +69,8 @@ const ChatDetail: React.FC = () => {
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const userId = parseInt(memberInfo?.id);
 
+  const insets = useSafeAreaInsets(); // 안전 영역 인셋
+
   const parseDate = (dateString: string | undefined) => {
     if (!dateString) {
       return new Date(0);
@@ -76,8 +79,16 @@ const ChatDetail: React.FC = () => {
     return isNaN(parsedDate.getTime()) ? new Date(0) : parsedDate;
   };
 
+  // 새 메시지 처리
   const handleNewMessage = useCallback(
     (newMessage: any) => {
+      console.log(`
+        ====================
+        New Message Received
+        newMessage: ${JSON.stringify(newMessage)}
+        =================
+      `);
+
       const newMessageData: Message = {
         ...newMessage,
         status: newMessage.status,
@@ -91,17 +102,20 @@ const ChatDetail: React.FC = () => {
     [chatRoomID],
   );
 
+  // 메시지 재전송 모달 닫기
   const closeResendModal = () => {
     setIsResendModalVisible(false);
     setSelectedMessage(null);
   };
 
+  // 메시지 재전송 요청
   const handleResendMessage = (message: Message, index: number) => {
     setSelectedMessage(message);
     setSelectedMessageIndex(index);
     setIsResendModalVisible(true);
   };
 
+  // 메시지 재전송
   const handleResend = async () => {
     if (selectedMessageIndex === null || !selectedMessage) return;
 
@@ -114,21 +128,18 @@ const ChatDetail: React.FC = () => {
     `);
 
     try {
-      // Remove the selected message by index from messages
       setMessages((prevMessages) => {
         const newMessages = [...prevMessages];
         newMessages.splice(selectedMessageIndex, 1);
         return newMessages;
       });
 
-      // Similarly, remove the selected message from displayedMessages
       setDisplayedMessages((prevDisplayed) => {
         const newDisplayed = [...prevDisplayed];
         newDisplayed.splice(selectedMessageIndex, 1);
         return newDisplayed;
       });
 
-      // Resend the message via WebSocket
       WebSocketClient.sendChatMessage(
         chatRoomID,
         userId.toString(),
@@ -141,7 +152,6 @@ const ChatDetail: React.FC = () => {
 
       showToast({ content: '메시지를 다시 보냈습니다.' });
     } catch (error) {
-      // If resending fails, re-add the message to the arrays
       setMessages((prevMessages) => [selectedMessage, ...prevMessages]);
       setDisplayedMessages((prevDisplayed) => [selectedMessage, ...prevDisplayed]);
 
@@ -152,6 +162,7 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 메시지 삭제
   const handleDelete = () => {
     if (selectedMessageIndex === null || !selectedMessage) return;
 
@@ -171,8 +182,10 @@ const ChatDetail: React.FC = () => {
     closeResendModal();
   };
 
+  // WebSocket 연결 상태 처리
   const handleConnectionStatus = (statusMessage: any) => {
     if (statusMessage.status === 'CONNECTED') {
+      setPartnerIsConnected(true);
       setMessages((prevMessages) =>
         prevMessages.map((msg) => ({
           ...msg,
@@ -185,6 +198,8 @@ const ChatDetail: React.FC = () => {
           isRead: true,
         })),
       );
+    } else if (statusMessage.status === 'DISCONNECTED') {
+      setPartnerIsConnected(false);
     }
   };
 
@@ -192,9 +207,11 @@ const ChatDetail: React.FC = () => {
     setDisplayedMessages([...messages]);
   }, [messages]);
 
+  // 채팅 메시지 불러오기
   const loadChatMessages = useCallback(async () => {
     try {
-      const response = await fetchChatMessages(chatRoomID, 0, 100);
+      setPage((prevPage) => prevPage + 1);
+      const response = await fetchChatMessages(chatRoomID, page, 100);
       let fetchedMessages: ChatMessage[] = [];
 
       if (response.isSuccess && response.result.content.length > 0) {
@@ -235,14 +252,8 @@ const ChatDetail: React.FC = () => {
     setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
-    WebSocketClient.connect(userId.toString(), chatRoomID.toString());
-    WebSocketClient.subscribe(chatRoomID, userId.toString(), handleNewMessage, `/topic/chat/${userId.toString()}`);
-    WebSocketClient.subscribe(
-      chatRoomID,
-      userId.toString(),
-      handleConnectionStatus,
-      `/topic/chat/room/${chatRoomID}/${userId.toString()}`,
-    );
+    WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
+    WebSocketClient.subscribe(handleConnectionStatus, `/topic/chat/room/${chatRoomID}/${userId.toString()}`);
     WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), true);
 
     WebSocketClient.onSendMessageStatus((messageId: string, status: 'SUCCESS' | 'FAIL') => {
@@ -257,7 +268,6 @@ const ChatDetail: React.FC = () => {
 
     return () => {
       WebSocketClient.publishConnectionStatus(chatRoomID, userId.toString(), false);
-      WebSocketClient.unsubscribe(`/topic/chat/${userId.toString()}` as string);
       WebSocketClient.unsubscribe(`/topic/chat/room/${chatRoomID}/${userId.toString()}` as string);
     };
   }, [loadChatMessages, postcard.status, userId, chatRoomID, handleNewMessage, showToast]);
@@ -270,17 +280,19 @@ const ChatDetail: React.FC = () => {
     return () => scrollY.removeListener(listener);
   }, [scrollY]);
 
+  // 엽서 수락
   const handleAccept = () => {
     setIsModalVisible(false);
     showToast({ content: '채팅이 시작되었습니다.' });
   };
 
+  // 엽서 거절
   const handleDecline = async () => {
     try {
       await postPostcardStatusUpdate({ postcardId: postcard.postcardId, status: EPostcardStatus.REFUSED });
 
       showToast({ content: '엽서를 거절했습니다.' });
-      navigation.goBack();
+      navigation.navigate('chat');
     } catch (error) {
       console.error('엽서 거절 중 오류 발생:', error);
       showToast({ content: '엽서를 거절하는 중 오류가 발생했습니다. 다시 시도해주세요.' });
@@ -289,36 +301,54 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 신고 처리
   const handleReport = () => {
-    reportBottomSheetRef.current?.present();
+    setIsModalVisible(false); // ChatRequestModal 닫기
+    reportBottomSheetRef.current?.present(); // 신고 모달 열기
   };
 
+  // 엽서 거절 모달 닫기
   const closeDeclineModal = () => {
     setIsDeclineModalVisible(false);
     setIsModalVisible(true);
   };
 
+  // 신고 접수 모달 닫기
   const closeReportSubmittedModal = () => {
     setIsReportSubmittedModalVisible(false);
     navigation.goBack();
   };
 
-  const loadMoreMessages = () => {
+  // 메시지 더 불러오기
+  const loadMoreMessages = async () => {
     if (loadingMore || displayedMessages.length >= messages.length) return;
+
     setLoadingMore(true);
-    const currentLength = displayedMessages.length;
-    const additionalMessages = messages.slice(currentLength, currentLength + 100);
-    setDisplayedMessages((prev) => [...prev, ...additionalMessages]);
 
-    const postcardIndex = additionalMessages.findIndex((item) => item.id === 'postcard');
-    if (postcardIndex !== -1) {
-      const postcardItem = additionalMessages.splice(postcardIndex, 1);
-      setDisplayedMessages((prev) => [postcardItem[0], ...prev]);
+    try {
+      const response = await fetchChatMessages(chatRoomID, page + 1, 100); // 다음 페이지 요청
+      if (response.isSuccess && response.result.content.length > 0) {
+        const newMessages: ChatMessage[] = response.result.content;
+
+        const updatedMessages = [...messages, ...newMessages];
+        updatedMessages.sort(
+          (a, b) => parseDate(b.timestamp || b.createdAt).getTime() - parseDate(a.timestamp || a.createdAt).getTime(),
+        );
+
+        setMessages(updatedMessages);
+        setDisplayedMessages((prevDisplayed) => [...prevDisplayed, ...newMessages]);
+
+        setPage((prevPage) => prevPage + 1);
+      }
+    } catch (error) {
+      console.error('추가 메시지를 불러오는 중 오류가 발생했습니다:', error);
+      showToast({ content: '추가 메시지를 불러오는 중 오류가 발생했습니다.' });
+    } finally {
+      setLoadingMore(false);
     }
-
-    setLoadingMore(false);
   };
 
+  // 메시지 길게 누르기
   const handleLongPress = (event: any, message: Message, index: number) => {
     const messageKey = `${message.senderId}-${message.sendTime}-${index}`;
     const messageRef = messageRefs.current[messageKey];
@@ -345,12 +375,13 @@ const ChatDetail: React.FC = () => {
         });
 
         setSelectedMessage(message);
-        setSelectedMessageIndex(index); // Set the selected message index
+        setSelectedMessageIndex(index);
         setCopyModalVisible(true);
       });
     }
   };
 
+  // 메시지 복사하기
   const handleCopy = () => {
     if (selectedMessage) {
       Clipboard.setString(selectedMessage.content || selectedMessage.text || '');
@@ -359,11 +390,13 @@ const ChatDetail: React.FC = () => {
     }
   };
 
+  // 복사 모달 닫기
   const closeModal = () => {
     setCopyModalVisible(false);
     setSelectedMessage(null);
   };
 
+  // 메시지 보내기
   const handleSendMessage = () => {
     if (!inputMessage.trim()) return;
 
@@ -379,7 +412,6 @@ const ChatDetail: React.FC = () => {
     setInputMessage('');
     setInputHasValue(false);
 
-    // 만약 네트워크 연결 안되어 있으면 실패 상태로 설정
     if (!WebSocketClient.isConnected) {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -402,13 +434,12 @@ const ChatDetail: React.FC = () => {
     WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
   };
 
+  // 메시지 렌더링
   const renderMessageItem = ({ item, index }: { item: Message; index: number }) => {
     const isPostcardItem = item.isPostcard;
-
     const isUserMessage = (isPostcardItem && item.senderId === userId) || item.senderId === userId;
 
     const messageKey = `${item.senderId}-${item.sendTime}-${index}`;
-
     const isRead = item.isRead;
 
     const currentItemDate = parseDate(item.sendTime || item.createdAt).toDateString();
@@ -432,7 +463,7 @@ const ChatDetail: React.FC = () => {
           {showDateSeparator && (
             <S.DateSeparator>
               <S.DateText>
-                {parseDate(item.createdAt).toLocaleDateString('ko-KR', {
+                {parseDate(item.sendTime || item.createdAt).toLocaleDateString('ko-KR', {
                   year: 'numeric',
                   month: 'long',
                   day: 'numeric',
@@ -448,7 +479,7 @@ const ChatDetail: React.FC = () => {
                 {isUserMessage && (
                   <S.isReadIcon
                     source={
-                      isRead && item.status
+                      patnerIsConnected || (isRead && item.status)
                         ? require('@assets/images/icons/ReadMessage.png')
                         : require('@assets/images/icons/UnreadMessage.png')
                     }
@@ -504,21 +535,25 @@ const ChatDetail: React.FC = () => {
               {isUserMessage && item.status === 'SUCCESS' && (
                 <S.isReadIcon
                   source={
-                    isRead
+                    patnerIsConnected || isRead
                       ? require('@assets/images/icons/ReadMessage.png')
                       : require('@assets/images/icons/UnreadMessage.png')
                   }
                 />
               )}
               {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                  <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
-                </TouchableOpacity>
-              )}
-              {isUserMessage && item.status === 'FAIL' && (
-                <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                  <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
-                </TouchableOpacity>
+                <>
+                  <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
+                    <S.ErrorIcon
+                      source={require('@assets/images/icons/message_error.png')}
+                      style={{ width: 16, height: 16 }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
+                    {/* <Text style={{ marginLeft: 5 }}>전송 안 됨</Text> ===> 모든 글자가 출력안됨*/}
+                    <S.ErrorText>전송 안 됨</S.ErrorText>
+                  </TouchableOpacity>
+                </>
               )}
               {isUserMessage && item.status !== 'FAIL' && (
                 <S.Timestamp isUserMessage={isUserMessage}>{formattedTime}</S.Timestamp>
@@ -526,6 +561,11 @@ const ChatDetail: React.FC = () => {
               <TouchableOpacity
                 ref={(ref) => {
                   if (ref) messageRefs.current[messageKey] = ref;
+                }}
+                onPress={() => {
+                  if (item.status === 'FAIL') {
+                    handleResendMessage(item, index);
+                  }
                 }}
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
@@ -541,6 +581,7 @@ const ChatDetail: React.FC = () => {
     );
   };
 
+  // 스크롤 아래로
   const scrollToBottom = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
@@ -550,12 +591,13 @@ const ChatDetail: React.FC = () => {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={15}
+        keyboardVerticalOffset={insets.top} // 안전 영역을 고려한 오프셋 추가
       >
         <S.Wrapper>
           <S.Header>
             <S.BackButton onPress={() => navigation.goBack()}>
-              <Ionicons name="chevron-back" size={24} color="black" />
+              {/* 이미지 */}
+              <S.BackButtonIcon source={require('@assets/images/icons/BackButton.png')} />
             </S.BackButton>
             <S.HeaderTitle>
               <S.SmallAvatar source={{ uri: partner.profileImageUrl }} />
@@ -566,41 +608,50 @@ const ChatDetail: React.FC = () => {
             />
           </S.Header>
 
-          <FlatList
-            ref={flatListRef}
-            data={displayedMessages}
-            renderItem={renderMessageItem}
-            keyExtractor={(item, index) => item.id || `postcard-${index}`}
-            contentContainerStyle={{ paddingVertical: 10 }}
-            onEndReached={loadMoreMessages}
-            onEndReachedThreshold={0.5}
-            initialNumToRender={20}
-            maxToRenderPerBatch={20}
-            windowSize={10}
-            inverted
-            removeClippedSubviews
-            onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
-            scrollEventThrottle={16}
-            ListFooterComponent={
-              <>
-                <S.ProfileSection>
-                  <S.ProfileAvatar source={{ uri: partner.profileImageUrl }} />
-                  <S.ProfileInfo>
-                    <S.ProfileName>{partner.name}</S.ProfileName>
-                    <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
-                    <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
-                    <S.LibraryButton
-                      onPress={() =>
-                        navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: true })
-                      }
-                    >
-                      <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
-                    </S.LibraryButton>
-                  </S.ProfileInfo>
-                </S.ProfileSection>
-              </>
-            }
-          />
+          <S.Body>
+            <FlatList
+              ref={flatListRef}
+              data={displayedMessages}
+              renderItem={renderMessageItem}
+              keyExtractor={(item, index) => item.id || `postcard-${index}`}
+              ListFooterComponent={<View style={{ height: 20 }} />} // 스크롤의 부드러운 상단 위치를 위한 여유 공간 추가
+              onEndReached={loadMoreMessages}
+              onEndReachedThreshold={0.5}
+              initialNumToRender={20}
+              maxToRenderPerBatch={20}
+              windowSize={10}
+              inverted // 리스트를 inverted로 유지
+              removeClippedSubviews
+              contentContainerStyle={{
+                flexGrow: 1, // 메시지가 적을 때 상단에 고정
+                justifyContent: 'flex-end',
+              }}
+              onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], {
+                useNativeDriver: false,
+              })}
+              scrollEventThrottle={16}
+              ListFooterComponent={
+                <>
+                  <S.ProfileSection>
+                    <S.ProfileAvatar source={{ uri: partner.profileImageUrl }} />
+                    <S.ProfileInfo>
+                      <S.ProfileName>{partner.name}</S.ProfileName>
+                      <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
+                      <S.ProfileDetails>{`${partner.smokType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                      <S.LibraryButton
+                        onPress={movePage('library', {
+                          memberId: partner.id,
+                          isYourLibrary: true,
+                        })}
+                      >
+                        <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
+                      </S.LibraryButton>
+                    </S.ProfileInfo>
+                  </S.ProfileSection>
+                </>
+              }
+            />
+          </S.Body>
 
           {showScrollButton && (
             <S.ScrollToBottomButton onPress={scrollToBottom}>
@@ -616,30 +667,51 @@ const ChatDetail: React.FC = () => {
                 setInputHasValue(text.trim().length > 0);
               }}
               placeholder="메시지 보내기"
-              style={{ flex: 1, padding: 10 }}
+              style={{
+                flex: 1,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                backgroundColor: '#ecedef',
+                borderRadius: 20,
+              }}
             />
             <S.SendButton onPress={handleSendMessage} style={{ opacity: inputHasValue ? 1 : 0.5 }}>
               <S.SendButtonIcon source={require('@assets/images/icons/SendMessage.png')} />
             </S.SendButton>
           </S.InputContainer>
 
+          {/* ChatRequestModal을 상태에 따라 렌더링 */}
           {isModalVisible && (
             <ChatRequestModal
               visible={isModalVisible}
               onAccept={handleAccept}
-              onDecline={() => setIsDeclineModalVisible(true)}
+              onDecline={() => {
+                setIsModalVisible(false);
+                setIsDeclineModalVisible(true);
+              }}
               onReport={handleReport}
               postcard={postcard}
+              partner={partner}
             />
           )}
 
+          {/* 신고 모달 */}
           <CustomBottomSheetModal ref={reportBottomSheetRef} index={0} snapPoints={['78%']}>
             <ReportOption
               bottomClose={() => reportBottomSheetRef.current?.close()}
               reportedMemberId={partner.memberId}
+              onClose={() => {
+                if (postcard.status === 'PENDING') {
+                  setIsModalVisible(true);
+                }
+              }}
+              onReport={() => {
+                handleDecline();
+              }}
             />
           </CustomBottomSheetModal>
 
+          {/* 신고 접수 모달 */}
           <Modal visible={isReportSubmittedModalVisible} transparent animationType="fade">
             <View
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
@@ -667,6 +739,7 @@ const ChatDetail: React.FC = () => {
             </View>
           </Modal>
 
+          {/* 엽서 거절 모달 */}
           <Modal visible={isDeclineModalVisible} transparent animationType="fade">
             <View
               style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
@@ -674,7 +747,9 @@ const ChatDetail: React.FC = () => {
               <S.DeclineModal>
                 <S.ModalTitle>엽서를 거절하시겠어요?</S.ModalTitle>
                 <S.ModalDescription>
-                  엽서를 거절하면 받은 엽서 목록에서 사라집니다. 엽서를 다시 확인해보세요.
+                  엽서를 거절하면 받은 엽서 목록에서 사라집니다.
+                  {'\n'}
+                  엽서를 다시 확인해보세요.
                 </S.ModalDescription>
                 <S.ModalButtonContainer>
                   <S.DeclineButton onPress={handleDecline}>
@@ -688,6 +763,7 @@ const ChatDetail: React.FC = () => {
             </View>
           </Modal>
 
+          {/* 메시지 복사 모달 */}
           <Modal transparent visible={isCopyModalVisible} onRequestClose={closeModal} animationType="fade">
             <TouchableWithoutFeedback onPress={closeModal}>
               <View style={{ flex: 1 }}>
@@ -727,6 +803,7 @@ const ChatDetail: React.FC = () => {
             </TouchableWithoutFeedback>
           </Modal>
 
+          {/* 메시지 재전송 모달 */}
           <Modal visible={isResendModalVisible} transparent animationType="fade">
             <View
               style={{

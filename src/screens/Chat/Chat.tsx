@@ -22,7 +22,7 @@ const ChatScreen: React.FC = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const memberInfo = useMemberStore((state) => state.memberInfo);
-  const memberID = memberInfo.id;
+  const userId = memberInfo.id;
 
   useHeaderControl({
     title: '채팅',
@@ -36,7 +36,7 @@ const ChatScreen: React.FC = () => {
 
       if (response.isSuccess) {
         if (response.result.length === 0) {
-          setError('아직 진행 중인 대화가 없어요.엽서를 보내 대화를 시작해보세요.');
+          setError('아직 진행 중인 대화가 없어요.\n엽서를 보내 대화를 시작해보세요.');
         } else if (Array.isArray(response.result)) {
           const formattedChats: ChatType[] = response.result.map((chatRoom) => ({
             id: chatRoom.id.toString(),
@@ -77,32 +77,23 @@ const ChatScreen: React.FC = () => {
   );
 
   // 새 메시지를 처리하는 함수
-  const handleNewMessage = useCallback(async (newMessage) => {
-    console.log(`
-    ========================
-    새 메시지 도착
-    newMessage: ${JSON.stringify(newMessage)}
-    =================
-    `);
-
-    loadChats();
+  const handleNewMessage = useCallback(async (newMessage: any) => {
+    await loadChats().then();
   }, []);
 
   useEffect(() => {
     // WebSocket 연결 설정
-    const connectWebSocket = () => {
-      WebSocketClient.connect(memberID.toString(), 'chat');
-      WebSocketClient.subscribe('chat', memberID.toString(), handleNewMessage, `/topic/chat/${memberID.toString()}`);
+    const connectWebSocket = async () => {
+      WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
     };
 
     connectWebSocket();
 
     // 컴포넌트 언마운트 시 WebSocket 구독 해제 및 연결 해제
     return () => {
-      WebSocketClient.unsubscribe('chat', memberID.toString());
-      WebSocketClient.disconnect();
+      WebSocketClient.unsubscribe(`/topic/chat/${userId.toString()}` as string);
     };
-  }, [memberID, handleNewMessage]);
+  }, [userId, handleNewMessage]);
 
   const openModal = (chat: ChatType) => {
     setSelectedChat(chat);
@@ -162,7 +153,13 @@ const ChatScreen: React.FC = () => {
           >
             <S.Avatar source={item.avatar} />
             <S.ChatInfo>
-              <S.ChatName>{item.name}</S.ChatName>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <S.ChatName>{item.name}</S.ChatName>
+                <S.isAlertIcon
+                  source={require('@assets/images/icons/unactive_alert.png')}
+                  style={{ display: item.isAlert ? 'flex' : 'none' }}
+                />
+              </View>
               <S.LastMessage>
                 {item.lastMessage.length > 20 ? `${item.lastMessage.slice(0, 15)}...` : item.lastMessage}
               </S.LastMessage>
@@ -184,7 +181,15 @@ const ChatScreen: React.FC = () => {
   return (
     <>
       {error !== '' && (
-        <View style={{ alignItems: 'center', padding: 10 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            padding: 10,
+            height: '100%',
+            justifyContent: 'center',
+            backgroundColor: 'white',
+          }}
+        >
           <Image
             source={require('@assets/images/icons/Warning03.png')}
             style={{ width: 51, height: 51, marginBottom: 20 }}
@@ -196,8 +201,9 @@ const ChatScreen: React.FC = () => {
         data={chats}
         renderItem={renderChatItem}
         keyExtractor={(item: { id: any }) => Number(item.id)}
-        ListEmptyComponent={<S.EmptyText>채팅 목록이 없습니다.</S.EmptyText>}
         contentContainerStyle={{ flexGrow: 1 }}
+        onEndReachedThreshold={0.1}
+        onEndReached={loadChats}
       />
       <Modal visible={isModalVisible} transparent animationType="fade">
         <TouchableOpacity style={{ flex: 1 }} activeOpacity={1} onPress={closeModal}>

@@ -33,6 +33,10 @@ export const Header = styled.View`
   border-bottom-color: ${colors.borderColor};
 `;
 
+export const Body = styled.View`
+  flex: 1;
+`;
+
 export const HeaderTitle = styled.View`
   flex: 1;
   align-items: center;
@@ -56,12 +60,17 @@ export const BackButton = styled.TouchableOpacity`
   padding: 5px;
 `;
 
+export const BackButtonIcon = styled.Image`
+  width: 32px;
+  height: 32px;
+`;
+
 // 프로필 섹션 스타일
 export const ProfileSection = styled.View`
   align-items: center;
   padding: 10px 0;
   border-bottom-color: #e0e0e0;
-  margin-bottom: 20px;
+  margin-top: 20px;
 `;
 
 export const ProfileAvatar = styled.Image`
@@ -95,7 +104,8 @@ export const ProfileDetails = styled.Text`
 `;
 
 export const LibraryButton = styled.TouchableOpacity`
-  padding: 10px 15px;
+  /* ho */
+  padding: 6px 10px;
   align-items: center;
   border-radius: 10px;
   border-width: 1px;
@@ -173,7 +183,7 @@ export const MessageText = styled.Text<{ isUserMessage: boolean }>`
 export const ScrollToBottomButton = styled.TouchableOpacity`
   position: absolute;
   right: 20px;
-  bottom: 80px;
+  bottom: 100px;
   width: 40px;
   height: 40px;
   border-radius: 20px;
@@ -190,7 +200,8 @@ export const ScrollToBottomButton = styled.TouchableOpacity`
 // 입력 창 스타일
 export const InputContainer = styled.View`
   flex-direction: row;
-  padding: ${spacing.small};
+  padding-vertical: 20px;
+  padding-horizontal: 10px;
   border-top-width: 1px;
   border-top-color: ${colors.borderColor};
 `;
@@ -217,19 +228,21 @@ export const SendButtonIcon = styled.Image`
   height: 24px;
 `;
 
-// 날짜 구분자 스타일
 export const DateSeparator = styled.View`
+  background: #a8aab2;
   align-items: center;
-  margin-vertical: 15px;
+  margin-vertical: 3px;
+  border-radius: 20px;
+  width: 120px;
+  align-self: center;
+  justify-content: center;
 `;
 
 export const DateText = styled.Text`
   font-size: 12px;
-  color: #666666;
-  background-color: #f0f0f0;
-  padding-vertical: 3px;
-  padding-horizontal: 8px;
-  border-radius: 10px;
+  color: #ffffff;
+  padding-vertical: 4px;
+  padding-horizontal: 10px;
 `;
 
 // 로딩 인디케이터 스타일
@@ -266,48 +279,50 @@ export const DeclineModal = styled.View`
 
 export const ModalTitle = styled.Text`
   font-size: 18px;
-  font-weight: bold;
   margin-bottom: 10px;
-  text-align: center;
 `;
 
 export const ModalDescription = styled.Text`
+  margin-top: 5px;
   margin-bottom: 20px;
-  color: #555;
-  text-align: center;
+  font-size: 12px;
 `;
 
 export const ModalButtonContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
-  padding-horizontal: 10px;
+  /* padding-horizontal: 10px; */
 `;
 
 export const DeclineButton = styled.TouchableOpacity`
-  padding: 14px 36px;
+  flex: 1;
+  padding: 14px 0;
   background-color: #f5e1c4;
   border-radius: 20px;
-  align-items: center;
   margin-right: 5px;
 `;
 
 export const DeclineButtonText = styled.Text`
-  color: #333;
-  font-weight: bold;
+  color: #0000000;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
 `;
 
 export const ReviewButton = styled.TouchableOpacity`
-  padding: 14px 36px;
+  flex: 1;
+  padding: 14px 0;
   background-color: ${colors.primary};
   border-radius: 20px;
-  align-items: center;
   margin-left: 5px;
 `;
 
 export const ReviewButtonText = styled.Text`
-  color: white;
-  font-weight: bold;
+  color: #ffebac;
+  font-size: 14px;
+  text-align: center;
+  font-weight: 500;
 `;
 
 // 포스트카드 섹션 스타일 추가
@@ -328,4 +343,11 @@ export const PostcardMessageContainer = styled.View<{ isUserMessage: boolean }>`
 export const PostcardMessageContent = styled.View<{ isUserMessage: boolean }>`
   max-width: 70%;
   align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
+`;
+
+export const ErrorText = styled.Text`
+  font-size: 11px;
+  color: #000000;
+  opacity: 0.38;
+  margin: 0 4px;
 `;
