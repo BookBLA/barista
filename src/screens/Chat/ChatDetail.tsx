@@ -45,16 +45,6 @@ const ChatDetail: React.FC = () => {
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
 
-  console.log(`
-    ====================
-    Smock Type: ${partner.smokeType}
-    =================
-    `);
-
-  const smokType =
-    partner.smokeType === 'NON_SMOKE' ? '🚭비흡연자' : partner.smokeType === 'SOMETIMES' ? '🚬가끔 펴요' : '🚬흡연자';
-
-  // 상태들
   const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
   const [page, setPage] = useState(0);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -259,7 +249,7 @@ const ChatDetail: React.FC = () => {
   }, [chatRoomID, showToast, postcard, userId]);
 
   useEffect(() => {
-    setIsModalVisible(true);
+    setIsModalVisible(postcard.status === 'PENDING');
     loadChatMessages();
 
     WebSocketClient.subscribe(handleNewMessage, `/topic/chat/${userId.toString()}`);
@@ -647,7 +637,7 @@ const ChatDetail: React.FC = () => {
                     <S.ProfileInfo>
                       <S.ProfileName>{partner.name}</S.ProfileName>
                       <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
-                      <S.ProfileDetails>{`${smokType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                      <S.ProfileDetails>{`${partner.smokType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
                       <S.LibraryButton
                         onPress={movePage('library', {
                           memberId: partner.id,

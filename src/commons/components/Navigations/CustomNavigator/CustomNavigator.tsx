@@ -15,6 +15,7 @@ import ModifyStyle from '@screens/InitStyle/screens/ModifyStyle/ModifyStyle';
 import InitUserInfoStack from '@screens/InitUserInfo/initUserinfo';
 import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePage';
 import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
+import Library from '@screens/Library/Library';
 import LoginStack from '@screens/Login/LoginStack';
 import Notice from '@screens/Notice/Notice';
 import QuizStack from '@screens/Quiz/QuizStack';
@@ -46,6 +47,7 @@ const screens = [
   { name: 'rejectStudentId', component: RejectStudentId },
   { name: 'ChatDetail', component: ChatDetail },
   { name: 'ChatInfoScreen', component: ChatInfoScreen },
+  { name: 'library', component: Library }, // Library 스크린 추가
 ];
 
 export const CustomNavigator = () => {

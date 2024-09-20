@@ -19,14 +19,13 @@ export const fetchChatList = async () => {
   }
 };
 
-export const fetchPenddingChatList = async () => {
+export const fetchPostcardChatRoom = async (postcardId: string) => {
   try {
-    return;
-    const response = await Get('chat/room/pending');
+    const response = await Get(`chat/room/postcard/postcardId=${postcardId}`);
 
     return response;
   } catch (error) {
-    console.error('Error fetching pending chat list:', error);
+    console.error('Error fetching chat list:', error);
     throw error;
   }
 };
