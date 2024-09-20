@@ -45,6 +45,15 @@ const ChatDetail: React.FC = () => {
   const navigation = useNavigation();
   const { partner, postcard, chatRoomID, isAlert } = params as any;
 
+  console.log(`
+    ====================
+    Smock Type: ${partner.smokeType}
+    =================
+    `);
+
+  const smokType =
+    partner.smokeType === 'NON_SMOKE' ? '🚭비흡연자' : partner.smokeType === 'SOMETIMES' ? '🚬가끔 펴요' : '🚬흡연자';
+
   // 상태들
   const [selectedMessageIndex, setSelectedMessageIndex] = useState<number | null>(null);
   const [page, setPage] = useState(0);
@@ -638,7 +647,7 @@ const ChatDetail: React.FC = () => {
                     <S.ProfileInfo>
                       <S.ProfileName>{partner.name}</S.ProfileName>
                       <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
-                      <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
+                      <S.ProfileDetails>{`${smokType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
                       <S.LibraryButton
                         onPress={movePage('library', {
                           memberId: partner.id,
