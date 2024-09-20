@@ -5,6 +5,7 @@ export const icons = {
 
   back: require('@assets/images/icons/Back.png'),
   backArrow: require('@assets/images/icons/BackArrow.png'),
+  backLight: require('@assets/images/icons/BackLight.png'),
   bang: require('@assets/images/icons/Bang.png'),
   bellOff: require('@assets/images/icons/BellOff.png'),
   bellOn: require('@assets/images/icons/BellOn.png'),

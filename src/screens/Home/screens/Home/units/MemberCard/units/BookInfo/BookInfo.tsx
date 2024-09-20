@@ -18,7 +18,7 @@ const BookInfo = ({ memberData }: { memberData: MemberIntroResponse }) => {
       <S.QuoteWrapper align="start">
         <S.QuoteImage source={icons.quoteStart} />
       </S.QuoteWrapper>
-      <CustomText margin="4px 0" size="12px" font="fontRegular">
+      <CustomText margin="4px 0" size="14px" font="fontRegular">
         {review}
       </CustomText>
 
