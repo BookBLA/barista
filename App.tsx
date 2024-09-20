@@ -11,8 +11,11 @@ import toastConfig from './src/commons/configs/toast/toastConfig';
 
 // import { INJECTED_JAVASCRIPT } from './src/screens/Login/LoginStack.constants';
 
+import { QueryClientProvider } from '@tanstack/react-query';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import UpdateModal from './src/commons/components/Feedbacks/UpdateModal/UpdateModal';
+
+import queryClient from './src/commons/configs/queryClient/queryClient';
 import { useInitializeApp } from './src/commons/hooks/appStatus/useInitializeApp';
 import useToast from './src/commons/hooks/utils/toast/useToast';
 import { useAppStatus } from './src/commons/store/ui/appStatus/useAppStatus';
@@ -31,17 +34,19 @@ export default function App() {
 
   return (
     <FontLoader>
-      <GestureHandlerRootView style={{ flex: 1 }}>
-        <UpdateModal />
-        <BottomSheetModalProvider>
-          <SafeAreaProvider style={{ flex: 1 }}>
-            <StatusBar style={isLight} translucent />
-            <CustomNavigator />
-          </SafeAreaProvider>
-          <GlobalErrorModal />
-        </BottomSheetModalProvider>
-        <Toast config={toastConfig} />
-      </GestureHandlerRootView>
+      <QueryClientProvider client={queryClient}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+          <UpdateModal />
+          <BottomSheetModalProvider>
+            <SafeAreaProvider style={{ flex: 1 }}>
+              <StatusBar style={isLight} translucent />
+              <CustomNavigator />
+            </SafeAreaProvider>
+            <GlobalErrorModal />
+          </BottomSheetModalProvider>
+          <Toast config={toastConfig} />
+        </GestureHandlerRootView>
+      </QueryClientProvider>
     </FontLoader>
   );
 }
