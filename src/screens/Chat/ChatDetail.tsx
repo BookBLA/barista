@@ -692,6 +692,15 @@ const ChatDetail: React.FC = () => {
             <ReportOption
               bottomClose={() => reportBottomSheetRef.current?.close()}
               reportedMemberId={partner.memberId}
+              onClose={() => {
+                if (postcard.status === 'PENDING') {
+                  setIsModalVisible(true);
+                }
+              }}
+              onReport={() => {
+                // 'chat' 네비게이션으로 이동
+                navigation.navigate('chat');
+              }}
             />
           </CustomBottomSheetModal>
 

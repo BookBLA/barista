@@ -33,17 +33,18 @@ const ChatRequestModal: React.FC<ChatRequestModalProps> = ({
     } catch (error) {
       console.error('엽서 수락 중 오류 발생:', error);
     }
-  }, [onAccept]);
+  }, [onAccept, postcard.postcardId]);
 
   return (
     <Modal
       visible={visible}
       animationType="slide" // 슬라이드 애니메이션으로 모달 표시
       transparent // 배경을 투명하게 설정
-      // 하단에 위치하도록 설정
     >
-      <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
+      {/* Use a View with pointerEvents='box-none' to allow touches to pass through */}
+      <View style={styles.modalOverlay} pointerEvents="box-none">
+        {/* The modal container should capture touch events */}
+        <View style={styles.modalContainer} pointerEvents="auto">
           <Text style={styles.title}>{partner.name}님의 매칭 요청을 수락하시겠어요?</Text>
           <Text style={styles.description}>
             수락하면 책갈피 30개가 사용되며 채팅이 시작됩니다. 채팅이 시작되면 받은 엽서 목록에서 사라지며 채팅방으로
