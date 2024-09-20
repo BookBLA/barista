@@ -344,3 +344,10 @@ export const PostcardMessageContent = styled.View<{ isUserMessage: boolean }>`
   max-width: 70%;
   align-self: ${(props) => (props.isUserMessage ? 'flex-end' : 'flex-start')};
 `;
+
+export const ErrorText = styled.Text`
+  font-size: 11px;
+  color: #000000;
+  opacity: 0.38;
+  margin: 0 4px;
+`;

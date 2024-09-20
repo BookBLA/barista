@@ -432,7 +432,7 @@ const ChatDetail: React.FC = () => {
       return;
     }
 
-    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
+    WebSocketClient.sendChatMessage(123123123, userId.toString(), message, messageId);
   };
 
   // 메시지 렌더링
@@ -545,10 +545,14 @@ const ChatDetail: React.FC = () => {
               {isUserMessage && item.status === 'FAIL' && (
                 <>
                   <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                    <S.ErrorIcon source={require('@assets/images/icons/message_error.png')} />
+                    <S.ErrorIcon
+                      source={require('@assets/images/icons/message_error.png')}
+                      style={{ width: 16, height: 16 }}
+                    />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={() => handleResendMessage(item, index)}>
-                    <Text style={{ color: 'red', marginLeft: 5 }}>전송안됨</Text>
+                    {/* <Text style={{ marginLeft: 5 }}>전송 안 됨</Text> ===> 모든 글자가 출력안됨*/}
+                    <S.ErrorText>전송 안 됨</S.ErrorText>
                   </TouchableOpacity>
                 </>
               )}
@@ -558,6 +562,11 @@ const ChatDetail: React.FC = () => {
               <TouchableOpacity
                 ref={(ref) => {
                   if (ref) messageRefs.current[messageKey] = ref;
+                }}
+                onPress={() => {
+                  if (item.status === 'FAIL') {
+                    handleResendMessage(item, index);
+                  }
                 }}
                 onLongPress={(event) => handleLongPress(event, item, index)}
               >
