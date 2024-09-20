@@ -631,9 +631,10 @@ const ChatDetail: React.FC = () => {
                       <S.ProfileSchool>{partner.schoolName}</S.ProfileSchool>
                       <S.ProfileDetails>{`${partner.smokeType} • ${partner.mbti} • ${partner.height}cm`}</S.ProfileDetails>
                       <S.LibraryButton
-                        onPress={() =>
-                          navigation.navigate('Library', { memberId: partner.memberId, isYourLibrary: false })
-                        }
+                        onPress={movePage('library', {
+                          memberId: partner.id,
+                          isYourLibrary: true,
+                        })}
                       >
                         <S.LibraryButtonText>서재 구경하기</S.LibraryButtonText>
                       </S.LibraryButton>
