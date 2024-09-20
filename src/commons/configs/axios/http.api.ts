@@ -1,6 +1,7 @@
 import { useErrorMessage } from '@commons/store/appStatus/errorMessage/useErrorMessage';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { ResponseData } from '@commons/types/response';
 import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
 import axios from 'axios';
 import * as Device from 'expo-device';
@@ -51,6 +52,7 @@ httpApi.interceptors.response.use(
       originalRequest._retry = true;
       try {
         useErrorMessage.getState().setErrorMessage('일주일이 경과되어 자동 로그아웃 되었습니다.');
+        // 여기에 logout 함수를 나둬야 겠네
         return useAuthStore.getState().removeToken();
       } catch (error) {
         return Promise.reject(error);
@@ -66,12 +68,6 @@ const config = {
     accept: 'application/json',
   },
 };
-
-export interface ResponseData<T> {
-  code: string;
-  isSuccess: boolean;
-  result: T;
-}
 
 const handleError = (error: unknown, showToast: boolean) => {
   if (axios.isAxiosError(error)) {

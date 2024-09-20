@@ -6,15 +6,24 @@ import { initDataState } from '../../../../screens/Setting/screens/Setting/conte
 
 export const useGetLatestVersion = () => {
   const [data, setData] = useState<ISettingData>(initDataState);
+  const { googlePlayStoreUrl, appStoreUrl } = storeUrls;
   const getLatestVersion = async () => {
-    const response = await getVersionApi();
-    const { googlePlayStoreUrl, appStoreUrl } = storeUrls;
-    const { version } = response.result ?? {};
-    setData({
-      version: version ?? '0.0.0',
-      googlePlayStoreUrl,
-      appStoreUrl,
-    });
+    try {
+      const response = await getVersionApi();
+
+      const { version } = response.result ?? {};
+      setData({
+        version: version ?? '',
+        googlePlayStoreUrl,
+        appStoreUrl,
+      });
+    } catch {
+      setData({
+        version: '',
+        googlePlayStoreUrl,
+        appStoreUrl,
+      });
+    }
   };
 
   useEffect(() => {
