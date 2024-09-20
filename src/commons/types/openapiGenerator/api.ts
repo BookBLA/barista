@@ -1290,6 +1290,12 @@ export interface MemberIntroResponse {
     'memberSchoolName'?: string;
     /**
      * 
+     * @type {number}
+     * @memberof MemberIntroResponse
+     */
+    'memberBookId'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof MemberIntroResponse
      */
@@ -1329,6 +1335,47 @@ export interface MemberInvitationResponse {
 /**
  * 
  * @export
+ * @interface MemberInvitationRewardRequest
+ */
+export interface MemberInvitationRewardRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberInvitationRewardRequest
+     */
+    'invitationStatus': MemberInvitationRewardRequestInvitationStatusEnum;
+}
+
+export const MemberInvitationRewardRequestInvitationStatusEnum = {
+    None: 'NONE',
+    Completed: 'COMPLETED',
+    Bookmark: 'BOOKMARK'
+} as const;
+
+export type MemberInvitationRewardRequestInvitationStatusEnum = typeof MemberInvitationRewardRequestInvitationStatusEnum[keyof typeof MemberInvitationRewardRequestInvitationStatusEnum];
+
+/**
+ * 
+ * @export
+ * @interface MemberInvitationRewardResponse
+ */
+export interface MemberInvitationRewardResponse {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MemberInvitationRewardResponse
+     */
+    'invitingRewardStatus'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof MemberInvitationRewardResponse
+     */
+    'invitedRewardStatus'?: boolean;
+}
+/**
+ * 
+ * @export
  * @interface MemberNameVerifyRequest
  */
 export interface MemberNameVerifyRequest {
@@ -1363,8 +1410,17 @@ export interface MemberOnboardingStatusRequest {
      * @type {string}
      * @memberof MemberOnboardingStatusRequest
      */
-    'onboarding': string;
+    'onboarding': MemberOnboardingStatusRequestOnboardingEnum;
 }
+
+export const MemberOnboardingStatusRequestOnboardingEnum = {
+    Home: 'HOME',
+    Library: 'LIBRARY',
+    Invalid: 'INVALID'
+} as const;
+
+export type MemberOnboardingStatusRequestOnboardingEnum = typeof MemberOnboardingStatusRequestOnboardingEnum[keyof typeof MemberOnboardingStatusRequestOnboardingEnum];
+
 /**
  * 
  * @export
@@ -2048,6 +2104,12 @@ export interface MemberStatusUpdateRequest {
      * @memberof MemberStatusUpdateRequest
      */
     'memberStatus': MemberStatusUpdateRequestMemberStatusEnum;
+    /**
+     * 
+     * @type {string}
+     * @memberof MemberStatusUpdateRequest
+     */
+    'reason'?: string;
 }
 
 export const MemberStatusUpdateRequestMemberStatusEnum = {
@@ -2307,16 +2369,16 @@ export interface MyLibraryReadResponse {
 export interface NotificationResponse {
     /**
      * 
-     * @type {boolean}
-     * @memberof NotificationResponse
-     */
-    'success'?: boolean;
-    /**
-     * 
      * @type {string}
      * @memberof NotificationResponse
      */
     'status'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof NotificationResponse
+     */
+    'success'?: boolean;
     /**
      * 
      * @type {string}
@@ -2379,13 +2441,19 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalPages'?: number;
+    'totalElements'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalElements'?: number;
+    'totalPages'?: number;
+    /**
+     * 
+     * @type {SortObject}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'sort'?: SortObject;
     /**
      * 
      * @type {boolean}
@@ -2398,12 +2466,6 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'last'?: boolean;
-    /**
-     * 
-     * @type {SortObject}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'sort'?: SortObject;
     /**
      * 
      * @type {number}
@@ -5978,6 +6040,46 @@ export const ChatRoomControllerApiAxiosParamCreator = function (configuration?: 
         },
         /**
          * 
+         * @param {number} postcardId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatRoomByPostcardId: async (postcardId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postcardId' is not null or undefined
+            assertParamExists('getChatRoomByPostcardId', 'postcardId', postcardId)
+            const localVarPath = `/chat/room/postcard`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (postcardId !== undefined) {
+                localVarQueryParameter['postcardId'] = postcardId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6080,6 +6182,18 @@ export const ChatRoomControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {number} postcardId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getChatRoomByPostcardId(postcardId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatRoomResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatRoomByPostcardId(postcardId, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.getChatRoomByPostcardId']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6123,6 +6237,15 @@ export const ChatRoomControllerApiFactory = function (configuration?: Configurat
         },
         /**
          * 
+         * @param {number} postcardId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getChatRoomByPostcardId(postcardId: number, options?: any): AxiosPromise<ChatRoomResponse> {
+            return localVarFp.getChatRoomByPostcardId(postcardId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -6158,6 +6281,17 @@ export class ChatRoomControllerApi extends BaseAPI {
      */
     public exitChatRoom(roomId: number, options?: RawAxiosRequestConfig) {
         return ChatRoomControllerApiFp(this.configuration).exitChatRoom(roomId, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {number} postcardId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ChatRoomControllerApi
+     */
+    public getChatRoomByPostcardId(postcardId: number, options?: RawAxiosRequestConfig) {
+        return ChatRoomControllerApiFp(this.configuration).getChatRoomByPostcardId(postcardId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -6552,40 +6686,6 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 
-         * @summary 사용자 온모딩 모달 상태 조회 API
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOnboardingStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/members/onboarding`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * 책갈피 개수 조회 (기존:\'/members/postcards\')
          * @summary 사용자 Bookmark 개수 조회
          * @param {*} [options] Override http request option.
@@ -6802,46 +6902,6 @@ export const MemberControllerApiAxiosParamCreator = function (configuration?: Co
             };
         },
         /**
-         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
-         * @summary 사용자 온보딩 모달 상태 업데이트 API
-         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateOnboardingStatus: async (memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'memberOnboardingStatusRequest' is not null or undefined
-            assertParamExists('updateOnboardingStatus', 'memberOnboardingStatusRequest', memberOnboardingStatusRequest)
-            const localVarPath = `/members/onboarding`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(memberOnboardingStatusRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
          * 애드몹 개수 소진 위해 해당 API 호출
          * @summary 애드몹 소진
          * @param {MemberAdmobRequest} memberAdmobRequest 
@@ -6929,18 +6989,6 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
-         * @summary 사용자 온모딩 모달 상태 조회 API
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getOnboardingStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberOnboardingStatusResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnboardingStatus(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.getOnboardingStatus']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * 책갈피 개수 조회 (기존:\'/members/postcards\')
          * @summary 사용자 Bookmark 개수 조회
          * @param {*} [options] Override http request option.
@@ -7015,19 +7063,6 @@ export const MemberControllerApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
-         * @summary 사용자 온보딩 모달 상태 업데이트 API
-         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberOnboardingStatusResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.updateOnboardingStatus(memberOnboardingStatusRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['MemberControllerApi.updateOnboardingStatus']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
          * 애드몹 개수 소진 위해 해당 API 호출
          * @summary 애드몹 소진
          * @param {MemberAdmobRequest} memberAdmobRequest 
@@ -7077,15 +7112,6 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
          */
         getAllMembersProfile(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: any): AxiosPromise<PageMemberBookProfileResponse> {
             return localVarFp.getAllMembersProfile(memberBookProfileRequestDto, pageable, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 사용자 온모딩 모달 상태 조회 API
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getOnboardingStatus(options?: any): AxiosPromise<MemberOnboardingStatusResponse> {
-            return localVarFp.getOnboardingStatus(options).then((request) => request(axios, basePath));
         },
         /**
          * 책갈피 개수 조회 (기존:\'/members/postcards\')
@@ -7144,16 +7170,6 @@ export const MemberControllerApiFactory = function (configuration?: Configuratio
             return localVarFp.updateMemberStatus(memberStatusUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
-         * @summary 사용자 온보딩 모달 상태 업데이트 API
-         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: any): AxiosPromise<MemberOnboardingStatusResponse> {
-            return localVarFp.updateOnboardingStatus(memberOnboardingStatusRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
          * 애드몹 개수 소진 위해 해당 API 호출
          * @summary 애드몹 소진
          * @param {MemberAdmobRequest} memberAdmobRequest 
@@ -7205,17 +7221,6 @@ export class MemberControllerApi extends BaseAPI {
      */
     public getAllMembersProfile(memberBookProfileRequestDto: MemberBookProfileRequestDto, pageable: Pageable, options?: RawAxiosRequestConfig) {
         return MemberControllerApiFp(this.configuration).getAllMembersProfile(memberBookProfileRequestDto, pageable, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 사용자 온모딩 모달 상태 조회 API
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberControllerApi
-     */
-    public getOnboardingStatus(options?: RawAxiosRequestConfig) {
-        return MemberControllerApiFp(this.configuration).getOnboardingStatus(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7284,18 +7289,6 @@ export class MemberControllerApi extends BaseAPI {
      */
     public updateMemberStatus(memberStatusUpdateRequest: MemberStatusUpdateRequest, options?: RawAxiosRequestConfig) {
         return MemberControllerApiFp(this.configuration).updateMemberStatus(memberStatusUpdateRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
-     * @summary 사용자 온보딩 모달 상태 업데이트 API
-     * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof MemberControllerApi
-     */
-    public updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: RawAxiosRequestConfig) {
-        return MemberControllerApiFp(this.configuration).updateOnboardingStatus(memberOnboardingStatusRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -7497,6 +7490,327 @@ export class MemberEmailControllerApi extends BaseAPI {
      */
     public verifyEmail(memberEmailVerifyRequest: MemberEmailVerifyRequest, options?: RawAxiosRequestConfig) {
         return MemberEmailControllerApiFp(this.configuration).verifyEmail(memberEmailVerifyRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * MemberModalControllerApi - axios parameter creator
+ * @export
+ */
+export const MemberModalControllerApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary 친구 초대 보상 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvitationRewardStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/member-modal/invitation-reward`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnboardingStatus: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/member-modal/onboarding`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 친구 초대 보상 상태를 업데이트<br>memberOnboardingStatus : [PENDING, BOOKMARK, COMPLETED]
+         * @summary 친구 초대 보상 상태 업데이트 API
+         * @param {MemberInvitationRewardRequest} memberInvitationRewardRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateInvitationRewardStatus: async (memberInvitationRewardRequest: MemberInvitationRewardRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberInvitationRewardRequest' is not null or undefined
+            assertParamExists('updateInvitationRewardStatus', 'memberInvitationRewardRequest', memberInvitationRewardRequest)
+            const localVarPath = `/member-modal/invitation-reward`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memberInvitationRewardRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
+         * @summary 사용자 온보딩 모달 상태 업데이트 API
+         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOnboardingStatus: async (memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'memberOnboardingStatusRequest' is not null or undefined
+            assertParamExists('updateOnboardingStatus', 'memberOnboardingStatusRequest', memberOnboardingStatusRequest)
+            const localVarPath = `/member-modal/onboarding`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(memberOnboardingStatusRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * MemberModalControllerApi - functional programming interface
+ * @export
+ */
+export const MemberModalControllerApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = MemberModalControllerApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary 친구 초대 보상 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getInvitationRewardStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberInvitationRewardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getInvitationRewardStatus(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberModalControllerApi.getInvitationRewardStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getOnboardingStatus(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberOnboardingStatusResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getOnboardingStatus(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberModalControllerApi.getOnboardingStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 친구 초대 보상 상태를 업데이트<br>memberOnboardingStatus : [PENDING, BOOKMARK, COMPLETED]
+         * @summary 친구 초대 보상 상태 업데이트 API
+         * @param {MemberInvitationRewardRequest} memberInvitationRewardRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateInvitationRewardStatus(memberInvitationRewardRequest: MemberInvitationRewardRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberInvitationRewardResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateInvitationRewardStatus(memberInvitationRewardRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberModalControllerApi.updateInvitationRewardStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
+         * @summary 사용자 온보딩 모달 상태 업데이트 API
+         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberOnboardingStatusResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.updateOnboardingStatus(memberOnboardingStatusRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['MemberModalControllerApi.updateOnboardingStatus']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * MemberModalControllerApi - factory interface
+ * @export
+ */
+export const MemberModalControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = MemberModalControllerApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary 친구 초대 보상 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getInvitationRewardStatus(options?: any): AxiosPromise<MemberInvitationRewardResponse> {
+            return localVarFp.getInvitationRewardStatus(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 사용자 온모딩 모달 상태 조회 API
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getOnboardingStatus(options?: any): AxiosPromise<MemberOnboardingStatusResponse> {
+            return localVarFp.getOnboardingStatus(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 친구 초대 보상 상태를 업데이트<br>memberOnboardingStatus : [PENDING, BOOKMARK, COMPLETED]
+         * @summary 친구 초대 보상 상태 업데이트 API
+         * @param {MemberInvitationRewardRequest} memberInvitationRewardRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateInvitationRewardStatus(memberInvitationRewardRequest: MemberInvitationRewardRequest, options?: any): AxiosPromise<MemberInvitationRewardResponse> {
+            return localVarFp.updateInvitationRewardStatus(memberInvitationRewardRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
+         * @summary 사용자 온보딩 모달 상태 업데이트 API
+         * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: any): AxiosPromise<MemberOnboardingStatusResponse> {
+            return localVarFp.updateOnboardingStatus(memberOnboardingStatusRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * MemberModalControllerApi - object-oriented interface
+ * @export
+ * @class MemberModalControllerApi
+ * @extends {BaseAPI}
+ */
+export class MemberModalControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary 친구 초대 보상 상태 조회 API
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberModalControllerApi
+     */
+    public getInvitationRewardStatus(options?: RawAxiosRequestConfig) {
+        return MemberModalControllerApiFp(this.configuration).getInvitationRewardStatus(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 사용자 온모딩 모달 상태 조회 API
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberModalControllerApi
+     */
+    public getOnboardingStatus(options?: RawAxiosRequestConfig) {
+        return MemberModalControllerApiFp(this.configuration).getOnboardingStatus(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 친구 초대 보상 상태를 업데이트<br>memberOnboardingStatus : [PENDING, BOOKMARK, COMPLETED]
+     * @summary 친구 초대 보상 상태 업데이트 API
+     * @param {MemberInvitationRewardRequest} memberInvitationRewardRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberModalControllerApi
+     */
+    public updateInvitationRewardStatus(memberInvitationRewardRequest: MemberInvitationRewardRequest, options?: RawAxiosRequestConfig) {
+        return MemberModalControllerApiFp(this.configuration).updateInvitationRewardStatus(memberInvitationRewardRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 사용자의 온보딩 상태를 업데이트<br>memberOnboardingStatus : [HOME, LIBRARY]
+     * @summary 사용자 온보딩 모달 상태 업데이트 API
+     * @param {MemberOnboardingStatusRequest} memberOnboardingStatusRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof MemberModalControllerApi
+     */
+    public updateOnboardingStatus(memberOnboardingStatusRequest: MemberOnboardingStatusRequest, options?: RawAxiosRequestConfig) {
+        return MemberModalControllerApiFp(this.configuration).updateOnboardingStatus(memberOnboardingStatusRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
