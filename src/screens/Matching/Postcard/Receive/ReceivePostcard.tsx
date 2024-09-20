@@ -1,6 +1,5 @@
 import manIcon from '@assets/images/icons/ManSmall.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
-import { fetchPenddingChatList } from '@commons/api/chat/chat.api';
 import { readPostcard } from '@commons/api/matching/matching.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -14,10 +13,8 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Image, Linking, TouchableOpacity, View } from 'react-native';
-
 import {
   CircularImage,
   GenderIconStyled,
@@ -37,8 +34,6 @@ import * as S from './ReceivePostcard.styles';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
-  const navigation = useNavigation();
-
   const {
     postcardId,
     memberId,
@@ -66,7 +61,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isNoPostcardModalVisible, setModalVisible] = useState(false);
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
-  const [penddingChatList, setPenddingChatList] = useState([]);
   const { movePageNoReference } = useMovePage();
   const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
@@ -75,16 +69,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     isOpen,
     studentIdToggle,
   });
-
-  const loadPenddingChat = () => {
-    const response = fetchPenddingChatList();
-
-    setPenddingChatList(response.result);
-  };
-
-  useEffect(() => {
-    loadPenddingChat();
-  }, []);
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -95,29 +79,15 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    console.log(`
-      ======== handlePostcardClick ========
-      postcardStatus: ${postcardStatus}
-
-      memberId: ${memberId}
-      memberName: ${memberName}
-      memberProfileImageUrl: ${memberProfileImageUrl}
-      memberAge: ${memberAge}
-      =================
-    `);
-
-    navigation.navigate('chat');
-
-    // 이 부분은 채팅방으로 이동하는 로직입니다.
-    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-      // movePageNoReference('receivePostcardDetail', rest);
-    } else {
-      if (memberPostcard > 0) {
-        toggleCheckBeforeSendPostcardModal();
-      } else {
-        toggleNoPostcardModal();
-      }
-    }
+    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+    //   movePageNoReference('receivePostcardDetail', rest);
+    // } else {
+    //   if (memberPostcard > 0) {
+    //     toggleCheckBeforeSendPostcardModal();
+    //   } else {
+    //     toggleNoPostcardModal();
+    //   }
+    // }
     studentIdToggle;
     console.log('studentIdToggle', studentIdToggle);
   };
@@ -135,7 +105,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
-
     movePageNoReference('receivePostcardDetail', rest);
   };
 
