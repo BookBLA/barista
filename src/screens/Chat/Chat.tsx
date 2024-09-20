@@ -78,35 +78,7 @@ const ChatScreen: React.FC = () => {
 
   // 새 메시지를 처리하는 함수
   const handleNewMessage = useCallback(async (newMessage: any) => {
-    console.log(`
-      ====================
-      New message received!123123
-
-      New message: ${JSON.stringify(newMessage)}
-      Before chats: ${JSON.stringify(chats)}
-      ====================
-    `);
-
-    await loadChats();
-
-    // newMessage.chatRoomId에 해당하는 채팅방의 unreadCount를 1 증가시키고, lastMessage를 업데이트
-    const updatedChats = chats.map((chat) => {
-      if (chat.id === newMessage.chatRoomId.toString()) {
-        return {
-          ...chat,
-          lastMessage: newMessage.content,
-          timestamp: new Date(newMessage.sendTime).toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          }),
-          unreadCount: chat.unreadCount + 1,
-        };
-      }
-
-      return chat;
-    });
-
-    setChats(updatedChats);
+    await loadChats().then();
   }, []);
 
   useEffect(() => {
