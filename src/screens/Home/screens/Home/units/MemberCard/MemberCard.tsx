@@ -3,19 +3,17 @@ import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomMod
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { getStudentIdConfig } from '@commons/configs/StudentIdModal/studentIdConfig';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import { BottomSheetModalMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
-import { useMemo } from 'react';
-import BookImage from '../BookImage/BookImage';
-import BookInfo from '../BookInfo/BookInfo';
-import Profile from '../Profile/Profile';
+import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import * as S from './MemberCard.styles';
+import BookImage from './units/BookImage/BookImage';
+import BookInfo from './units/BookInfo/BookInfo';
+import Profile from './units/Profile/Profile';
 
-const MemberCard = ({ handleReport }: { handleReport: React.RefObject<BottomSheetModalMethods> }) => {
+const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
   const { movePage } = useMovePage();
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
@@ -27,11 +25,9 @@ const MemberCard = ({ handleReport }: { handleReport: React.RefObject<BottomShee
   const { updateMemberInfo } = useMemberStore();
   const showToast = useToastStore((state) => state.showToast);
 
-  const reportBottomSheet = useBottomSheet();
-  const reportSnapPoints = useMemo(() => ['80%'], []);
   // TODO: 추후 memberbookId, targetMemberId 값 받아서 넣기. 현재는 임시값
-  const memberBookId = 2849551;
-  const targetMemberId = 900032;
+  const memberBookId = memberData?.memberBookId;
+  const targetMemberId = memberData?.memberId;
 
   const checkStudentId = async () => {
     let studentIdStatusResponse;
@@ -71,19 +67,17 @@ const MemberCard = ({ handleReport }: { handleReport: React.RefObject<BottomShee
       console.log('error', error);
     }
   };
+
   return (
     <S.Wrapper>
-      <Profile handleReport={handleReport} />
-      <BookImage />
-      <BookInfo />
+      <Profile handleReport={handleReport} memberData={memberData} />
+      <BookImage bookImage={memberData?.bookCoverImageUrl ?? ''} />
+      <BookInfo memberData={memberData} />
 
       <S.SendButton onPress={() => checkStudentId()}>
         <CustomText>엽서 보내기</CustomText>
       </S.SendButton>
       <CustomModal modalConfig={studentIdModalConfig} />
-      {/* <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
-        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={memberId} />
-      </CustomBottomSheetModal> */}
     </S.Wrapper>
   );
 };
