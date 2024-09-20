@@ -432,7 +432,7 @@ const ChatDetail: React.FC = () => {
       return;
     }
 
-    WebSocketClient.sendChatMessage(123123123, userId.toString(), message, messageId);
+    WebSocketClient.sendChatMessage(chatRoomID, userId.toString(), message, messageId);
   };
 
   // 메시지 렌더링
