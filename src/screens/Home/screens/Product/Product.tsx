@@ -247,7 +247,7 @@ const Product = () => {
                 props={{
                   title: '무료 책갈피 받기',
                   name: '무료 책갈피 받기',
-                  krwPrice: '광고 시청 후\n책갈피 10개 받기',
+                  krwPrice: '광고 시청 후\n책갈피 2개 받기',
                   productId: 'ad_free_bookmarks',
                 }}
                 index={0}

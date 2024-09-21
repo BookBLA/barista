@@ -27,7 +27,7 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
       {index === 0 && (
         <Image
           source={img.adMask}
-          style={{ width: 38, height: 38, zIndex: 5, position: 'absolute', top: 0, left: 0 }}
+          style={{ width: 38, height: 38, zIndex: 5, position: 'absolute', borderTopLeftRadius: 10, top: 0, left: 0 }}
         />
       )}
       {admobCount > 0 ? (
@@ -41,8 +41,8 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
             height: '100%',
             justifyContent: 'space-around',
             alignItems: 'center',
-            padding: 1, // Adjust this value to change the thickness of the border
-            borderRadius: 10, // Adjust as needed
+            padding: 2,
+            borderRadius: 10,
           }}
         >
           <ProductListContent
