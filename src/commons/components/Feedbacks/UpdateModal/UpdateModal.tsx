@@ -9,7 +9,7 @@ import { Platform } from 'react-native';
 import * as S from './UpdateModal.styles';
 
 const UpdateModal = () => {
-  const { data } = useGetLatestVersion();
+  const { data, isLoading } = useGetLatestVersion();
   const handleLinkPress = useLinkingOpen();
   const appVersion = getAppVersion();
   const getStoreUrl = Platform.OS === 'ios' ? data?.appStoreUrl : data?.googlePlayStoreUrl;
@@ -18,6 +18,10 @@ const UpdateModal = () => {
     visible: data.version ? appVersion !== data.version : false,
     onClose: () => {},
   };
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <CustomModal modalConfig={modalConfig}>

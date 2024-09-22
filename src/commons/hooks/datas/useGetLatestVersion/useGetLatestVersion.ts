@@ -6,6 +6,7 @@ import { initDataState } from '../../../../screens/Setting/screens/Setting/conte
 
 export const useGetLatestVersion = () => {
   const [data, setData] = useState<ISettingData>(initDataState);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { googlePlayStoreUrl, appStoreUrl } = storeUrls;
   const getLatestVersion = async () => {
     try {
@@ -17,6 +18,7 @@ export const useGetLatestVersion = () => {
         googlePlayStoreUrl,
         appStoreUrl,
       });
+      setIsLoading(false);
     } catch {
       setData({
         version: '',
@@ -30,5 +32,5 @@ export const useGetLatestVersion = () => {
     getLatestVersion();
   }, []);
 
-  return { data };
+  return { data, isLoading };
 };
