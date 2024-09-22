@@ -57,6 +57,7 @@ const StepFirst = () => {
     const content = {
       quizId: bookInfo?.quizId,
       quizAnswer: currentPressedAnswerString,
+      targetMemberId,
     };
     const result = await postVerifyQuizAnswer(content);
     const isCorrect = result.isCorrect;

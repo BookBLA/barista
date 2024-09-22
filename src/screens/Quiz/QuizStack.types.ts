@@ -24,6 +24,7 @@ export type TCompleteQuiz = RouteProp<TPassQuiz, 'QuizStack'>;
 export interface IVerifyQuizAnswer {
   quizId?: number;
   quizAnswer: string;
+  targetMemberId: number;
 }
 
 export interface IPostPostcard {
