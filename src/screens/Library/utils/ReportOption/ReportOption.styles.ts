@@ -6,11 +6,11 @@ export const InputStyled = styled.TextInput.attrs({
   maxLength: 500, // 최대 글자 수
 })`
   width: 90%;
-  height: 30%;
+  height: 184px;
   z-index: 2;
   border: 1px solid ${colors.textQaGray};
   border-radius: 10px;
   font-size: 12px;
   padding: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 24px;
 `;
