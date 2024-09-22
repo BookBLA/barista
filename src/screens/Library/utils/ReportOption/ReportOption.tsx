@@ -14,11 +14,12 @@ import ReportModalContent from '../ReportModalContent';
 import { InputStyled } from './ReportOption.styles';
 
 const reportStatusKeys = {
-  bookQuizReport: 0,
-  reviewReport: 1,
-  askReport: 2,
-  replyReport: 3,
-  profileImageReport: 4,
+  isNicknameReported: 0,
+  isBookQuizReported: 1,
+  isReviewReported: 2,
+  isConversationReported: 3,
+  isProposalReported: 4,
+  isOtherReported: 5,
 };
 
 type TReportStatusKeys = keyof typeof reportStatusKeys;
@@ -26,13 +27,11 @@ type TReportStatusKeys = keyof typeof reportStatusKeys;
 const ReportOption = ({
   bottomClose,
   reportedMemberId,
-  onClose,
-  onReport,
+  setIsReported,
 }: {
   bottomClose: () => void;
   reportedMemberId: number;
-  onClose: () => void;
-  onReport: () => void;
+  setIsReported?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [isChecked, setIsChecked] = useState(Array(reportCases.length).fill(false));
   const { toggle, isOpen } = useToggle();
@@ -61,8 +60,9 @@ const ReportOption = ({
       await postMemberReports({
         reportedMemberId,
         reportStatuses,
-        etcContents,
+        reportContents: etcContents,
       });
+      if (setIsReported) setIsReported(true);
       toggle();
     } catch (err) {
       showToast({
@@ -71,23 +71,14 @@ const ReportOption = ({
     }
   };
 
-  // 화면 나갈때 onClose 호출
-  useEffect(() => {
-    return () => {
-      console.log('ReportOption unmount');
-
-      onClose();
-    };
-  }, []);
-
   return (
     <View style={{ width: '100%', alignItems: 'center', height: '100%' }}>
       {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}> */}
       <KeyboardAwareScrollView
-        style={{ width: '100%', marginBottom: 20 }}
+        style={{ width: '100%', marginBottom: 10 }}
         contentContainerStyle={{
-          flexGrow: 1,
-          justifyContent: 'space-around',
+          // flexGrow: 1,
+          // justifyContent: 'space-around',
           alignItems: 'center',
         }}
         keyboardShouldPersistTaps="handled"
@@ -106,7 +97,7 @@ const ReportOption = ({
             중복으로 선택 가능합니다
           </CustomText>
         </View>
-        <View style={{ width: '90%' }}>
+        <View style={{ width: '90%', marginBottom: 10 }}>
           {reportCases.map((reportCase, index) => (
             <View style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 14 }} key={reportCase}>
               <Checkbox
@@ -141,25 +132,17 @@ const ReportOption = ({
             신고하기
           </CustomText>
         </NextButtonStyled>
-        <CustomModal
-          modalConfig={{
-            visible: isOpen,
-            onClose: toggle,
-            mode: 'round',
-            contents: <ReportModalContent />,
-            buttons: [
-              {
-                label: '확인',
-                action: () => {
-                  bottomClose();
-                  onReport();
-                },
-              },
-            ],
-          }}
-        />
       </KeyboardAwareScrollView>
       {/* </TouchableWithoutFeedback> */}
+      <CustomModal
+        modalConfig={{
+          visible: isOpen,
+          onClose: toggle,
+          mode: 'round',
+          contents: <ReportModalContent />,
+          buttons: [{ label: '확인', action: bottomClose }],
+        }}
+      />
     </View>
   );
 };
