@@ -3,39 +3,33 @@ import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/
 import { Alert, Image, Platform, View } from 'react-native';
 import { requestPurchase } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
-import { CustomGradientButton } from '@commons/components/Inputs/CustomGradientButton/CustomGradientButton';
-import { colors } from '@commons/styles/variablesStyles';
+import { CustomGradientButton } from '../../../../../commons/components/Inputs/CustomGradientButton/CustomGradientButton';
+import { colors } from '../../../../../commons/styles/variablesStyles';
+import { ITEM_ID } from '../Product';
 import * as S from '../Product.styles';
 import { ProductProps } from '../Product.types';
 
-const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, handleGetRewardedAds }) => {
+const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
   const { title, krwPrice, discount, originalPrice, productId, name } = props;
-
-  if (!admobCount) {
-    admobCount = 0;
-  }
 
   const buy = async (sku: string) => {
     Alert.alert('requestPurchase', sku);
+    const skus = [ITEM_ID.find((item) => item === sku)?.toString() ?? ''];
     try {
-      const result = await requestPurchase({
-        sku,
-        andDangerouslyFinishTransactionAutomaticallyIOS: false, // requestPurchase 호출 후 자동으로 finishTransaction을 호출할지 여부
-      });
+      const result =
+        Platform.OS === 'ios'
+          ? await requestPurchase({ sku, andDangerouslyFinishTransactionAutomaticallyIOS: false })
+          : await requestPurchase({ skus });
       Alert.alert('Purchase Success:', JSON.stringify(result, null, 2));
     } catch (err) {
-      if (err && err.code === USER_CANCEL) {
-        Alert.alert('구매 취소', '구매를 취소하셨습니다.');
-      } else {
-        Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
-      }
+      Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
     }
   };
 
   return (
     <S.ProductContentContainer index={index} admobCount={admobCount}>
       <S.ProductInfoContainer>
-        <Image source={productMask} style={{ width: 33, height: 42, marginRight: '10%' }} />
+        <Image source={productMask} style={{ width: 33, height: 42, marginRight: '10%', objectFit: 'contain' }} />
         <View
           style={{
             width: '70%',
@@ -74,12 +68,12 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, 
       </S.ProductInfoContainer>
       {index === 0 ? (
         admobCount && admobCount > 0 ? (
-          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={handleGetRewardedAds} />
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => console.log('애드몹 시청')} />
         ) : (
-          <CustomButton contents="무료 0/2" disabled padding="9px 18px" />
+          <CustomButton contents={'무료 0/2'} disabled padding={'9px 18px'} />
         )
       ) : (
-        <CustomButton contents="구매하기" onPress={() => buy(productId)} padding="9px 18px" />
+        <CustomButton contents={'구매하기'} onPress={() => buy(productId)} padding={'9px 18px'} />
       )}
     </S.ProductContentContainer>
   );
