@@ -60,19 +60,24 @@ const Home = () => {
   });
   usePushNotifications();
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <>
       <S.Wrapper>
         {!isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
-        {!isLoading && isMemberData && !isReported && (
+
+        {isReported && <InviteCard />}
+        {isMemberData && !isReported && (
           <MemberCard memberData={memberData[memberCount]} handleReport={reportBottomSheet.handleOpenBottomSheet} />
         )}
-        {!isLoading && !isMemberData && <EventCard />}
-        {!isLoading && isReported && <InviteCard />}
+        {!isMemberData && <EventCard />}
 
         {/* <InviteCard /> */}
-        {!isLoading && <Advert />}
+        <Advert />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
             bottomClose={reportBottomSheet.handleCloseBottomSheet}
