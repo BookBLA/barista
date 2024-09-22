@@ -52,7 +52,6 @@ export const icons = {
 
   plusBook: require('@assets/images/icons/PlusBook.png'),
   plusCircle: require('@assets/images/icons/PlusCircle.png'),
-  postcard: require('@assets/images/icons/Postcard.png'),
   profileImageSetting: require('@assets/images/icons/ProfileImageSetting.png'),
 
   quoteStart: require('@assets/images/icons/QuoteStart.png'),
