@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import { ModalItem } from '@commons/components/Specific/OnboardingModal/ModalItem';
 import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { img } from '@commons/utils/ui/variablesImages/variablesImages';
-import Modal from 'react-native-modal';
-import { TouchableWithoutFeedback, View } from 'react-native';
-import { ModalItem } from '@commons/components/Specific/OnboardingModal/ModalItem';
 import { ModalProps } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal.types';
-import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import React from 'react';
+import { TouchableWithoutFeedback, View } from 'react-native';
+import Modal from 'react-native-modal';
 
 export const LibraryOnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) => {
   const modalWidth = deviceWidth * 0.9;
