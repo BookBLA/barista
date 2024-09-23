@@ -104,6 +104,8 @@ const Home = () => {
           <MemberCard memberData={memberData[memberCount]} handleReport={reportBottomSheet.handleOpenBottomSheet} />
         )}
         {!isMemberData && <EventCard />}
+
+        {/* <InviteCard /> */}
         <Advert />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
