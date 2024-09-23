@@ -4,7 +4,7 @@ import settingIcon from '@assets/images/icons/Setting.png';
 import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { uploadImageToS3 } from '@commons/api/image/imageUploadToS3.api';
 import { postMemberBlock } from '@commons/api/members/block/memberBlock.api';
-import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import { getOnboardingStatus } from '@commons/api/modal/modal.api';
 import { deleteBook, getBookInfo, getInvitationCode, validateSendPostcard } from '@commons/api/postcard/library.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
@@ -70,7 +70,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '80%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
-  const reportSnapPoints = useMemo(() => ['75%'], []);
+  const reportSnapPoints = useMemo(() => ['78%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;

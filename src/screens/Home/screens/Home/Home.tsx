@@ -1,5 +1,5 @@
 import { getMembersMatch } from '@commons/api/members/match/memberMatch';
-import { getOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import { getInvitationRewardStatus, getOnboardingStatus } from '@commons/api/modal/modal.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import usePushNotifications from '@commons/hooks/notifications/pushNotifications/usePushNotifications';
@@ -9,7 +9,6 @@ import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
-
 import { ResponseData } from '@commons/types/responseData';
 import * as S from '@screens/Home/screens/Home/Home.styles';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
@@ -20,11 +19,14 @@ import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
 import InviteCard from './units/InviteCard/InviteCard';
+import InviteModal from './units/InviteModal/InviteModal';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
+  const [invitingModalOpen, setInvitingModalOpen] = useState<boolean>(true);
+  const [invitedModalOpen, setInvitedModalOpen] = useState<boolean>(true);
   const { data, isLoading } = useQuery<ResponseData<MemberIntroResponse[]>>({
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
@@ -33,11 +35,16 @@ const Home = () => {
   const [memberCount, setMemberCount] = useState(0);
   const [isReported, setIsReported] = useState(false);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
-  const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
+  const [modalStatus, setModalStatus] = useState<{ [key: string]: boolean | undefined }>({
+    isAlreadyEntry: true,
+    invitingRewardStatus: true,
+    invitedRewardStatus: true,
+  });
+  const [invitedMembersGender, setInvitedMembersGender] = useState<string>('male');
   const isMemberData = memberData?.length > 0;
 
   const reportBottomSheet = useBottomSheet();
-  const reportSnapPoints = useMemo(() => ['75%'], []);
+  const reportSnapPoints = useMemo(() => ['78%'], []);
   const reportedMemberId = memberData[memberCount]?.memberId ?? 0;
 
   useEffect(() => {
@@ -45,13 +52,21 @@ const Home = () => {
       try {
         const res = await getOnboardingStatus();
         // @ts-ignore
-        setIsAlreadyEntry(res.result.homeOnboardingStatus);
+        // setIsAlreadyEntry(res.result.homeOnboardingStatus);
+
+        const response = await getInvitationRewardStatus();
+        setModalStatus({
+          isAlreadyEntry: res.result.homeOnboardingStatus,
+          invitingRewardStatus: response.result.invitingRewardStatus,
+          invitedRewardStatus: response.result.invitingRewardStatus,
+        });
+        setInvitedMembersGender(response.result.invitedMembersGender ? response.result.invitedMembersGender : 'female');
       } catch (error) {
         console.error('Failed to fetch onboarding status:', error);
       }
     };
 
-    fetchOnboardingStatus();
+    // fetchOnboardingStatus();
   }, []);
 
   useScreenLogger();
@@ -67,13 +82,28 @@ const Home = () => {
   return (
     <>
       <S.Wrapper>
-        {!isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
+        {!modalStatus.isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
+        {modalStatus.invitingRewardStatus && invitingModalOpen && (
+          <InviteModal
+            // invitedGender={invitedMembersGender}
+            isVisible={invitingModalOpen}
+            setIsVisible={setInvitingModalOpen}
+          />
+        )}
+        {modalStatus.invitedRewardStatus && invitedModalOpen && (
+          <InviteModal
+            invitedGender={invitedMembersGender}
+            isVisible={invitedModalOpen}
+            setIsVisible={setInvitedModalOpen}
+          />
+        )}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
+
+        {isReported && <InviteCard />}
         {isMemberData && !isReported && (
           <MemberCard memberData={memberData[memberCount]} handleReport={reportBottomSheet.handleOpenBottomSheet} />
         )}
         {!isMemberData && <EventCard />}
-        {!isLoading && isReported && <InviteCard />}
 
         {/* <InviteCard /> */}
         <Advert />
