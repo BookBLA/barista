@@ -14,7 +14,7 @@ export const Wrapper = styled.Pressable`
 `;
 
 export const StepProgressBar = styled.View`
-  margin-top: 15px;
+  margin-top: ${deviceHeight * 0.005}px;
   margin-bottom: 25px;
   padding: 0 10px;
   width: 45%;
@@ -116,7 +116,7 @@ export const ReadingQuizTestContainer = styled.KeyboardAvoidingView`
 `;
 
 export const QuizTitleContainer = styled.View`
-  margin-bottom: 30px;
+  margin-bottom: ${deviceHeight * 0.02}px;
   text-wrap: pretty;
 `;
 
@@ -204,7 +204,6 @@ export const PostCardSelectedImage = styled.Image`
 `;
 
 export const NextButton = styled.TouchableOpacity`
-  margin-top: auto;
   margin-bottom: 20px;
   width: 90%;
   height: 56px;

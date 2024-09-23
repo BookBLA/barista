@@ -7,7 +7,7 @@ import { TProps } from '@screens/Quiz/QuizStack.types';
 import { BookInfo } from '@screens/Quiz/units/BookInfo';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { Image, Text, TouchableWithoutFeedback } from 'react-native';
+import {Image, Text, TouchableWithoutFeedback, View} from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
@@ -60,7 +60,7 @@ const StepThird = () => {
   });
   useHeaderControl({ title: '독서 퀴즈' });
   return (
-    <S.Wrapper style={{ alignItems: 'center' }}>
+    <T.Wrapper style={{ alignItems: 'center' }}>
       <T.StepProgressBar>
         <T.StepLineThird />
         <T.StepImage>
@@ -102,6 +102,8 @@ const StepThird = () => {
         </T.PostCardImageListWrapper>
       </T.ReadingQuizTestContainer>
 
+      <View style={{ flexGrow: 1 }}></View>
+
       <T.NextButton
         onPress={sendPostCard}
         style={{ opacity: !currentPressedPostcard ? 0.3 : 1 }}
@@ -111,7 +113,7 @@ const StepThird = () => {
         <Image style={{ width: 12, height: 12 }} source={icons.sendPostcard} />
         <Text style={{ fontSize: 14, opacity: 0.4 }}>35</Text>
       </T.NextButton>
-    </S.Wrapper>
+    </T.Wrapper>
   );
 };
 
