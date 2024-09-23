@@ -1,5 +1,7 @@
 import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import _ from 'lodash';
+import { useRef } from 'react';
 import { Alert, Image, Platform, View } from 'react-native';
 import { requestPurchase } from 'react-native-iap';
 import productMask from '../../../../../../assets/images/icons/ProductMask.png';
@@ -25,6 +27,16 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
       Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
     }
   };
+
+  const isLoadingRef = useRef(false);
+  const debouncedBuy = _.debounce(async (productId: string) => {
+    if (isLoadingRef.current) {
+      return;
+    }
+    isLoadingRef.current = true;
+    await buy(productId);
+    isLoadingRef.current = false;
+  }, 500); // 0.5-second debounce
 
   return (
     <S.ProductContentContainer index={index} admobCount={admobCount}>
@@ -73,7 +85,7 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
           <CustomButton contents={'무료 0/2'} disabled padding={'9px 18px'} />
         )
       ) : (
-        <CustomButton contents={'구매하기'} onPress={() => buy(productId)} padding={'9px 18px'} />
+        <CustomButton contents={'구매하기'} onPress={() => debouncedBuy(productId)} />
       )}
     </S.ProductContentContainer>
   );
