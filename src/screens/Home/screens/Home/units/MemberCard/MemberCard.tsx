@@ -28,10 +28,12 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   // TODO: 추후 memberbookId, targetMemberId 값 받아서 넣기. 현재는 임시값
   const memberBookId = memberData?.memberBookId;
   const targetMemberId = memberData?.memberId;
+  console.log(memberBookId, targetMemberId);
 
   const checkStudentId = async () => {
     let studentIdStatusResponse;
     if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {
+      console.log('123');
       if (!studentIdImageStatus) {
         studentIdStatusResponse = await getStudentIdStatus();
       }
@@ -54,6 +56,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
         studentIdToggle();
       }
     } else if (memberStatus === 'COMPLETED') {
+      console.log('456');
       movePage('quizStack', { memberBookId, targetMemberId })();
     }
   };

@@ -51,59 +51,59 @@ const StepSecond = () => {
   });
   useHeaderControl({ title: '독서 퀴즈' });
   return (
-    <>
-      <T.Wrapper onPress={() => Keyboard.dismiss()} style={{ alignItems: 'center' }}>
-        <T.StepProgressBar>
-          <T.StepLineSecond />
-          <T.StepImage>
-            <Image source={icons.previousStep} style={{ margin: 1, width: 14, height: 14 }} />
-            <T.StepName style={{ opacity: 0.4 }}>Step 01</T.StepName>
-          </T.StepImage>
-          <T.StepImage>
-            <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
-            <T.StepName>Step 02</T.StepName>
-          </T.StepImage>
-          <T.StepImage>
-            <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
-            <T.StepName style={{ opacity: 0.4 }}>Step 03</T.StepName>
-          </T.StepImage>
-        </T.StepProgressBar>
+    <T.Wrapper onPress={() => Keyboard.dismiss()} style={{ alignItems: 'center' }}>
+      <T.StepProgressBar>
+        <T.StepLineSecond />
+        <T.StepImage>
+          <Image source={icons.previousStep} style={{ margin: 1, width: 14, height: 14 }} />
+          <T.StepName style={{ opacity: 0.4 }}>Step 01</T.StepName>
+        </T.StepImage>
+        <T.StepImage>
+          <Image source={icons.currentStep} style={{ width: 16, height: 16 }} />
+          <T.StepName>Step 02</T.StepName>
+        </T.StepImage>
+        <T.StepImage>
+          <Image source={icons.nextStep} style={{ margin: 1, width: 14, height: 14 }} />
+          <T.StepName style={{ opacity: 0.4 }}>Step 03</T.StepName>
+        </T.StepImage>
+      </T.StepProgressBar>
 
-        <View style={{ paddingTop: isKeyboardVisible ? deviceHeight * 0.05 : 0 }}>
-          {!isKeyboardVisible && <BookInfo params={route.params} key="" name="QuizStack" />}
-        </View>
+      <View style={{ paddingTop: isKeyboardVisible ? deviceHeight * 0.05 : 0 }}>
+        {!isKeyboardVisible && <BookInfo params={route.params} key="" name="QuizStack" />}
+      </View>
 
-        <T.ReadingQuizTestContainer>
-          <T.QuizTitleContainer>
-            <CustomText font="fontSemiBold" size="18px" color="black">
-              상대방에게 인사말을 써보세요
-            </CustomText>
-          </T.QuizTitleContainer>
+      <T.ReadingQuizTestContainer>
+        <T.QuizTitleContainer>
+          <CustomText font="fontSemiBold" size="18px" color="black">
+            상대방에게 인사말을 써보세요
+          </CustomText>
+        </T.QuizTitleContainer>
 
-          <T.TextSection
-            multiline
-            value={text}
-            onChangeText={handleTextChange}
-            placehoder="첫 인사와 함께 이 책을 고른 이유를 알려주세요!"
-            maxLength={maxLength}
-          />
-          <T.TextCount>
-            <Text style={{ color: '#00000099' }}>{text.length}</Text>{' '}
-            <Text style={{ color: '#00000066' }}>/ {maxLength}자</Text>
-          </T.TextCount>
-        </T.ReadingQuizTestContainer>
+        <T.TextSection
+          multiline
+          value={text}
+          onChangeText={handleTextChange}
+          placehoder="첫 인사와 함께 이 책을 고른 이유를 알려주세요!"
+          maxLength={maxLength}
+        />
+        <T.TextCount>
+          <Text style={{ color: '#00000099' }}>{text.length}</Text>{' '}
+          <Text style={{ color: '#00000066' }}>/ {maxLength}자</Text>
+        </T.TextCount>
+      </T.ReadingQuizTestContainer>
 
-        {!isKeyboardVisible && (
-          <T.NextButton
-            onPress={movePage('stepThird', { memberBookId, targetMemberId, text })}
-            style={{ opacity: text.length < 10 ? 0.3 : 1 }}
-            disabled={text.length < 10}
-          >
-            <T.NextButtonText>다음</T.NextButtonText>
-          </T.NextButton>
-        )}
-      </T.Wrapper>
-    </>
+      <View style={{ flexGrow: 1 }}></View>
+
+      {!isKeyboardVisible && (
+        <T.NextButton
+          onPress={movePage('stepThird', { memberBookId, targetMemberId, text })}
+          style={{ opacity: text.length < 10 ? 0.3 : 1 }}
+          disabled={text.length < 10}
+        >
+          <T.NextButtonText>다음</T.NextButtonText>
+        </T.NextButton>
+      )}
+    </T.Wrapper>
   );
 };
 
