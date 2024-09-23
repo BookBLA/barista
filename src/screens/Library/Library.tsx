@@ -70,7 +70,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '80%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
-  const reportSnapPoints = useMemo(() => ['78%'], []);
+  const reportSnapPoints = useMemo(() => ['75%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;
