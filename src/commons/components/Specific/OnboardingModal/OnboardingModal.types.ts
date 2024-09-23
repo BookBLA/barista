@@ -1,5 +1,3 @@
-import { boolean, number, string } from 'yup';
-
 export interface IDataItem {
   image: any;
   title: string;
@@ -16,5 +14,5 @@ export interface IProps {
   activeSlide?: number;
   onPrevSlide?: () => void;
   onNextSlide?: () => void;
-  onClose?: () => void;
+  onClose: () => void;
 }
