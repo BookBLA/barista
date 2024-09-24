@@ -1,12 +1,11 @@
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import * as S from './Advert.styles';
-import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
-import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
-import { number } from 'yup';
-import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
+import * as S from './Advert.styles';
 
 const Advert = () => {
   const showToast = useToastStore((state) => state.showToast);
@@ -17,13 +16,11 @@ const Advert = () => {
   const platform =
     Platform.OS === 'ios' ? advertiseUnitJson.ios.reload_new_person : advertiseUnitJson.android.reload_new_person;
   const adUnitId = platform === 'test' ? TestIds.REWARDED : platform;
-  console.log(adUnitId);
 
   const rewarded = RewardedAd.createForAdRequest(adUnitId, {
     requestNonPersonalizedAdsOnly: true,
   });
   const [loaded, setLoaded] = useState<boolean>(false);
-  console.log('admobCount', admobCount);
 
   useEffect(() => {
     const unsubscribeLoaded = rewarded.addAdEventListener(RewardedAdEventType.LOADED, () => {
@@ -83,7 +80,11 @@ const Advert = () => {
           <CustomText color="#fff">새로운 사람 만나기</CustomText>
         </S.Button>
       ) : (
-        <S.Button onPress={handleGetRewardedAds} style={{ opacity: admobCount > 0 ? 1 : 0.4}} disabled={admobCount <= 0}>
+        <S.Button
+          onPress={handleGetRewardedAds}
+          style={{ opacity: admobCount > 0 ? 1 : 0.4 }}
+          disabled={admobCount <= 0}
+        >
           <S.RefreshWrapper>
             <S.RefreshImage source={icons.refresh} />
           </S.RefreshWrapper>
