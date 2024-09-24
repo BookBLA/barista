@@ -2465,6 +2465,12 @@ export interface PageMemberBookProfileResponse {
     'totalElements'?: number;
     /**
      * 
+     * @type {SortObject}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'sort'?: SortObject;
+    /**
+     * 
      * @type {boolean}
      * @memberof PageMemberBookProfileResponse
      */
@@ -2475,12 +2481,6 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'last'?: boolean;
-    /**
-     * 
-     * @type {SortObject}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'sort'?: SortObject;
     /**
      * 
      * @type {number}
@@ -2920,6 +2920,25 @@ export interface QuizQuestionVerifyResponse {
 /**
  * 
  * @export
+ * @interface RefreshMemberRequest
+ */
+export interface RefreshMemberRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof RefreshMemberRequest
+     */
+    'refreshMemberId': number;
+    /**
+     * 
+     * @type {number}
+     * @memberof RefreshMemberRequest
+     */
+    'refreshMemberBookId': number;
+}
+/**
+ * 
+ * @export
  * @interface RejectMemberRequest
  */
 export interface RejectMemberRequest {
@@ -2929,12 +2948,6 @@ export interface RejectMemberRequest {
      * @memberof RejectMemberRequest
      */
     'rejectedMemberId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof RejectMemberRequest
-     */
-    'rejectedMemberBookId': number;
 }
 /**
  * 
@@ -4088,6 +4101,46 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @summary 매칭 회원 새로고침
+         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshMemberMatching: async (refreshMemberRequest: RefreshMemberRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'refreshMemberRequest' is not null or undefined
+            assertParamExists('refreshMemberMatching', 'refreshMemberRequest', refreshMemberRequest)
+            const localVarPath = `/members-match/refresh`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(refreshMemberRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 매칭 회원 거절
          * @param {RejectMemberRequest} rejectMemberRequest 
          * @param {*} [options] Override http request option.
@@ -4766,7 +4819,7 @@ export const DefaultApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getRecommendation(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<MemberIntroResponse>>> {
+        async getRecommendation(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberIntroResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getRecommendation(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.getRecommendation']?.[localVarOperationServerIndex]?.url;
@@ -4970,6 +5023,19 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             const localVarAxiosArgs = await localVarAxiosParamCreator.readStudentIdPendingMembers(pageable, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.readStudentIdPendingMembers']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @summary 매칭 회원 새로고침
+         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberIntroResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshMemberMatching(refreshMemberRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.refreshMemberMatching']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
@@ -5235,7 +5301,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getRecommendation(options?: any): AxiosPromise<Array<MemberIntroResponse>> {
+        getRecommendation(options?: any): AxiosPromise<MemberIntroResponse> {
             return localVarFp.getRecommendation(options).then((request) => request(axios, basePath));
         },
         /**
@@ -5389,6 +5455,16 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         readStudentIdPendingMembers(pageable: Pageable, options?: any): AxiosPromise<AdminMemberStudentIdResponses> {
             return localVarFp.readStudentIdPendingMembers(pageable, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @summary 매칭 회원 새로고침
+         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: any): AxiosPromise<MemberIntroResponse> {
+            return localVarFp.refreshMemberMatching(refreshMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5810,6 +5886,18 @@ export class DefaultApi extends BaseAPI {
      */
     public readStudentIdPendingMembers(pageable: Pageable, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).readStudentIdPendingMembers(pageable, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @summary 매칭 회원 새로고침
+     * @param {RefreshMemberRequest} refreshMemberRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).refreshMemberMatching(refreshMemberRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
