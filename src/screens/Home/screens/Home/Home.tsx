@@ -34,11 +34,16 @@ const Home = () => {
   const memberData = data?.result ?? {};
   const [isReported, setIsReported] = useState(false);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
-  const [modalStatus, setModalStatus] = useState<{ [key: string]: boolean }>({
+  const [modalStatus, setModalStatus] = useState<{
+    isAlreadyEntry: boolean;
+    invitedRewardStatus: string;
+    invitingRewardStatus: boolean;
+  }>({
     isAlreadyEntry: true,
-    invitedRewardStatus: true,
-    invitingRewardStatus: true,
+    invitedRewardStatus: 'NONE',
+    invitingRewardStatus: false,
   });
+
   const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
 
   const reportBottomSheet = useBottomSheet();
@@ -52,12 +57,12 @@ const Home = () => {
         const response = await getInvitationRewardStatus();
         setModalStatus({
           isAlreadyEntry: res.result.homeOnboardingStatus || true,
+          invitedRewardStatus: response.result.invitedRewardStatus || 'NONE',
           invitingRewardStatus: response.result.invitingRewardStatus || false,
-          invitedRewardStatus: response.result.invitingRewardStatus || false,
         });
         setInvitedMembersGender(response.result.invitedMembersGender ? response.result.invitedMembersGender : null);
         if (res.result.homeOnboardingStatus === true) {
-          if (response.result.invitedRewardStatus === true) {
+          if (response.result.invitedRewardStatus !== 'NONE') {
             setInvitedModalOpen(true);
           } else {
             setInvitingModalOpen(true);
@@ -82,7 +87,7 @@ const Home = () => {
     toggle();
     await delay(500);
 
-    if (modalStatus.invitedRewardStatus) {
+    if (modalStatus.invitedRewardStatus !== 'NONE') {
       setInvitedModalOpen(true);
     } else if (modalStatus.invitingRewardStatus) {
       setInvitingModalOpen(true);
@@ -97,9 +102,10 @@ const Home = () => {
     <>
       <S.Wrapper>
         {!modalStatus.isAlreadyEntry && <HomeOnboardingModal onClose={closeHomeOnboardingModal} visible={isOpen} />}
-        {modalStatus.invitedRewardStatus && (
+        {modalStatus.invitedRewardStatus !== 'NONE' && (
           <InviteModal
             key="invited-modal"
+            invitedType={modalStatus.invitedRewardStatus}
             isVisible={invitedModalOpen}
             setIsVisible={setInvitedModalOpen}
             onCloseCallback={modalStatus.invitingRewardStatus ? () => setInvitingModalOpen(true) : undefined}
