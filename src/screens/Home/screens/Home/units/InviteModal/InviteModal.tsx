@@ -10,18 +10,22 @@ const InviteModal = ({
   invitedGender,
   isVisible,
   setIsVisible,
+  onCloseCallback,
 }: {
   invitedGender?: string;
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
+  onCloseCallback?: () => void;
 }) => {
   const memberGender = useMemberStore((state) => state.memberInfo.memberGender);
-  // const [isVisible, setIsVisible] = useState<boolean>(true);
 
   const closeInviteModal = async () => {
     try {
       await postInvitationRewardStatus();
       setIsVisible(false);
+      if (onCloseCallback) {
+        onCloseCallback();
+      }
     } catch (error) {
       console.log(error);
     }
