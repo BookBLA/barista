@@ -1,11 +1,15 @@
 import { Delete, Get, Post } from '@commons/configs/axios/http.api';
 import {
-  MemberPushAlarmReadResponse,
+  MemberPushAlarmReadResponses,
+  Pageable,
   PushAlarmSettingCreateRequest,
   PushAlarmSettingResponse,
 } from '@commons/types/openapiGenerator';
 
-export const getAlarms = () => Get<MemberPushAlarmReadResponse>(`members/push-alarms`);
+export const getAlarms = (pageable: Pageable) =>
+  Get<MemberPushAlarmReadResponses>(
+    `members/push-alarms?page=${pageable.page}&size=${pageable.size}&sort=${pageable.sort}`,
+  );
 
 export const deleteAlarm = (memberPushAlarmId?: string | null) => {
   let url = `members/push-alarms`;
