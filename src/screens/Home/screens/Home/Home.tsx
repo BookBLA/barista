@@ -30,7 +30,6 @@ const Home = () => {
     queryFn: getMembersMatch,
   });
   const memberData: IMemberData = data?.result ?? {};
-  console.log(memberData);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const isMemberData = Object.keys(memberData).length > 0;
@@ -72,7 +71,7 @@ const Home = () => {
         {!isMemberData && <EventCard />}
 
         {/* <InviteCard /> */}
-        <Advert />
+        <Advert memberData={memberData} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={reportedMemberId} />
         </CustomBottomSheetModal>

@@ -7,8 +7,10 @@ import { Platform } from 'react-native';
 import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 import { number } from 'yup';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { MemberIntroResponse } from '@commons/types/openapiGenerator';
+import { postMembersMatchRefresh } from '@commons/api/members/match/memberMatch';
 
-const Advert = () => {
+const Advert = ({ memberData }: { memberData: MemberIntroResponse }) => {
   const showToast = useToastStore((state) => state.showToast);
 
   const [admobCount, setAdmobCount] = useState<number>(0);
@@ -37,6 +39,12 @@ const Advert = () => {
         setAdmobCount(res.newPersonAdmobCount ?? 0);
       });
       // TODO: 다른 상대방 불러오는 보상 부여하는 로직 추가
+      postMembersMatchRefresh({
+        refreshMemberId: memberData.memberId,
+        refreshMemberBookId: memberData.memberBookId,
+      }).then((result) => {
+        console.log(result);
+      });
     });
     getAdmobCount();
     rewarded.load();
