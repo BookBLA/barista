@@ -25,11 +25,12 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const { updateMemberInfo } = useMemberStore();
   const showToast = useToastStore((state) => state.showToast);
 
-  // TODO: 추후 memberbookId, targetMemberId 값 받아서 넣기. 현재는 임시값
+  // MemberData
   const memberBookId = memberData?.memberBookId;
   const targetMemberId = memberData?.memberId;
   console.log(memberBookId, targetMemberId);
 
+  // TODO: 엽서 보내기가 가끔 안됨. 원인 파악 필요
   const checkStudentId = async () => {
     let studentIdStatusResponse;
     if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {

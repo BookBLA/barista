@@ -23,17 +23,7 @@ const reportStatusKeys = {
 
 type TReportStatusKeys = keyof typeof reportStatusKeys;
 
-const ReportOption = ({
-  bottomClose,
-  reportedMemberId,
-  onClose,
-  onReport,
-}: {
-  bottomClose: () => void;
-  reportedMemberId: number;
-  onClose: () => void;
-  onReport: () => void;
-}) => {
+const ReportOption = ({ bottomClose, reportedMemberId }: { bottomClose: () => void; reportedMemberId: number }) => {
   const [isChecked, setIsChecked] = useState(Array(reportCases.length).fill(false));
   const { toggle, isOpen } = useToggle();
   const [etcContents, setEtcContents] = useState('');
@@ -70,15 +60,6 @@ const ReportOption = ({
       });
     }
   };
-
-  // 화면 나갈때 onClose 호출
-  useEffect(() => {
-    return () => {
-      console.log('ReportOption unmount');
-
-      onClose();
-    };
-  }, []);
 
   return (
     <View style={{ width: '100%', alignItems: 'center', height: '100%' }}>
@@ -152,7 +133,6 @@ const ReportOption = ({
                 label: '확인',
                 action: () => {
                   bottomClose();
-                  onReport();
                 },
               },
             ],

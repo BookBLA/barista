@@ -21,22 +21,23 @@ import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
+import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
-  const { data, isLoading } = useQuery<ResponseData<MemberIntroResponse[]>>({
+  const { data, isLoading } = useQuery<ResponseData<MemberIntroResponse>>({
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
   });
-  const memberData = data?.result ?? [];
-  const [memberCount, setMemberCount] = useState(0);
+  const memberData: IMemberData = data?.result ?? {};
+  console.log(memberData);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
-  const isMemberData = memberData?.length > 0;
+  const isMemberData = Object.keys(memberData).length > 0;
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['80%'], []);
-  const reportedMemberId = memberData[memberCount]?.memberBookId ?? 0;
+  const reportedMemberId = memberData?.memberBookId ?? 0;
 
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
@@ -67,9 +68,7 @@ const Home = () => {
       <S.Wrapper>
         {!isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
-        {isMemberData && (
-          <MemberCard memberData={memberData[memberCount]} handleReport={reportBottomSheet.handleOpenBottomSheet} />
-        )}
+        {isMemberData && <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />}
         {!isMemberData && <EventCard />}
 
         {/* <InviteCard /> */}
