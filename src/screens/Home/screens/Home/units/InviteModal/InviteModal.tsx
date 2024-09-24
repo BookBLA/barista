@@ -18,7 +18,6 @@ const InviteModal = ({
   onCloseCallback?: () => void;
 }) => {
   const memberGender = useMemberStore((state) => state.memberInfo.memberGender);
-  // const [isVisible, setIsVisible] = useState<boolean>(true);
 
   const closeInviteModal = async () => {
     try {
