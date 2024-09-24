@@ -2384,16 +2384,16 @@ export interface MyLibraryReadResponse {
 export interface NotificationResponse {
     /**
      * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'status'?: string;
-    /**
-     * 
      * @type {boolean}
      * @memberof NotificationResponse
      */
     'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'status'?: string;
     /**
      * 
      * @type {string}
