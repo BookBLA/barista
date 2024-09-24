@@ -13,15 +13,15 @@
  */
 
 
-import type { Configuration } from './configuration';
-import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosPromise, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
+import type { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
+import { DUMMY_BASE_URL, assertParamExists, createRequestFunction, serializeDataIfNeeded, setBearerAuthToObject, setSearchParams, toPathString } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -1346,10 +1346,10 @@ export interface MemberInvitationRewardResponse {
     'invitingRewardStatus'?: boolean;
     /**
      * 
-     * @type {boolean}
+     * @type {string}
      * @memberof MemberInvitationRewardResponse
      */
-    'invitedRewardStatus'?: boolean;
+    'invitedRewardStatus'?: string;
     /**
      * 
      * @type {string}
@@ -2572,13 +2572,13 @@ export interface PageableObject {
      * @type {boolean}
      * @memberof PageableObject
      */
-    'paged'?: boolean;
+    'unpaged'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof PageableObject
      */
-    'unpaged'?: boolean;
+    'paged'?: boolean;
     /**
      * 
      * @type {number}
