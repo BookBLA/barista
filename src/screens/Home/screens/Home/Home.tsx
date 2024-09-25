@@ -42,7 +42,12 @@ const Home = () => {
   const reportedMemberId = memberData?.memberBookId ?? 0;
 
   const handleRefresh = () => {
+    setIsSubmitQuiz(false);
     refetch();
+  };
+
+  const handleSubmitQuiz = () => {
+    setIsSubmitQuiz(true);
   };
 
   useEffect(() => {
