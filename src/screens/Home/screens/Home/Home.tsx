@@ -23,6 +23,7 @@ import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
+import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -35,7 +36,7 @@ const Home = () => {
   const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const isMemberData = Object.keys(memberData).length > 0;
 
-  const [isSubmitQuiz, setIsSubmitQuiz] = useState(false);
+  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['80%'], []);
@@ -44,11 +45,12 @@ const Home = () => {
   const handleRefresh = () => {
     setIsSubmitQuiz(false);
     refetch();
+    console.log('isSubmitQuiz', isSubmitQuiz);
   };
 
-  const handleSubmitQuiz = () => {
-    setIsSubmitQuiz(true);
-  };
+  useEffect(() => {
+    console.log('isSubmitQuiz updated:', isSubmitQuiz);
+  }, [isSubmitQuiz]);
 
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
@@ -88,11 +90,7 @@ const Home = () => {
         ) : (
           <>
             {isMemberData ? (
-              <MemberCard
-                memberData={memberData}
-                handleReport={reportBottomSheet.handleOpenBottomSheet}
-                handleQuizSubmit={handleSubmitQuiz}
-              />
+              <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
             ) : (
               <EventCard />
             )}

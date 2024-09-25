@@ -13,15 +13,7 @@ import BookImage from './units/BookImage/BookImage';
 import BookInfo from './units/BookInfo/BookInfo';
 import Profile from './units/Profile/Profile';
 
-const MemberCard = ({
-  memberData,
-  handleReport,
-  handleQuizSubmit,
-}: {
-  handleReport: () => void;
-  memberData: MemberIntroResponse;
-  handleQuizSubmit: () => void;
-}) => {
+const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
   const { movePage } = useMovePage();
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
@@ -34,12 +26,10 @@ const MemberCard = ({
   const showToast = useToastStore((state) => state.showToast);
 
   // MemberData
-  // TODO: 원래대로 되돌리기
-  const memberBookId = 2849550;
-  const targetMemberId = 900032;
-  // const memberBookId = memberData?.memberBookId;
-  // const targetMemberId = memberData?.memberId;
-  console.log(memberBookId, targetMemberId);
+  // const memberBookId = 2849550;
+  // const targetMemberId = 900032;
+  const memberBookId = memberData?.memberBookId;
+  const targetMemberId = memberData?.memberId;
 
   // TODO: 엽서 보내기가 가끔 안됨. 원인 파악 필요
   const checkStudentId = async () => {
