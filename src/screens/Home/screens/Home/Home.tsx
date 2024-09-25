@@ -22,6 +22,7 @@ import Header from './units/Header/Header';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
+import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -33,6 +34,8 @@ const Home = () => {
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const isMemberData = Object.keys(memberData).length > 0;
+
+  const [isSubmitQuiz, setIsSubmitQuiz] = useState(false);
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['80%'], []);
@@ -75,11 +78,18 @@ const Home = () => {
       <S.Wrapper>
         {!isAlreadyEntry && <HomeOnboardingModal onClose={toggle} visible={isOpen} />}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
-        {isMemberData && <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />}
-        {!isMemberData && <EventCard />}
+        {isSubmitQuiz ? (
+          <InviteCard />
+        ) : (
+          <>
+            {isMemberData ? (
+              <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
+            ) : (
+              <EventCard />
+            )}
+          </>
+        )}
 
-        {/* TODO: 매칭에서 성공 or 거절당할 경우 InviteCard 띄우기 */}
-        {/* <InviteCard /> */}
         <Advert memberData={memberData} handleRefresh={handleRefresh} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={reportedMemberId} />
