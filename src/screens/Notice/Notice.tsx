@@ -5,11 +5,11 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useGetAlarms } from '@commons/hooks/notifications/getAlarms/useGetAlarms';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { colors } from '@commons/styles/variablesStyles';
-import { PushAlarmInfo } from '@commons/types/openapiGenerator';
+import { MemberPushAlarmReadResponse } from '@commons/types/openapiGenerator';
 import { formatDate } from '@commons/utils/dates/dateUtils/dateUtils';
-import { Image, TouchableOpacity } from 'react-native';
-import { useDeleteAlarm } from './hooks/useDeleteAlarm';
+import { ActivityIndicator, FlatList, Image, TouchableOpacity } from 'react-native';
 import * as S from './Notice.styles';
+import { useDeleteAlarm } from './hooks/useDeleteAlarm';
 import { Warning } from './units/Warning/Warning';
 
 const Notice = () => {
@@ -19,7 +19,7 @@ const Notice = () => {
     title: '알림',
     onPressLeft: () => handleReset('tapScreens'),
   });
-  const { data, setData } = useGetAlarms();
+  const { data, setData, fetchAlarms, page, loading, hasNextPage } = useGetAlarms();
   const { callDeleteAlarm } = useDeleteAlarm();
 
   const onClickDeleteAlarm = async (memberPushAlarmId?: string | null) => {
@@ -36,37 +36,58 @@ const Notice = () => {
     }
   };
 
+  const renderItem = ({ item }: { item: MemberPushAlarmReadResponse }) => (
+    <S.NoticeWrapper>
+      <CustomText>{item.title}</CustomText>
+      <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
+        {item.body}
+      </CustomText>
+      <S.BottomWrapper>
+        <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
+          {formatDate(item.createdAt)}
+        </CustomText>
+        <TouchableOpacity onPress={() => onClickDeleteAlarm(String(item.memberPushAlarmId))}>
+          <Image source={Close} />
+        </TouchableOpacity>
+      </S.BottomWrapper>
+    </S.NoticeWrapper>
+  );
+
+  const loadMoreData = () => {
+    if (!loading && hasNextPage) {
+      fetchAlarms(page + 1); // Fetch next page
+    }
+  };
+
   return (
     <S.Wrapper>
-      {data.length > 0 ? (
-        <>
-          <TouchableOpacity>
-            <CustomText margin="10px 0 10px 16px" onPress={() => onClickDeleteAlarm(null)}>
-              전체 삭제
-            </CustomText>
-          </TouchableOpacity>
-          <S.ScrollWrapper>
-            {data.map((el: PushAlarmInfo, dex) => (
-              <S.NoticeWrapper key={el.title ?? '' + el.body}>
-                <CustomText>{el.title}</CustomText>
-                <CustomText margin="6px 0 20px" size="12px" font="fontRegular" color={colors.textGray4}>
-                  {el.body}
-                </CustomText>
-                <S.BottomWrapper>
-                  <CustomText size="12px" color={colors.textGray2} font="fontSemiBold">
-                    {formatDate(el.createdAt)}
-                  </CustomText>
-                  <TouchableOpacity onPress={() => onClickDeleteAlarm(String(el.memberPushAlarmId))}>
-                    <Image source={Close} />
-                  </TouchableOpacity>
-                </S.BottomWrapper>
-              </S.NoticeWrapper>
-            ))}
-          </S.ScrollWrapper>
-        </>
-      ) : (
-        <Warning />
-      )}
+      <>
+        {data.length > 0 ? (
+          <>
+            <TouchableOpacity style={{ width: '25%' }}>
+              <CustomText
+                margin="60px 0 10px 16px"
+                font="fontRegular"
+                size="14px"
+                onPress={() => onClickDeleteAlarm(null)}
+              >
+                전체 삭제
+              </CustomText>
+            </TouchableOpacity>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              onEndReached={loadMoreData} // Infinite scroll
+              onEndReachedThreshold={0.1} // Trigger fetch when 10% from the bottom
+              contentContainerStyle={{ paddingBottom: 20 }}
+              style={{ paddingHorizontal: 16, height: 'auto' }}
+              ListFooterComponent={loading ? <ActivityIndicator size="large" color={colors.primary} /> : null} // Optional loading indicator
+            />
+          </>
+        ) : (
+          <Warning />
+        )}
+      </>
     </S.Wrapper>
   );
 };

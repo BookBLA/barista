@@ -13,15 +13,15 @@
  */
 
 
-import type { Configuration } from './configuration';
-import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import type { AxiosInstance, AxiosPromise, RawAxiosRequestConfig } from 'axios';
 import globalAxios from 'axios';
+import type { Configuration } from './configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
-import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
+import { DUMMY_BASE_URL, assertParamExists, createRequestFunction, serializeDataIfNeeded, setBearerAuthToObject, setSearchParams, toPathString } from './common';
 // @ts-ignore
-import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -1345,13 +1345,13 @@ export interface MemberInvitationRewardResponse {
      */
     'invitingRewardStatus'?: boolean;
     /**
-     * 
-     * @type {boolean}
+     *
+     * @type {string}
      * @memberof MemberInvitationRewardResponse
      */
-    'invitedRewardStatus'?: boolean;
+    'invitedRewardStatus'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof MemberInvitationRewardResponse
      */
@@ -1889,13 +1889,13 @@ export interface MemberPushAlarmReadResponse {
      */
     'memberPushAlarmId'?: number;
     /**
-     * 
+     *
      * @type {string}
      * @memberof MemberPushAlarmReadResponse
      */
     'title'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof MemberPushAlarmReadResponse
      */
@@ -1908,19 +1908,19 @@ export interface MemberPushAlarmReadResponse {
     'createdAt'?: string;
 }
 /**
- * 
+ *
  * @export
  * @interface MemberPushAlarmReadResponses
  */
 export interface MemberPushAlarmReadResponses {
     /**
-     * 
+     *
      * @type {number}
      * @memberof MemberPushAlarmReadResponses
      */
     'totalCount'?: number;
     /**
-     * 
+     *
      * @type {Array<MemberPushAlarmReadResponse>}
      * @memberof MemberPushAlarmReadResponses
      */
@@ -2383,7 +2383,7 @@ export interface MyLibraryReadResponse {
  */
 export interface NotificationResponse {
     /**
-     * 
+     *
      * @type {string}
      * @memberof NotificationResponse
      */
@@ -2395,13 +2395,13 @@ export interface NotificationResponse {
      */
     'id'?: string;
     /**
-     * 
+     *
      * @type {string}
      * @memberof NotificationResponse
      */
     'status'?: string;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof NotificationResponse
      */
@@ -2488,13 +2488,13 @@ export interface PageMemberBookProfileResponse {
      */
     'size'?: number;
     /**
-     * 
+     *
      * @type {Array<MemberBookProfileResponse>}
      * @memberof PageMemberBookProfileResponse
      */
     'content'?: Array<MemberBookProfileResponse>;
     /**
-     * 
+     *
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
@@ -2512,7 +2512,7 @@ export interface PageMemberBookProfileResponse {
      */
     'pageable'?: PageableObject;
     /**
-     * 
+     *
      * @type {boolean}
      * @memberof PageMemberBookProfileResponse
      */
@@ -2562,7 +2562,7 @@ export interface PageableObject {
      */
     'offset'?: number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof PageableObject
      */
@@ -2578,13 +2578,19 @@ export interface PageableObject {
      * @type {boolean}
      * @memberof PageableObject
      */
-    'paged'?: boolean;
+    'unpaged'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof PageableObject
      */
-    'unpaged'?: boolean;
+    'paged'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageableObject
+     */
+    'offset'?: number;
 }
 /**
  * 
@@ -2811,7 +2817,7 @@ export interface ProfileImageTypeReadResponse {
     'profileImageResponseTypes'?: Array<ProfileImageResponse>;
 }
 /**
- * 
+ *
  * @export
  * @interface PushAlarmSettingCreateRequest
  */
@@ -2892,7 +2898,7 @@ export interface QuizQuestionVerifyRequest {
      */
     'quizMakerId': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof QuizQuestionVerifyRequest
      */
@@ -2924,33 +2930,33 @@ export interface QuizQuestionVerifyResponse {
  */
 export interface RefreshMemberRequest {
     /**
-     * 
+     *
      * @type {number}
      * @memberof RefreshMemberRequest
      */
     'refreshMemberId': number;
     /**
-     * 
+     *
      * @type {number}
      * @memberof RefreshMemberRequest
      */
     'refreshMemberBookId': number;
 }
 /**
- * 
+ *
  * @export
  * @interface RejectMemberRequest
  */
 export interface RejectMemberRequest {
     /**
-     * 
+     *
      * @type {number}
      * @memberof RejectMemberRequest
      */
     'rejectedMemberId': number;
 }
 /**
- * 
+ *
  * @export
  * @interface ReportStatuses
  */
@@ -3314,9 +3320,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         *
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId 
+         * @param {number} memberBookId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3341,7 +3347,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -4100,9 +4106,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         *
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {RefreshMemberRequest} refreshMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4126,7 +4132,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4140,9 +4146,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         *
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
+         * @param {RejectMemberRequest} rejectMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4166,7 +4172,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4687,9 +4693,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         * 
+         *
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4713,7 +4719,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4763,9 +4769,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId 
+         * @param {number} memberBookId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5026,9 +5032,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {RefreshMemberRequest} refreshMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5039,9 +5045,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
+         * @param {RejectMemberRequest} rejectMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5214,9 +5220,22 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         * 
+         *
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async verifyQuizQuestion(quizQuestionVerifyRequest: QuizQuestionVerifyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<QuizQuestionVerifyResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyQuizQuestion(quizQuestionVerifyRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.verifyQuizQuestion']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         *
+         * @summary 독서 퀴즈 검증 API
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5259,7 +5278,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId 
+         * @param {number} memberBookId
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5267,7 +5286,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.createQuizQuestion(memberBookId, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary 회원 도서 삭제
          * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
@@ -5459,7 +5478,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
+         * @param {RefreshMemberRequest} refreshMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5467,9 +5486,9 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.refreshMemberMatching(refreshMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
+         * @param {RejectMemberRequest} rejectMemberRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5477,7 +5496,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.rejectMemberMatching(rejectMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary 작가 혹은 도서를 검색합니다
          * @param {string} text 
          * @param {number} [size] 
@@ -5603,9 +5622,9 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.updateStudentIdPendingMemberStatus(memberVerifyId, adminMemberProfileStudentIdStatusUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         * 
+         *
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5647,9 +5666,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary 독서 퀴즈 조회 API
-     * @param {number} memberBookId 
+     * @param {number} memberBookId
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -5889,9 +5908,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary 매칭 회원 새로고침
-     * @param {RefreshMemberRequest} refreshMemberRequest 
+     * @param {RefreshMemberRequest} refreshMemberRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -5901,9 +5920,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary 매칭 회원 거절
-     * @param {RejectMemberRequest} rejectMemberRequest 
+     * @param {RejectMemberRequest} rejectMemberRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -6063,9 +6082,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     * 
+     *
      * @summary 독서 퀴즈 검증 API
-     * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
+     * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -7913,7 +7932,7 @@ export const MemberModalControllerApiAxiosParamCreator = function (configuration
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-    
+
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9034,7 +9053,7 @@ export const MemberPushAlarmControllerApiAxiosParamCreator = function (configura
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable 
+         * @param {Pageable} pageable
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9164,7 +9183,7 @@ export const MemberPushAlarmControllerApiFp = function(configuration?: Configura
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable 
+         * @param {Pageable} pageable
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9228,7 +9247,7 @@ export const MemberPushAlarmControllerApiFactory = function (configuration?: Con
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable 
+         * @param {Pageable} pageable
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9292,7 +9311,7 @@ export class MemberPushAlarmControllerApi extends BaseAPI {
     /**
      * 
      * @summary 해당 회원의 푸시 알림 조회 API
-     * @param {Pageable} pageable 
+     * @param {Pageable} pageable
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemberPushAlarmControllerApi

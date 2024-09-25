@@ -1,3 +1,4 @@
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 import { getMemberPostcardsApi } from '@commons/api/members/default/member.api';
 import { postPaymentApi, postPaymentGoogleApi } from '@commons/api/payment/payment.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -5,8 +6,12 @@ import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useA
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useMemberPostcardStore } from '@commons/store/members/postcard/useMemberPostcardStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Platform, ScrollView, View } from 'react-native';
+import { colors } from '@commons/styles/variablesStyles';
+import { ProductContentProps } from '@screens/Home/screens/Product/Product.types';
+import _ from 'lodash';
+import React, { useEffect, useRef, useState } from 'react';
+import { ActivityIndicator, Alert, EmitterSubscription, Platform, ScrollView, View } from 'react-native';
+import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
 import {
   clearTransactionIOS,
   endConnection,
@@ -20,15 +25,11 @@ import {
   type ProductPurchase,
   type PurchaseError,
 } from 'react-native-iap';
-import { colors } from '@commons/styles/variablesStyles';
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
 import ProductList from './components/ProductList';
-import { RewardedAd, RewardedAdEventType, TestIds } from 'react-native-google-mobile-ads';
-import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
-import { ProductContentProps } from '@screens/Home/screens/Product/Product.types';
 
-const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
+export const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
 const Product = () => {
   const showToast = useToastStore((state) => state.showToast);
@@ -39,20 +40,19 @@ const Product = () => {
   const [productID, setProductID] = useState<ProductContentProps[]>();
   const [loading, setLoading] = useState<boolean>(true);
   const { fetchMemberPostcard } = useMemberPostcardStore();
-  let purchaseUpdateSubscription = null;
-  let purchaseErrorSubscription = null;
+
   const { products, getProducts } = useIAP();
 
   const getProductsByID = async () => {
     try {
       await getProducts({ skus: ITEM_ID });
     } catch (error) {
-      console.log('error', error);
+      console.log('getProductsByID error: ', error);
+      Alert.alert('오류 발생', '상품 정보를 가져오는데 실패하였습니다.');
     }
   };
 
   const addProductInfo = async () => {
-    Alert.alert('addProductInfo', JSON.stringify(products));
     if (Platform.OS === 'android') {
       products.sort((a, b) => {
         return (
@@ -86,12 +86,16 @@ const Product = () => {
     }
   }, [products]);
 
+  const isLoadingRef = useRef(false);
+
   useEffect(() => {
+    let purchaseUpdateSubscription: EmitterSubscription | null = null; // 리스너 초기화
+    let purchaseErrorSubscription: EmitterSubscription | null = null;
+
     const connection = async () => {
       try {
         const init = await initConnection();
         const initCompleted = init === true;
-        Alert.alert('init', init.toString());
         if (initCompleted) {
           if (Platform.OS === 'android') {
             await flushFailedPurchasesCachedAsPendingAndroid();
@@ -100,50 +104,66 @@ const Product = () => {
           }
         }
 
-        // success listener
-        purchaseUpdateSubscription = purchaseUpdatedListener(async (purchase: ProductPurchase) => {
+        const debouncedPurchaseUpdateListener = _.debounce(async (purchase: ProductPurchase) => {
+          if (isLoadingRef.current) {
+            return;
+          }
+          isLoadingRef.current = true;
           const receipt = purchase.transactionReceipt || purchase.purchaseToken;
-          Alert.alert('purchaseUpdatedListener', JSON.stringify(purchase, null, 2));
           if (receipt) {
             try {
-              setLoading(false);
+              // 이미 완료된 트랜잭션인지 확인
+              if (purchase.isAcknowledgedAndroid || purchase.transactionId === undefined) {
+                // Alert.alert('Transaction already acknowledged', JSON.stringify(purchase, null, 2));
+                Alert.alert('구매 완료', '이미 완료된 구매입니다.');
+                return;
+              }
+
               if (Platform.OS === 'android') {
                 const response = await postPaymentGoogleApi(
                   purchase.productId as string,
                   purchase.purchaseToken as string,
                 );
-                Alert.alert('구글 결제', JSON.stringify(response, null, 2));
+                // Alert.alert('구글 결제',  JSON.stringify(response, null, 2));
               } else if (Platform.OS === 'ios') {
                 const response = await postPaymentApi(purchase.transactionId as string);
-                Alert.alert('애플 결제', JSON.stringify(response, null, 2));
+                // Alert.alert('애플 결제', JSON.stringify(response, null, 2));
               }
-              const ackResult = await finishTransaction({ purchase, isConsumable: true });
-              Alert.alert('finishTransation', JSON.stringify(ackResult, null, 2));
-              const response = await getMemberPostcardsApi();
+              const ackResult = await finishTransaction({ purchase: purchase, isConsumable: true });
+              // Alert.alert('finishTransaction',  JSON.stringify(ackResult, null, 2));
+              Alert.alert('구매 완료', '구매가 완료되었습니다.');
               fetchMemberPostcard();
             } catch (error) {
-              Alert.alert('ackError: ', JSON.stringify(error, null, 2));
+              // Alert.alert('구매 실패 ', JSON.stringify(error, null, 2));
             }
           }
-        });
+          isLoadingRef.current = false;
+        }, 500);
 
-        purchaseErrorSubscription = purchaseErrorListener((error: PurchaseError) => {
-          setLoading(false);
+        const debouncedPurchaseErrorListener = _.debounce((error: PurchaseError) => {
+          if (isLoadingRef.current) {
+            return;
+          }
+          isLoadingRef.current = true;
 
           // 정상적인 에러상황 대응
-          const USER_CANCEL = 'E_USER_CANCELED';
+          const USER_CANCEL = 'E_USER_CANCELLED';
           if (error && error.code === USER_CANCEL) {
             Alert.alert('구매 취소', '구매를 취소하셨습니다.');
           } else {
-            // Alert.alert('구매 실패', '구매 중 오류가 발생하였습니다.');
-            Alert.alert('구매 실패', JSON.stringify(error, null, 2));
+            Alert.alert('구매 실패', '구매 중 오류가 발생하였습니다.');
+            // Alert.alert('구매 실패',  JSON.stringify(error, null, 2));
           }
-        });
+          isLoadingRef.current = false;
+        }, 500);
+
+        purchaseUpdateSubscription = purchaseUpdatedListener(debouncedPurchaseUpdateListener);
+        purchaseErrorSubscription = purchaseErrorListener(debouncedPurchaseErrorListener);
 
         await getProductsByID();
       } catch (error) {
         console.log('connection error: ', error);
-        Alert.alert('connection error', JSON.stringify(error));
+        Alert.alert('연결 오류', '연결에 실패하였습니다.');
       }
     };
 

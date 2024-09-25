@@ -1,12 +1,13 @@
+import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import * as S from './Advert.styles';
-import { number } from 'yup';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { useEffect, useState } from 'react';
-import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
+import { Platform } from 'react-native';
 import { postMembersMatchRefresh } from '@commons/api/members/match/memberMatch';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import * as S from './Advert.styles';
+import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
+import { number } from 'yup';
 
 const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse; handleRefresh: () => void }) => {
   const showToast = useToastStore((state) => state.showToast);

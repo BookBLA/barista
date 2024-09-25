@@ -35,6 +35,7 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
           fontMedium: require('../../../../../assets/fonts/pretendardMedium.ttf'),
           fontRegular: require('../../../../../assets/fonts/pretendardRegular.ttf'),
           fontSemiBold: require('../../../../../assets/fonts/pretendardSemiBold.ttf'),
+          fontInviteCoin: require('../../../../../assets/fonts/cafe24Danjunghae.ttf'),
         });
         await SplashScreen.preventAutoHideAsync();
         if (token) {

@@ -1,10 +1,10 @@
-import React from 'react';
-import { Image, View } from 'react-native';
-import { IProps } from './OnboardingModal.types';
-import * as S from './OnboardingModal.styles';
+import { postOnboardingStatus } from '@commons/api/modal/modal.api';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { colors } from '@commons/styles/variablesStyles';
-import { postOnboardingStatus } from '@commons/api/onboarding/onboarding.api';
+import React from 'react';
+import { Image } from 'react-native';
+import * as S from './OnboardingModal.styles';
+import { IProps } from './OnboardingModal.types';
 
 export const ModalItem: React.FC<IProps> = ({ index, item, where, activeSlide, onPrevSlide, onNextSlide, onClose }) => {
   const handleModalClose = () => {

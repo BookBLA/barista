@@ -1,4 +1,4 @@
-import reportIcon from '@assets/images/icons/ReportIcon.png';
+import reportIcon from '@assets/images/icons/ReportIconGray.png';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
