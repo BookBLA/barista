@@ -11,9 +11,7 @@ export type TProps = RouteProp<TParamList, 'QuizStack'>;
 
 export type TPassQuiz = {
   QuizStack: {
-    passInfo: {
-      isPassQuiz: boolean;
-    };
+    isPassQuiz: boolean;
   };
 };
 export type TCompleteQuiz = RouteProp<TPassQuiz, 'QuizStack'>;

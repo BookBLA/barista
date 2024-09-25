@@ -44,7 +44,7 @@ const StepThird = () => {
     try {
       await postPostcard(postcardInfo);
       logEvent('send_postcard');
-      movePage('completion', { isSuccess: true })();
+      movePage('completion', { isPassQuiz: true })();
     } catch (error) {
       useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
     }

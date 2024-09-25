@@ -13,9 +13,7 @@ import { colors } from '@commons/styles/variablesStyles';
 const Completion = () => {
   const { movePage } = useMovePage();
   const route = useRoute<TCompleteQuiz>();
-  // @ts-ignore
-  const { isSuccess } = route.params;
-  console.log(route.params);
+  const isSuccess = route.params.isPassQuiz;
 
   useAppUIManager({
     setBackgroundColor: colors.primary,

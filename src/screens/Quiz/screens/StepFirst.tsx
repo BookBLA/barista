@@ -61,7 +61,7 @@ const StepFirst = () => {
     if (isCorrect) {
       setIsCorrectAnswer(true);
     } else {
-      movePage('completion', { isSuccess: false })();
+      movePage('completion', { isPassQuiz: false })();
     }
   };
 
