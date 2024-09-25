@@ -22,8 +22,7 @@ export const HomeOnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) 
     {
       image: img.homeOnboarding1,
       title: '하루 최대 4명,\n오늘의 만남을 놓치지 마세요',
-      description:
-        '무료 2명에 광고 시청으로 2명을 더 소개받을 수 있어요.\n단, 오늘 매칭하지 않으면 자정에 초기화됩니다!',
+      description: '하루에 최대 4명까지 소개받을 수 있어요.\n단, 오늘 매칭하지 않으면 자정에 초기화됩니다!',
       leftButtonText: '',
       rightButtonText: '다음',
       indexImage: img.homOnboardingPage1,
@@ -49,7 +48,7 @@ export const HomeOnboardingModal: React.FC<ModalProps> = ({ onClose, visible }) 
   const [isVertical, setIsVertical] = useState(false);
   const ref = React.useRef<ICarouselInstance>(null);
 
-  // TODO: activeSlide index 오류
+  // FIXME: activeSlide index 오류
   const handleNextSlide = () => {
     if (activeSlide < data.length - 1) {
       ref.current?.next();
