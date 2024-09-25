@@ -13,7 +13,15 @@ import BookImage from './units/BookImage/BookImage';
 import BookInfo from './units/BookInfo/BookInfo';
 import Profile from './units/Profile/Profile';
 
-const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
+const MemberCard = ({
+  memberData,
+  handleReport,
+  handleQuizSubmit,
+}: {
+  handleReport: () => void;
+  memberData: MemberIntroResponse;
+  handleQuizSubmit: () => void;
+}) => {
   const { movePage } = useMovePage();
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
@@ -26,15 +34,17 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const showToast = useToastStore((state) => state.showToast);
 
   // MemberData
-  const memberBookId = memberData?.memberBookId;
-  const targetMemberId = memberData?.memberId;
+  // TODO: 원래대로 되돌리기
+  const memberBookId = 2849550;
+  const targetMemberId = 900032;
+  // const memberBookId = memberData?.memberBookId;
+  // const targetMemberId = memberData?.memberId;
   console.log(memberBookId, targetMemberId);
 
   // TODO: 엽서 보내기가 가끔 안됨. 원인 파악 필요
   const checkStudentId = async () => {
     let studentIdStatusResponse;
     if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {
-      console.log('123');
       if (!studentIdImageStatus) {
         studentIdStatusResponse = await getStudentIdStatus();
       }
@@ -57,7 +67,6 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
         studentIdToggle();
       }
     } else if (memberStatus === 'COMPLETED') {
-      console.log('456');
       movePage('quizStack', { memberBookId, targetMemberId })();
     }
   };

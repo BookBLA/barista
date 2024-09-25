@@ -88,7 +88,11 @@ const Home = () => {
         ) : (
           <>
             {isMemberData ? (
-              <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
+              <MemberCard
+                memberData={memberData}
+                handleReport={reportBottomSheet.handleOpenBottomSheet}
+                handleQuizSubmit={handleSubmitQuiz}
+              />
             ) : (
               <EventCard />
             )}

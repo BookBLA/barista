@@ -1,13 +1,10 @@
 import { RouteProp } from '@react-navigation/native';
-import {boolean} from "yup";
 
 export type TParamList = {
   QuizStack: {
-    bookQuizInfo: {
-      memberBookId: number;
-      targetMemberId: number;
-      text?: string;
-    };
+    memberBookId: number;
+    targetMemberId: number;
+    text?: string;
   };
 };
 export type TProps = RouteProp<TParamList, 'QuizStack'>;
@@ -22,9 +19,9 @@ export type TPassQuiz = {
 export type TCompleteQuiz = RouteProp<TPassQuiz, 'QuizStack'>;
 
 export interface IVerifyQuizAnswer {
+  quizMakerId: number;
   quizId?: number;
   quizAnswer: string;
-  targetMemberId: number;
 }
 
 export interface IPostPostcard {

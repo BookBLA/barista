@@ -7,8 +7,7 @@ import { getBookInfo, getBookQuizInfo } from '@commons/api/postcard/library.api'
 import { TProps } from '@screens/Quiz/QuizStack.types';
 
 export const BookInfo: React.FC<TProps> = ({ params }) => {
-  // @ts-ignore
-  const memberBookId = params['memberBookId'];
+  const memberBookId = params.memberBookId;
   const [bookInfo, setBookInfo] = useState<TBookInfo | null>(null);
 
   const fetchBookInfo = async (memberBookId: number) => {
