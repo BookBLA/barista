@@ -36,16 +36,29 @@ export const ButtonWrapper = styled.View`
   align-items: center;
 
   height: 64px;
-  padding: 8px 0 12px 0;
+  padding: 12px 0;
   margin-bottom: 12px;
   border-radius: 50px;
 
   background-color: ${colors.buttonMoveSytle};
 `;
 
-export const SaveWrapper = styled.View`
+export const ButtonText = styled.Text`
+  font-size: 10px;
+  opacity: 0.6;
+  color: black;
+`;
+
+export const SaveWrapper = styled.Pressable`
   display: flex;
   flex-direction: row;
+  align-items: center;
+`;
+
+export const SaveCodeText = styled.Text`
+  font-size: 24px;
+  font-weight: bold;
+  color: black;
 `;
 
 export const SaveImageWrapper = styled.View`
@@ -56,7 +69,7 @@ export const SaveImageWrapper = styled.View`
 export const SaveImage = styled.Image`
   width: 100%;
   height: 100%;
-  margin-left: 10px;
+  margin: 0 10px;
 
   object-fit: fill;
 `;

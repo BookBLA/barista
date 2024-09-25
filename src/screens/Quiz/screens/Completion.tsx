@@ -1,7 +1,7 @@
 import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { Text } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { img, background } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
@@ -9,13 +9,17 @@ import { useRoute } from '@react-navigation/native';
 import { TCompleteQuiz } from '@screens/Quiz/QuizStack.types';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
+import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 
 const Completion = () => {
   const { movePage } = useMovePage();
   const route = useRoute<TCompleteQuiz>();
-  // @ts-ignore
-  const { isSuccess } = route.params;
-  console.log(route.params);
+  const isSuccess = route.params.isPassQuiz;
+
+  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
+  useEffect(() => {
+    setIsSubmitQuiz(true);
+  }, []);
 
   useAppUIManager({
     setBackgroundColor: colors.primary,

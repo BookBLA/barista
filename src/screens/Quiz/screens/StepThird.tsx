@@ -1,5 +1,4 @@
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { useRoute } from '@react-navigation/native';
@@ -7,7 +6,7 @@ import { TProps } from '@screens/Quiz/QuizStack.types';
 import { BookInfo } from '@screens/Quiz/units/BookInfo';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import {Image, Text, TouchableWithoutFeedback, View} from 'react-native';
+import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
@@ -39,13 +38,13 @@ const StepThird = () => {
   const sendPostCard = async () => {
     const postcardInfo = {
       postcardTypeId: currentPressedPostcard?.postcardTypeId!,
-      receiveMemberId: route.params['targetMemberId'],
-      memberReply: route.params['text'],
+      receiveMemberId: route.params.targetMemberId,
+      memberReply: route.params.text ?? '',
     };
     try {
       await postPostcard(postcardInfo);
       logEvent('send_postcard');
-      movePage('completion', { isSuccess: true })();
+      movePage('completion', { isPassQuiz: true })();
     } catch (error) {
       useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
     }

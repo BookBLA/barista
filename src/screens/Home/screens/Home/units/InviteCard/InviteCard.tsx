@@ -1,19 +1,41 @@
-import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { LightText } from '@commons/components/Utils/TextComponents/LightText/LightText';
 import { background, icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './InviteCard.styles';
+import { useEffect, useState } from 'react';
+import { getInviteCodeApi } from '@commons/api/invitation/invitation.api';
+import { ResponseData } from '@commons/types/responseData';
+import { View } from 'react-native';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
+import * as Clipboard from 'expo-clipboard';
 
 const InviteCard = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
+  const [invitationCode, setInvitationCode] = useState<string>('');
+  useEffect(() => {
+    getInviteCodeApi().then((res: ResponseData<any>) => {
+      setInvitationCode(res.result.invitationCode);
+    });
+  }, []);
+
+  const copyToClipboard = async () => {
+    await Clipboard.setStringAsync(invitationCode);
+    showToast({
+      content: '코드가 복사되었습니다',
+    });
+  };
+
   return (
     <S.Wrapper>
       <S.TopWrapper>
-        <S.TopImage source={background.inviteCard} resizeMode="cover" />
+        <S.TopImage source={background.inviteCard} resizeMode="contain" />
       </S.TopWrapper>
       <S.BottomWrapper>
         <S.ButtonWrapper>
-          <CustomText>나의 초대 코드</CustomText>
-          <S.SaveWrapper>
-            <CustomText>A1B2C3D4</CustomText>
+          <S.ButtonText>나의 초대 코드</S.ButtonText>
+          <View style={{ height: 6 }} />
+          <S.SaveWrapper onPress={copyToClipboard}>
+            <S.SaveCodeText>{invitationCode}</S.SaveCodeText>
             <S.SaveImageWrapper>
               <S.SaveImage source={icons.save} />
             </S.SaveImageWrapper>

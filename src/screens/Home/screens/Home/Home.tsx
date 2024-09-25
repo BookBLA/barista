@@ -9,6 +9,7 @@ import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
+
 import { ResponseData } from '@commons/types/responseData';
 import * as S from '@screens/Home/screens/Home/Home.styles';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
@@ -18,20 +19,22 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
-import InviteCard from './units/InviteCard/InviteCard';
-import InviteModal from './units/InviteModal/InviteModal';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
+import { IMemberData } from '@screens/Home/screens/Home/Home.types';
+import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
+import InviteModal from './units/InviteModal/InviteModal';
+import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
   const [invitingModalOpen, setInvitingModalOpen] = useState<boolean>(false);
   const [invitedModalOpen, setInvitedModalOpen] = useState<boolean>(false);
-  const { data, isLoading } = useQuery<ResponseData<MemberIntroResponse>>({
+  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
   });
-  const memberData = data?.result ?? {};
+  const [memberData, setMemberData] = useState<IMemberData>({});
   const [isReported, setIsReported] = useState(false);
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const [modalStatus, setModalStatus] = useState<{
@@ -45,10 +48,23 @@ const Home = () => {
   });
 
   const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
+  const isMemberData = Object.keys(memberData).length > 0;
+
+  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
-  const reportedMemberId = memberData.memberId ?? 0;
+  const reportedMemberId = memberData?.memberId ?? 0;
+
+  const handleRefresh = () => {
+    setIsSubmitQuiz(false);
+    refetch();
+    console.log('isSubmitQuiz', isSubmitQuiz);
+  };
+
+  useEffect(() => {
+    console.log('isSubmitQuiz updated:', isSubmitQuiz);
+  }, [isSubmitQuiz]);
 
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
@@ -74,6 +90,10 @@ const Home = () => {
     };
     fetchOnboardingStatus();
   }, []);
+
+  useEffect(() => {
+    setMemberData(data?.result ?? {});
+  }, [data]);
 
   useScreenLogger();
   useHeaderControl({
@@ -121,14 +141,19 @@ const Home = () => {
         )}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
 
-        {isReported && <InviteCard />}
-        {memberData && !isReported && (
-          <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
+        {isSubmitQuiz || isReported ? (
+          <InviteCard />
+        ) : (
+          <>
+            {isMemberData && !isReported ? (
+              <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
+            ) : (
+              <EventCard />
+            )}
+          </>
         )}
-        {!memberData && <EventCard />}
 
-        {/* <InviteCard /> */}
-        <Advert />
+        <Advert memberData={memberData} handleRefresh={handleRefresh} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
             bottomClose={reportBottomSheet.handleCloseBottomSheet}
