@@ -9,6 +9,7 @@ import HomeStack from '@screens/Home/HomeStack';
 import LibraryStack from '@screens/Library/LibraryStack';
 import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
+import ChatStack from "@screens/Chat/ChatStack";
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -69,7 +70,7 @@ const TapScreens = () => {
       />
       <Tab.Screen
         name="chat"
-        component={MatchingStack}
+        component={ChatStack}
         options={{
           tabBarLabel: '채팅',
           tabBarIcon: ({ focused }) => (

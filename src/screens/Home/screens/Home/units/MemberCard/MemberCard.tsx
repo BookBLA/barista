@@ -25,7 +25,6 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const { updateMemberInfo } = useMemberStore();
   const showToast = useToastStore((state) => state.showToast);
 
-  // TODO: 추후 memberbookId, targetMemberId 값 받아서 넣기. 현재는 임시값
   const memberBookId = memberData?.memberBookId;
   const targetMemberId = memberData?.memberId;
   console.log(memberBookId, targetMemberId);

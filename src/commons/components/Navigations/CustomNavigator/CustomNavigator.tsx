@@ -23,6 +23,7 @@ import { Platform, SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
+import ChatStack from '@screens/Chat/ChatStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -43,7 +44,8 @@ const screens = [
   { name: 'modifyProfile', component: ModifyProfile },
   { name: 'studentId', component: CustomScreen(StudentId) },
   { name: 'rejectStudentId', component: RejectStudentId },
-  { name: 'library', component: Library }, // Library 스크린 추가
+  { name: 'library', component: Library },
+  { name: 'chat', component: ChatStack },
 ];
 
 export const CustomNavigator = () => {
