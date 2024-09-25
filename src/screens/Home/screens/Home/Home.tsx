@@ -25,11 +25,11 @@ import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
-  const { data, isLoading } = useQuery<ResponseData<MemberIntroResponse>>({
+  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
   });
-  const memberData: IMemberData = data?.result ?? {};
+  const [memberData, setMemberData] = useState<IMemberData>({});
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const [isAlreadyEntry, setIsAlreadyEntry] = useState<boolean>(true);
   const isMemberData = Object.keys(memberData).length > 0;
@@ -37,6 +37,10 @@ const Home = () => {
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['80%'], []);
   const reportedMemberId = memberData?.memberBookId ?? 0;
+
+  const handleRefresh = () => {
+    refetch();
+  };
 
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
@@ -51,6 +55,10 @@ const Home = () => {
 
     fetchOnboardingStatus();
   }, []);
+
+  useEffect(() => {
+    setMemberData(data?.result ?? {});
+  }, [data]);
 
   useScreenLogger();
   useHeaderControl({
@@ -70,8 +78,9 @@ const Home = () => {
         {isMemberData && <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />}
         {!isMemberData && <EventCard />}
 
+        {/* TODO: 매칭에서 성공 or 거절당할 경우 InviteCard 띄우기 */}
         {/* <InviteCard /> */}
-        <Advert memberData={memberData} />
+        <Advert memberData={memberData} handleRefresh={handleRefresh} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={reportedMemberId} />
         </CustomBottomSheetModal>
