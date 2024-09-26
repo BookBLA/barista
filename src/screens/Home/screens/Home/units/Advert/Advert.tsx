@@ -2,12 +2,11 @@ import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/relo
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
 import { postMembersMatchRefresh } from '@commons/api/members/match/memberMatch';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import * as S from './Advert.styles';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
-import { number } from 'yup';
+import { AxiosError } from 'axios';
 
 const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse; handleRefresh: () => void }) => {
   const showToast = useToastStore((state) => state.showToast);
@@ -18,42 +17,33 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
   }, []);
 
   const getAdmobCount = async () => {
-    try {
-      getReloadAdmobCount().then((res) => {
-        setAdmobCount(res.newPersonAdmobCount ?? 0);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    getReloadAdmobCount().then((res) => {
+      setAdmobCount(res.newPersonAdmobCount ?? 0);
+    });
   };
 
   const reloadAdmobCount = async () => {
-    try {
-      postReloadAdmobUse('NEW_PERSON').then((res) => {
-        setAdmobCount(res.newPersonAdmobCount ?? 0);
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    postReloadAdmobUse('NEW_PERSON');
   };
 
   const refreshNewPerson = async () => {
     try {
-      postMembersMatchRefresh({
+      await postMembersMatchRefresh({
         refreshMemberId: memberData.memberId,
         refreshMemberBookId: memberData.memberBookId,
-      })
-        .then((res) => {
-          console.log('res', res);
-        })
-        .then(reloadAdmobCount)
-        .then(getAdmobCount)
-        .finally(handleRefresh);
-    } catch (error) {
-      console.error(error);
-      showToast({
-        content: '잠시 후에 다시 시도해주세요.',
       });
+      await reloadAdmobCount();
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await getAdmobCount();
+      handleRefresh();
+    } catch (error) {
+      const { response } = error as unknown as AxiosError<AxiosError>;
+      if (response) {
+        // console.log(response.data, response.status);
+        showToast({
+          content: response.data.message,
+        });
+      }
     }
   };
 
