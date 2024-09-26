@@ -248,14 +248,14 @@ const Product = () => {
   return (
     <View style={{ flex: 1, paddingTop: 64 }}>
       {loading ? (
-        <ActivityIndicator size="large" color={colors.primary} /> // 로딩 표시 추가
+        <ActivityIndicator size="large" color={colors.primary} />
       ) : (
         <>
           <ScrollView style={{ flex: 1 }}>
             <CustomText
               size="10"
               font="fontRegular"
-              color={'white'}
+              color="white"
               style={{ marginBottom: 30, textAlign: 'center', lineHeight: 16, marginTop: '3%' }}
             >
               책갈피는 상대방에게 엽서를 보낼 때 사용됩니다. 매칭을 거절당할 시{`\n`}

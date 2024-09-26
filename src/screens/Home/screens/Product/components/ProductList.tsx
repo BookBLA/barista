@@ -53,7 +53,9 @@ const ProductList: React.FC<ProductProps> = ({ props, index, handleGetRewardedAd
           />
         </LinearGradient>
       ) : (
-        <ProductListContent props={props} index={index} admobCount={admobCount} />
+        <View style={{ padding: 2, borderRadius: 10 }}>
+          <ProductListContent props={props} index={index} admobCount={admobCount} />
+        </View>
       )}
     </View>
   );

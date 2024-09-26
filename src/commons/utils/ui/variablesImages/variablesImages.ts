@@ -146,6 +146,7 @@ export const img = {
   postcardSelected: require('@assets/images/img/postcardSelected.png'),
 
   adMask: require('@assets/images/img/adMask.png'),
+  productMask: require('@assets/images/img/productMask.png'),
 };
 
 export const logos = {

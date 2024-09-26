@@ -4,6 +4,7 @@ export const colors = {
   primary02: '#FFEBAC',
   secondary: '#F7E2A4',
   background: '#F7F4ED',
+  background02: '#F5F5F5',
   dividerLine: '#D2D6E2',
   cardBackground: '#FAFAFA',
   inviteCardBackground: '#120B2E',
