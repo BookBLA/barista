@@ -59,7 +59,6 @@ const Home = () => {
   const handleRefresh = () => {
     setIsSubmitQuiz(false);
     refetch();
-    console.log('isSubmitQuiz', isSubmitQuiz);
   };
 
   useEffect(() => {
