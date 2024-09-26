@@ -4,8 +4,6 @@ import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName
 import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ChatDetail from '@screens/Chat/ChatDetail';
-import ChatInfoScreen from '@screens/Chat/ChatInfoScreen/ChatInfoScreen';
 import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
 import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
@@ -15,7 +13,6 @@ import ModifyStyle from '@screens/InitStyle/screens/ModifyStyle/ModifyStyle';
 import InitUserInfoStack from '@screens/InitUserInfo/initUserinfo';
 import CompletePage from '@screens/InitUserInfo/screens/CompletePage/CompletePage';
 import InviteFriends from '@screens/InitUserInfo/screens/InviteFriends/InviteFriends';
-import Library from '@screens/Library/Library';
 import LoginStack from '@screens/Login/LoginStack';
 import Notice from '@screens/Notice/Notice';
 import QuizStack from '@screens/Quiz/QuizStack';
@@ -25,6 +22,7 @@ import { Platform, SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
+import ChatStack from '@screens/Chat/ChatStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
@@ -45,9 +43,7 @@ const screens = [
   { name: 'modifyProfile', component: ModifyProfile },
   { name: 'studentId', component: CustomScreen(StudentId) },
   { name: 'rejectStudentId', component: RejectStudentId },
-  { name: 'ChatDetail', component: ChatDetail },
-  { name: 'ChatInfoScreen', component: ChatInfoScreen },
-  { name: 'library', component: Library }, // Library 스크린 추가
+  { name: 'chat', component: ChatStack },
 ];
 
 export const CustomNavigator = () => {

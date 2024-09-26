@@ -5,11 +5,11 @@ import libraryDark from '@assets/images/icons/LibraryDark.png';
 import { colors } from '@commons/styles/variablesStyles';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ChatStack from '@screens/Chat/ChatStack';
 import HomeStack from '@screens/Home/HomeStack';
 import LibraryStack from '@screens/Library/LibraryStack';
 import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
+import ChatStack from "@screens/Chat/ChatStack";
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();

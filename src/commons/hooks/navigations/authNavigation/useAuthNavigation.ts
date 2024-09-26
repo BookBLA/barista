@@ -1,8 +1,6 @@
 import { TRootStackParamList } from '@commons/components/Navigations/CustomNavigator/CustomNavigator.types';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
-import WebSocketClient from '@commons/websocket/websocketClient';
 import { NavigationContainerRef } from '@react-navigation/native';
-import { Buffer } from 'buffer';
 import { useEffect, useRef } from 'react';
 
 export const useAuthNavigation = () => {
@@ -16,19 +14,6 @@ export const useAuthNavigation = () => {
         index: 0,
         routes: [{ name: 'loginStack' }],
       });
-    } else {
-      const decodeToken = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
-      const userId = decodeToken.sub;
-
-      const showInAppNotification = (message: any) => {
-        console.log('Received message:', message);
-      };
-
-      if (userId) {
-        WebSocketClient.connect(userId!);
-
-        WebSocketClient.subscribe(showInAppNotification, `/topic/member/${userId}`);
-      }
     }
   }, [token]);
 
