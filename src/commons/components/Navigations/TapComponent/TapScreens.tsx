@@ -5,11 +5,12 @@ import libraryDark from '@assets/images/icons/LibraryDark.png';
 import { colors } from '@commons/styles/variablesStyles';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { CommonActions } from '@react-navigation/native';
+import ChatStack from '@screens/Chat/ChatStack';
 import HomeStack from '@screens/Home/HomeStack';
 import LibraryStack from '@screens/Library/LibraryStack';
 import MatchingStack from '@screens/Matching/MatchingStack';
 import { Image, Platform } from 'react-native';
-import ChatStack from "@screens/Chat/ChatStack";
 
 const TapScreens = () => {
   const Tab = createBottomTabNavigator();
@@ -52,6 +53,17 @@ const TapScreens = () => {
           ),
           unmountOnBlur: true,
         }}
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault(); // Prevent default behavior
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'HomeStack', params: { screen: 'home' } }], // Reset to HomeStack with home screen
+              }),
+            );
+          },
+        })}
       />
       <Tab.Screen
         name="Matching"
