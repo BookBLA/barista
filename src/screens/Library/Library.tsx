@@ -332,12 +332,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const memberInfo = useMemberStore((state) => state.memberInfo);
   const updateProfileImageUrl = useUserStore((state) => state.updateProfileImageUrl);
 
-  console.log(`
-    ==========================================
-    memberInfo: ${JSON.stringify(memberInfo)}
-    ==========================================
-  `);
-
   const openImagePickerAsync = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!permissionResult.granted) {

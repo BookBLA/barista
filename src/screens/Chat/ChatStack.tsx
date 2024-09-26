@@ -15,6 +15,7 @@ import { platformServices } from '@screens/Chat/NativeModule';
 import { MMKV } from 'react-native-mmkv';
 import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
 import { Easing } from 'react-native-reanimated';
+import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelCreateFragment = createGroupChannelCreateFragment();
@@ -80,8 +81,20 @@ const GroupChannelScreen = () => {
   );
 };
 
+const callGetMemberProfileApi = async () => {
+  try {
+    const response: any = await getMemberProfileApi().then(() => {
+      return response.result;
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const SignInScreen = () => {
   const { connect } = useConnection();
+  const userInfo = callGetMemberProfileApi();
+
   connect('blabla', { nickname: 'Hangyeol Seo' });
 
   const spinValue = useRef(new Animated.Value(0)).current;
