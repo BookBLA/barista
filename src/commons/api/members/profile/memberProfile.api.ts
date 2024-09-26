@@ -12,9 +12,18 @@ interface IPatchMemberProfile {
   schoolName: string;
 }
 
+interface IMemberProfile {
+  memberId: number;
+  name: string;
+  birthDate: string;
+  schoolName: string;
+  schoolEmail: string;
+  gender: string;
+}
+
 export const postMemberProfileApi = (contents: MemberProfileCreateRequest) => Post(`member-profiles`, contents);
 
-export const getMemberProfileApi = () => Get(`member-profiles`);
+export const getMemberProfileApi = () => Get<IMemberProfile>(`member-profiles`);
 
 export const putMemberProfileApi = (contents: MemberProfileCreateRequest) => Put(`member-profiles`, contents);
 
