@@ -11,7 +11,7 @@ import { ITEM_ID } from '../Product';
 import * as S from '../Product.styles';
 import { ProductProps } from '../Product.types';
 
-const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }) => {
+const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, handleGetRewardedAds }) => {
   const { title, krwPrice, discount, originalPrice, productId, name } = props;
 
   const buy = async (sku: string) => {
@@ -80,7 +80,7 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount }
       </S.ProductInfoContainer>
       {index === 0 ? (
         admobCount && admobCount > 0 ? (
-          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={() => console.log('애드몹 시청')} />
+          <CustomGradientButton contents={`무료 ${admobCount}/2`} onPress={handleGetRewardedAds} />
         ) : (
           <CustomButton contents={'무료 0/2'} disabled padding={'9px 18px'} />
         )
