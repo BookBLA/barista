@@ -17,10 +17,8 @@ const StepSecond = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
-  // @ts-ignore
-  const memberBookId = route.params['memberBookId'];
-  // @ts-ignore
-  const targetMemberId = route.params['targetMemberId'];
+  const memberBookId = route.params.memberBookId;
+  const targetMemberId = route.params.targetMemberId;
 
   const [text, setText] = React.useState<string>('');
   const maxLength = 100;

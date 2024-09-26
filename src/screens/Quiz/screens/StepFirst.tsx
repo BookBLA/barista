@@ -5,11 +5,10 @@ import React, { useEffect, useState } from 'react';
 import { TBookInfo } from '@screens/Library/MyBookInfoModify/MyBookInfoModify.types';
 import { getBookInfo, getBookQuizInfo } from '@commons/api/postcard/library.api';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
-import * as S from '@screens/Home/HomeStack.styles';
 import * as T from '@screens/Quiz/QuizStack.styles';
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import {Image, Text, View} from 'react-native';
+import { Image, Text, View } from 'react-native';
 import { colors } from '@commons/styles/variablesStyles';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { postVerifyQuizAnswer } from '@commons/api/quiz/verifyQuizAnswer.api';
@@ -19,10 +18,8 @@ const StepFirst = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
-  // @ts-ignore
-  const memberBookId = route.params['memberBookId'];
-  // @ts-ignore
-  const targetMemberId = route.params['targetMemberId'];
+  const memberBookId = route.params.memberBookId;
+  const targetMemberId = route.params.targetMemberId;
 
   const [bookInfo, setBookInfo] = useState<TBookInfo | null>(null);
   const [currentPressedAnswer, setCurrentPressedAnswer] = useState<number>(-1);
@@ -55,16 +52,16 @@ const StepFirst = () => {
 
   const checkQuizAnswer = async () => {
     const content = {
+      quizMakerId: targetMemberId,
       quizId: bookInfo?.quizId,
       quizAnswer: currentPressedAnswerString,
-      targetMemberId,
     };
     const result = await postVerifyQuizAnswer(content);
     const isCorrect = result.isCorrect;
     if (isCorrect) {
       setIsCorrectAnswer(true);
     } else {
-      movePage('completion', { isSuccess: false })();
+      movePage('completion', { isPassQuiz: false })();
     }
   };
 

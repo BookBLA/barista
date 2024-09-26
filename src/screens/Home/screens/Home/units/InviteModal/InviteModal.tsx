@@ -7,11 +7,13 @@ import { Modal } from 'react-native';
 import * as S from './InviteModal.styles';
 
 const InviteModal = ({
+  invitedType,
   invitedGender,
   isVisible,
   setIsVisible,
   onCloseCallback,
 }: {
+  invitedType?: string;
   invitedGender?: string;
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -36,15 +38,25 @@ const InviteModal = ({
       <S.BackWrapper>
         <S.Wrapper>
           <CustomText font="fontMedium" margin="0 0 6px">
-            {invitedGender ? '친구가 가입에 성공했어요!' : '가입을 축하합니다!'}
+            {invitedGender
+              ? '친구가 가입에 성공했어요!'
+              : invitedType === 'FESTIVAL'
+                ? 'JUST 4 YOU'
+                : '가입을 축하합니다!'}
           </CustomText>
           <CustomText font="fontRegular" size="12px">
-            {invitedGender ? '친구를 초대해 주셔서 감사해요' : '무료 책갈피로 매칭을 시작해 보세요!'}
+            {invitedGender
+              ? '친구를 초대해 주셔서 감사해요'
+              : invitedType === 'FESTIVAL'
+                ? '솔로탈출 부적을 받으셨군요!'
+                : '무료 책갈피로 매칭을 시작해 보세요!'}
           </CustomText>
           <CustomText font="fontRegular" size="12px" margin="0 0 22px">
             {invitedGender
               ? '친구를 더 초대하면 무료 책갈피를 또 받을 수 있어요 :)'
-              : '친구를 초대하고 무료 책갈피를 더 받아보세요 :)'}
+              : invitedType === 'FESTIVAL'
+                ? '무료 책갈피로 당신만을 위한 상대를 만나보세요 :)'
+                : '친구를 초대하고 무료 책갈피를 더 받아보세요 :)'}
           </CustomText>
 
           <S.CoinWrapper>
@@ -52,7 +64,15 @@ const InviteModal = ({
               <S.CoinImage source={icons.inviteCoin} />
             </S.ImageWrapper>
             <CustomText font="fontInviteCoin" size="24px">
-              {invitedGender ? (invitedGender === 'male' ? 'X 35' : 'X 70') : memberGender === 'male' ? 'X 35' : 'X 70'}
+              {invitedGender
+                ? invitedGender === 'male'
+                  ? 'X 35'
+                  : 'X 70'
+                : invitedType === 'FESTIVAL'
+                  ? 'X 105'
+                  : memberGender === 'male'
+                    ? 'X 35'
+                    : 'X 70'}
             </CustomText>
           </S.CoinWrapper>
           <S.ButtonWrapper>

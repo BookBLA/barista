@@ -61,37 +61,33 @@ const Notice = () => {
 
   return (
     <S.Wrapper>
-      {loading ? (
-        <ActivityIndicator size="large" color={colors.primary} />
-      ) : (
-        <>
-          {data.length > 0 ? (
-            <>
-              <TouchableOpacity style={{ width: '25%' }}>
-                <CustomText
-                  margin="60px 0 10px 16px"
-                  font="fontRegular"
-                  size="14px"
-                  onPress={() => onClickDeleteAlarm(null)}
-                >
-                  전체 삭제
-                </CustomText>
-              </TouchableOpacity>
-              <FlatList
-                data={data}
-                renderItem={renderItem}
-                onEndReached={loadMoreData} // Infinite scroll
-                onEndReachedThreshold={0.1} // Trigger fetch when 10% from the bottom
-                contentContainerStyle={{ paddingBottom: 20 }}
-                style={{ paddingHorizontal: 16, height: 'auto' }}
-                ListFooterComponent={loading ? <ActivityIndicator size="large" color={colors.primary} /> : null} // Optional loading indicator
-              />
-            </>
-          ) : (
-            <Warning />
-          )}
-        </>
-      )}
+      <>
+        {data.length > 0 ? (
+          <>
+            <TouchableOpacity style={{ width: '25%' }}>
+              <CustomText
+                margin="60px 0 10px 16px"
+                font="fontRegular"
+                size="14px"
+                onPress={() => onClickDeleteAlarm(null)}
+              >
+                전체 삭제
+              </CustomText>
+            </TouchableOpacity>
+            <FlatList
+              data={data}
+              renderItem={renderItem}
+              onEndReached={loadMoreData} // Infinite scroll
+              onEndReachedThreshold={0.1} // Trigger fetch when 10% from the bottom
+              contentContainerStyle={{ paddingBottom: 20 }}
+              style={{ paddingHorizontal: 16, height: 'auto' }}
+              ListFooterComponent={loading ? <ActivityIndicator size="large" color={colors.primary} /> : null} // Optional loading indicator
+            />
+          </>
+        ) : (
+          <Warning />
+        )}
+      </>
     </S.Wrapper>
   );
 };

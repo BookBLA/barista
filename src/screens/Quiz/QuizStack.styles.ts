@@ -222,6 +222,7 @@ export const NextButtonText = styled.Text`
 
 export const CompletionContainer = styled.View`
   margin-top: auto;
+  margin-bottom: ${deviceHeight * 0.05}px;
   width: 90%;
   height: ${deviceHeight * 0.66}px;
   border-radius: 10px;
