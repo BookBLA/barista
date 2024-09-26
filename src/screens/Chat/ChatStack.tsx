@@ -16,6 +16,7 @@ import { MMKV } from 'react-native-mmkv';
 import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
 import { Easing } from 'react-native-reanimated';
 import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelCreateFragment = createGroupChannelCreateFragment();
@@ -81,21 +82,12 @@ const GroupChannelScreen = () => {
   );
 };
 
-const callGetMemberProfileApi = async () => {
-  try {
-    const response: any = await getMemberProfileApi().then(() => {
-      return response.result;
-    });
-  } catch (error) {
-    console.error(error);
-  }
-};
-
 const SignInScreen = () => {
   const { connect } = useConnection();
-  const userInfo = callGetMemberProfileApi();
+  const memberId = useMemberStore((state) => state.memberInfo.id);
+  const memberName = useMemberStore((state) => state.memberInfo.name);
 
-  connect('blabla', { nickname: 'Hangyeol Seo' });
+  connect(memberId.toString(), { nickname: memberName });
 
   const spinValue = useRef(new Animated.Value(0)).current;
 
@@ -134,9 +126,9 @@ const Navigation = () => {
         <Stack.Screen name="SignIn" component={SignInScreen} />
       ) : (
         <>
-          <Stack.Screen name={'GroupChannelList'} component={GroupChannelListScreen} />
-          <Stack.Screen name={'GroupChannelCreate'} component={GroupChannelCreateScreen} />
-          <Stack.Screen name={'GroupChannel'} component={GroupChannelScreen} />
+          <Stack.Screen name="GroupChannelList" component={GroupChannelListScreen} />
+          <Stack.Screen name="GroupChannelCreate" component={GroupChannelCreateScreen} />
+          <Stack.Screen name="GroupChannel" component={GroupChannelScreen} />
         </>
       )}
     </Stack.Navigator>
