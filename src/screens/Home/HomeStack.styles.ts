@@ -29,11 +29,11 @@ export const PositionedWrapper = styled.View`
 export const BodyWrapper = styled.View`
   display: flex;
   flex-direction: column;
-  padding-top: 30;
+  padding-top: 30px;
   align-items: center;
   flex-grow: 1;
   width: 100%;
   height: 100%;
-  background-color: ${colors.background};
+  background-color: ${colors.background02};
   border-radius: 20px 20px 0 0;
 `;

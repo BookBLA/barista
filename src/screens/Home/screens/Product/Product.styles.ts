@@ -1,17 +1,20 @@
 import styled from 'styled-components/native';
 import { ProductContentContainerProps } from './Product.types';
+import { LinearGradient } from 'expo-linear-gradient';
+import { colors } from '@commons/styles/variablesStyles';
 
 export const ProductContentContainer = styled.View<ProductContentContainerProps>`
   width: 100%;
   height: 100%;
-  background-color: ${(props: { index: number; admobCount: number; }) => (props.index === 0 && props.admobCount === 0 ? 'transparent' : 'white')};
+  background-color: ${(props: { index: number; admobCount: number }) =>
+    props.index === 0 && props.admobCount === 0 ? 'transparent' : 'white'};
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
   border-radius: 9px;
-  border-color: ${(props: { index: number; }) => (props.index === 0 ? 'transparent' : 'rgba(0, 0, 0, 0.05)')};
+  border-color: transparent;
   border-width: 1px;
-  opacity: ${(props: { index: number; admobCount: number; }) => (props.index === 0 && props.admobCount === 0 ? 0.4 : 1)};
+  opacity: ${(props: { index: number; admobCount: number }) => (props.index === 0 && props.admobCount === 0 ? 0.4 : 1)};
 `;
 
 export const ProductInfoContainer = styled.View`
@@ -19,4 +22,41 @@ export const ProductInfoContainer = styled.View`
   width: 50%;
   height: 90%;
   align-items: center;
+`;
+
+export const BookMarkImage = styled.Image`
+  width: 33px;
+  height: 42px;
+  margin-right: 10%;
+  object-fit: 'contain';
+`;
+
+export const ProductTextContainer = styled.View`
+  width: 70%;
+  height: 80%;
+`;
+
+export const GradientButton = styled(LinearGradient).attrs({
+  colors: ['#5B247A', '#1BCEDF'],
+  start: { x: 0, y: 0 },
+  end: { x: 1, y: 1 },
+})`
+  object-fit: contain;
+  border-radius: 50px;
+  overflow: hidden;
+`;
+
+export const BuyButton = styled.TouchableOpacity`
+  padding: 10px 20px;
+  width: 90px;
+  height: 37px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+`;
+
+export const BuyButtonText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.textYellow};
 `;
