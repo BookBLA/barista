@@ -1,9 +1,8 @@
-import { getMemberApi } from '@commons/api/members/default/member.api';
+import {getMemberApi, GetMyInfoApi} from '@commons/api/members/default/member.api';
 // import { MemberResponse } from '@commons/types/openapiGenerator';
 import analytics from '@react-native-firebase/analytics';
 import { create } from 'zustand';
 import { EStudentIdImageStatus } from './MemberInfo.types';
-import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 
 interface IMemberInfo {
   memberInfo: {
@@ -36,8 +35,8 @@ const useMemberStore = create<IMemberInfo>((set) => ({
   updateMemberInfo: (field, value) => set((state) => ({ memberInfo: { ...state.memberInfo, [field]: value } })),
   saveMemberInfo: async () => {
     const membersResponse = await getMemberApi();
+    const memberName = await GetMyInfoApi();
     const { id, memberType, memberStatus, memberGender } = membersResponse.result;
-    const memberProfileResponse = await getMemberProfileApi();
     await analytics().setUserId(String(id));
     await analytics().setUserProperties({
       user_id: String(id),
@@ -46,13 +45,10 @@ const useMemberStore = create<IMemberInfo>((set) => ({
       gender: String(memberGender),
     });
     const memberInfo = membersResponse.result;
+    const memberNameInfo = memberName.result;
     // console.log('memberInfo', memberInfo);
     if (memberInfo) {
-      set({ memberInfo });
-    }
-    const memberProfile = memberProfileResponse.result;
-    if (memberProfile) {
-      set({ memberProfile });
+      set({ memberInfo: { ...memberInfo, name: memberNameInfo.name } });
     }
     return memberStatus as string;
   },

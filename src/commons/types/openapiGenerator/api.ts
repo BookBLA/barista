@@ -13,15 +13,15 @@
  */
 
 
-import type { AxiosInstance, AxiosPromise, RawAxiosRequestConfig } from 'axios';
-import globalAxios from 'axios';
 import type { Configuration } from './configuration';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import globalAxios from 'axios';
 // Some imports not used depending on template conditions
 // @ts-ignore
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common';
 import type { RequestArgs } from './base';
-import { DUMMY_BASE_URL, assertParamExists, createRequestFunction, serializeDataIfNeeded, setBearerAuthToObject, setSearchParams, toPathString } from './common';
 // @ts-ignore
-import { BASE_PATH, BaseAPI, RequiredError, operationServerMap } from './base';
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base';
 
 /**
  * 
@@ -423,55 +423,6 @@ export interface BookSearchResponses {
      * @memberof BookSearchResponses
      */
     'bookSearchResponses'?: Array<BookSearchResponse>;
-}
-/**
- * 
- * @export
- * @interface ChatRoomResponse
- */
-export interface ChatRoomResponse {
-    /**
-     * 
-     * @type {MemberResponse}
-     * @memberof ChatRoomResponse
-     */
-    'otherMember'?: MemberResponse;
-    /**
-     * 
-     * @type {PostCardResponse}
-     * @memberof ChatRoomResponse
-     */
-    'postcard'?: PostCardResponse;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChatRoomResponse
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof ChatRoomResponse
-     */
-    'unreadCount'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatRoomResponse
-     */
-    'lastChat'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ChatRoomResponse
-     */
-    'lastChatTime'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof ChatRoomResponse
-     */
-    'isAlert'?: boolean;
 }
 /**
  * 
@@ -1345,13 +1296,13 @@ export interface MemberInvitationRewardResponse {
      */
     'invitingRewardStatus'?: boolean;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MemberInvitationRewardResponse
      */
     'invitedRewardStatus'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MemberInvitationRewardResponse
      */
@@ -1889,13 +1840,13 @@ export interface MemberPushAlarmReadResponse {
      */
     'memberPushAlarmId'?: number;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MemberPushAlarmReadResponse
      */
     'title'?: string;
     /**
-     *
+     * 
      * @type {string}
      * @memberof MemberPushAlarmReadResponse
      */
@@ -1908,19 +1859,19 @@ export interface MemberPushAlarmReadResponse {
     'createdAt'?: string;
 }
 /**
- *
+ * 
  * @export
  * @interface MemberPushAlarmReadResponses
  */
 export interface MemberPushAlarmReadResponses {
     /**
-     *
+     * 
      * @type {number}
      * @memberof MemberPushAlarmReadResponses
      */
     'totalCount'?: number;
     /**
-     *
+     * 
      * @type {Array<MemberPushAlarmReadResponse>}
      * @memberof MemberPushAlarmReadResponses
      */
@@ -2383,7 +2334,19 @@ export interface MyLibraryReadResponse {
  */
 export interface NotificationResponse {
     /**
-     *
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'status'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof NotificationResponse
+     */
+    'success'?: boolean;
+    /**
+     * 
      * @type {string}
      * @memberof NotificationResponse
      */
@@ -2394,18 +2357,6 @@ export interface NotificationResponse {
      * @memberof NotificationResponse
      */
     'id'?: string;
-    /**
-     *
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'status'?: string;
-    /**
-     *
-     * @type {boolean}
-     * @memberof NotificationResponse
-     */
-    'success'?: boolean;
 }
 /**
  * 
@@ -2486,18 +2437,6 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'size'?: number;
-    /**
-     *
-     * @type {Array<MemberBookProfileResponse>}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'content'?: Array<MemberBookProfileResponse>;
-    /**
-     *
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
     'number'?: number;
     /**
      * 
@@ -2512,7 +2451,19 @@ export interface PageMemberBookProfileResponse {
      */
     'pageable'?: PageableObject;
     /**
-     *
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<MemberBookProfileResponse>}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'content'?: Array<MemberBookProfileResponse>;
+    /**
+     * 
      * @type {boolean}
      * @memberof PageMemberBookProfileResponse
      */
@@ -2560,12 +2511,6 @@ export interface PageableObject {
      * @type {number}
      * @memberof PageableObject
      */
-    'offset'?: number;
-    /**
-     *
-     * @type {number}
-     * @memberof PageableObject
-     */
     'pageNumber'?: number;
     /**
      * 
@@ -2578,13 +2523,13 @@ export interface PageableObject {
      * @type {boolean}
      * @memberof PageableObject
      */
-    'unpaged'?: boolean;
+    'paged'?: boolean;
     /**
      * 
      * @type {boolean}
      * @memberof PageableObject
      */
-    'paged'?: boolean;
+    'unpaged'?: boolean;
     /**
      * 
      * @type {number}
@@ -2611,60 +2556,6 @@ export interface PaymentPurchaseResponse {
      */
     'price'?: number;
 }
-/**
- * 
- * @export
- * @interface PostCardResponse
- */
-export interface PostCardResponse {
-    /**
-     * 
-     * @type {number}
-     * @memberof PostCardResponse
-     */
-    'postcardId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostCardResponse
-     */
-    'imageUrl'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostCardResponse
-     */
-    'message'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostCardResponse
-     */
-    'createdAt'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof PostCardResponse
-     */
-    'status'?: PostCardResponseStatusEnum;
-    /**
-     * 
-     * @type {number}
-     * @memberof PostCardResponse
-     */
-    'senderId'?: number;
-}
-
-export const PostCardResponseStatusEnum = {
-    Pending: 'PENDING',
-    Read: 'READ',
-    Accept: 'ACCEPT',
-    Refused: 'REFUSED',
-    AllWrong: 'ALL_WRONG'
-} as const;
-
-export type PostCardResponseStatusEnum = typeof PostCardResponseStatusEnum[keyof typeof PostCardResponseStatusEnum];
-
 /**
  * 
  * @export
@@ -2733,6 +2624,12 @@ export interface PostcardStatusUpdateRequest {
      * @memberof PostcardStatusUpdateRequest
      */
     'status': string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostcardStatusUpdateRequest
+     */
+    'memberBookId'?: number;
 }
 /**
  * 
@@ -2817,7 +2714,7 @@ export interface ProfileImageTypeReadResponse {
     'profileImageResponseTypes'?: Array<ProfileImageResponse>;
 }
 /**
- *
+ * 
  * @export
  * @interface PushAlarmSettingCreateRequest
  */
@@ -2898,7 +2795,7 @@ export interface QuizQuestionVerifyRequest {
      */
     'quizMakerId': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof QuizQuestionVerifyRequest
      */
@@ -2930,33 +2827,33 @@ export interface QuizQuestionVerifyResponse {
  */
 export interface RefreshMemberRequest {
     /**
-     *
+     * 
      * @type {number}
      * @memberof RefreshMemberRequest
      */
     'refreshMemberId': number;
     /**
-     *
+     * 
      * @type {number}
      * @memberof RefreshMemberRequest
      */
     'refreshMemberBookId': number;
 }
 /**
- *
+ * 
  * @export
  * @interface RejectMemberRequest
  */
 export interface RejectMemberRequest {
     /**
-     *
+     * 
      * @type {number}
      * @memberof RejectMemberRequest
      */
     'rejectedMemberId': number;
 }
 /**
- *
+ * 
  * @export
  * @interface ReportStatuses
  */
@@ -3147,12 +3044,6 @@ export interface SortObject {
      * @type {boolean}
      * @memberof SortObject
      */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SortObject
-     */
     'sorted'?: boolean;
     /**
      * 
@@ -3160,6 +3051,12 @@ export interface SortObject {
      * @memberof SortObject
      */
     'unsorted'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SortObject
+     */
+    'empty'?: boolean;
 }
 /**
  * 
@@ -3320,9 +3217,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         *
+         * 
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId
+         * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -3347,7 +3244,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -4106,9 +4003,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         *
+         * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest
+         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4132,7 +4029,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4146,9 +4043,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         *
+         * 
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest
+         * @param {RejectMemberRequest} rejectMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4172,7 +4069,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4693,9 +4590,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             };
         },
         /**
-         *
+         * 
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -4719,7 +4616,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -4769,9 +4666,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId
+         * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5032,9 +4929,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest
+         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5045,9 +4942,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest
+         * @param {RejectMemberRequest} rejectMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5220,22 +5117,9 @@ export const DefaultApiFp = function(configuration?: Configuration) {
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
         },
         /**
-         *
+         * 
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async verifyQuizQuestion(quizQuestionVerifyRequest: QuizQuestionVerifyRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<QuizQuestionVerifyResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.verifyQuizQuestion(quizQuestionVerifyRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.verifyQuizQuestion']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         *
-         * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5278,7 +5162,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 독서 퀴즈 조회 API
-         * @param {number} memberBookId
+         * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5286,7 +5170,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.createQuizQuestion(memberBookId, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary 회원 도서 삭제
          * @param {number} memberBookId 
          * @param {*} [options] Override http request option.
@@ -5478,7 +5362,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest
+         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5486,9 +5370,9 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.refreshMemberMatching(refreshMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest
+         * @param {RejectMemberRequest} rejectMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5496,7 +5380,7 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.rejectMemberMatching(rejectMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary 작가 혹은 도서를 검색합니다
          * @param {string} text 
          * @param {number} [size] 
@@ -5622,9 +5506,9 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
             return localVarFp.updateStudentIdPendingMemberStatus(memberVerifyId, adminMemberProfileStudentIdStatusUpdateRequest, options).then((request) => request(axios, basePath));
         },
         /**
-         *
+         * 
          * @summary 독서 퀴즈 검증 API
-         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
+         * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -5666,9 +5550,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     *
+     * 
      * @summary 독서 퀴즈 조회 API
-     * @param {number} memberBookId
+     * @param {number} memberBookId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -5908,9 +5792,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     *
+     * 
      * @summary 매칭 회원 새로고침
-     * @param {RefreshMemberRequest} refreshMemberRequest
+     * @param {RefreshMemberRequest} refreshMemberRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -5920,9 +5804,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     *
+     * 
      * @summary 매칭 회원 거절
-     * @param {RejectMemberRequest} rejectMemberRequest
+     * @param {RejectMemberRequest} rejectMemberRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -6082,9 +5966,9 @@ export class DefaultApi extends BaseAPI {
     }
 
     /**
-     *
+     * 
      * @summary 독서 퀴즈 검증 API
-     * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest
+     * @param {QuizQuestionVerifyRequest} quizQuestionVerifyRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
@@ -6326,333 +6210,6 @@ export class AwsControllerApi extends BaseAPI {
      */
     public getS3PresignedUrl(uploadType: string, fileName: string, options?: RawAxiosRequestConfig) {
         return AwsControllerApiFp(this.configuration).getS3PresignedUrl(uploadType, fileName, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-
-/**
- * ChatRoomControllerApi - axios parameter creator
- * @export
- */
-export const ChatRoomControllerApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exitChatRoom: async (roomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'roomId' is not null or undefined
-            assertParamExists('exitChatRoom', 'roomId', roomId)
-            const localVarPath = `/chat/room/exit`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (roomId !== undefined) {
-                localVarQueryParameter['roomId'] = roomId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChatRoomByPostcardId: async (postcardId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'postcardId' is not null or undefined
-            assertParamExists('getChatRoomByPostcardId', 'postcardId', postcardId)
-            const localVarPath = `/chat/room/postcard`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (postcardId !== undefined) {
-                localVarQueryParameter['postcardId'] = postcardId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChatRoomList: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/chat/room`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {boolean} isAlert 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        setIsAlert: async (isAlert: boolean, roomId: number, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'isAlert' is not null or undefined
-            assertParamExists('setIsAlert', 'isAlert', isAlert)
-            // verify required parameter 'roomId' is not null or undefined
-            assertParamExists('setIsAlert', 'roomId', roomId)
-            const localVarPath = `/chat/room/alert`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (isAlert !== undefined) {
-                localVarQueryParameter['isAlert'] = isAlert;
-            }
-
-            if (roomId !== undefined) {
-                localVarQueryParameter['roomId'] = roomId;
-            }
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * ChatRoomControllerApi - functional programming interface
- * @export
- */
-export const ChatRoomControllerApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = ChatRoomControllerApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async exitChatRoom(roomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.exitChatRoom(roomId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.exitChatRoom']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChatRoomByPostcardId(postcardId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ChatRoomResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatRoomByPostcardId(postcardId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.getChatRoomByPostcardId']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getChatRoomList(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<Array<ChatRoomResponse>>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.getChatRoomList(options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.getChatRoomList']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
-         * @param {boolean} isAlert 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async setIsAlert(isAlert: boolean, roomId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<object>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.setIsAlert(isAlert, roomId, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['ChatRoomControllerApi.setIsAlert']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-    }
-};
-
-/**
- * ChatRoomControllerApi - factory interface
- * @export
- */
-export const ChatRoomControllerApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = ChatRoomControllerApiFp(configuration)
-    return {
-        /**
-         * 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        exitChatRoom(roomId: number, options?: any): AxiosPromise<object> {
-            return localVarFp.exitChatRoom(roomId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} postcardId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChatRoomByPostcardId(postcardId: number, options?: any): AxiosPromise<ChatRoomResponse> {
-            return localVarFp.getChatRoomByPostcardId(postcardId, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getChatRoomList(options?: any): AxiosPromise<Array<ChatRoomResponse>> {
-            return localVarFp.getChatRoomList(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {boolean} isAlert 
-         * @param {number} roomId 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        setIsAlert(isAlert: boolean, roomId: number, options?: any): AxiosPromise<object> {
-            return localVarFp.setIsAlert(isAlert, roomId, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * ChatRoomControllerApi - object-oriented interface
- * @export
- * @class ChatRoomControllerApi
- * @extends {BaseAPI}
- */
-export class ChatRoomControllerApi extends BaseAPI {
-    /**
-     * 
-     * @param {number} roomId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatRoomControllerApi
-     */
-    public exitChatRoom(roomId: number, options?: RawAxiosRequestConfig) {
-        return ChatRoomControllerApiFp(this.configuration).exitChatRoom(roomId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {number} postcardId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatRoomControllerApi
-     */
-    public getChatRoomByPostcardId(postcardId: number, options?: RawAxiosRequestConfig) {
-        return ChatRoomControllerApiFp(this.configuration).getChatRoomByPostcardId(postcardId, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatRoomControllerApi
-     */
-    public getChatRoomList(options?: RawAxiosRequestConfig) {
-        return ChatRoomControllerApiFp(this.configuration).getChatRoomList(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {boolean} isAlert 
-     * @param {number} roomId 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof ChatRoomControllerApi
-     */
-    public setIsAlert(isAlert: boolean, roomId: number, options?: RawAxiosRequestConfig) {
-        return ChatRoomControllerApiFp(this.configuration).setIsAlert(isAlert, roomId, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -7932,7 +7489,7 @@ export const MemberModalControllerApiAxiosParamCreator = function (configuration
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
@@ -9053,7 +8610,7 @@ export const MemberPushAlarmControllerApiAxiosParamCreator = function (configura
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9183,7 +8740,7 @@ export const MemberPushAlarmControllerApiFp = function(configuration?: Configura
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9247,7 +8804,7 @@ export const MemberPushAlarmControllerApiFactory = function (configuration?: Con
         /**
          * 
          * @summary 해당 회원의 푸시 알림 조회 API
-         * @param {Pageable} pageable
+         * @param {Pageable} pageable 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -9311,7 +8868,7 @@ export class MemberPushAlarmControllerApi extends BaseAPI {
     /**
      * 
      * @summary 해당 회원의 푸시 알림 조회 API
-     * @param {Pageable} pageable
+     * @param {Pageable} pageable 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof MemberPushAlarmControllerApi
