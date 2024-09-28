@@ -15,8 +15,8 @@ import { platformServices } from '@screens/Chat/NativeModule';
 import { MMKV } from 'react-native-mmkv';
 import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
 import { Easing } from 'react-native-reanimated';
-import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelCreateFragment = createGroupChannelCreateFragment();
@@ -83,20 +83,33 @@ const GroupChannelScreen = () => {
 };
 
 const SignInScreen = () => {
+  const showToast = useToastStore((state) => state.showToast);
+
   const { connect } = useConnection();
   const memberId = useMemberStore((state) => state.memberInfo.id);
   const memberName = useMemberStore((state) => state.memberInfo.name);
+  console.log(memberId, typeof memberId, memberName, typeof memberName);
 
-  connect(memberId.toString(), { nickname: memberName });
+  if (memberId && memberName) {
+    connect(memberId.toString(), { nickname: memberName }).catch((error) => {
+      showToast({
+        content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
+      });
+    });
+  } else {
+    showToast({
+      content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
+    });
+  }
 
+  // 로딩 애니메이션
   const spinValue = useRef(new Animated.Value(0)).current;
-
   useEffect(() => {
     Animated.loop(
       Animated.timing(spinValue, {
         toValue: 1,
         duration: 1000,
-        useNativeDriver: true, // This enables hardware acceleration
+        useNativeDriver: true,
         easing: Easing.inOut(Easing.ease),
       }),
     ).start();

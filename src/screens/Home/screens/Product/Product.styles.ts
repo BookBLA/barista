@@ -48,8 +48,8 @@ export const GradientButton = styled(LinearGradient).attrs({
 
 export const BuyButton = styled.TouchableOpacity`
   padding: 10px 20px;
-  width: 90px;
-  height: 37px;
+  width: 95px;
+  height: auto;
   align-items: center;
   justify-content: center;
   border-radius: 50px;
