@@ -19,16 +19,16 @@ export const ProductContentContainer = styled.View<ProductContentContainerProps>
 
 export const ProductInfoContainer = styled.View`
   flex-direction: row;
-  width: 50%;
+  width: 58%;
   height: 90%;
   align-items: center;
 `;
 
 export const BookMarkImage = styled.Image`
-  width: 33px;
-  height: 42px;
+  width: 60px;
+  height: 60px;
   margin-right: 10%;
-  object-fit: 'contain';
+  object-fit: cover;
 `;
 
 export const ProductTextContainer = styled.View`
