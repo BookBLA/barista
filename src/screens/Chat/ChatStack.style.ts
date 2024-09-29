@@ -1,4 +1,5 @@
 import styled from 'styled-components/native';
+import { colors } from '@commons/styles/variablesStyles';
 
 export const LoadingWrapper = styled.View`
   display: flex;
@@ -14,7 +15,7 @@ export const Spinner = styled.View`
   height: 70px;
   box-sizing: border-box;
   border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: rebeccapurple;
+  border-top-color: ${colors.buttonPrimary};
   border-radius: 100px;
   animation: spin 1s ease-in-out infinite;
 `;
