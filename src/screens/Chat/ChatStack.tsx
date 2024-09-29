@@ -17,6 +17,7 @@ import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
 import { Easing } from 'react-native-reanimated';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelCreateFragment = createGroupChannelCreateFragment();
@@ -88,10 +89,11 @@ const SignInScreen = () => {
   const { connect } = useConnection();
   const memberId = useMemberStore((state) => state.memberInfo.id);
   const memberName = useMemberStore((state) => state.memberInfo.name);
-  console.log(memberId, typeof memberId, memberName, typeof memberName);
+  const accessToken = useAuthStore((state) => state.token);
+  // console.log(memberId, typeof memberId, memberName, typeof memberName, accessToken, typeof accessToken);
 
-  if (memberId && memberName) {
-    connect(memberId.toString(), { nickname: memberName }).catch((error) => {
+  if (memberId && memberName && accessToken) {
+    connect(memberId.toString(), { nickname: memberName, accessToken: accessToken }).catch((error) => {
       showToast({
         content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
       });

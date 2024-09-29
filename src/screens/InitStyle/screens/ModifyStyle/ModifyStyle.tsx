@@ -19,6 +19,7 @@ import React, { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 const buttonList = ['닉네임', 'MBTI', '흡연 여부', '키'];
 
@@ -29,6 +30,7 @@ const ModifyStyle = () => {
   const showToast = useToastStore((state) => state.showToast);
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const [styleInfo, setStyleInfo] = useState<MemberInformationReadResponse>();
+  const { updateCurrentUserInfo } = useSendbirdChat();
 
   const handleMovePosition = (sectionIndex: number) => {
     let yOffset = 0;
@@ -89,6 +91,9 @@ const ModifyStyle = () => {
         smokeType: styleInfo?.smokeType as string,
         height: styleInfo?.height as number,
       });
+      // TODO: update시 채팅 사용자 닉네임 수정
+      // const updatedUserWithUrl = await updateCurrentUserInfo(styleInfo?.name as string);
+      // updatedUserWithUrl;
       showToast({
         content: '회원정보가 수정되었습니다.',
       });
