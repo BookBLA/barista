@@ -1,15 +1,9 @@
 import { Animated } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  useSendbirdChat,
-  createGroupChannelListFragment,
-  createGroupChannelCreateFragment,
-  createGroupChannelFragment,
-  useConnection,
-  SendbirdUIKitContainer,
-} from '@sendbird/uikit-react-native';
-import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
+import { useSendbirdChat, useConnection, SendbirdUIKitContainer } from '@sendbird/uikit-react-native';
+import { GroupChannelListScreen } from '@screens/Chat/screens/GroupChannelListScreen';
+import { GroupChannelCreateScreen } from '@screens/Chat/screens/GroupChannelCreateScreen';
+import { GroupChannelScreen } from '@screens/Chat/screens/GroupChannelScreen';
 import React, { useEffect, useRef } from 'react';
 import { platformServices } from '@screens/Chat/NativeModule';
 import { MMKV } from 'react-native-mmkv';
@@ -18,70 +12,6 @@ import { Easing } from 'react-native-reanimated';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
-
-const GroupChannelListFragment = createGroupChannelListFragment();
-const GroupChannelCreateFragment = createGroupChannelCreateFragment();
-const GroupChannelFragment = createGroupChannelFragment();
-
-const GroupChannelListScreen = () => {
-  const navigation = useNavigation<any>();
-  return (
-    <GroupChannelListFragment
-      onPressCreateChannel={(channelType) => {
-        // Navigate to GroupChannelCreate function.
-        navigation.navigate('GroupChannelCreate', { channelType });
-      }}
-      onPressChannel={(channel) => {
-        // Navigate to GroupChannel function.
-        navigation.navigate('GroupChannel', { channelUrl: channel.url });
-      }}
-    />
-  );
-};
-
-const GroupChannelCreateScreen = () => {
-  const navigation = useNavigation<any>();
-
-  return (
-    <GroupChannelCreateFragment
-      onCreateChannel={async (channel) => {
-        // Navigate to GroupChannel function.
-        navigation.replace('GroupChannel', { channelUrl: channel.url });
-      }}
-      onPressHeaderLeft={() => {
-        // Go back to the previous screen.
-        navigation.goBack();
-      }}
-    />
-  );
-};
-
-const GroupChannelScreen = () => {
-  const navigation = useNavigation<any>();
-  const { params } = useRoute<any>();
-
-  const { sdk } = useSendbirdChat();
-  const { channel } = useGroupChannel(sdk, params.channelUrl);
-  if (!channel) return null;
-
-  return (
-    <GroupChannelFragment
-      channel={channel}
-      onChannelDeleted={() => {
-        // Navigate to GroupChannelList function.
-        navigation.navigate('GroupChannelList');
-      }}
-      onPressHeaderLeft={() => {
-        // Go back to the previous screen.
-        navigation.goBack();
-      }}
-      onPressHeaderRight={() => {
-        // Navigate to GroupChannelSettings function.
-        navigation.navigate('GroupChannelSettings', { channelUrl: params.channelUrl });
-      }}
-    />
-  );
-};
 
 const SignInScreen = () => {
   const showToast = useToastStore((state) => state.showToast);
