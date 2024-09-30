@@ -34,6 +34,7 @@ export default function ChatStack() {
       appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
       chatOptions={{ localCacheStorage: mmkv }}
       platformServices={platformServices}
+      styles={{ defaultHeaderTitleAlign: 'center' }}
     >
       <Navigation />
     </SendbirdUIKitContainer>

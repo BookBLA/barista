@@ -79,15 +79,16 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-    //   movePageNoReference('receivePostcardDetail', rest);
-    // } else {
-    //   if (memberPostcard > 0) {
-    //     toggleCheckBeforeSendPostcardModal();
-    //   } else {
-    //     toggleNoPostcardModal();
-    //   }
-    // }
+    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+      // movePageNoReference('receivePostcardDetail', rest);
+      console.log('move to chat');
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
     studentIdToggle;
     console.log('studentIdToggle', studentIdToggle);
   };
@@ -97,7 +98,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
-      movePageNoReference('receivePostcardDetail', rest);
+      // movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }

@@ -147,6 +147,8 @@ export const img = {
 
   adMask: require('@assets/images/img/adMask.png'),
   productMask: require('@assets/images/img/productMask.png'),
+
+  emptyAlert: require('@assets/images/img/emptyAlert.png'),
 };
 
 export const logos = {
