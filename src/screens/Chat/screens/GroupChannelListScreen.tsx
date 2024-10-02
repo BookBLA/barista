@@ -1,17 +1,23 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { createGroupChannelListModule, StatusComposition } from '@sendbird/uikit-react-native';
-import { PASS, SendbirdChatSDK, confirmAndMarkAsDelivered, useAppState, useFreshCallback } from '@sendbird/uikit-utils';
-
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
+import { GroupChannelListEmpty } from '@screens/Chat/units/GroupChannelListEmpty';
+
+import {
+  createGroupChannelListFragment,
+  createGroupChannelListModule,
+  StatusComposition,
+} from '@sendbird/uikit-react-native';
+import { PASS, SendbirdChatSDK, confirmAndMarkAsDelivered, useAppState, useFreshCallback } from '@sendbird/uikit-utils';
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { useGroupChannelList } from '@sendbird/uikit-tools';
 import type { GroupChannelListProps } from '@sendbird/uikit-react-native/src/domain/groupChannelList/types';
 import GroupChannelPreviewContainer from '@sendbird/uikit-react-native/src/containers/GroupChannelPreviewContainer';
 import { GroupChannelCollection, GroupChannelFilter } from '@sendbird/chat/groupChannel';
-import { GroupChannelListEmpty } from '@screens/Chat/units/GroupChannelListEmpty';
 
+// TODO: Create Channel Fragment 삭제
+const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelListModule = createGroupChannelListModule();
 
 export const GroupChannelListScreen = () => {
@@ -43,10 +49,22 @@ export const GroupChannelListScreen = () => {
     left: false,
   });
   return (
+    // <GroupChannelListFragment
+    //   onPressCreateChannel={(channelType) => {
+    //     // Navigate to GroupChannelCreate function.
+    //     navigation.navigate('GroupChannelCreate', { channelType });
+    //   }}
+    //   onPressChannel={(channel) => {
+    //     // Navigate to GroupChannel function.
+    //     navigation.navigate('GroupChannel', { channelUrl: channel.url });
+    //   }}
+    // />
     <GroupChannelListModule.Provider>
       <StatusComposition loading={!initialized} LoadingComponent={<GroupChannelListModule.StatusLoading />}>
         <GroupChannelListModule.List
-          onPressChannel={() => {}}
+          onPressChannel={(channel) => {
+            navigation.navigate('GroupChannel', { channelUrl: channel.url });
+          }}
           groupChannels={groupChannels}
           menuItemCreator={PASS}
           renderGroupChannelPreview={_renderGroupChannelPreview}
@@ -59,13 +77,6 @@ export const GroupChannelListScreen = () => {
         />
       </StatusComposition>
     </GroupChannelListModule.Provider>
-    // <GroupChannelListFragment
-    //   onPressCreateChannel={() => {}}
-    //   onPressChannel={(channel) => {
-    //     // Navigate to GroupChannel function.
-    //     navigation.navigate('GroupChannel', { channelUrl: channel.url });
-    //   }}
-    // />
   );
 };
 

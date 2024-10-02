@@ -1,11 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated } from 'react-native';
-import { useConnection } from '@sendbird/uikit-react-native';
+import { Easing } from 'react-native-reanimated';
+
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useAuthStore from '@commons/store/auth/auth/useAuthStore';
-import { Easing } from 'react-native-reanimated';
 import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
+
+import { useConnection } from '@sendbird/uikit-react-native';
 
 export const SignInScreen = () => {
   const showToast = useToastStore((state) => state.showToast);

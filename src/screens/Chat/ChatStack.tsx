@@ -1,12 +1,17 @@
 import React from 'react';
+import { MMKV } from 'react-native-mmkv';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useSendbirdChat, SendbirdUIKitContainer } from '@sendbird/uikit-react-native';
+
 import { SignInScreen } from '@screens/Chat/screens/SignInScreen';
 import { GroupChannelListScreen } from '@screens/Chat/screens/GroupChannelListScreen';
 import { GroupChannelCreateScreen } from '@screens/Chat/screens/GroupChannelCreateScreen';
 import { GroupChannelScreen } from '@screens/Chat/screens/GroupChannelScreen';
 import { platformServices } from '@screens/Chat/NativeModule';
-import { MMKV } from 'react-native-mmkv';
+import { GroupChannelSettingsScreen } from '@screens/Chat/screens/GroupChannelSettingsScreen';
+import Library from '@screens/Library/Library';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
+
+import { useSendbirdChat, SendbirdUIKitContainer } from '@sendbird/uikit-react-native';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -21,6 +26,8 @@ const Navigation = () => {
           <Stack.Screen name="GroupChannelList" component={GroupChannelListScreen} />
           <Stack.Screen name="GroupChannelCreate" component={GroupChannelCreateScreen} />
           <Stack.Screen name="GroupChannel" component={GroupChannelScreen} />
+          <Stack.Screen name="GroupChannelSettings" component={GroupChannelSettingsScreen} />
+          <Stack.Screen name="library" component={CustomScreen(Library)} />
         </>
       )}
     </Stack.Navigator>
@@ -34,7 +41,7 @@ export default function ChatStack() {
       appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
       chatOptions={{ localCacheStorage: mmkv }}
       platformServices={platformServices}
-      styles={{ defaultHeaderTitleAlign: 'center' }}
+      styles={{ defaultHeaderTitleAlign: 'left' }}
     >
       <Navigation />
     </SendbirdUIKitContainer>
