@@ -592,19 +592,6 @@ export interface LoginResponse {
 /**
  * 
  * @export
- * @interface LoginUser
- */
-export interface LoginUser {
-    /**
-     * 
-     * @type {number}
-     * @memberof LoginUser
-     */
-    'memberId'?: number;
-}
-/**
- * 
- * @export
  * @interface MemberAdmobRequest
  */
 export interface MemberAdmobRequest {
@@ -2338,7 +2325,13 @@ export interface NotificationResponse {
      * @type {string}
      * @memberof NotificationResponse
      */
-    'status'?: string;
+    'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'id'?: string;
     /**
      * 
      * @type {boolean}
@@ -2350,32 +2343,7 @@ export interface NotificationResponse {
      * @type {string}
      * @memberof NotificationResponse
      */
-    'message'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'id'?: string;
-}
-/**
- * 
- * @export
- * @interface OrderBookmarkForGoogleRequest
- */
-export interface OrderBookmarkForGoogleRequest {
-    /**
-     * 
-     * @type {LoginUser}
-     * @memberof OrderBookmarkForGoogleRequest
-     */
-    'loginUser'?: LoginUser;
-    /**
-     * 
-     * @type {GooglePaymentInAppPurchaseRequest}
-     * @memberof OrderBookmarkForGoogleRequest
-     */
-    'request'?: GooglePaymentInAppPurchaseRequest;
+    'status'?: string;
 }
 /**
  * 
@@ -2437,6 +2405,18 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<MemberBookProfileResponse>}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'content'?: Array<MemberBookProfileResponse>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
     'number'?: number;
     /**
      * 
@@ -2450,18 +2430,6 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'pageable'?: PageableObject;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'size'?: number;
-    /**
-     * 
-     * @type {Array<MemberBookProfileResponse>}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'content'?: Array<MemberBookProfileResponse>;
     /**
      * 
      * @type {boolean}
@@ -2511,6 +2479,12 @@ export interface PageableObject {
      * @type {number}
      * @memberof PageableObject
      */
+    'offset'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageableObject
+     */
     'pageNumber'?: number;
     /**
      * 
@@ -2530,12 +2504,6 @@ export interface PageableObject {
      * @memberof PageableObject
      */
     'unpaged'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableObject
-     */
-    'offset'?: number;
 }
 /**
  * 
@@ -2823,25 +2791,6 @@ export interface QuizQuestionVerifyResponse {
 /**
  * 
  * @export
- * @interface RefreshMemberRequest
- */
-export interface RefreshMemberRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof RefreshMemberRequest
-     */
-    'refreshMemberId': number;
-    /**
-     * 
-     * @type {number}
-     * @memberof RefreshMemberRequest
-     */
-    'refreshMemberBookId': number;
-}
-/**
- * 
- * @export
  * @interface RejectMemberRequest
  */
 export interface RejectMemberRequest {
@@ -3015,6 +2964,12 @@ export interface SendPostcardRequest {
     'receiveMemberId': number;
     /**
      * 
+     * @type {number}
+     * @memberof SendPostcardRequest
+     */
+    'receiveMemberBookId': number;
+    /**
+     * 
      * @type {string}
      * @memberof SendPostcardRequest
      */
@@ -3044,6 +2999,12 @@ export interface SortObject {
      * @type {boolean}
      * @memberof SortObject
      */
+    'empty'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SortObject
+     */
     'sorted'?: boolean;
     /**
      * 
@@ -3051,12 +3012,6 @@ export interface SortObject {
      * @memberof SortObject
      */
     'unsorted'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SortObject
-     */
-    'empty'?: boolean;
 }
 /**
  * 
@@ -3522,13 +3477,13 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {GooglePaymentInAppPurchaseRequest} googlePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderBookmarkForGoogle: async (orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'orderBookmarkForGoogleRequest' is not null or undefined
-            assertParamExists('orderBookmarkForGoogle', 'orderBookmarkForGoogleRequest', orderBookmarkForGoogleRequest)
+        orderBookmarkForGoogle: async (googlePaymentInAppPurchaseRequest: GooglePaymentInAppPurchaseRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'googlePaymentInAppPurchaseRequest' is not null or undefined
+            assertParamExists('orderBookmarkForGoogle', 'googlePaymentInAppPurchaseRequest', googlePaymentInAppPurchaseRequest)
             const localVarPath = `/payments/in-app/google`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3552,7 +3507,7 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(orderBookmarkForGoogleRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(googlePaymentInAppPurchaseRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4005,13 +3960,10 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         /**
          * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshMemberMatching: async (refreshMemberRequest: RefreshMemberRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'refreshMemberRequest' is not null or undefined
-            assertParamExists('refreshMemberMatching', 'refreshMemberRequest', refreshMemberRequest)
+        refreshMemberMatching: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/members-match/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -4030,12 +3982,9 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(refreshMemberRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -4769,12 +4718,12 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {GooglePaymentInAppPurchaseRequest} googlePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options);
+        async orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest: GooglePaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PaymentPurchaseResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.orderBookmarkForGoogle']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -4931,12 +4880,11 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberIntroResponse>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshMemberMatching(refreshMemberRequest, options);
+        async refreshMemberMatching(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<MemberIntroResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.refreshMemberMatching(options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['DefaultApi.refreshMemberMatching']?.[localVarOperationServerIndex]?.url;
             return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
@@ -5239,12 +5187,12 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         },
         /**
          * 
-         * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+         * @param {GooglePaymentInAppPurchaseRequest} googlePaymentInAppPurchaseRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
-            return localVarFp.orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options).then((request) => request(axios, basePath));
+        orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest: GooglePaymentInAppPurchaseRequest, options?: any): AxiosPromise<PaymentPurchaseResponse> {
+            return localVarFp.orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5362,12 +5310,11 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
         /**
          * 
          * @summary 매칭 회원 새로고침
-         * @param {RefreshMemberRequest} refreshMemberRequest 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: any): AxiosPromise<MemberIntroResponse> {
-            return localVarFp.refreshMemberMatching(refreshMemberRequest, options).then((request) => request(axios, basePath));
+        refreshMemberMatching(options?: any): AxiosPromise<MemberIntroResponse> {
+            return localVarFp.refreshMemberMatching(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5645,13 +5592,13 @@ export class DefaultApi extends BaseAPI {
 
     /**
      * 
-     * @param {OrderBookmarkForGoogleRequest} orderBookmarkForGoogleRequest 
+     * @param {GooglePaymentInAppPurchaseRequest} googlePaymentInAppPurchaseRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public orderBookmarkForGoogle(orderBookmarkForGoogleRequest: OrderBookmarkForGoogleRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).orderBookmarkForGoogle(orderBookmarkForGoogleRequest, options).then((request) => request(this.axios, this.basePath));
+    public orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest: GooglePaymentInAppPurchaseRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).orderBookmarkForGoogle(googlePaymentInAppPurchaseRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -5794,13 +5741,12 @@ export class DefaultApi extends BaseAPI {
     /**
      * 
      * @summary 매칭 회원 새로고침
-     * @param {RefreshMemberRequest} refreshMemberRequest 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof DefaultApi
      */
-    public refreshMemberMatching(refreshMemberRequest: RefreshMemberRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).refreshMemberMatching(refreshMemberRequest, options).then((request) => request(this.axios, this.basePath));
+    public refreshMemberMatching(options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).refreshMemberMatching(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

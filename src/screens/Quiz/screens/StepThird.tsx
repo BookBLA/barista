@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 import { getPostcardTypeList } from '@commons/api/postcard/library.api';
-import { postPostcard } from '@commons/api/quiz/sendPostcard.api';
+import { postPostcardSend } from '@commons/api/quiz/sendPostcard.api';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
@@ -39,10 +39,11 @@ const StepThird = () => {
     const postcardInfo = {
       postcardTypeId: currentPressedPostcard?.postcardTypeId!,
       receiveMemberId: route.params.targetMemberId,
+      receiveMemberBookId: route.params.memberBookId,
       memberReply: route.params.text ?? '',
     };
     try {
-      await postPostcard(postcardInfo);
+      await postPostcardSend(postcardInfo);
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
