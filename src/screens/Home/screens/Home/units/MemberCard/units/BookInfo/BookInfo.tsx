@@ -12,19 +12,20 @@ const BookInfo = ({ memberData }: { memberData: MemberIntroResponse }) => {
       <CustomText size="18px" font="fontBold">
         {bookTitle}
       </CustomText>
-      <CustomText color={colors.textGray} margin="0 0 20px">
-        {bookAuthors?.join('')}
-      </CustomText>
-      <S.QuoteWrapper align="start">
-        <S.QuoteImage source={icons.quoteStart} />
-      </S.QuoteWrapper>
-      <CustomText margin="4px 0" size="14px" font="fontRegular">
-        {review}
-      </CustomText>
 
-      <S.QuoteWrapper align="end">
-        <S.QuoteImage source={icons.quoteEnd} />
-      </S.QuoteWrapper>
+      <CustomText color={colors.textGray}>{bookAuthors?.join('')}</CustomText>
+
+      <S.ReviewWrapper>
+        <S.QuoteWrapper align="start">
+          <S.QuoteImage source={icons.quoteStart} />
+        </S.QuoteWrapper>
+        <CustomText margin="4px 0" size="14px" font="fontRegular">
+          {review}
+        </CustomText>
+        <S.QuoteWrapper align="end">
+          <S.QuoteImage source={icons.quoteEnd} />
+        </S.QuoteWrapper>
+      </S.ReviewWrapper>
     </S.Wrapper>
   );
 };
