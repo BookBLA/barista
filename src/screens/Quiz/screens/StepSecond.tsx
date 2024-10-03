@@ -81,7 +81,7 @@ const StepSecond = () => {
           multiline
           value={text}
           onChangeText={handleTextChange}
-          placehoder="첫 인사와 함께 이 책을 고른 이유를 알려주세요!"
+          placeholder={`첫 인사와 함께 이 책을 고른 이유를 알려주세요!\n10자 이상 작성해주세요!`}
           maxLength={maxLength}
         />
         <T.TextCount>

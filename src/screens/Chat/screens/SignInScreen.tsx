@@ -15,11 +15,12 @@ export const SignInScreen = () => {
   const { connect } = useConnection();
   const memberId = useMemberStore((state) => state.memberInfo.id);
   const memberName = useMemberStore((state) => state.memberInfo.name);
-  const accessToken = useAuthStore((state) => state.token);
-  console.debug(memberId, typeof memberId, memberName, typeof memberName, accessToken, typeof accessToken);
+  // TODO - 한결: Sendbird accessToken 생성 -> 로그인
+  // const accessToken = useAuthStore((state) => state.token);
+  console.debug(memberId, typeof memberId, memberName, typeof memberName);
 
-  if (memberId && memberName && accessToken) {
-    connect(memberId.toString(), { nickname: memberName, accessToken: accessToken }).catch((error) => {
+  if (memberId && memberName) {
+    connect(memberId.toString(), { nickname: memberName }).catch((error) => {
       showToast({
         content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
       });

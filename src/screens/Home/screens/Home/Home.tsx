@@ -117,6 +117,7 @@ const Home = () => {
     return null;
   }
 
+  // TODO - 한결: isInvitationCard 활용하여 inviteCard 띄우기
   return (
     <>
       <S.Wrapper>

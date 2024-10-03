@@ -16,12 +16,14 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 
 const StepThird = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
   const logEvent = useAnalyticsEventLogger();
+  const memberId = useMemberStore((state) => state.memberInfo.id);
 
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
@@ -43,7 +45,7 @@ const StepThird = () => {
       memberReply: route.params.text ?? '',
     };
     try {
-      await postPostcardSend(postcardInfo);
+      await postPostcardSend(postcardInfo, memberId);
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
