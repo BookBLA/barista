@@ -119,7 +119,7 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
         <S.RefreshWrapper>
           <S.RefreshImage source={icons.refresh} />
         </S.RefreshWrapper>
-        <CustomText color="#fff">새로운 사람 만나기 {admobCount}/3</CustomText>
+        <CustomText color="#fff">새로운 사람 만나기 {admobCount}/4</CustomText>
       </S.Button>
     </S.Wrapper>
   );

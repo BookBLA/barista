@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Platform } from 'react-native';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
@@ -40,21 +40,28 @@ export const GroupChannelScreen = () => {
   const { channel } = useGroupChannel(sdk, params.channelUrl);
   if (!channel) return null;
 
+  // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
   return (
-    <GroupChannelFragment
-      channel={channel}
-      onChannelDeleted={() => {
-        // Navigate to GroupChannelList function.
-        navigation.navigate('GroupChannelList');
-      }}
-      onPressHeaderLeft={() => {
-        // Go back to the previous screen.
-        navigation.goBack();
-      }}
-      onPressHeaderRight={() => {
-        // Navigate to GroupChannelSettings function.
-        navigation.navigate('GroupChannelSettings', { channelUrl: params.channelUrl });
-      }}
-    />
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 25}
+    >
+      <GroupChannelFragment
+        channel={channel}
+        onChannelDeleted={() => {
+          // Navigate to GroupChannelList function.
+          navigation.navigate('GroupChannelList');
+        }}
+        onPressHeaderLeft={() => {
+          // Go back to the previous screen.
+          navigation.goBack();
+        }}
+        onPressHeaderRight={() => {
+          // Navigate to GroupChannelSettings function.
+          navigation.navigate('GroupChannelSettings', { channelUrl: params.channelUrl });
+        }}
+      />
+    </KeyboardAvoidingView>
   );
 };
