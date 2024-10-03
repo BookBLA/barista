@@ -32,6 +32,7 @@ export const postPostcardSend = async (contents: ISendPostcardRequest, memberId:
     sendMemberId,
     targetMemberId,
     targetMemberBookId,
+    isAccept: 'false',
   };
 
   const sb = SendbirdChat.init({
@@ -49,24 +50,30 @@ export const postPostcardSend = async (contents: ISendPostcardRequest, memberId:
   console.debug('GroupChat initialize -', sendMemberId, targetMemberId, 'book -', targetMemberBookId);
 
   // Send Messages(book thumbnail, reason)
-  // const res = await getBookInfo(contents.receiveMemberBookId);
-  // const bookThumbnail = res.imageUrl;
-  //
-  // const fileMessageCreateParams: FileMessageCreateParams = {
-  //   fileUrl: bookThumbnail,
-  //   fileName: 'Thumbnail',
-  //   thumbnailSizes: [
-  //     { maxWidth: 100, maxHeight: 100 },
-  //     { maxWidth: 200, maxHeight: 200 },
-  //   ],
-  //   mentionType: MentionType.USERS, // Either USERS or CHANNEL
-  //   mentionedUserIds: [targetMemberId], // Or mentionedUsers = Array<User>;
-  //   pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
-  // };
-  // channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
-  //   const messageId = message.messageId;
-  //   const fileName = message.messageId;
-  // });
+  const res = await getBookInfo(contents.receiveMemberBookId);
+  const bookThumbnail = res.imageUrl;
+  const uniqueThumbnailUrl = `${bookThumbnail}?timestamp=${new Date().getTime()}`;
+
+  const fileMessageCreateParams: FileMessageCreateParams = {
+    fileUrl: uniqueThumbnailUrl,
+    fileName: 'book-thumbnail.png',
+    fileSize: 0,
+    mimeType: 'image/png',
+    // TODO - 한결: 썸네일 사이즈 조정이 안됨;;
+    thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
+    mentionType: MentionType.USERS,
+    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
+  };
+
+  channel
+    .sendFileMessage(fileMessageCreateParams)
+    .onSucceeded((message: FileMessage) => {
+      const messageId = message.messageId;
+      console.debug('Message sent with ID:', messageId);
+    })
+    .onFailed((error: any) => {
+      console.error('Failed to send message:', error);
+    });
 
   const userMessageCreateParams: UserMessageCreateParams = {
     message: sendMemberReview,
