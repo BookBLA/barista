@@ -48,7 +48,7 @@ const Product = () => {
       await getProducts({ skus: ITEM_ID });
     } catch (error) {
       console.log('getProductsByID error: ', error);
-      Alert.alert('오류 발생', '상품 정보를 가져오는데 실패하였습니다.');
+      // Alert.alert('오류 발생', '상품 정보를 가져오는데 실패하였습니다.');
     }
   };
 
