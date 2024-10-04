@@ -82,16 +82,21 @@ export const GroupChannelListScreen = () => {
         },
       ],
     });
-
     openMenu(menuItem);
   });
 
   const _renderGroupChannelPreview: GroupChannelListProps['List']['renderGroupChannelPreview'] = useFreshCallback(
     (props) => {
       const channel = props.channel;
-      const onPress = () => {};
+      const onPress = (channel: SendbirdGroupChannel) => {
+        navigation.navigate('GroupChannel', { channelUrl: channel.url });
+      };
       return (
-        <GroupChannelPreviewContainer channel={channel} onPress={onPress} onLongPress={() => onLongPress(channel)} />
+        <GroupChannelPreviewContainer
+          channel={channel}
+          onPress={() => onPress(channel)}
+          onLongPress={() => onLongPress(channel)}
+        />
       );
     },
   );
