@@ -1,10 +1,10 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { colors } from '@commons/styles/variablesStyles';
+import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import _ from 'lodash';
 import React, { useRef } from 'react';
 import { Alert, Platform, View } from 'react-native';
 import { requestPurchase } from 'react-native-iap';
-import { colors } from '@commons/styles/variablesStyles';
-import { img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { ITEM_ID } from '../Product';
 import * as S from '../Product.styles';
 import { ProductProps } from '../Product.types';
@@ -20,9 +20,9 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, 
         Platform.OS === 'ios'
           ? await requestPurchase({ sku, andDangerouslyFinishTransactionAutomaticallyIOS: false })
           : await requestPurchase({ skus });
-      Alert.alert('Purchase Success:', JSON.stringify(result, null, 2));
+      // Alert.alert('Purchase Success:', JSON.stringify(result, null, 2));
     } catch (err) {
-      Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
+      // Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
     }
   };
 
