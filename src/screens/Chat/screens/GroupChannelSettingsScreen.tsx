@@ -15,9 +15,11 @@ import { Icon, Switch, useHeaderStyle, useUIKitTheme } from '@sendbird/uikit-rea
 import { GroupChannelSettingsContexts } from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/moduleContext';
 import { useLocalization } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { PushTriggerOption } from '@sendbird/chat';
-import { conditionChaining, useIIFE } from '@sendbird/uikit-utils';
+import {conditionChaining, SendbirdGroupChannel, useIIFE} from '@sendbird/uikit-utils';
 import Text from '@sendbird/uikit-react-native-foundation/src/components/Text';
 import createStyleSheet from '@sendbird/uikit-react-native-foundation/src/styles/createStyleSheet';
+import {useToggle} from "@commons/hooks/utils/toggle/useToggle";
+import {LeaveChannelModal} from "@screens/Chat/units/modal/LeaveChannelModal";
 
 createGroupChannelSettingsFragment();
 const GroupChannelSettingsModule = createGroupChannelSettingsModule();
@@ -62,6 +64,7 @@ const GroupChannelSettingMenus = () => {
   const { colors } = useUIKitTheme();
 
   const { movePage } = useMovePage();
+  const { toggle, isOpen } = useToggle();
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
@@ -114,6 +117,13 @@ const GroupChannelSettingMenus = () => {
   // @ts-ignore
   const otherMemberId = otherMember.userId;
 
+  const exitChannel = (channel: SendbirdGroupChannel) => {
+    channel.leave().then(() => {
+      navigateToGroupChannelListScreen();
+      sdk.clearCachedMessages([channel.url]).catch();
+    });
+  };
+
   const defaultMenuItems: MenuBarProps[] = [
     {
       icon: icons.bellChat,
@@ -133,7 +143,13 @@ const GroupChannelSettingMenus = () => {
     {
       icon: icons.reportChat,
       name: '신고하기',
-      onPress: reportBottomSheet.handleOpenBottomSheet,
+      onPress: () => {
+        reportBottomSheet.handleOpenBottomSheet();
+        // channel.leave().then(() => {
+        //   navigateToGroupChannelListScreen();
+        //   sdk.clearCachedMessages([channel.url]).catch();
+        // });
+      },
     },
   ];
 
@@ -142,10 +158,7 @@ const GroupChannelSettingMenus = () => {
     iconColor: colors.error,
     name: '채팅방 나가기',
     onPress: () => {
-      channel.leave().then(() => {
-        navigateToGroupChannelListScreen();
-        sdk.clearCachedMessages([channel.url]).catch();
-      });
+      toggle();
     },
   });
 
@@ -178,6 +191,7 @@ const GroupChannelSettingMenus = () => {
           reportedMemberId={parseInt(otherMemberId, 10)}
         />
       </CustomBottomSheetModal>
+      <LeaveChannelModal visible={isOpen} onClose={toggle} onConfirm={() => exitChannel(channel)} />
     </View>
   );
 };
