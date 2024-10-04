@@ -60,7 +60,6 @@ const GroupChannelSettingMenus = () => {
   const { channel } = useContext(GroupChannelSettingsContexts.Fragment);
   const { STRINGS } = useLocalization();
   const { colors } = useUIKitTheme();
-  const counterpartID = 900204;
 
   const { movePage } = useMovePage();
 
@@ -107,6 +106,14 @@ const GroupChannelSettingMenus = () => {
     };
   });
 
+  const members = channel.members;
+  const currentUser = sdk.currentUser;
+  // @ts-ignore
+  const otherMember = members.find((member) => member.userId !== currentUser.userId);
+  if (!otherMember) return null;
+  // @ts-ignore
+  const otherMemberId = otherMember.userId;
+
   const defaultMenuItems: MenuBarProps[] = [
     {
       icon: icons.bellChat,
@@ -119,7 +126,7 @@ const GroupChannelSettingMenus = () => {
       icon: icons.libraryChat,
       name: '서재 구경하기',
       onPress: movePage('library', {
-        memberId: counterpartID,
+        memberId: otherMemberId,
         isYourLibrary: true,
       }),
     },
@@ -166,7 +173,10 @@ const GroupChannelSettingMenus = () => {
         })}
       </View>
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
-        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={counterpartID} />
+        <ReportOption
+          bottomClose={reportBottomSheet.handleCloseBottomSheet}
+          reportedMemberId={parseInt(otherMemberId, 10)}
+        />
       </CustomBottomSheetModal>
     </View>
   );
