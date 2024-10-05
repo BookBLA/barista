@@ -17,6 +17,8 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
+import {useCreateChat} from "@screens/Quiz/hooks/useCreateChat";
+import {AxiosError} from "axios";
 
 const StepThird = () => {
   useScreenLogger();
@@ -45,12 +47,16 @@ const StepThird = () => {
       memberReply: route.params.text ?? '',
     };
     try {
-      await postPostcardSend(postcardInfo, memberId);
+      await useCreateChat(postcardInfo, memberId); // 채팅방 hide 상태로 생성
+      await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
-      console.error(error);
-      useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
+      const { response } = error as unknown as AxiosError<AxiosError>;
+      if (response) {
+        console.log(response.data, response.status);
+        useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\n${response.data.message}` });
+      }
     }
   };
 
