@@ -26,6 +26,10 @@ import { GroupChannelCollection, GroupChannelFilter } from '@sendbird/chat/group
 import { PushTriggerOption } from '@sendbird/chat';
 import { useActionMenu, useToast } from '@sendbird/uikit-react-native-foundation';
 
+// import { Icon } from '@sendbird/uikit-react-native-foundation';
+//
+// Icon.Assets['arrow-left'] = require('assets/images/buttons/prevButtonBlack.png');
+
 // TODO: Create Channel Fragment 삭제
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelListModule = createGroupChannelListModule();
@@ -43,6 +47,7 @@ export const GroupChannelListScreen = () => {
     markAsDelivered: confirmAndMarkAsDelivered,
   });
 
+  sbOptions.uikit.groupChannel.channel.enableTypingIndicator = true;
   useAppState('change', (status) => {
     if (sbOptions.appInfo.deliveryReceiptEnabled) {
       if (status === 'active') groupChannels.forEach(markAsDeliveredWithChannel);

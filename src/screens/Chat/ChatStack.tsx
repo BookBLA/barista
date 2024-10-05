@@ -11,7 +11,7 @@ import { GroupChannelSettingsScreen } from '@screens/Chat/screens/GroupChannelSe
 import Library from '@screens/Library/Library';
 import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 
-import { useSendbirdChat, SendbirdUIKitContainer } from '@sendbird/uikit-react-native';
+import {useSendbirdChat, SendbirdUIKitContainer, TypingIndicatorType} from '@sendbird/uikit-react-native';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
@@ -41,6 +41,15 @@ export default function ChatStack() {
       appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
       chatOptions={{ localCacheStorage: mmkv }}
       platformServices={platformServices}
+      uikitOptions={{ groupChannel: {
+          enableMention: true,
+          enableTypingIndicator: true,
+          typingIndicatorTypes: new Set([TypingIndicatorType.Bubble, TypingIndicatorType.Text]),
+        }, groupChannelList : {
+          enableTypingIndicator: true,
+          enableMessageReceiptStatus: true
+        }
+      }}
       styles={{ defaultHeaderTitleAlign: 'left' }}
     >
       <Navigation />

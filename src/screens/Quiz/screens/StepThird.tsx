@@ -17,8 +17,8 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
-import {useCreateChat} from "@screens/Quiz/hooks/useCreateChat";
-import {AxiosError} from "axios";
+import { useCreateChat } from '@screens/Quiz/hooks/useCreateChat';
+import { AxiosError } from 'axios';
 
 const StepThird = () => {
   useScreenLogger();
@@ -48,7 +48,7 @@ const StepThird = () => {
     };
     try {
       await useCreateChat(postcardInfo, memberId); // 채팅방 hide 상태로 생성
-      await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송
+      await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
@@ -111,7 +111,7 @@ const StepThird = () => {
         </T.PostCardImageListWrapper>
       </T.ReadingQuizTestContainer>
 
-      <View style={{ flexGrow: 1 }}></View>
+      <View style={{ flexGrow: 1 }} />
 
       <T.NextButton
         onPress={sendPostCard}

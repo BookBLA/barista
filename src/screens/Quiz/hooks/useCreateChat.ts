@@ -7,13 +7,16 @@ import {
   GroupChannelCreateParams,
   GroupChannelModule,
   SendbirdGroupChat
-} from "@sendbird/chat/groupChannel";
+} from '@sendbird/chat/groupChannel';
 import {
   FileMessage,
   FileMessageCreateParams,
   MentionType, MessageMetaArray,
   PushNotificationDeliveryOption, UserMessage, UserMessageCreateParams
-} from "@sendbird/chat/message";
+} from '@sendbird/chat/message';
+import useMemberStore from "@commons/store/members/member/useMemberStore";
+import {getMemberProfileApi} from "@commons/api/members/profile/memberProfile.api";
+import {GetMyInfoApi} from "@commons/api/members/default/member.api";
 
 export const useCreateChat = async (contents: ISendPostcardRequest, memberId: number) => {
 
@@ -44,6 +47,24 @@ export const useCreateChat = async (contents: ISendPostcardRequest, memberId: nu
   await channel.createMetaData(metaData);
   console.debug('GroupChat initialize -', sendMemberId, targetMemberId, 'book -', targetMemberBookId);
 
+  // // pin Messages(User Information)
+  // const { result: memberProfile} = await getMemberProfileApi();
+  // const { result: memberInfo } = await GetMyInfoApi();
+  // const userInfoMessage = `${memberProfile.name}\n${memberProfile.schoolName}\n${memberInfo.smokeType} ${memberInfo.mbti} ${memberInfo.height}`;
+  // const userInfoMessageParams: UserMessageCreateParams = {
+  //   message: userInfoMessage,
+  //   mentionType: MentionType.USERS,
+  //   mentionedUserIds: [targetMemberId],
+  //   isPinnedMessage: true,
+  //   metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
+  //   pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
+  // };
+  // // @ts-ignore
+  // channel.sendUserMessage(userInfoMessageParams).onSucceeded((message: UserMessage) => {
+  //   const messageId = message.messageId;
+  //   channel.pinMessage(message.messageId);
+  // });
+
   // Send Messages(book thumbnail, reason)
   const res = await getBookInfo(contents.receiveMemberBookId);
   const bookThumbnail = res.imageUrl;
@@ -60,9 +81,8 @@ export const useCreateChat = async (contents: ISendPostcardRequest, memberId: nu
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
   };
 
-  channel
-    .sendFileMessage(fileMessageCreateParams)
-    .onSucceeded((message: FileMessage) => {
+  // @ts-ignore
+  channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
       const messageId = message.messageId;
       console.debug('Message sent with ID:', messageId);
     })
