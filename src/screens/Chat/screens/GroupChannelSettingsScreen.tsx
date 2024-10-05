@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useState, useEffect, useContext, useMemo } from 'react';
 import { Pressable, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MenuBarProps } from '@screens/Chat/ChatStack.types';
@@ -7,6 +7,8 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import { LeaveChannelModal } from '@screens/Chat/units/modal/LeaveChannelModal';
 
 import { createGroupChannelSettingsFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
@@ -15,11 +17,9 @@ import { Icon, Switch, useHeaderStyle, useUIKitTheme } from '@sendbird/uikit-rea
 import { GroupChannelSettingsContexts } from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/moduleContext';
 import { useLocalization } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { PushTriggerOption } from '@sendbird/chat';
-import {conditionChaining, SendbirdGroupChannel, useIIFE} from '@sendbird/uikit-utils';
+import { conditionChaining, SendbirdGroupChannel, useIIFE } from '@sendbird/uikit-utils';
 import Text from '@sendbird/uikit-react-native-foundation/src/components/Text';
 import createStyleSheet from '@sendbird/uikit-react-native-foundation/src/styles/createStyleSheet';
-import {useToggle} from "@commons/hooks/utils/toggle/useToggle";
-import {LeaveChannelModal} from "@screens/Chat/units/modal/LeaveChannelModal";
 
 createGroupChannelSettingsFragment();
 const GroupChannelSettingsModule = createGroupChannelSettingsModule();
@@ -35,14 +35,6 @@ export const GroupChannelSettingsScreen = ({ route: { params } }: any) => {
       <GroupChannelSettingsModule.Info />
       <GroupChannelSettingMenus />
     </GroupChannelSettingsModule.Provider>
-    // <GroupChannelSettingsFragment
-    //   channel={channel}
-    //   onPressHeaderLeft={navigateToBack}
-    //   onPressMenuLeaveChannel={navigateToGroupChannelListScreen}
-    //   onPressMenuMembers={navigateToGroupChannelMembersScreen}
-    //   onPressMenuModeration={navigateToGroupChannelModerationScreen}
-    //   onPressMenuNotification={navigateToGroupChannelNotificationScreen}
-    // />
   );
 };
 
@@ -64,13 +56,31 @@ const GroupChannelSettingMenus = () => {
   const { colors } = useUIKitTheme();
 
   const { movePage } = useMovePage();
-  const { toggle, isOpen } = useToggle();
 
+  const [isReport, setIsReport] = useState(false);
+  useEffect(() => {
+    if (isReport) {
+      setTimeout(() => {}, 1500);
+      channel.leave().then(() => {
+        navigateToGroupChannelListScreen();
+        sdk.clearCachedMessages([channel.url]).catch();
+      });
+    }
+  }, [isReport]);
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
 
+  const { toggle, isOpen } = useToggle();
+
   const navigateToGroupChannelListScreen = () => {};
   const navigateToGroupChannelNotificationScreen = () => {};
+
+  const exitChannel = (channel: SendbirdGroupChannel) => {
+    channel.leave().then(() => {
+      navigateToGroupChannelListScreen();
+      sdk.clearCachedMessages([channel.url]).catch();
+    });
+  };
 
   const toggleNotification = async () => {
     if (channel.myPushTriggerOption === 'off') {
@@ -117,13 +127,6 @@ const GroupChannelSettingMenus = () => {
   // @ts-ignore
   const otherMemberId = otherMember.userId;
 
-  const exitChannel = (channel: SendbirdGroupChannel) => {
-    channel.leave().then(() => {
-      navigateToGroupChannelListScreen();
-      sdk.clearCachedMessages([channel.url]).catch();
-    });
-  };
-
   const defaultMenuItems: MenuBarProps[] = [
     {
       icon: icons.bellChat,
@@ -144,11 +147,8 @@ const GroupChannelSettingMenus = () => {
       icon: icons.reportChat,
       name: '신고하기',
       onPress: () => {
+        // FIXME - 한결: 첫 화면 렌더링시에 동작하지 않고, 화면에서 다른 행동을 해야지만 동작함. 원인 무엇..???
         reportBottomSheet.handleOpenBottomSheet();
-        // channel.leave().then(() => {
-        //   navigateToGroupChannelListScreen();
-        //   sdk.clearCachedMessages([channel.url]).catch();
-        // });
       },
     },
   ];
@@ -185,13 +185,14 @@ const GroupChannelSettingMenus = () => {
           );
         })}
       </View>
+      <LeaveChannelModal visible={isOpen} onClose={toggle} onConfirm={() => exitChannel(channel)} />
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption
           bottomClose={reportBottomSheet.handleCloseBottomSheet}
           reportedMemberId={parseInt(otherMemberId, 10)}
+          setIsReported={setIsReport}
         />
       </CustomBottomSheetModal>
-      <LeaveChannelModal visible={isOpen} onClose={toggle} onConfirm={() => exitChannel(channel)} />
     </View>
   );
 };

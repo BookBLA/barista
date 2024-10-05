@@ -21,6 +21,7 @@ import {
 
 export const postPostcardSend = async (contents: ISendPostcardRequest, memberId: number) => {
   await Post('postcard/send', contents, true);
+  // TODO - 한결: 에러 어디서 났는지 처리 필요. 엽서 소모 이후에 에러나면 엽서 날라감.
 
   const sendMemberId = memberId.toString();
   const sendMemberReview = contents.memberReply;

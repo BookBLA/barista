@@ -49,6 +49,7 @@ const StepThird = () => {
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
+      console.error(error);
       useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
     }
   };
