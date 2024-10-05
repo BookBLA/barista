@@ -1,25 +1,24 @@
-import {ISendPostcardRequest} from "@screens/Quiz/QuizStack.types";
-import {getBookInfo} from "@commons/api/postcard/library.api";
+import { ISendPostcardRequest } from '@screens/Quiz/QuizStack.types';
+import { getBookInfo } from '@commons/api/postcard/library.api';
 
-import SendbirdChat from "@sendbird/chat";
+import SendbirdChat from '@sendbird/chat';
 import {
   GroupChannel,
   GroupChannelCreateParams,
   GroupChannelModule,
-  SendbirdGroupChat
+  SendbirdGroupChat,
 } from '@sendbird/chat/groupChannel';
 import {
   FileMessage,
   FileMessageCreateParams,
-  MentionType, MessageMetaArray,
-  PushNotificationDeliveryOption, UserMessage, UserMessageCreateParams
+  MentionType,
+  MessageMetaArray,
+  PushNotificationDeliveryOption,
+  UserMessage,
+  UserMessageCreateParams,
 } from '@sendbird/chat/message';
-import useMemberStore from "@commons/store/members/member/useMemberStore";
-import {getMemberProfileApi} from "@commons/api/members/profile/memberProfile.api";
-import {GetMyInfoApi} from "@commons/api/members/default/member.api";
 
-export const useCreateChat = async (contents: ISendPostcardRequest, memberId: number) => {
-
+export const CreateChat = async (contents: ISendPostcardRequest, memberId: number) => {
   const sendMemberId = memberId.toString();
   const sendMemberReview = contents.memberReply;
   const targetMemberId = contents.receiveMemberBookId.toString();
@@ -102,4 +101,4 @@ export const useCreateChat = async (contents: ISendPostcardRequest, memberId: nu
     const messageId = message.messageId;
   });
   console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
-}
+};

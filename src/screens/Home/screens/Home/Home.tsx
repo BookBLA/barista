@@ -25,18 +25,13 @@ import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import InviteModal from './units/InviteModal/InviteModal';
 import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
   const [invitingModalOpen, setInvitingModalOpen] = useState<boolean>(false);
   const [invitedModalOpen, setInvitedModalOpen] = useState<boolean>(false);
-  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
-    queryKey: ['membersMatch'],
-    queryFn: getMembersMatch,
-  });
-  const [memberData, setMemberData] = useState<IMemberData>({});
-  const [isReported, setIsReported] = useState(false);
-  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
   const [modalStatus, setModalStatus] = useState<{
     isAlreadyEntry: boolean;
     invitedRewardStatus: string;
@@ -47,23 +42,27 @@ const Home = () => {
     invitingRewardStatus: false,
   });
 
-  const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
-  const isMemberData = memberData && Object.keys(memberData).length > 0 && memberData.memberId !== null;
+  // GET /members-match
+  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
+    queryKey: ['membersMatch'],
+    queryFn: getMembersMatch,
+  });
+  const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
+  const [memberData, setMemberData] = useState<IMemberData>({});
+  const [isReported, setIsReported] = useState(false);
+  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
 
-  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
+  const isMemberData = memberData && Object.keys(memberData).length > 0;
+
+  // const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
+  // const handleRefresh = () => {
+  //   setIsSubmitQuiz(false);
+  //   refetch();
+  // };
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
   const reportedMemberId = memberData?.memberId ?? 0;
-
-  const handleRefresh = () => {
-    setIsSubmitQuiz(false);
-    refetch();
-  };
-
-  useEffect(() => {
-    console.log('isSubmitQuiz updated:', isSubmitQuiz);
-  }, [isSubmitQuiz]);
 
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
@@ -91,6 +90,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    setIsInvitationCard(data?.result.isInvitationCard ?? true);
     setMemberData(data?.result ?? {});
   }, [data]);
 
@@ -114,10 +114,9 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return null;
+    return <Spinner />;
   }
 
-  // TODO - 한결: isInvitationCard 활용하여 inviteCard 띄우기
   return (
     <>
       <S.Wrapper>
@@ -141,11 +140,11 @@ const Home = () => {
         )}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
 
-        {isSubmitQuiz || isReported ? (
+        {isInvitationCard || isReported ? (
           <InviteCard />
         ) : (
           <>
-            {isMemberData && !isReported ? (
+            {isMemberData ? (
               <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
             ) : (
               <EventCard />
@@ -153,7 +152,7 @@ const Home = () => {
           </>
         )}
 
-        <Advert memberData={memberData} handleRefresh={handleRefresh} />
+        <Advert memberData={memberData} handleRefresh={refetch} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
             bottomClose={reportBottomSheet.handleCloseBottomSheet}

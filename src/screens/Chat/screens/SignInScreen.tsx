@@ -1,11 +1,8 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated } from 'react-native';
-import { Easing } from 'react-native-reanimated';
+import React from 'react';
 
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
-import useAuthStore from '@commons/store/auth/auth/useAuthStore';
-import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 
 import { useConnection } from '@sendbird/uikit-react-native';
 
@@ -31,29 +28,12 @@ export const SignInScreen = () => {
     });
   }
 
-  // 로딩 애니메이션
-  const spinValue = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-        easing: Easing.inOut(Easing.ease),
-      }),
-    ).start();
-  }, [spinValue]);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
   return (
-    <LoadingWrapper>
-      <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <Spinner />
-      </Animated.View>
-    </LoadingWrapper>
+    <Spinner />
+    // <LoadingWrapper>
+    //   <Animated.View style={{ transform: [{ rotate: spin }] }}>
+    //     <Spinner />
+    //   </Animated.View>
+    // </LoadingWrapper>
   );
 };

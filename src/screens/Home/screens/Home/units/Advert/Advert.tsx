@@ -23,15 +23,13 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
   };
 
   const reloadAdmobCount = async () => {
-    postReloadAdmobUse('NEW_PERSON');
+    await postReloadAdmobUse('NEW_PERSON');
   };
 
   const refreshNewPerson = async () => {
     try {
-      await postMembersMatchRefresh({
-        refreshMemberId: memberData.memberId,
-        refreshMemberBookId: memberData.memberBookId,
-      });
+      await postMembersMatchRefresh();
+      await new Promise((resolve) => setTimeout(resolve, 200));
       await reloadAdmobCount();
       await new Promise((resolve) => setTimeout(resolve, 200));
       await getAdmobCount();
