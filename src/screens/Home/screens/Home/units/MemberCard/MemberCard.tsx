@@ -60,7 +60,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
       movePage('quizStack', { memberBookId, targetMemberId })();
     } else if (memberStatus === 'REPORTED') {
       showToast({
-        content: '누적 신고 3회 이상 누적되어 매칭이 불가능합니다',
+        content: '신고가 3회 이상 누적되어 매칭이 불가능합니다',
       });
     } else if (memberStatus === 'MATCHING_DISABLED') {
       showToast({
