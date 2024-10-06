@@ -43,7 +43,6 @@ export default function ChatStack() {
       platformServices={platformServices}
       uikitOptions={{
         groupChannel: {
-          enableMention: true,
           enableTypingIndicator: true,
           typingIndicatorTypes: new Set([TypingIndicatorType.Bubble, TypingIndicatorType.Text]),
         },

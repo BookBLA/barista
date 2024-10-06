@@ -108,15 +108,16 @@ const GroupChannelSettingMenus = () => {
     return {
       actionLabelNotificationMenu: getNotificationsLabel(),
       actionItemNotificationMenu: conditionChaining(
-        [sbOptions.uikit.groupChannel.channel.enableMention],
+        [false /*sbOptions.uikit.groupChannel.channel.enableMention*/],
         [
           <Icon icon={'chevron-right'} color={colors.onBackground01} />,
           <Switch value={channel.myPushTriggerOption !== 'off'} onChangeValue={toggleNotification} />,
         ],
       ),
       onPressNotificationMenu: () => {
-        if (sbOptions.uikit.groupChannel.channel.enableMention) navigateToGroupChannelNotificationScreen?.();
-        else toggleNotification();
+        // if (sbOptions.uikit.groupChannel.channel.enableMention) navigateToGroupChannelNotificationScreen?.();
+        // else
+        toggleNotification();
       },
     };
   });
