@@ -5,6 +5,7 @@ import SendbirdChat from '@sendbird/chat';
 import {
   GroupChannel,
   GroupChannelCreateParams,
+  GroupChannelHideParams,
   GroupChannelModule,
   SendbirdGroupChat,
 } from '@sendbird/chat/groupChannel';
@@ -64,6 +65,14 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   //   channel.pinMessage(message.messageId);
   // });
 
+  // hide Channel until read postcard
+  const params: GroupChannelHideParams = {
+    hidePreviousMessages: true,
+    allowAutoUnhide: false,
+  };
+  await channel.hide(params);
+  const channelUrl = channel.url;
+
   // Send Messages(book thumbnail, reason)
   const res = await getBookInfo(contents.receiveMemberBookId);
   const bookThumbnail = res.imageUrl;
@@ -101,4 +110,6 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     const messageId = message.messageId;
   });
   console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
+
+  return channelUrl;
 };

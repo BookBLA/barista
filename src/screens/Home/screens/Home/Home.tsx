@@ -24,7 +24,6 @@ import MemberCard from './units/MemberCard/MemberCard';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import InviteModal from './units/InviteModal/InviteModal';
-import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 
 const Home = () => {
@@ -67,6 +66,7 @@ const Home = () => {
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
       try {
+        // TODO - 한결: asyncStorage 사용하여 저장해놓기
         const res = await getOnboardingStatus();
         const response = await getInvitationRewardStatus();
         setModalStatus({

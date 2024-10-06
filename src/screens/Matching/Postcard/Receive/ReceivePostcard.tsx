@@ -33,6 +33,9 @@ import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import * as S from './ReceivePostcard.styles';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 
+import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
+import { useNavigation } from '@react-navigation/native';
+
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
     postcardId,
@@ -69,6 +72,8 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     isOpen,
     studentIdToggle,
   });
+  const { sdk } = useSendbirdChat();
+  const navigation = useNavigation<any>();
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -95,9 +100,17 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const showPostcardDetail = async () => {
     try {
-      await readPostcard(postcardId);
+      const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
+      // result.channelUrl
+      const channel = sdk.groupChannel.getChannel(
+        'sendbird_group_channel_212784754_b9ab12c750ab9c5a94fba2289f030e40f37c8d04',
+      );
+      await channel.then((result) => {
+        result.unhide();
+        navigation.navigate('GroupChannel', { channelUrl: result.url });
+      });
       // movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });

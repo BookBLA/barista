@@ -47,8 +47,8 @@ const StepThird = () => {
       memberReply: route.params.text ?? '',
     };
     try {
-      await CreateChat(postcardInfo, memberId); // 채팅방 hide 상태로 생성
-      await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
+      const channel = await CreateChat(postcardInfo, memberId); // 채팅방 hide 상태로 생성
+      await postPostcardSend(postcardInfo, channel); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
