@@ -24,7 +24,6 @@ export const useSuccessfulLogin = () => {
       throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
     }
 
-    // TODO - 한결: sendbird 엑세스 토큰 저장
     setToken(result.accessToken);
     console.log('memberStatus: ', result.memberStatus);
     let schoolStatus = null;
