@@ -18,7 +18,7 @@ const Navigation = () => {
   const { currentUser } = useSendbirdChat();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="GroupChannelList" screenOptions={{ headerShown: false }}>
       {!currentUser ? (
         <Stack.Screen name="SignIn" component={SignInScreen} />
       ) : (

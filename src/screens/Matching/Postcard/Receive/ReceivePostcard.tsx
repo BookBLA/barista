@@ -109,7 +109,12 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       );
       await channel.then((result) => {
         result.unhide();
-        navigation.navigate('GroupChannel', { channelUrl: result.url });
+        navigation.navigate('chat', {
+          screen: 'GroupChannel',
+          params: {
+            channelUrl: result.url,
+          },
+        });
       });
       // movePageNoReference('receivePostcardDetail', rest);
     } catch {
