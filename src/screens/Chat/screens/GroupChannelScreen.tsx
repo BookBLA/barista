@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import {Button, KeyboardAvoidingView, Platform} from 'react-native';
+import { Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
@@ -43,7 +43,7 @@ export const GroupChannelScreen = () => {
   // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
   return (
     <GroupChannelFragment
-      enableTypingIndicator={true}
+      enableTypingIndicator
       keyboardAvoidOffset={Platform.OS === 'ios' ? 60 : 25}
       channel={channel}
       onChannelDeleted={() => {

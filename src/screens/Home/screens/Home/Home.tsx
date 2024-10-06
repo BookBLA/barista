@@ -70,9 +70,9 @@ const Home = () => {
         const res = await getOnboardingStatus();
         const response = await getInvitationRewardStatus();
         setModalStatus({
-          isAlreadyEntry: res.result.homeOnboardingStatus || true,
-          invitedRewardStatus: response.result.invitedRewardStatus || 'NONE',
-          invitingRewardStatus: response.result.invitingRewardStatus || false,
+          isAlreadyEntry: res.result.homeOnboardingStatus ?? true,
+          invitedRewardStatus: response.result.invitedRewardStatus ?? 'NONE',
+          invitingRewardStatus: response.result.invitingRewardStatus ?? false,
         });
         setInvitedMembersGender(response.result.invitedMembersGender ? response.result.invitedMembersGender : null);
         if (res.result.homeOnboardingStatus === true) {

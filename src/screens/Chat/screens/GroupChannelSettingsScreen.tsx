@@ -73,7 +73,9 @@ const GroupChannelSettingMenus = () => {
   const { toggle, isOpen } = useToggle();
 
   const navigateToGroupChannelListScreen = () => {};
-  const navigateToGroupChannelNotificationScreen = () => {};
+  const navigateToGroupChannelNotificationScreen = () => {
+    console.log('navigateToGroupChannelListScreen');
+  };
 
   const exitChannel = (channel: SendbirdGroupChannel) => {
     channel.leave().then(() => {
