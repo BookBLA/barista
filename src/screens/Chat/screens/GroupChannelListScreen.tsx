@@ -96,13 +96,7 @@ export const GroupChannelListScreen = () => {
       const onPress = (channel: SendbirdGroupChannel) => {
         navigation.navigate('GroupChannel', { channelUrl: channel.url });
       };
-      return (
-        <GroupChannelPreviewContainer
-          channel={channel}
-          onPress={() => onPress(channel)}
-          onLongPress={() => onLongPress(channel)}
-        />
-      );
+      return <GroupChannelPreviewContainer channel={channel} onPress={() => onPress(channel)} onLongPress={() => {}} />;
     },
   );
 
