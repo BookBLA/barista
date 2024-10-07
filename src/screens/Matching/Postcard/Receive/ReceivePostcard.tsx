@@ -103,18 +103,20 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
-      // result.channelUrl
-      const channel = sdk.groupChannel.getChannel(
-        'sendbird_group_channel_212784754_b9ab12c750ab9c5a94fba2289f030e40f37c8d04',
-      );
-      await channel.then((result) => {
-        result.unhide();
+      // @ts-ignore
+      const channel = sdk.groupChannel.getChannel(result.channelUrl);
+      await channel.then((res) => {
+        res.unhide();
+        console.log(res);
         navigation.navigate('chat', {
-          screen: 'GroupChannel',
-          params: {
-            channelUrl: result.url,
-          },
+          screen: 'GroupChannelList',
         });
+        // navigation.navigate('chat', {
+        //   screen: 'GroupChannel',
+        //   params: {
+        //     channelUrl: result.url,
+        //   },
+        // });
       });
       // movePageNoReference('receivePostcardDetail', rest);
     } catch {

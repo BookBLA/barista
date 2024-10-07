@@ -36,9 +36,20 @@ export const GroupChannelScreen = () => {
     };
   }, [navigation]);
 
-  const { sdk } = useSendbirdChat();
+  const { sdk, currentUser } = useSendbirdChat();
   const { channel } = useGroupChannel(sdk, params.channelUrl);
   if (!channel) return null;
+
+  const metaData = channel.getMetaData(['isAccept', 'targetMemberId', 'sendMemberId']);
+  metaData.then((res) => {
+    const isAccept = res.isAccept === 'true';
+    const target = res.targetMemberId === currentUser?.userId;
+    // console.log(isAccept, res.targetMemberId, currentUser?.userId);
+    if (!isAccept && target) {
+      console.log('수락거절 모달 뜨기');
+      // channel.updateMetaData()
+    }
+  });
 
   // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
   return (
