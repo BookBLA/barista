@@ -7,7 +7,7 @@ export const Wrapper = styled.View`
 
   width: 100%;
   height: 100%;
-  padding: 64px 16px 20px;
+  padding: 64px 12px 20px;
 `;
 
 export const LoadingWrapper = styled.View`

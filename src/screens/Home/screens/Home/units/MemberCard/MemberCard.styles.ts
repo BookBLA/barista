@@ -7,7 +7,7 @@ export const Wrapper = styled.View`
   justify-content: space-between;
 
   width: 100%;
-  height: 90%;
+  height: 91%;
 
   background-color: ${colors.cardBackground};
   border-radius: 10px;
