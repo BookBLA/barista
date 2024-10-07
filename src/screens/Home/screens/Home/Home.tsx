@@ -12,19 +12,19 @@ import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 
 import { ResponseData } from '@commons/types/responseData';
 import * as S from '@screens/Home/screens/Home/Home.styles';
+import { IMemberData } from '@screens/Home/screens/Home/Home.types';
+import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
+import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useState } from 'react';
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
+import InviteModal from './units/InviteModal/InviteModal';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
-import { IMemberData } from '@screens/Home/screens/Home/Home.types';
-import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
-import InviteModal from './units/InviteModal/InviteModal';
-import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -53,12 +53,13 @@ const Home = () => {
   const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
 
   const reportBottomSheet = useBottomSheet();
-  const reportSnapPoints = useMemo(() => ['78%'], []);
+  const reportSnapPoints = useMemo(() => ['75%'], []);
   const reportedMemberId = memberData?.memberId ?? 0;
 
   const handleRefresh = () => {
     setIsSubmitQuiz(false);
     refetch();
+    setIsReported(false);
   };
 
   useEffect(() => {
