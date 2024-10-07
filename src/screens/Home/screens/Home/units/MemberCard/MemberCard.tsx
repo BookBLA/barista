@@ -13,6 +13,7 @@ import BookImage from './units/BookImage/BookImage';
 import BookInfo from './units/BookInfo/BookInfo';
 import Profile from './units/Profile/Profile';
 import { getMemberApi } from '@commons/api/members/default/member.api';
+import {result} from "lodash";
 
 const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
   const { movePage } = useMovePage();
@@ -25,6 +26,12 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
   const { updateMemberInfo } = useMemberStore();
   const showToast = useToastStore((state) => state.showToast);
+
+  if (!memberStatus) {
+    getMemberApi().then((result) => {
+      memberStatus = result.result.memberStatus ?? '';
+    });
+  }
 
   // MemberData
   // const memberBookId = 2849550;
@@ -71,8 +78,6 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
         content: '프로필을 아직 작성하지 않으셨습니다.',
       });
     } else {
-      const { result } = await getMemberApi();
-      memberStatus = result.memberStatus ?? '';
       showToast({
         content: '잠시 후에 다시 시도해주세요',
       });

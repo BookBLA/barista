@@ -8,6 +8,7 @@ interface IAuth {
   initializeToken: () => Promise<string | null>;
 }
 
+// TODO - 한결: sendbird accessToken 저장
 const useAuthStore = create<IAuth>((set) => ({
   token: '',
   setToken: (token) => {
