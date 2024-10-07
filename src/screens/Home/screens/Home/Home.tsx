@@ -25,6 +25,7 @@ import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import InviteModal from './units/InviteModal/InviteModal';
 import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+import { useConnection, useSendbirdChat } from '@sendbird/uikit-react-native';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -49,8 +50,9 @@ const Home = () => {
   const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
   const [memberData, setMemberData] = useState<IMemberData>({});
   const [isReported, setIsReported] = useState(false);
-  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
-
+  const memberStore = useMemberStore((state) => state.memberInfo);
+  const memberStatus = memberStore.memberStatus;
+  const id = memberStore.id; // using in sendbird login
   const isMemberData = memberData && Object.keys(memberData).length > 0;
 
   // const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
@@ -93,6 +95,18 @@ const Home = () => {
     setIsInvitationCard(data?.result.isInvitationCard ?? true);
     setMemberData(data?.result ?? {});
   }, [data]);
+
+  // connect to sendbird server
+  const { connect } = useConnection();
+  const { currentUser } = useSendbirdChat();
+  useEffect(() => {
+    const chatInit = async () => {
+      if (!currentUser) {
+        await connect(id.toString() /*{ accessToken: result.accessToken }*/);
+      }
+    };
+    chatInit();
+  }, []);
 
   useScreenLogger();
   useHeaderControl({
