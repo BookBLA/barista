@@ -48,7 +48,7 @@ const Home = () => {
   });
 
   const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
-  const isMemberData = !(Object.keys(memberData).length > 0 || memberData.memberId === null);
+  const isMemberData = Object.keys(memberData).length > 0;
 
   const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
 
