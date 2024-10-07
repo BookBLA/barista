@@ -80,6 +80,13 @@ export const BetweenWrapper = styled.View`
   align-items: center;
 `;
 
+export const MatchWrapper = styled.View`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 16px 0;
+`;
+
 export const RowWrapper = styled.View`
   display: flex;
   flex-direction: row;
@@ -88,7 +95,7 @@ export const RowWrapper = styled.View`
 export const ModalWrapper = styled.View`
   display: flex;
   flex-direction: column;
-  padding: 26px 20px 20px;
+  padding: 26px 20px 0px;
 `;
 
 export const DeleteWrapper = styled.View`

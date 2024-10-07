@@ -60,7 +60,13 @@ const Account = () => {
           회원정보 수정
         </CustomText>
         <S.BetweenWrapper>
-          <CustomText margin="16px 0">매칭 활성화</CustomText>
+          <S.MatchWrapper>
+            <CustomText>매칭 활성화</CustomText>
+            <CustomText margin="0 3px" color={colors.textGray2} size="12px">
+              학생증 인증 후 비활성화 할 수 있습니다
+            </CustomText>
+          </S.MatchWrapper>
+
           <CustomSwitch
             value={memberStatus !== EMemberStatus.MATCHING_DISABLED}
             onValueChange={onClickEnableMatching}
@@ -73,7 +79,7 @@ const Account = () => {
             </CustomText>
           </S.RowWrapper>
           <CustomText margin="16px 5px 0 0" color={colors.textGray2} size="12px">
-            회원 탈퇴 시, 계정 복구가 어렵습니다.
+            회원 탈퇴 시, 계정 복구가 어렵습니다
           </CustomText>
         </S.BetweenWrapper>
       </S.BottomWrapper>
