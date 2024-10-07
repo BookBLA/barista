@@ -25,7 +25,7 @@ export const useSuccessfulLogin = () => {
     }
 
     setToken(result.accessToken);
-    console.log('memberStatus: ', result.memberStatus);
+    updateMemberInfo('memberStatus', result.memberStatus);
     let schoolStatus = null;
 
     if (result.memberStatus !== EMemberStatus.PROFILE) {
