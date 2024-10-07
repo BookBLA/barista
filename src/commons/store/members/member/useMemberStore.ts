@@ -1,9 +1,9 @@
 import { getMemberApi } from '@commons/api/members/default/member.api';
 // import { MemberResponse } from '@commons/types/openapiGenerator';
+import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import analytics from '@react-native-firebase/analytics';
 import { create } from 'zustand';
 import { EStudentIdImageStatus } from './MemberInfo.types';
-import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 
 interface IMemberInfo {
   memberInfo: {
@@ -19,6 +19,7 @@ interface IMemberInfo {
   };
   saveMemberInfo: () => Promise<string>;
   updateMemberInfo: (field: string, value: string | number) => void;
+  resetMemberInfo: () => void;
 }
 
 const useMemberStore = create<IMemberInfo>((set) => ({
@@ -56,6 +57,20 @@ const useMemberStore = create<IMemberInfo>((set) => ({
     }
     return memberStatus as string;
   },
+  resetMemberInfo: () =>
+    set(() => ({
+      memberInfo: {
+        id: 0,
+        name: '',
+        oauthEmail: '',
+        oauthProfileImageUrl: '',
+        memberType: '',
+        memberStatus: '',
+        memberGender: '',
+        studentIdImageStatus: null,
+        schoolStatus: null,
+      },
+    })),
 }));
 
 export default useMemberStore;
