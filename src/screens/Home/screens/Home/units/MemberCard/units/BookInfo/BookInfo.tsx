@@ -1,4 +1,5 @@
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
+import { colors } from '@commons/styles/variablesStyles';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as S from './BookInfo.styles';

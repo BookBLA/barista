@@ -23,15 +23,13 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
   };
 
   const reloadAdmobCount = async () => {
-    postReloadAdmobUse('NEW_PERSON');
+    await postReloadAdmobUse('NEW_PERSON');
   };
 
   const refreshNewPerson = async () => {
     try {
-      await postMembersMatchRefresh({
-        refreshMemberId: memberData.memberId,
-        refreshMemberBookId: memberData.memberBookId,
-      });
+      await postMembersMatchRefresh();
+      await new Promise((resolve) => setTimeout(resolve, 200));
       await reloadAdmobCount();
       await new Promise((resolve) => setTimeout(resolve, 200));
       await getAdmobCount();
@@ -119,7 +117,7 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
         <S.RefreshWrapper>
           <S.RefreshImage source={icons.refresh} />
         </S.RefreshWrapper>
-        <CustomText color="#fff">새로운 사람 만나기 {admobCount}/3</CustomText>
+        <CustomText color="#fff">새로운 사람 만나기 {admobCount}/4</CustomText>
       </S.Button>
     </S.Wrapper>
   );

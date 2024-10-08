@@ -4,10 +4,12 @@ import { useSuccessfulLogin } from '@commons/hooks/auths/successfulLogin/useSucc
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { getReLoginInfo } from '@commons/utils/dates/dateUtils/dateUtils';
+import { useSendbirdLogin } from '@commons/hooks/auths/successfulLogin/useSendbirdLogin';
 
 export const useLogin = () => {
   const showToast = useToastStore((state) => state.showToast);
   const handleSuccessfulLogin = useSuccessfulLogin();
+  const { handleSendbirdLogin } = useSendbirdLogin();
 
   const handleLogin = async (authCode: TAuthCode, type: string) => {
     try {
@@ -18,6 +20,7 @@ export const useLogin = () => {
         });
       }
       await handleSuccessfulLogin(result);
+      await handleSendbirdLogin(result);
     } catch (error) {
       // TODO: 전체적인 로그인 로직 리팩토링 예정 -> 에러 메세지 중앙에서 관리 예정(에러 메세지 더 상세히 유저에게 전달)
       showToast({

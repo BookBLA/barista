@@ -1,4 +1,4 @@
-import {getMemberApi, GetMyInfoApi} from '@commons/api/members/default/member.api';
+import { getMemberApi, GetMyInfoApi } from '@commons/api/members/default/member.api';
 // import { MemberResponse } from '@commons/types/openapiGenerator';
 import { getMemberProfileApi } from '@commons/api/members/profile/memberProfile.api';
 import analytics from '@react-native-firebase/analytics';

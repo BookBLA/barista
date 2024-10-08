@@ -1,140 +1,22 @@
-import { Animated } from 'react-native';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import {
-  useSendbirdChat,
-  createGroupChannelListFragment,
-  createGroupChannelCreateFragment,
-  createGroupChannelFragment,
-  useConnection,
-  SendbirdUIKitContainer,
-} from '@sendbird/uikit-react-native';
-import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
-import React, { useEffect, useRef } from 'react';
-import { platformServices } from '@screens/Chat/NativeModule';
-import { MMKV } from 'react-native-mmkv';
-import { LoadingWrapper, Spinner } from '@screens/Chat/ChatStack.style';
-import { Easing } from 'react-native-reanimated';
-import useMemberStore from '@commons/store/members/member/useMemberStore';
-import useToastStore from '@commons/store/ui/toast/useToastStore';
 
-const GroupChannelListFragment = createGroupChannelListFragment();
-const GroupChannelCreateFragment = createGroupChannelCreateFragment();
-const GroupChannelFragment = createGroupChannelFragment();
+import { SignInScreen } from '@screens/Chat/screens/SignInScreen';
+import { GroupChannelListScreen } from '@screens/Chat/screens/GroupChannelListScreen';
+import { GroupChannelCreateScreen } from '@screens/Chat/screens/GroupChannelCreateScreen';
+import { GroupChannelScreen } from '@screens/Chat/screens/GroupChannelScreen';
+import { GroupChannelSettingsScreen } from '@screens/Chat/screens/GroupChannelSettingsScreen';
+import Library from '@screens/Library/Library';
+import { CustomScreen } from '@commons/components/Layouts/CustomScreen/CustomScreen';
 
-const GroupChannelListScreen = () => {
-  const navigation = useNavigation<any>();
-  return (
-    <GroupChannelListFragment
-      onPressCreateChannel={(channelType) => {
-        // Navigate to GroupChannelCreate function.
-        navigation.navigate('GroupChannelCreate', { channelType });
-      }}
-      onPressChannel={(channel) => {
-        // Navigate to GroupChannel function.
-        navigation.navigate('GroupChannel', { channelUrl: channel.url });
-      }}
-    />
-  );
-};
-
-const GroupChannelCreateScreen = () => {
-  const navigation = useNavigation<any>();
-
-  return (
-    <GroupChannelCreateFragment
-      onCreateChannel={async (channel) => {
-        // Navigate to GroupChannel function.
-        navigation.replace('GroupChannel', { channelUrl: channel.url });
-      }}
-      onPressHeaderLeft={() => {
-        // Go back to the previous screen.
-        navigation.goBack();
-      }}
-    />
-  );
-};
-
-const GroupChannelScreen = () => {
-  const navigation = useNavigation<any>();
-  const { params } = useRoute<any>();
-
-  const { sdk } = useSendbirdChat();
-  const { channel } = useGroupChannel(sdk, params.channelUrl);
-  if (!channel) return null;
-
-  return (
-    <GroupChannelFragment
-      channel={channel}
-      onChannelDeleted={() => {
-        // Navigate to GroupChannelList function.
-        navigation.navigate('GroupChannelList');
-      }}
-      onPressHeaderLeft={() => {
-        // Go back to the previous screen.
-        navigation.goBack();
-      }}
-      onPressHeaderRight={() => {
-        // Navigate to GroupChannelSettings function.
-        navigation.navigate('GroupChannelSettings', { channelUrl: params.channelUrl });
-      }}
-    />
-  );
-};
-
-const SignInScreen = () => {
-  const showToast = useToastStore((state) => state.showToast);
-
-  const { connect } = useConnection();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
-  const memberName = useMemberStore((state) => state.memberInfo.name);
-  console.log(memberId, typeof memberId, memberName, typeof memberName);
-
-  if (memberId && memberName) {
-    connect(memberId.toString(), { nickname: memberName }).catch((error) => {
-      showToast({
-        content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
-      });
-    });
-  } else {
-    showToast({
-      content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
-    });
-  }
-
-  // 로딩 애니메이션
-  const spinValue = useRef(new Animated.Value(0)).current;
-  useEffect(() => {
-    Animated.loop(
-      Animated.timing(spinValue, {
-        toValue: 1,
-        duration: 1000,
-        useNativeDriver: true,
-        easing: Easing.inOut(Easing.ease),
-      }),
-    ).start();
-  }, [spinValue]);
-
-  const spin = spinValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
-
-  return (
-    <LoadingWrapper>
-      <Animated.View style={{ transform: [{ rotate: spin }] }}>
-        <Spinner />
-      </Animated.View>
-    </LoadingWrapper>
-  );
-};
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 const Stack = createNativeStackNavigator();
 const Navigation = () => {
   const { currentUser } = useSendbirdChat();
 
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName="GroupChannelList" screenOptions={{ headerShown: false }}>
       {!currentUser ? (
         <Stack.Screen name="SignIn" component={SignInScreen} />
       ) : (
@@ -142,21 +24,14 @@ const Navigation = () => {
           <Stack.Screen name="GroupChannelList" component={GroupChannelListScreen} />
           <Stack.Screen name="GroupChannelCreate" component={GroupChannelCreateScreen} />
           <Stack.Screen name="GroupChannel" component={GroupChannelScreen} />
+          <Stack.Screen name="GroupChannelSettings" component={GroupChannelSettingsScreen} />
+          <Stack.Screen name="library" component={CustomScreen(Library)} />
         </>
       )}
     </Stack.Navigator>
   );
 };
 
-const mmkv = new MMKV();
 export default function ChatStack() {
-  return (
-    <SendbirdUIKitContainer
-      appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
-      chatOptions={{ localCacheStorage: mmkv }}
-      platformServices={platformServices}
-    >
-      <Navigation />
-    </SendbirdUIKitContainer>
-  );
+  return <Navigation />;
 }

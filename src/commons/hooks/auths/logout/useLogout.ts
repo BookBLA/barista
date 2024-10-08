@@ -3,6 +3,7 @@ import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { useStyleStore } from '@commons/store/members/style/useStyle';
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { useSendbirdLogin } from '@commons/hooks/auths/successfulLogin/useSendbirdLogin';
 
 export const useLogout = (logoutToggle: () => void) => {
   const removeToken = useAuthStore((state) => state.removeToken);
@@ -10,11 +11,13 @@ export const useLogout = (logoutToggle: () => void) => {
   const resetUserInfo = useUserStore((state) => state.resetUserInfo);
   const resetStyleInfo = useStyleStore((state) => state.resetStyleInfo);
   const resetMemberInfo = useMemberStore((state) => state.resetMemberInfo);
+  const { handleSendbirdLogout } = useSendbirdLogin();
 
   const onClickLogout = () => {
     resetUserInfo();
     resetStyleInfo();
     resetMemberInfo();
+    handleSendbirdLogout();
     logoutToggle();
     showToast({
       content: '로그아웃 하였습니다.',

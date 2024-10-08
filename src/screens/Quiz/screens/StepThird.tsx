@@ -11,17 +11,22 @@ import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 import { getPostcardTypeList } from '@commons/api/postcard/library.api';
-import { postPostcard } from '@commons/api/quiz/sendPostcard.api';
+import { postPostcardSend } from '@commons/api/quiz/sendPostcard.api';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { CreateChat } from '@screens/Quiz/hooks/CreateChat';
+import { AxiosError } from 'axios';
 
 const StepThird = () => {
   useScreenLogger();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
   const logEvent = useAnalyticsEventLogger();
+  const memberId = useMemberStore((state) => state.memberInfo.id);
+  const memberName = useMemberStore((state) => state.memberInfo.name);
 
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
@@ -39,14 +44,20 @@ const StepThird = () => {
     const postcardInfo = {
       postcardTypeId: currentPressedPostcard?.postcardTypeId!,
       receiveMemberId: route.params.targetMemberId,
+      receiveMemberBookId: route.params.memberBookId,
       memberReply: route.params.text ?? '',
     };
     try {
-      await postPostcard(postcardInfo);
+      const channel = await CreateChat(postcardInfo, memberId, memberName); // 채팅방 hide 상태로 생성
+      await postPostcardSend(postcardInfo, channel); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
-      useToastStore.getState().showToast({ content: '엽서 보내기에 실패했습니다.' });
+      const { response } = error as unknown as AxiosError<AxiosError>;
+      if (response) {
+        console.log(response.data, response.status);
+        useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\n${response.data.message}` });
+      }
     }
   };
 
@@ -101,7 +112,7 @@ const StepThird = () => {
         </T.PostCardImageListWrapper>
       </T.ReadingQuizTestContainer>
 
-      <View style={{ flexGrow: 1 }}></View>
+      <View style={{ flexGrow: 1 }} />
 
       <T.NextButton
         onPress={sendPostCard}

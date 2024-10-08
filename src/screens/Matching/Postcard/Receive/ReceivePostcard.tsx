@@ -33,6 +33,9 @@ import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
 import * as S from './ReceivePostcard.styles';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 
+import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
+import { useNavigation } from '@react-navigation/native';
+
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
     postcardId,
@@ -69,6 +72,8 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     isOpen,
     studentIdToggle,
   });
+  const { sdk } = useSendbirdChat();
+  const navigation = useNavigation<any>();
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -79,25 +84,41 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-    //   movePageNoReference('receivePostcardDetail', rest);
-    // } else {
-    //   if (memberPostcard > 0) {
-    //     toggleCheckBeforeSendPostcardModal();
-    //   } else {
-    //     toggleNoPostcardModal();
-    //   }
-    // }
+    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+      // movePageNoReference('receivePostcardDetail', rest);
+      console.log('move to chat');
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
     studentIdToggle;
     console.log('studentIdToggle', studentIdToggle);
   };
 
   const showPostcardDetail = async () => {
     try {
-      await readPostcard(postcardId);
+      const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
-      movePageNoReference('receivePostcardDetail', rest);
+      // @ts-ignore
+      const channel = sdk.groupChannel.getChannel(result.channelUrl);
+      await channel.then((res) => {
+        res.unhide();
+        console.log(res);
+        navigation.navigate('chat', {
+          screen: 'GroupChannelList',
+        });
+        // navigation.navigate('chat', {
+        //   screen: 'GroupChannel',
+        //   params: {
+        //     channelUrl: result.url,
+        //   },
+        // });
+      });
+      // movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }

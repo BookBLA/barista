@@ -55,7 +55,7 @@ const InitQuiz = ({ route }: IProps) => {
               margin="0 0 19px"
               style={{ textAlign: 'center' }}
             >
-              나를 궁금해하는 상대방을 위해 나의 생각이{'\n'} 잘 보이도록 이 책을 좋아하는 이유를 적어주세요!
+              이 책에서 인상 깊었던 내용과{'\n'}인상 깊었던 이유를 알려주세요!
             </CustomText>
             <Controller
               control={control}

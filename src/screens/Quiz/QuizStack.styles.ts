@@ -2,6 +2,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import styled from 'styled-components/native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Platform } from 'react-native';
 
 export const Wrapper = styled.Pressable`
   position: relative;
@@ -111,7 +112,7 @@ export const ReadingQuizTestContainer = styled.KeyboardAvoidingView`
   background-color: white;
   margin: 20px;
   padding: 20px;
-  width: 90%;
+  width: 95%;
   border-radius: 10px;
 `;
 
@@ -149,7 +150,7 @@ export const TextSection = styled.TextInput`
   border-width: 1px;
   border-color: #00000015;
   border-radius: 10px;
-  font-size: 14px;
+  font-size: ${Platform.OS === 'ios' ? '14px' : '13px'};
   color: black;
 `;
 
@@ -205,7 +206,7 @@ export const PostCardSelectedImage = styled.Image`
 
 export const NextButton = styled.TouchableOpacity`
   margin-bottom: 20px;
-  width: 90%;
+  width: 95%;
   height: 56px;
   background-color: ${colors.primary02};
   border-radius: 10px;
@@ -223,7 +224,7 @@ export const NextButtonText = styled.Text`
 export const CompletionContainer = styled.View`
   margin-top: auto;
   margin-bottom: ${deviceHeight * 0.05}px;
-  width: 90%;
+  width: 95%;
   height: ${deviceHeight * 0.66}px;
   border-radius: 10px;
   align-items: center;

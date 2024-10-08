@@ -9,6 +9,14 @@ export const Wrapper = styled.View`
   padding: 16px 20px;
 `;
 
+export const ReviewWrapper = styled.View`
+  margin-top: 5px;
+  width: 100%;
+  height: 70%;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const QuoteWrapper = styled.View`
   width: 16px;
   height: 16px;

@@ -12,6 +12,8 @@ import * as S from './MemberCard.styles';
 import BookImage from './units/BookImage/BookImage';
 import BookInfo from './units/BookInfo/BookInfo';
 import Profile from './units/Profile/Profile';
+import { getMemberApi } from '@commons/api/members/default/member.api';
+import {result} from "lodash";
 
 const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
   const { movePage } = useMovePage();
@@ -20,10 +22,16 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
     isOpen,
     studentIdToggle,
   });
-  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  let memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
   const { updateMemberInfo } = useMemberStore();
   const showToast = useToastStore((state) => state.showToast);
+
+  if (!memberStatus) {
+    getMemberApi().then((result) => {
+      memberStatus = result.result.memberStatus ?? '';
+    });
+  }
 
   // MemberData
   // const memberBookId = 2849550;
@@ -31,7 +39,6 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const memberBookId = memberData?.memberBookId;
   const targetMemberId = memberData?.memberId;
 
-  // TODO: 엽서 보내기가 가끔 안됨. 원인 파악 필요
   const checkStudentId = async () => {
     let studentIdStatusResponse;
     if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {
@@ -58,6 +65,22 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
       }
     } else if (memberStatus === 'COMPLETED') {
       movePage('quizStack', { memberBookId, targetMemberId })();
+    } else if (memberStatus === 'REPORTED') {
+      showToast({
+        content: '신고가 3회 이상 누적되어 매칭이 불가능합니다',
+      });
+    } else if (memberStatus === 'MATCHING_DISABLED') {
+      showToast({
+        content: '매칭을 거부한 상태입니다',
+      });
+    } else if (memberStatus === 'PROFILE' || memberStatus === 'STYLE') {
+      showToast({
+        content: '프로필을 아직 작성하지 않으셨습니다.',
+      });
+    } else {
+      showToast({
+        content: '잠시 후에 다시 시도해주세요',
+      });
     }
   };
 
