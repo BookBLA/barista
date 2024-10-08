@@ -21,7 +21,7 @@ httpApi.interceptors.request.use(async (request) => {
 
 httpApi.interceptors.request.use(
   (config) => {
-    const token = useAuthStore.getState().token;
+    const token = useAuthStore.getState().bookblaToken;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

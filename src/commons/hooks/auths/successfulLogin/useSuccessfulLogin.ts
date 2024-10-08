@@ -24,7 +24,8 @@ export const useSuccessfulLogin = () => {
       throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
     }
 
-    setToken(result.accessToken);
+    // sendbird accessToken 추가
+    setToken({ bookbla: result.accessToken, sendbird: result.sendbirdToken });
     updateMemberInfo('memberStatus', result.memberStatus);
     let schoolStatus = null;
 
