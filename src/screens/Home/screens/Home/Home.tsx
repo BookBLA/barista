@@ -20,6 +20,7 @@ import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
@@ -53,6 +54,7 @@ const Home = () => {
   const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
   const [memberData, setMemberData] = useState<IMemberData>({});
   const [isReported, setIsReported] = useState(false);
+  const sendbirdToken = useAuthStore((state) => state.sendbirdToken);
   const memberStore = useMemberStore((state) => state.memberInfo);
   const memberStatus = memberStore.memberStatus;
   const id = memberStore.id; // using in sendbird login
@@ -105,7 +107,7 @@ const Home = () => {
   useEffect(() => {
     const chatInit = async () => {
       if (!currentUser) {
-        await connect(id.toString() /*{ accessToken: result.accessToken }*/);
+        await connect(id.toString(), { accessToken: sendbirdToken });
       }
     };
     chatInit();

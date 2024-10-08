@@ -13,7 +13,7 @@ export const useSendbirdLogin = () => {
     }
     try {
       // @ts-ignore
-      await connect(result.memberId?.toString() /*{ accessToken: result.accessToken }*/);
+      await connect(result.memberId?.toString(), { accessToken: result.accessToken });
     } catch (error) {
       console.error(error);
       showToast({
