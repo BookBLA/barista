@@ -19,8 +19,9 @@ import {
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
 
-export const CreateChat = async (contents: ISendPostcardRequest, memberId: number) => {
+export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
   const sendMemberId = memberId.toString();
+  const sendMemberName = memberName;
   const sendMemberReview = contents.memberReply;
   const targetMemberId = contents.receiveMemberBookId.toString();
   const targetMemberBookId = contents.receiveMemberBookId.toString();
@@ -28,9 +29,10 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   // Create GroupChannel
   const metaData = {
     sendMemberId,
+    sendMemberName,
     targetMemberId,
     targetMemberBookId,
-    isAccept: 'false',
+    acceptStatus: 'yet',
   };
 
   const sb = SendbirdChat.init({
@@ -71,7 +73,6 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     allowAutoUnhide: false,
   };
   await channel.hide(params);
-  const channelUrl = channel.url;
 
   // Send Messages(book thumbnail, reason)
   const res = await getBookInfo(contents.receiveMemberBookId);
@@ -111,5 +112,5 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   });
   console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
 
-  return channelUrl;
+  return channel.url;
 };

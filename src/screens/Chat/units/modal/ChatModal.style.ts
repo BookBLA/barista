@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
+import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import { colors } from '@commons/styles/variablesStyles';
 
+// LeaveChannelModal.tsx
 export const ModalBackground = styled.View`
   flex: 1;
   align-items: center;
@@ -35,4 +38,70 @@ export const ModalButtonText = styled.Text`
   font-size: 14px;
   font-weight: bold;
   text-align: center;
+`;
+
+// ConfirmChatModal.tsx
+export const Wrapper = styled.View`
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 15px;
+  padding: 20px 0;
+  width: ${deviceWidth};
+  height: ${deviceHeight}*0.5;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: ${colors.buttonPrimary};
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TextWrapper = styled.View`
+  flex-direction: column;
+  margin-bottom: 9px;
+  width: 90%;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const TitleText = styled.Text`
+  margin-bottom: 3px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+`;
+
+export const Text = styled.Text`
+  margin-bottom: 5px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.8;
+`;
+
+export const ButtonListWrapper = styled.View`
+  width: 90%;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+export const Button = styled.TouchableOpacity`
+  flex: 8;
+  padding: 13px 15px;
+  align-items: center;
+  justify-content: center;
+  border-width: 1px;
+  border-radius: 10px;
+  border-color: ${(props: any) => props.borderColor};
+  background-color: ${(props: any) => props.backgroundColor};
+`;
+
+export const ButtonText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: ${(props: any) => props.color};
 `;

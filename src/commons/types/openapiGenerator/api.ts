@@ -587,6 +587,12 @@ export interface LoginResponse {
      * @type {string}
      * @memberof LoginResponse
      */
+    'sendbirdToken'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof LoginResponse
+     */
     'deletedAt'?: string;
 }
 /**
@@ -2328,16 +2334,16 @@ export interface MyLibraryReadResponse {
 export interface NotificationResponse {
     /**
      * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'status'?: string;
-    /**
-     * 
      * @type {boolean}
      * @memberof NotificationResponse
      */
     'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'status'?: string;
     /**
      * 
      * @type {string}
@@ -2529,6 +2535,19 @@ export interface PaymentPurchaseResponse {
      * @memberof PaymentPurchaseResponse
      */
     'price'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface PostcardReadResponse
+ */
+export interface PostcardReadResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof PostcardReadResponse
+     */
+    'channelUrl'?: string;
 }
 /**
  * 
@@ -2797,19 +2816,6 @@ export interface QuizQuestionVerifyResponse {
 /**
  * 
  * @export
- * @interface RejectMemberRequest
- */
-export interface RejectMemberRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof RejectMemberRequest
-     */
-    'rejectedMemberId': number;
-}
-/**
- * 
- * @export
  * @interface ReportStatuses
  */
 export interface ReportStatuses {
@@ -2980,6 +2986,12 @@ export interface SendPostcardRequest {
      * @memberof SendPostcardRequest
      */
     'memberReply': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendPostcardRequest
+     */
+    'channelUrl': string;
 }
 /**
  * 
@@ -2993,6 +3005,25 @@ export interface SendPostcardResponse {
      * @memberof SendPostcardResponse
      */
     'isSendSuccess'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface SendbirdResponse
+ */
+export interface SendbirdResponse {
+    /**
+     * 
+     * @type {number}
+     * @memberof SendbirdResponse
+     */
+    'memberId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SendbirdResponse
+     */
+    'sendbirdToken'?: string;
 }
 /**
  * 
@@ -3999,46 +4030,6 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
-         * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        rejectMemberMatching: async (rejectMemberRequest: RejectMemberRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'rejectMemberRequest' is not null or undefined
-            assertParamExists('rejectMemberMatching', 'rejectMemberRequest', rejectMemberRequest)
-            const localVarPath = `/members-match/reject`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication Bearer Authentication required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(rejectMemberRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @summary 작가 혹은 도서를 검색합니다
          * @param {string} text 
          * @param {number} [size] 
@@ -4897,19 +4888,6 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async rejectMemberMatching(rejectMemberRequest: RejectMemberRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.rejectMemberMatching(rejectMemberRequest, options);
-            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
-            const localVarOperationServerBasePath = operationServerMap['DefaultApi.rejectMemberMatching']?.[localVarOperationServerIndex]?.url;
-            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
-        },
-        /**
-         * 
          * @summary 작가 혹은 도서를 검색합니다
          * @param {string} text 
          * @param {number} [size] 
@@ -5321,16 +5299,6 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         refreshMemberMatching(options?: any): AxiosPromise<MemberIntroResponse> {
             return localVarFp.refreshMemberMatching(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @summary 매칭 회원 거절
-         * @param {RejectMemberRequest} rejectMemberRequest 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        rejectMemberMatching(rejectMemberRequest: RejectMemberRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.rejectMemberMatching(rejectMemberRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5753,18 +5721,6 @@ export class DefaultApi extends BaseAPI {
      */
     public refreshMemberMatching(options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).refreshMemberMatching(options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @summary 매칭 회원 거절
-     * @param {RejectMemberRequest} rejectMemberRequest 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof DefaultApi
-     */
-    public rejectMemberMatching(rejectMemberRequest: RejectMemberRequest, options?: RawAxiosRequestConfig) {
-        return DefaultApiFp(this.configuration).rejectMemberMatching(rejectMemberRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9771,7 +9727,7 @@ export const PostcardControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async usePostcard(postcardId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async usePostcard(postcardId: number, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<PostcardReadResponse>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usePostcard(postcardId, options);
             const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
             const localVarOperationServerBasePath = operationServerMap['PostcardControllerApi.usePostcard']?.[localVarOperationServerIndex]?.url;
@@ -9868,7 +9824,7 @@ export const PostcardControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        usePostcard(postcardId: number, options?: any): AxiosPromise<void> {
+        usePostcard(postcardId: number, options?: any): AxiosPromise<PostcardReadResponse> {
             return localVarFp.usePostcard(postcardId, options).then((request) => request(axios, basePath));
         },
     };
@@ -9981,6 +9937,111 @@ export class PostcardControllerApi extends BaseAPI {
      */
     public usePostcard(postcardId: number, options?: RawAxiosRequestConfig) {
         return PostcardControllerApiFp(this.configuration).usePostcard(postcardId, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+
+/**
+ * SendbirdApi - axios parameter creator
+ * @export
+ */
+export const SendbirdApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendbird: async (options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/sendbird`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SendbirdApi - functional programming interface
+ * @export
+ */
+export const SendbirdApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SendbirdApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async sendbird(options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SendbirdResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.sendbird(options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SendbirdApi.sendbird']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+    }
+};
+
+/**
+ * SendbirdApi - factory interface
+ * @export
+ */
+export const SendbirdApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SendbirdApiFp(configuration)
+    return {
+        /**
+         * 
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        sendbird(options?: any): AxiosPromise<SendbirdResponse> {
+            return localVarFp.sendbird(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * SendbirdApi - object-oriented interface
+ * @export
+ * @class SendbirdApi
+ * @extends {BaseAPI}
+ */
+export class SendbirdApi extends BaseAPI {
+    /**
+     * 
+     * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SendbirdApi
+     */
+    public sendbird(options?: RawAxiosRequestConfig) {
+        return SendbirdApiFp(this.configuration).sendbird(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

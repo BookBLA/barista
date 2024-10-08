@@ -26,6 +26,7 @@ const StepThird = () => {
   const route = useRoute<TProps>();
   const logEvent = useAnalyticsEventLogger();
   const memberId = useMemberStore((state) => state.memberInfo.id);
+  const memberName = useMemberStore((state) => state.memberInfo.name);
 
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
@@ -47,7 +48,7 @@ const StepThird = () => {
       memberReply: route.params.text ?? '',
     };
     try {
-      const channel = await CreateChat(postcardInfo, memberId); // 채팅방 hide 상태로 생성
+      const channel = await CreateChat(postcardInfo, memberId, memberName); // 채팅방 hide 상태로 생성
       await postPostcardSend(postcardInfo, channel); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();

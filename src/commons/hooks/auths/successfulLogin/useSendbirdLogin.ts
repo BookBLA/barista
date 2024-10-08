@@ -8,6 +8,9 @@ export const useSendbirdLogin = () => {
   const { connect, disconnect } = useConnection();
 
   const handleSendbirdLogin = async (result: LoginResponse) => {
+    if (!result.sendbirdToken) {
+      return;
+    }
     try {
       // @ts-ignore
       await connect(result.memberId?.toString() /*{ accessToken: result.accessToken }*/);
