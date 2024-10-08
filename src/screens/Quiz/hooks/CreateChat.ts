@@ -23,7 +23,7 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   const sendMemberId = memberId.toString();
   const sendMemberName = memberName;
   const sendMemberReview = contents.memberReply;
-  const targetMemberId = contents.receiveMemberBookId.toString();
+  const targetMemberId = contents.receiveMemberId.toString();
   const targetMemberBookId = contents.receiveMemberBookId.toString();
 
   // Create GroupChannel
