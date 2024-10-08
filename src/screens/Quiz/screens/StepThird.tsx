@@ -68,7 +68,7 @@ const StepThird = () => {
   useAppUIManager({
     setBackgroundColor: colors.primary,
   });
-  useHeaderControl({ title: '독서 퀴즈' });
+  useHeaderControl({ title: '엽서 고르기' });
   return (
     <T.Wrapper style={{ alignItems: 'center' }}>
       <T.StepProgressBar>
