@@ -29,3 +29,11 @@ export const QuoteImage = styled.Image`
   height: 100%;
   object-fit: fill;
 `;
+
+export const ReviewWrapper = styled.View`
+  height: 70%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+`;

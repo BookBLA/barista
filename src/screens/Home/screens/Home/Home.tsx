@@ -1,3 +1,6 @@
+import React, { useEffect, useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
 import { getMembersMatch } from '@commons/api/members/match/memberMatch';
 import { getInvitationRewardStatus, getOnboardingStatus } from '@commons/api/modal/modal.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -9,22 +12,22 @@ import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
-
 import { ResponseData } from '@commons/types/responseData';
+
 import * as S from '@screens/Home/screens/Home/Home.styles';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useMemo, useState } from 'react';
+import { IMemberData } from '@screens/Home/screens/Home/Home.types';
+import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
-import { IMemberData } from '@screens/Home/screens/Home/Home.types';
-import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import InviteModal from './units/InviteModal/InviteModal';
-import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+
 import { useConnection, useSendbirdChat } from '@sendbird/uikit-react-native';
 
 const Home = () => {
@@ -62,7 +65,7 @@ const Home = () => {
   // };
 
   const reportBottomSheet = useBottomSheet();
-  const reportSnapPoints = useMemo(() => ['78%'], []);
+  const reportSnapPoints = useMemo(() => ['75%'], []);
   const reportedMemberId = memberData?.memberId ?? 0;
 
   useEffect(() => {
