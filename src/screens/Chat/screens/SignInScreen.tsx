@@ -10,19 +10,16 @@ import { useConnection } from '@sendbird/uikit-react-native';
 export const SignInScreen = () => {
   const showToast = useToastStore((state) => state.showToast);
 
-  const { connect, reconnect } = useConnection();
+  const { connect } = useConnection();
   const memberId = useMemberStore((state) => state.memberInfo.id);
-  const memberName = useMemberStore((state) => state.memberInfo.name);
   const sendbirdToken = useAuthStore((state) => state.sendbirdToken);
-  // TODO - 한결: Sendbird accessToken 생성 -> 로그인
-  // const accessToken = useAuthStore((state) => state.token);
-  console.debug(memberId, typeof memberId, memberName, typeof memberName);
+  console.debug(memberId, typeof memberId, sendbirdToken, typeof sendbirdToken);
 
   if (memberId) {
     connect(memberId.toString(), { accessToken: sendbirdToken });
   } else {
     showToast({
-      content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 앱을 종료 후 재실행해주세요.',
+      content: '채팅 서버에 접속할 수 없습니다.\n다시 시도하거나 로그아웃 후 다시 로그인해주세요.',
     });
   }
 
