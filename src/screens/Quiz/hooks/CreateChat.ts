@@ -76,20 +76,20 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     fileName: 'book-thumbnail.png',
     fileSize: 0,
     mimeType: 'image/png',
-    // TODO - 한결: 썸네일 사이즈 조정이 안됨;;
+    // TODO - 한결: 썸네일 사이즈 조정이 안됨 - 사진 전송 잠정 중단
     thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
     mentionType: MentionType.USERS,
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
   };
 
   // @ts-ignore
-  channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
-      const messageId = message.messageId;
-      console.debug('Message sent with ID:', messageId);
-    })
-    .onFailed((error: any) => {
-      console.error('Failed to send message:', error);
-    });
+  // channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
+  //     const messageId = message.messageId;
+  //     console.debug('Message sent with ID:', messageId);
+  //   })
+  //   .onFailed((error: any) => {
+  //     console.error('Failed to send message:', error);
+  //   });
 
   const userMessageCreateParams: UserMessageCreateParams = {
     message: sendMemberReview,
