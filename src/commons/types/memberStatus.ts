@@ -1,6 +1,5 @@
 export enum EMemberStatus {
   APPROVAL = 'APPROVAL',
-  BLOCKED = 'BLOCKED',
   BOOK = 'BOOK',
   COMPLETED = 'COMPLETED',
   DELETED = 'DELETED',
