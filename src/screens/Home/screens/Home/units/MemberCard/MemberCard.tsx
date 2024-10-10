@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -5,6 +6,7 @@ import { getStudentIdConfig } from '@commons/configs/StudentIdModal/studentIdCon
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+import { EMemberStatus } from '@commons/types/memberStatus';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
@@ -24,6 +26,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   let memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
   const { updateMemberInfo } = useMemberStore();
+  const [, forceRender] = useState(0); // 더미 상태로 렌더링을 강제로 유도
   const showToast = useToastStore((state) => state.showToast);
 
   if (!memberStatus) {
@@ -39,42 +42,37 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const targetMemberId = memberData?.memberId;
 
   const checkStudentId = async () => {
-    let studentIdStatusResponse;
-    if (memberStatus === 'REJECTED' || memberStatus === 'APPROVAL') {
+    if (memberStatus === EMemberStatus.REJECTED) {
       if (!studentIdImageStatus) {
-        studentIdStatusResponse = await getStudentIdStatus();
+        await getStudentIdStatus();
       }
-      if (
-        memberStatus === 'APPROVAL' &&
-        (studentIdImageStatus === EStudentIdImageStatus.PENDING ||
-          studentIdStatusResponse === EStudentIdImageStatus.PENDING)
-      ) {
+      studentIdToggle();
+    } else if (memberStatus === EMemberStatus.APPROVAL) {
+      if (!studentIdImageStatus) {
+        await getStudentIdStatus();
+      }
+      if (studentIdImageStatus === EStudentIdImageStatus.PENDING) {
         showToast({
           content: '학생증 승인 대기 중입니다.',
         });
-      } else if (
-        (memberStatus === 'REJECTED' &&
-          (studentIdImageStatus === EStudentIdImageStatus.DENIAL ||
-            studentIdStatusResponse === EStudentIdImageStatus.DENIAL)) ||
-        (memberStatus === 'APPROVAL' &&
-          (studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
-            studentIdStatusResponse === EStudentIdImageStatus.UNREGISTER))
-      ) {
+      } else if (studentIdImageStatus === EStudentIdImageStatus.UNREGISTER || EStudentIdImageStatus.DENIAL) {
         studentIdToggle();
+      } else {
+        movePage('quizStack', { memberBookId, targetMemberId })();
       }
-    } else if (memberStatus === 'COMPLETED') {
+    } else if (memberStatus === EMemberStatus.COMPLETED) {
       movePage('quizStack', { memberBookId, targetMemberId })();
-    } else if (memberStatus === 'REPORTED') {
+    } else if (memberStatus === EMemberStatus.REPORTED) {
       showToast({
         content: '신고가 3회 이상 누적되어 매칭이 불가능합니다',
       });
-    } else if (memberStatus === 'MATCHING_DISABLED') {
+    } else if (memberStatus === EMemberStatus.MATCHING_DISABLED) {
       showToast({
         content: '매칭을 거부한 상태입니다',
       });
-    } else if (memberStatus === 'PROFILE' || memberStatus === 'STYLE') {
+    } else if (memberStatus === EMemberStatus.PROFILE || memberStatus === EMemberStatus.STYLE || EMemberStatus.BOOK) {
       showToast({
-        content: '프로필을 아직 작성하지 않으셨습니다.',
+        content: '프로필 작성을 마치고 시도해주세요.',
       });
     } else {
       showToast({
@@ -87,7 +85,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
     try {
       const response = await getStudentIdImageStatusApi();
       updateMemberInfo('studentIdImageStatus', response.result.studentIdImageStatus as string);
-      return response.result.studentIdImageStatus;
+      forceRender((prev) => prev + 1);
     } catch (error) {
       console.log('error', error);
     }

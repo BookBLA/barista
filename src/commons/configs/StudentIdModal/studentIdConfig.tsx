@@ -21,7 +21,7 @@ export const getStudentIdConfig = (modal: IModal) => {
     mode: 'round',
     contents: <StudentIdContent />,
     buttons: [
-      { label: '다음에 하기', action: studentIdToggle, bgColor: colors.buttonMain, color: 'black' },
+      { label: '나중에 하기', action: studentIdToggle, bgColor: colors.buttonMain, color: 'black' },
       {
         label: '지금 인증하기',
         action: moveNext,

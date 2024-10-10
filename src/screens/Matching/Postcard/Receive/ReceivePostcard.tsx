@@ -65,7 +65,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
-  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
@@ -84,9 +83,11 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
+
     if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-      // movePageNoReference('receivePostcardDetail', rest);
-      console.log('move to chat');
+      navigation.navigate('chat', {
+        screen: 'GroupChannelList',
+      });
     } else {
       if (memberPostcard > 0) {
         toggleCheckBeforeSendPostcardModal();
@@ -94,8 +95,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         toggleNoPostcardModal();
       }
     }
-    studentIdToggle;
-    console.log('studentIdToggle', studentIdToggle);
+    // studentIdToggle();
   };
 
   const showPostcardDetail = async () => {
@@ -140,32 +140,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     onClose: toggleNoPostcardModal,
   };
 
-  const handleOpenKakaoRoomUrl = async () => {
-    const supported = await Linking.canOpenURL(modalData.memberOpenKakaoRoomUrl);
-    logEvent('move_open_kakao_chat', { targetMemberId: memberId });
-
-    if (supported) {
-      await Linking.openURL(modalData.memberOpenKakaoRoomUrl);
-    } else {
-      useToastStore.getState().showToast({ content: '올바르지 않은 링크입니다! 관리자에게 문의해주세요!' });
-    }
-  };
-
-  const matchingApproveModalConfig = {
-    visible: isMatchingApproveModalVisible,
-    onClose: () => setMatchingApproveModalVisible(false),
-    mode: 'round',
-    close: true,
-    buttons: [
-      {
-        label: '오픈채팅방으로 이동',
-        action: handleOpenKakaoRoomUrl,
-        color: colors.textYellow,
-        bgColor: colors.buttonPrimary,
-      },
-    ],
-  };
-
   return (
     <S.ContainerViewStyled>
       <TouchableOpacity onPress={handlePostcardClick} style={{ backgroundColor: '#ECEDEF' }}>
@@ -186,6 +160,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         </S.PostcardInfoViewStyled>
         {[EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus) && <S.BookImageWrapper />}
       </TouchableOpacity>
+
       <CustomModal modalConfig={checkBeforeSendPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
@@ -208,6 +183,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
+
       <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
@@ -230,36 +206,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
-      <CustomModal modalConfig={matchingApproveModalConfig}>
-        <View>
-          <ModalUserInfoViewStyled>
-            <CircularImage source={{ uri: modalData.memberProfileImageUrl }} resizeMode="cover" />
-            <UserInfoWrapper>
-              <UserInfoNameWrapper>
-                <UserNameText
-                  style={{ fontSize: 16 }}
-                >{`${modalData.memberName} | ${modalData.memberAge}`}</UserNameText>
-                <GenderIconStyled source={modalData.memberGender === EGender.MALE ? manIcon : womanIcon} />
-              </UserInfoNameWrapper>
-              <ModalSchoolNameText>{modalData.memberSchoolName}</ModalSchoolNameText>
-            </UserInfoWrapper>
-          </ModalUserInfoViewStyled>
-          <ModalBookListContainer>
-            {modalData.bookImageUrls?.map((bookImageUrl, index) => (
-              <ModalBookWrapper>
-                {index === 0 && (
-                  <Image
-                    style={{ width: 15, height: 30, position: 'absolute', zIndex: 3, left: deviceWidth / 5, top: -3 }}
-                    source={icons.bookmark}
-                  />
-                )}
-                <ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
-              </ModalBookWrapper>
-            ))}
-          </ModalBookListContainer>
-          <ModalBookShelves style={styles.Shadow} />
-        </View>
-      </CustomModal>
+
       <CustomModal modalConfig={studentIdModalConfig} />
     </S.ContainerViewStyled>
   );
