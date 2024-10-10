@@ -23,15 +23,16 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
     isOpen,
     studentIdToggle,
   });
-  let memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
   const { updateMemberInfo } = useMemberStore();
-  const [, forceRender] = useState(0); // 더미 상태로 렌더링을 강제로 유도
+  const [, forceRender] = useState(0);
   const showToast = useToastStore((state) => state.showToast);
 
   if (!memberStatus) {
     getMemberApi().then((result) => {
-      memberStatus = result.result.memberStatus ?? '';
+      updateMemberInfo('memberStatus', result.result.memberStatus as string);
+      forceRender((prev) => prev + 1);
     });
   }
 

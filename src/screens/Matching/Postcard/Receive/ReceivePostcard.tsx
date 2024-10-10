@@ -1,5 +1,3 @@
-import manIcon from '@assets/images/icons/ManSmall.png';
-import womanIcon from '@assets/images/icons/WomanSmall.png';
 import { readPostcard } from '@commons/api/matching/matching.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -8,33 +6,20 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
-import useModalStore from '@commons/store/ui/modal/useModalStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
-import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import React, { useState } from 'react';
-import { Image, Linking, TouchableOpacity, View } from 'react-native';
-import {
-  CircularImage,
-  GenderIconStyled,
-  ModalBookImage,
-  ModalBookListContainer,
-  ModalBookShelves,
-  ModalBookWrapper,
-  ModalSchoolNameText,
-  ModalUserInfoViewStyled,
-  UserInfoNameWrapper,
-  UserInfoWrapper,
-  UserNameText,
-  styles,
-} from '../Send/SendPostcard.styles';
-import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
+import { TouchableOpacity } from 'react-native';
+import { EPostcardStatus } from '../Send/SendPostcard.types';
 import * as S from './ReceivePostcard.styles';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { useNavigation } from '@react-navigation/native';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
+import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -66,6 +51,13 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
   const logEvent = useAnalyticsEventLogger();
+  const showToast = useToastStore((state) => state.showToast);
+
+  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
+  const { updateMemberInfo } = useMemberStore();
+  const [, forceRender] = useState(0);
+
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
     isOpen,
@@ -83,8 +75,21 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
+    if (memberStatus === EMemberStatus.REJECTED || memberStatus === EMemberStatus.APPROVAL) {
+      if (!studentIdImageStatus) {
+        await getStudentIdStatus();
+      }
 
-    if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+      switch (memberStatus) {
+        case EMemberStatus.REJECTED:
+          studentIdToggle();
+          break;
+
+        case EMemberStatus.APPROVAL:
+          handleApprovalStatus();
+          break;
+      }
+    } else if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
       navigation.navigate('chat', {
         screen: 'GroupChannelList',
       });
@@ -95,7 +100,35 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         toggleNoPostcardModal();
       }
     }
-    // studentIdToggle();
+  };
+
+  const handleApprovalStatus = () => {
+    if (studentIdImageStatus === EStudentIdImageStatus.PENDING) {
+      showToast({
+        content: '학생증 승인 대기 중입니다.',
+      });
+    } else if (
+      studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
+      studentIdImageStatus === EStudentIdImageStatus.DENIAL
+    ) {
+      studentIdToggle();
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
+  };
+
+  const getStudentIdStatus = async () => {
+    try {
+      const response = await getStudentIdImageStatusApi();
+      updateMemberInfo('studentIdImageStatus', response.result.studentIdImageStatus as string);
+      forceRender((prev) => prev + 1);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   const showPostcardDetail = async () => {
@@ -103,12 +136,10 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
-      // TODO: 학생증 인증 체크
       // @ts-ignore
       const channel = sdk.groupChannel.getChannel(result.channelUrl);
       await channel.then((res) => {
         res.unhide();
-        console.log(res);
         navigation.navigate('chat', {
           screen: 'GroupChannelList',
         });
@@ -119,7 +150,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         //   },
         // });
       });
-      // movePageNoReference('receivePostcardDetail', rest);
     } catch {
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
