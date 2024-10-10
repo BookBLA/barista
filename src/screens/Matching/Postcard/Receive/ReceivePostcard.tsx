@@ -103,6 +103,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
 
+      // TODO: 학생증 인증 체크
       // @ts-ignore
       const channel = sdk.groupChannel.getChannel(result.channelUrl);
       await channel.then((res) => {

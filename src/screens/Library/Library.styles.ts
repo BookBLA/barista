@@ -269,7 +269,7 @@ export const CopyCodeButtonWrapper = styled.View`
 export const CopyCodeButton = styled.TouchableOpacity`
   justify-content: center;
   align-items: center;
-  padding: 14px 109px;
+  padding: 14px 80px;
   border-radius: 4px;
   background-color: ${({ bgColor }: any) => bgColor || colors.primary};
   margin-bottom: 20px;

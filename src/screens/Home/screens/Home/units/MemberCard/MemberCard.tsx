@@ -13,7 +13,6 @@ import BookImage from './units/BookImage/BookImage';
 import BookInfo from './units/BookInfo/BookInfo';
 import Profile from './units/Profile/Profile';
 import { getMemberApi } from '@commons/api/members/default/member.api';
-import {result} from "lodash";
 
 const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; memberData: MemberIntroResponse }) => {
   const { movePage } = useMovePage();
@@ -34,8 +33,8 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   }
 
   // MemberData
-  // const memberBookId = 2849550;
-  // const targetMemberId = 900032;
+  // const memberBookId = 2849765;
+  // const targetMemberId = 900231;
   const memberBookId = memberData?.memberBookId;
   const targetMemberId = memberData?.memberId;
 

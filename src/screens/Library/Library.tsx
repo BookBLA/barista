@@ -641,7 +641,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
               <CustomText font="fontMedium" size="14px" color="rgba(0, 0, 0, 0.5)" style={{ textAlign: 'center' }}>
                 친구 초대하면 친구도 나도
-                <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0)">
+                <CustomText font="fontSemiBold" size="14px" color="rgba(0, 0, 0, 0.8)">
                   {' '}
                   책갈피
                 </CustomText>{' '}

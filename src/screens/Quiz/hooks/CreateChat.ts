@@ -67,20 +67,12 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   //   channel.pinMessage(message.messageId);
   // });
 
-  // hide Channel until read postcard
-  const params: GroupChannelHideParams = {
-    hidePreviousMessages: true,
-    allowAutoUnhide: false,
-  };
-  await channel.hide(params);
-
   // Send Messages(book thumbnail, reason)
   const res = await getBookInfo(contents.receiveMemberBookId);
   const bookThumbnail = res.imageUrl;
-  const uniqueThumbnailUrl = `${bookThumbnail}?timestamp=${new Date().getTime()}`;
 
   const fileMessageCreateParams: FileMessageCreateParams = {
-    fileUrl: uniqueThumbnailUrl,
+    fileUrl: bookThumbnail,
     fileName: 'book-thumbnail.png',
     fileSize: 0,
     mimeType: 'image/png',
@@ -111,6 +103,13 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     const messageId = message.messageId;
   });
   console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
+
+  // hide Channel until read postcard
+  const params: GroupChannelHideParams = {
+    hidePreviousMessages: true,
+    allowAutoUnhide: false,
+  };
+  await channel.hide(params);
 
   return channel.url;
 };

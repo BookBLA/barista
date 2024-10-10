@@ -60,12 +60,6 @@ const Home = () => {
   const id = memberStore.id; // using in sendbird login
   const isMemberData = memberData && Object.keys(memberData).length > 0;
 
-  // const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
-  // const handleRefresh = () => {
-  //   setIsSubmitQuiz(false);
-  //   refetch();
-  // };
-
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['75%'], []);
   const reportedMemberId = memberData?.memberId ?? 0;
