@@ -22,6 +22,7 @@ import { useAppStatus } from './src/commons/store/ui/appStatus/useAppStatus';
 import { platformServices } from './src/screens/Chat/NativeModule';
 import { SendbirdUIKitContainer, TypingIndicatorType } from '@sendbird/uikit-react-native';
 import { MMKV } from 'react-native-mmkv';
+import { StringSets } from './src/screens/Chat/options/StringOptions';
 
 export default function App() {
   useInitializeApp();
@@ -43,6 +44,7 @@ export default function App() {
           appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
           chatOptions={{ localCacheStorage: mmkv }}
           platformServices={platformServices}
+          localization={{ stringSet: StringSets['ko'] }}
           uikitOptions={{
             groupChannel: {
               enableTypingIndicator: true,
