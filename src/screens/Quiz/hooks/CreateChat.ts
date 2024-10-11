@@ -18,6 +18,7 @@ import {
   UserMessage,
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
   const sendMemberId = memberId.toString();
@@ -68,20 +69,19 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   // });
 
   // Send Messages(book thumbnail, reason)
-  const res = await getBookInfo(contents.receiveMemberBookId);
-  const bookThumbnail = res.imageUrl;
-
-  const fileMessageCreateParams: FileMessageCreateParams = {
-    fileUrl: bookThumbnail,
-    fileName: 'book-thumbnail.png',
-    fileSize: 0,
-    mimeType: 'image/png',
-    // TODO - 한결: 썸네일 사이즈 조정이 안됨 - 사진 전송 잠정 중단
-    thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
-    mentionType: MentionType.USERS,
-    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
-  };
-
+  // const res = await getBookInfo(contents.receiveMemberBookId);
+  // const bookThumbnail = res.imageUrl;
+  //
+  // const fileMessageCreateParams: FileMessageCreateParams = {
+  //   fileUrl: bookThumbnail,
+  //   fileName: 'book-thumbnail.png',
+  //   fileSize: 0,
+  //   mimeType: 'image/png',
+  //   thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
+  //   mentionType: MentionType.USERS,
+  //   pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
+  // };
+  //
   // @ts-ignore
   // channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
   //     const messageId = message.messageId;
@@ -91,19 +91,27 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   //     console.error('Failed to send message:', error);
   //   });
 
-  // 《나미야 잡화점의 기적》
+  const res = await getBookInfo(contents.receiveMemberBookId);
+
+  const bookTitleMessageCreateParams: UserMessageCreateParams = {
+    message: `《${res.title}》`,
+    metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
+    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
+  };
   const userMessageCreateParams: UserMessageCreateParams = {
     message: sendMemberReview,
-    mentionType: MentionType.USERS,
-    mentionedUserIds: [targetMemberId],
     metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
   };
   // @ts-ignore
-  channel.sendUserMessage(userMessageCreateParams).onSucceeded((message: UserMessage) => {
-    const messageId = message.messageId;
-  });
-  console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
+  channel.sendUserMessage(bookTitleMessageCreateParams).onSucceeded((message: UserMessage) => {
+      channel.sendUserMessage(userMessageCreateParams);
+      console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
+    })
+    .onFailed((message: UserMessage) => {
+      useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\nsendUserMessage` });
+      console.error('GroupChat message send Failed', sendMemberId, targetMemberId);
+    });
 
   // hide Channel until read postcard
   const params: GroupChannelHideParams = {
