@@ -4,10 +4,10 @@ import { colors } from '@commons/styles/variablesStyles';
 import { Platform } from 'react-native';
 
 const Palette: UIKitPalette = {
-  primary100: '#DBD1FF',
-  primary200: colors.primary,
+  primary100: colors.primary02,
+  primary200: colors.primaryOff,
   primary300: colors.primary,
-  primary400: '#6211C8',
+  primary400: colors.buttonAddBook,
   primary500: '#491389',
 
   secondary100: '#A8E2AB',
@@ -55,6 +55,61 @@ export const Theme = createTheme({
   colors: (palette) => ({
     ...LightUIKitTheme.colors,
     primary: palette.primary300,
+    ui: {
+      ...LightUIKitTheme.colors.ui,
+      button: {
+        ...LightUIKitTheme.colors.ui.button,
+        contained: {
+          ...LightUIKitTheme.colors.ui.button.contained,
+          enabled: {
+            ...LightUIKitTheme.colors.ui.button.contained.enabled,
+            background: palette.primary300,
+          },
+          pressed: {
+            ...LightUIKitTheme.colors.ui.button.contained.pressed,
+            background: palette.primary400,
+          },
+        },
+      },
+      groupChannelMessage: {
+        ...LightUIKitTheme.colors.ui.groupChannelMessage,
+        incoming: {
+          ...LightUIKitTheme.colors.ui.groupChannelMessage.incoming,
+          pressed: {
+            ...LightUIKitTheme.colors.ui.groupChannelMessage.incoming.pressed,
+            background: palette.primary100,
+          },
+        },
+        outgoing: {
+          ...LightUIKitTheme.colors.ui.groupChannelMessage.outgoing,
+          enabled: {
+            ...LightUIKitTheme.colors.ui.groupChannelMessage.outgoing.enabled,
+            background: palette.primary300,
+          },
+          pressed: {
+            ...LightUIKitTheme.colors.ui.groupChannelMessage.outgoing.pressed,
+            background: palette.primary400,
+          },
+        },
+      },
+      reaction: {
+        ...LightUIKitTheme.colors.ui.reaction,
+        default: {
+          ...LightUIKitTheme.colors.ui.reaction.default,
+          selected: {
+            background: palette.primary100,
+            highlight: palette.primary300,
+          },
+        },
+        rounded: {
+          ...LightUIKitTheme.colors.ui.reaction.rounded,
+          selected: {
+            ...LightUIKitTheme.colors.ui.reaction.rounded.selected,
+            background: palette.primary100,
+          },
+        },
+      },
+    },
   }),
 
   typography: {
