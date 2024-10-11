@@ -24,6 +24,7 @@ import { SendbirdUIKitContainer, TypingIndicatorType } from '@sendbird/uikit-rea
 import { MMKV } from 'react-native-mmkv';
 import { StringSets } from './src/screens/Chat/options/StringOptions';
 import { UseReactNavigationHeader } from './src/screens/Chat/options/UseReactNavigationHeader';
+import { Theme } from './src/screens/Chat/options/Theme';
 
 export default function App() {
   useInitializeApp();
@@ -43,20 +44,22 @@ export default function App() {
       <QueryClientProvider client={queryClient}>
         <SendbirdUIKitContainer
           appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
-          chatOptions={{ localCacheStorage: mmkv }}
+          chatOptions={{ localCacheStorage: mmkv, enableAutoPushTokenRegistration: true }}
           platformServices={platformServices}
           localization={{ stringSet: StringSets['ko'] }}
           uikitOptions={{
             groupChannel: {
               enableTypingIndicator: true,
               typingIndicatorTypes: new Set([TypingIndicatorType.Bubble, TypingIndicatorType.Text]),
+              replyType: 'quote_reply',
+              enableReactions: true,
             },
             groupChannelList: {
               enableTypingIndicator: true,
               enableMessageReceiptStatus: true,
             },
           }}
-          styles={{ HeaderComponent: UseReactNavigationHeader }}
+          styles={{ HeaderComponent: UseReactNavigationHeader, theme: Theme, defaultHeaderTitleAlign: 'left' }}
         >
           <GestureHandlerRootView style={{ flex: 1 }}>
             <UpdateModal />

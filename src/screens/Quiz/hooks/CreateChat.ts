@@ -91,6 +91,7 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   //     console.error('Failed to send message:', error);
   //   });
 
+  // 《나미야 잡화점의 기적》
   const userMessageCreateParams: UserMessageCreateParams = {
     message: sendMemberReview,
     mentionType: MentionType.USERS,

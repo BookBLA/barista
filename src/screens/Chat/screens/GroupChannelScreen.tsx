@@ -71,7 +71,7 @@ export const GroupChannelScreen = () => {
   const chatAccept = () => {
     setIsConfirm(MODAL_STATE_ACCEPT);
     channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
-    // TODO: 엽서 30개소모
+    // TODO: 엽서 30개소모, 거절하면 엽서 돌려주기
   };
   const chatDeny = () => {
     setIsConfirm(MODAL_STATE_DENY);
@@ -85,7 +85,7 @@ export const GroupChannelScreen = () => {
     <>
       <GroupChannelFragment
         enableTypingIndicator
-        keyboardAvoidOffset={Platform.OS === 'ios' ? 60 : 25}
+        keyboardAvoidOffset={Platform.OS === 'ios' ? 100 : 25}
         channel={channel}
         onChannelDeleted={() => {
           // Navigate to GroupChannelList function.
