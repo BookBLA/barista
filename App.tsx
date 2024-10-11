@@ -23,6 +23,7 @@ import { platformServices } from './src/screens/Chat/NativeModule';
 import { SendbirdUIKitContainer, TypingIndicatorType } from '@sendbird/uikit-react-native';
 import { MMKV } from 'react-native-mmkv';
 import { StringSets } from './src/screens/Chat/options/StringOptions';
+import { UseReactNavigationHeader } from './src/screens/Chat/options/UseReactNavigationHeader';
 
 export default function App() {
   useInitializeApp();
@@ -55,7 +56,7 @@ export default function App() {
               enableMessageReceiptStatus: true,
             },
           }}
-          styles={{ defaultHeaderTitleAlign: 'left' }}
+          styles={{ HeaderComponent: UseReactNavigationHeader }}
         >
           <GestureHandlerRootView style={{ flex: 1 }}>
             <UpdateModal />
