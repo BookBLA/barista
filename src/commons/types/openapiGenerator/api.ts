@@ -427,6 +427,19 @@ export interface BookSearchResponses {
 /**
  * 
  * @export
+ * @interface ChatRequest
+ */
+export interface ChatRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ChatRequest
+     */
+    'targetMemberId': number;
+}
+/**
+ * 
+ * @export
  * @interface ContactInfoResponse
  */
 export interface ContactInfoResponse {
@@ -2387,13 +2400,13 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalPages'?: number;
+    'totalElements'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalElements'?: number;
+    'totalPages'?: number;
     /**
      * 
      * @type {SortObject}
@@ -3049,6 +3062,32 @@ export interface SortObject {
      * @memberof SortObject
      */
     'empty'?: boolean;
+}
+/**
+ * 
+ * @export
+ * @interface TestLoginRequest
+ */
+export interface TestLoginRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof TestLoginRequest
+     */
+    'id'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface TestLoginResponse
+ */
+export interface TestLoginResponse {
+    /**
+     * 
+     * @type {string}
+     * @memberof TestLoginResponse
+     */
+    'accessToken'?: string;
 }
 /**
  * 
@@ -4201,6 +4240,84 @@ export const DefaultApiAxiosParamCreator = function (configuration?: Configurati
         },
         /**
          * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testDataReset: async (testLoginRequest: TestLoginRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'testLoginRequest' is not null or undefined
+            assertParamExists('testDataReset', 'testLoginRequest', testLoginRequest)
+            const localVarPath = `/tests/sign-out`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(testLoginRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testLoginScript: async (testLoginRequest: TestLoginRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'testLoginRequest' is not null or undefined
+            assertParamExists('testLoginScript', 'testLoginRequest', testLoginRequest)
+            const localVarPath = `/tests/login`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(testLoginRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary 테스트 회원 토큰 발급
          * @param {TestSignUpRequest} testSignUpRequest 
          * @param {*} [options] Override http request option.
@@ -4942,6 +5059,30 @@ export const DefaultApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testDataReset(testLoginRequest: TestLoginRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testDataReset(testLoginRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.testDataReset']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async testLoginScript(testLoginRequest: TestLoginRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<TestLoginResponse>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.testLoginScript(testLoginRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['DefaultApi.testLoginScript']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary 테스트 회원 토큰 발급
          * @param {TestSignUpRequest} testSignUpRequest 
          * @param {*} [options] Override http request option.
@@ -5341,6 +5482,24 @@ export const DefaultApiFactory = function (configuration?: Configuration, basePa
          */
         sendNotifications(adminNotificationRequest: AdminNotificationRequest, options?: any): AxiosPromise<void> {
             return localVarFp.sendNotifications(adminNotificationRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testDataReset(testLoginRequest: TestLoginRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.testDataReset(testLoginRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {TestLoginRequest} testLoginRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        testLoginScript(testLoginRequest: TestLoginRequest, options?: any): AxiosPromise<TestLoginResponse> {
+            return localVarFp.testLoginScript(testLoginRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -5771,6 +5930,28 @@ export class DefaultApi extends BaseAPI {
      */
     public sendNotifications(adminNotificationRequest: AdminNotificationRequest, options?: RawAxiosRequestConfig) {
         return DefaultApiFp(this.configuration).sendNotifications(adminNotificationRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {TestLoginRequest} testLoginRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public testDataReset(testLoginRequest: TestLoginRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).testDataReset(testLoginRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {TestLoginRequest} testLoginRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DefaultApi
+     */
+    public testLoginScript(testLoginRequest: TestLoginRequest, options?: RawAxiosRequestConfig) {
+        return DefaultApiFp(this.configuration).testLoginScript(testLoginRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -9950,6 +10131,46 @@ export const SendbirdApiAxiosParamCreator = function (configuration?: Configurat
     return {
         /**
          * 
+         * @summary 채팅 수락
+         * @param {ChatRequest} chatRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        chatAccept: async (chatRequest: ChatRequest, options: RawAxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'chatRequest' is not null or undefined
+            assertParamExists('chatAccept', 'chatRequest', chatRequest)
+            const localVarPath = `/sendbird/chat`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication Bearer Authentication required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(chatRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -9994,6 +10215,19 @@ export const SendbirdApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @summary 채팅 수락
+         * @param {ChatRequest} chatRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async chatAccept(chatRequest: ChatRequest, options?: RawAxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.chatAccept(chatRequest, options);
+            const localVarOperationServerIndex = configuration?.serverIndex ?? 0;
+            const localVarOperationServerBasePath = operationServerMap['SendbirdApi.chatAccept']?.[localVarOperationServerIndex]?.url;
+            return (axios, basePath) => createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration)(axios, localVarOperationServerBasePath || basePath);
+        },
+        /**
+         * 
          * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10016,6 +10250,16 @@ export const SendbirdApiFactory = function (configuration?: Configuration, baseP
     return {
         /**
          * 
+         * @summary 채팅 수락
+         * @param {ChatRequest} chatRequest 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        chatAccept(chatRequest: ChatRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.chatAccept(chatRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -10033,6 +10277,18 @@ export const SendbirdApiFactory = function (configuration?: Configuration, baseP
  * @extends {BaseAPI}
  */
 export class SendbirdApi extends BaseAPI {
+    /**
+     * 
+     * @summary 채팅 수락
+     * @param {ChatRequest} chatRequest 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SendbirdApi
+     */
+    public chatAccept(chatRequest: ChatRequest, options?: RawAxiosRequestConfig) {
+        return SendbirdApiFp(this.configuration).chatAccept(chatRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
