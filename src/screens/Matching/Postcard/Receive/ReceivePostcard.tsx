@@ -150,7 +150,8 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         //   },
         // });
       });
-    } catch {
+    } catch (error) {
+      console.error('error', error);
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
   };

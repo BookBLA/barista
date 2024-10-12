@@ -2,7 +2,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import styled from 'styled-components/native';
 
 export const Wrapper = styled.View`
-  width: 100%;
+  width: 95%;
   height: 90%;
 
   border-radius: 10px;

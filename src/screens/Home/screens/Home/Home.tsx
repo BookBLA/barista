@@ -58,7 +58,7 @@ const Home = () => {
   const memberStore = useMemberStore((state) => state.memberInfo);
   const memberStatus = memberStore.memberStatus;
   const id = memberStore.id; // using in sendbird login
-  const isMemberData = memberData && Object.keys(memberData).length > 0;
+  const isMemberData = Object.keys(memberData).length > 0 && memberData && memberData.memberId;
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['75%'], []);
@@ -91,7 +91,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setIsInvitationCard(data?.result.isInvitationCard ?? true);
+    setIsInvitationCard(data?.result.isInvitationCard ?? false);
     setMemberData(data?.result ?? {});
   }, [data]);
 

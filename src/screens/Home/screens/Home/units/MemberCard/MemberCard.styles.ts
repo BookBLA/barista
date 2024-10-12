@@ -6,7 +6,7 @@ export const Wrapper = styled.View`
   flex-direction: column;
   justify-content: space-between;
 
-  width: 100%;
+  width: 95%;
   height: 91%;
 
   background-color: ${colors.cardBackground};
