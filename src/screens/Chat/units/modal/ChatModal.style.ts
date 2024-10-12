@@ -46,8 +46,9 @@ export const Wrapper = styled.View`
   bottom: 0;
   margin-bottom: 15px;
   padding: 20px 0;
+  z-index: 10;
   width: ${deviceWidth};
-  height: ${deviceHeight}*0.5;
+  height: 160px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: ${colors.buttonPrimary};

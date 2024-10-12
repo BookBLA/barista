@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Platform } from 'react-native';
+import {Platform, View} from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
@@ -12,6 +12,7 @@ import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-rea
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
 import { useToast } from '@sendbird/uikit-react-native-foundation';
+import {deviceHeight} from "@commons/utils/ui/dimensions/dimensions";
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';
@@ -112,6 +113,7 @@ export const GroupChannelScreen = () => {
   console.log(isConfirm);
 
   // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
+  // @ts-ignore
   return (
     <>
       <GroupChannelFragment
@@ -139,6 +141,7 @@ export const GroupChannelScreen = () => {
           chatDeny={chatDeny}
         />
       )}
+      {isConfirm === MODAL_STATE_YET && <View style={{ height: 80, width: '100%' }} />}
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption
           bottomClose={reportBottomSheet.handleCloseBottomSheet}
