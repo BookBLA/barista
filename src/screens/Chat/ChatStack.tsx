@@ -22,7 +22,7 @@ const Navigation = () => {
       ) : (
         <>
           <Stack.Screen name="GroupChannelList" component={GroupChannelListScreen} />
-          <Stack.Screen name="GroupChannelCreate" component={GroupChannelCreateScreen} />
+          {/*<Stack.Screen name="GroupChannelCreate" component={GroupChannelCreateScreen} />*/}
           <Stack.Screen name="GroupChannel" component={GroupChannelScreen} />
           <Stack.Screen name="GroupChannelSettings" component={GroupChannelSettingsScreen} />
           <Stack.Screen name="library" component={CustomScreen(Library)} />

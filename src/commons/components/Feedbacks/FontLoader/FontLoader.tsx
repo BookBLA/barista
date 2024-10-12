@@ -6,6 +6,7 @@ import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import { IFontLoaderProps } from './FontLoader.types';
+import { ITokenStore } from '@commons/store/auth/token/tokenStore';
 
 export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
@@ -17,14 +18,14 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
   useEffect(() => {
     const loadFonts = async () => {
       try {
-        let token = '';
+        let tokens: ITokenStore = { bookbla: '' };
         const isNewInstallation = await checkReinstallation();
 
         // TODO: 필요 시 if문 조건에 아이폰일 경우에만 넣기
         if (isNewInstallation) {
           await removeToken();
         } else {
-          token = (await initializeToken()) ?? '';
+          tokens = (await initializeToken()) ?? { bookbla: '' };
         }
 
         await Font.loadAsync({
@@ -38,7 +39,7 @@ export const FontLoader: React.FC<IFontLoaderProps> = ({ children }) => {
           fontInviteCoin: require('../../../../../assets/fonts/cafe24Danjunghae.ttf'),
         });
         await SplashScreen.preventAutoHideAsync();
-        if (token) {
+        if (tokens.bookbla) {
           const memberStatus = await saveMemberInfo();
           if (memberStatus === 'STYLE') {
             //토큰이 있을 때>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다

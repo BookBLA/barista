@@ -6,10 +6,12 @@ import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { ConfirmChatModal } from '@screens/Chat/units/modal/ConfirmChatModal';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
+import { postChatAccept, postChatReject } from '@screens/Chat/Chat.api';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
+import { useToast } from '@sendbird/uikit-react-native-foundation';
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';
@@ -20,6 +22,7 @@ const GroupChannelFragment = createGroupChannelFragment();
 export const GroupChannelScreen = () => {
   const navigation = useNavigation<any>();
   const { params } = useRoute<any>();
+  const toast = useToast();
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
   const [isConfirm, setIsConfirm] = useState(MODAL_STATE_NONE);
@@ -55,12 +58,14 @@ export const GroupChannelScreen = () => {
 
   const metaData = channel.getMetaData(['acceptStatus', 'targetMemberId', 'sendMemberId', 'sendMemberName']);
   let targetMemberId = 0;
+  let sendMemberId = 0;
   let sendMemberName = '';
   metaData.then((res) => {
     const acceptStatus = res.acceptStatus === MODAL_STATE_YET;
     const target = res.targetMemberId === currentUser?.userId;
 
     targetMemberId = parseInt(res.targetMemberId, 10) ?? 0;
+    sendMemberId = parseInt(res.sendMemberId, 10) ?? 0;
     sendMemberName = res.sendMemberName ?? '';
 
     if (acceptStatus && target) {
@@ -68,14 +73,33 @@ export const GroupChannelScreen = () => {
     }
   });
 
-  const chatAccept = () => {
+  const chatAccept = async () => {
     setIsConfirm(MODAL_STATE_ACCEPT);
-    channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
+    try {
+      await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
+      await postChatAccept(targetMemberId);
+      toast.show('채팅을 수락했어요', 'success');
+    } catch (error) {
+      console.error(error);
+      toast.show('채팅을 수락하는 도중 문제가 생겼습니다', 'error');
+    }
   };
-  const chatDeny = () => {
+
+  const chatDeny = async () => {
     setIsConfirm(MODAL_STATE_DENY);
-    channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
-    channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
+    try {
+      await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
+      await postChatReject(sendMemberId);
+      await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
+      toast.show('채팅을 거절했어요', 'success');
+    } catch (error) {
+      console.error(error);
+      toast.show('채팅을 거절하는 도중 문제가 생겼습니다', 'error');
+    }
+  };
+
+  const chatReport = async () => {
+    setIsConfirm(MODAL_STATE_DENY);
   };
   console.log(isConfirm);
 
@@ -84,7 +108,7 @@ export const GroupChannelScreen = () => {
     <>
       <GroupChannelFragment
         enableTypingIndicator
-        keyboardAvoidOffset={Platform.OS === 'ios' ? 60 : 25}
+        keyboardAvoidOffset={Platform.OS === 'ios' ? 100 : 25}
         channel={channel}
         onChannelDeleted={() => {
           // Navigate to GroupChannelList function.

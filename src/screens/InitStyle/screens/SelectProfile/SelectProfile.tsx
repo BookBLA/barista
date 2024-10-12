@@ -16,9 +16,12 @@ import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Image, TouchableOpacity, View } from 'react-native';
+import { postSendbird } from '@commons/api/auth/login.api';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 
 const SelectProfile = () => {
   const showToast = useToastStore((state) => state.showToast);
+  const setToken = useAuthStore((state) => state.setToken);
   useHeaderControl({
     title: '스타일',
     left: false,
@@ -57,9 +60,13 @@ const SelectProfile = () => {
   const callPostStyleApi = async () => {
     try {
       console.log('styleInfo', styleInfo);
-      const response = await postMemberStyleApi(styleInfo);
-      console.log('postMemberStyleApi', response);
+      const styleResponse = await postMemberStyleApi(styleInfo);
+      console.log('postMemberStyleApi', styleResponse);
       updateMemberInfo('memberStatus', EMemberStatus.BOOK);
+
+      const sendbirdResponse = await postSendbird();
+      setToken({ sendbird: sendbirdResponse.result.sendbirdToken });
+
       handleReset('initBookStack');
       resetStyleInfo();
       resetInviteCodeStore();

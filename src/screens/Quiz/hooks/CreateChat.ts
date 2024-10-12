@@ -18,12 +18,13 @@ import {
   UserMessage,
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
   const sendMemberId = memberId.toString();
   const sendMemberName = memberName;
   const sendMemberReview = contents.memberReply;
-  const targetMemberId = contents.receiveMemberBookId.toString();
+  const targetMemberId = contents.receiveMemberId.toString();
   const targetMemberBookId = contents.receiveMemberBookId.toString();
 
   // Create GroupChannel
@@ -67,50 +68,57 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   //   channel.pinMessage(message.messageId);
   // });
 
+  // Send Messages(book thumbnail, reason)
+  // const res = await getBookInfo(contents.receiveMemberBookId);
+  // const bookThumbnail = res.imageUrl;
+  //
+  // const fileMessageCreateParams: FileMessageCreateParams = {
+  //   fileUrl: bookThumbnail,
+  //   fileName: 'book-thumbnail.png',
+  //   fileSize: 0,
+  //   mimeType: 'image/png',
+  //   thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
+  //   mentionType: MentionType.USERS,
+  //   pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
+  // };
+  //
+  // @ts-ignore
+  // channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
+  //     const messageId = message.messageId;
+  //     console.debug('Message sent with ID:', messageId);
+  //   })
+  //   .onFailed((error: any) => {
+  //     console.error('Failed to send message:', error);
+  //   });
+
+  const res = await getBookInfo(contents.receiveMemberBookId);
+
+  const bookTitleMessageCreateParams: UserMessageCreateParams = {
+    message: `《${res.title}》`,
+    metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
+    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
+  };
+  const userMessageCreateParams: UserMessageCreateParams = {
+    message: sendMemberReview,
+    metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
+    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
+  };
+  // @ts-ignore
+  channel.sendUserMessage(bookTitleMessageCreateParams).onSucceeded((message: UserMessage) => {
+      channel.sendUserMessage(userMessageCreateParams);
+      console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
+    })
+    .onFailed((message: UserMessage) => {
+      useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\nsendUserMessage` });
+      console.error('GroupChat message send Failed', sendMemberId, targetMemberId);
+    });
+
   // hide Channel until read postcard
   const params: GroupChannelHideParams = {
     hidePreviousMessages: true,
     allowAutoUnhide: false,
   };
   await channel.hide(params);
-
-  // Send Messages(book thumbnail, reason)
-  const res = await getBookInfo(contents.receiveMemberBookId);
-  const bookThumbnail = res.imageUrl;
-  const uniqueThumbnailUrl = `${bookThumbnail}?timestamp=${new Date().getTime()}`;
-
-  const fileMessageCreateParams: FileMessageCreateParams = {
-    fileUrl: uniqueThumbnailUrl,
-    fileName: 'book-thumbnail.png',
-    fileSize: 0,
-    mimeType: 'image/png',
-    // TODO - 한결: 썸네일 사이즈 조정이 안됨;;
-    thumbnailSizes: [{ maxWidth: 105, maxHeight: 147 }],
-    mentionType: MentionType.USERS,
-    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT,
-  };
-
-  // @ts-ignore
-  channel.sendFileMessage(fileMessageCreateParams).onSucceeded((message: FileMessage) => {
-      const messageId = message.messageId;
-      console.debug('Message sent with ID:', messageId);
-    })
-    .onFailed((error: any) => {
-      console.error('Failed to send message:', error);
-    });
-
-  const userMessageCreateParams: UserMessageCreateParams = {
-    message: sendMemberReview,
-    mentionType: MentionType.USERS,
-    mentionedUserIds: [targetMemberId],
-    metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
-    pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
-  };
-  // @ts-ignore
-  channel.sendUserMessage(userMessageCreateParams).onSucceeded((message: UserMessage) => {
-    const messageId = message.messageId;
-  });
-  console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
 
   return channel.url;
 };

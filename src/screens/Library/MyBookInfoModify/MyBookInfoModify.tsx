@@ -197,7 +197,7 @@ export const MyBookInfoModify: React.FC<IMyBookInfoModifyProps> = ({
                 maxLength={100}
                 inputMode="text"
                 placeholder={
-                  '이 책에서 인상 깊었던 내용과\n인상 깊었던 이유를 알려주세요!\n부적절하거나 불쾌감을 줄 수 있는 컨텐츠는 제재를 받을 수 있습니다.'
+                  '이 책에서 인상 깊었던 내용과 인상 깊었던 이유를\n알려주세요!부적절하거나 불쾌감을 줄 수 있는 컨텐츠는\n제재를 받을 수 있습니다.'
                 }
                 placeholderTextColor={colors.textGray2}
                 textAlignVertical="top"

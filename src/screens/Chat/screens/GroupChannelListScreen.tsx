@@ -24,13 +24,10 @@ import type { GroupChannelListProps } from '@sendbird/uikit-react-native/src/dom
 import GroupChannelPreviewContainer from '@sendbird/uikit-react-native/src/containers/GroupChannelPreviewContainer';
 import { GroupChannelCollection, GroupChannelFilter } from '@sendbird/chat/groupChannel';
 import { PushTriggerOption } from '@sendbird/chat';
-import { useActionMenu, useToast } from '@sendbird/uikit-react-native-foundation';
+import { useActionMenu, useToast, Icon } from '@sendbird/uikit-react-native-foundation';
 
-// import { Icon } from '@sendbird/uikit-react-native-foundation';
-//
-// Icon.Assets['arrow-left'] = require('assets/images/buttons/prevButtonBlack.png');
+Icon.Assets['arrow-left'] = require('assets/images/buttons/prevButtonBlack.png');
 
-// TODO: Create Channel Fragment 삭제
 const GroupChannelListFragment = createGroupChannelListFragment();
 const GroupChannelListModule = createGroupChannelListModule();
 

@@ -1,30 +1,40 @@
-import { getToken, saveToken } from '@commons/store/auth/token/tokenStore';
+import { getToken, saveToken, ITokenStore } from '@commons/store/auth/token/tokenStore';
 import { create } from 'zustand';
 
 interface IAuth {
-  token: string;
-  setToken: (token: string) => void;
+  bookblaToken: string;
+  sendbirdToken: string;
+  setToken: (tokens: ITokenStore) => void;
   removeToken: () => Promise<void>;
-  initializeToken: () => Promise<string | null>;
+  initializeToken: () => Promise<ITokenStore | null>;
 }
 
-// TODO - 한결: sendbird accessToken 저장
 const useAuthStore = create<IAuth>((set) => ({
-  token: '',
-  setToken: (token) => {
-    set({ token });
-    saveToken(token);
+  bookblaToken: '',
+  sendbirdToken: '',
+  setToken: (tokens: ITokenStore) => {
+    if (tokens.bookbla) {
+      set({ bookblaToken: tokens.bookbla });
+    }
+    if (tokens.sendbird) {
+      set({ sendbirdToken: tokens.sendbird });
+    }
+    saveToken(tokens);
   },
   removeToken: async () => {
-    set({ token: '' });
-    await saveToken('');
+    const emptyToken: ITokenStore = { bookbla: '', sendbird: '' };
+    set({ bookblaToken: emptyToken.bookbla, sendbirdToken: emptyToken.sendbird });
+    await saveToken(emptyToken);
   },
   initializeToken: async () => {
-    const token = await getToken();
-    if (token) {
-      set({ token });
+    const tokens = await getToken();
+    if (tokens.bookbla) {
+      set({ bookblaToken: tokens.bookbla });
     }
-    return token;
+    if (tokens.sendbird) {
+      set({ sendbirdToken: tokens.sendbird });
+    }
+    return tokens;
   },
 }));
 

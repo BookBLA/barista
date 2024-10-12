@@ -47,7 +47,7 @@ const StepSecond = () => {
   useAppUIManager({
     setBackgroundColor: colors.primary,
   });
-  useHeaderControl({ title: '독서 퀴즈' });
+  useHeaderControl({ title: '엽서 작성하기' });
   return (
     <T.Wrapper onPress={() => Keyboard.dismiss()} style={{ alignItems: 'center' }}>
       <T.StepProgressBar>
