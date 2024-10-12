@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import {Platform, View} from 'react-native';
+import { Platform, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
@@ -12,7 +12,6 @@ import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-rea
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
 import { useToast } from '@sendbird/uikit-react-native-foundation';
-import {deviceHeight} from "@commons/utils/ui/dimensions/dimensions";
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';

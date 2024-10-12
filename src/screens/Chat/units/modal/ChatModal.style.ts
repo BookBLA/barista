@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { colors } from '@commons/styles/variablesStyles';
 
 // LeaveChannelModal.tsx
