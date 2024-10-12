@@ -6,7 +6,7 @@ import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
 import { ConfirmChatModal } from '@screens/Chat/units/modal/ConfirmChatModal';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
-import { postChatAccept } from '@screens/Chat/Chat.api';
+import { postChatAccept, postChatReject } from '@screens/Chat/Chat.api';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
@@ -58,12 +58,14 @@ export const GroupChannelScreen = () => {
 
   const metaData = channel.getMetaData(['acceptStatus', 'targetMemberId', 'sendMemberId', 'sendMemberName']);
   let targetMemberId = 0;
+  let sendMemberId = 0;
   let sendMemberName = '';
   metaData.then((res) => {
     const acceptStatus = res.acceptStatus === MODAL_STATE_YET;
     const target = res.targetMemberId === currentUser?.userId;
 
     targetMemberId = parseInt(res.targetMemberId, 10) ?? 0;
+    sendMemberId = parseInt(res.sendMemberId, 10) ?? 0;
     sendMemberName = res.sendMemberName ?? '';
 
     if (acceptStatus && target) {
@@ -87,7 +89,7 @@ export const GroupChannelScreen = () => {
     setIsConfirm(MODAL_STATE_DENY);
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
-      // await postChatDeny(targetMemberId);
+      await postChatReject(sendMemberId);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'success');
     } catch (error) {
