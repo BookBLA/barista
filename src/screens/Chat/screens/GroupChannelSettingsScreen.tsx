@@ -13,7 +13,7 @@ import { LeaveChannelModal } from '@screens/Chat/units/modal/LeaveChannelModal';
 import { createGroupChannelSettingsFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import createGroupChannelSettingsModule from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/createGroupChannelSettingsModule';
-import {Icon, Switch, useHeaderStyle, useToast, useUIKitTheme} from '@sendbird/uikit-react-native-foundation';
+import { Icon, Switch, useHeaderStyle, useToast, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
 import { GroupChannelSettingsContexts } from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/moduleContext';
 import { useLocalization } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { PushTriggerOption } from '@sendbird/chat';

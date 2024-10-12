@@ -25,7 +25,12 @@ export const GroupChannelScreen = () => {
   const toast = useToast();
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
+  const [isReport, setIsReport] = useState(false);
   const [isConfirm, setIsConfirm] = useState(MODAL_STATE_NONE);
+
+  const [targetMemberId, setTargetMemberId] = useState(0);
+  const [sendMemberId, setSendMemberId] = useState(0);
+  const [sendMemberName, setSendMemberName] = useState('');
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -57,16 +62,13 @@ export const GroupChannelScreen = () => {
   if (!channel) return null;
 
   const metaData = channel.getMetaData(['acceptStatus', 'targetMemberId', 'sendMemberId', 'sendMemberName']);
-  let targetMemberId = 0;
-  let sendMemberId = 0;
-  let sendMemberName = '';
   metaData.then((res) => {
     const acceptStatus = res.acceptStatus === MODAL_STATE_YET;
     const target = res.targetMemberId === currentUser?.userId;
 
-    targetMemberId = parseInt(res.targetMemberId, 10) ?? 0;
-    sendMemberId = parseInt(res.sendMemberId, 10) ?? 0;
-    sendMemberName = res.sendMemberName ?? '';
+    setTargetMemberId(parseInt(res.targetMemberId, 10) ?? 0);
+    setSendMemberId(parseInt(res.sendMemberId, 10) ?? 0);
+    setSendMemberName(res.sendMemberName ?? '');
 
     if (acceptStatus && target) {
       setIsConfirm(MODAL_STATE_YET);
@@ -78,6 +80,7 @@ export const GroupChannelScreen = () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
       await postChatAccept(targetMemberId);
+      setTimeout(() => {}, 500);
       toast.show('채팅을 수락했어요', 'success');
     } catch (error) {
       console.error(error);
@@ -90,6 +93,7 @@ export const GroupChannelScreen = () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
       await postChatReject(sendMemberId);
+      setTimeout(() => {}, 500);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'success');
     } catch (error) {
@@ -98,9 +102,13 @@ export const GroupChannelScreen = () => {
     }
   };
 
-  const chatReport = async () => {
+  if (isReport) {
     setIsConfirm(MODAL_STATE_DENY);
-  };
+    setTimeout(() => {}, 1500);
+    channel.leave().then(() => {
+      sdk.clearCachedMessages([channel.url]).catch();
+    });
+  }
   console.log(isConfirm);
 
   // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
@@ -132,7 +140,11 @@ export const GroupChannelScreen = () => {
         />
       )}
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
-        <ReportOption bottomClose={reportBottomSheet.handleCloseBottomSheet} reportedMemberId={targetMemberId} />
+        <ReportOption
+          bottomClose={reportBottomSheet.handleCloseBottomSheet}
+          reportedMemberId={targetMemberId}
+          setIsReported={setIsReport}
+        />
       </CustomBottomSheetModal>
     </>
   );
