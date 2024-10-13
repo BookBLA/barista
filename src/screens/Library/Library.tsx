@@ -536,11 +536,11 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               신고하기
             </CustomText>
           </S.ProfileImageModificationButton>
-          <S.ProfileImageModificationButton onPress={toggle}>
-            <CustomText size="16px" font="fontRegular">
-              차단하기
-            </CustomText>
-          </S.ProfileImageModificationButton>
+          {/*<S.ProfileImageModificationButton onPress={toggle}>*/}
+          {/*  <CustomText size="16px" font="fontRegular">*/}
+          {/*    차단하기*/}
+          {/*  </CustomText>*/}
+          {/*</S.ProfileImageModificationButton>*/}
         </S.ProfileImageBottomSheetContainer>
       </CustomBottomSheetModal>
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>

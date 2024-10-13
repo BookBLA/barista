@@ -18,7 +18,7 @@ import {
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import { useSendbirdChat } from "@sendbird/uikit-react-native";
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
   const sendMemberId = memberId.toString();
@@ -36,7 +36,7 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     acceptStatus: 'yet',
   };
 
-  const { sdk} = useSendbirdChat();
+  const { sdk } = useSendbirdChat();
   const channelCreateParams: GroupChannelCreateParams = {
     invitedUserIds: [sendMemberId, targetMemberId],
     isDistinct: true,
@@ -100,7 +100,9 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
   };
   // @ts-ignore
-  channel.sendUserMessage(bookTitleMessageCreateParams).onSucceeded((message: UserMessage) => {
+  channel
+    .sendUserMessage(bookTitleMessageCreateParams)
+    .onSucceeded((message: UserMessage) => {
       channel.sendUserMessage(userMessageCreateParams);
       console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
     })
