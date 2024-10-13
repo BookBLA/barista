@@ -31,5 +31,6 @@ export interface IPostPostcard {
 export interface ISendPostcardRequest {
   postcardTypeId: number;
   receiveMemberId: number;
+  receiveMemberBookId: number;
   memberReply: string;
 }

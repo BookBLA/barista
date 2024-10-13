@@ -6,7 +6,6 @@ export const useBottomSheet = () => {
   const bottomRef = useRef<BottomSheetModal>(null);
 
   const handleOpenBottomSheet = () => {
-    console.log('handleOpenBottomSheet');
     bottomRef.current?.present();
   };
 

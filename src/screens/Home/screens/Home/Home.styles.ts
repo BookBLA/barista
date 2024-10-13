@@ -8,6 +8,9 @@ export const Wrapper = styled.View`
   width: 100%;
   height: 100%;
   padding: 64px 12px 20px;
+
+  align-items: center;
+  justify-content: center;
 `;
 
 export const LoadingWrapper = styled.View`
@@ -18,6 +21,6 @@ export const LoadingWrapper = styled.View`
   width: 100%;
   height: 90%;
 
-  background-color: '#d9d9d9';
+  background-color: #d9d9d9;
   border-radius: 10px;
 `;

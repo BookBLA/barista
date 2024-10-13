@@ -101,6 +101,11 @@ export const icons = {
 
   inviteCoin: require('@assets/images/icons/InviteCoin.png'),
   update: require('@assets/images/icons/Update.png'),
+
+  bellChat: require('@assets/images/icons/BellChat.png'),
+  libraryChat: require('@assets/images/icons/LibraryChat.png'),
+  reportChat: require('@assets/images/icons/ReportChat.png'),
+  exitChat: require('@assets/images/icons/ExitChat.png'),
 };
 
 export const img = {
@@ -147,6 +152,8 @@ export const img = {
 
   adMask: require('@assets/images/img/adMask.png'),
   productMask: require('@assets/images/img/productMask.png'),
+
+  emptyAlert: require('@assets/images/img/emptyAlert.png'),
 };
 
 export const logos = {

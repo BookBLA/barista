@@ -57,9 +57,10 @@ const SelectProfile = () => {
   const callPostStyleApi = async () => {
     try {
       console.log('styleInfo', styleInfo);
-      const response = await postMemberStyleApi(styleInfo);
-      console.log('postMemberStyleApi', response);
+      const styleResponse = await postMemberStyleApi(styleInfo);
+      console.log('postMemberStyleApi', styleResponse);
       updateMemberInfo('memberStatus', EMemberStatus.BOOK);
+
       handleReset('initBookStack');
       resetStyleInfo();
       resetInviteCodeStore();

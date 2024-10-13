@@ -21,7 +21,7 @@ const StepSecond = () => {
   const targetMemberId = route.params.targetMemberId;
 
   const [text, setText] = React.useState<string>('');
-  const maxLength = 100;
+  const maxLength = 200;
   const handleTextChange = (inputText: string) => {
     if (inputText.length <= maxLength) {
       setText(inputText);
@@ -47,7 +47,7 @@ const StepSecond = () => {
   useAppUIManager({
     setBackgroundColor: colors.primary,
   });
-  useHeaderControl({ title: '독서 퀴즈' });
+  useHeaderControl({ title: '엽서 작성하기' });
   return (
     <T.Wrapper onPress={() => Keyboard.dismiss()} style={{ alignItems: 'center' }}>
       <T.StepProgressBar>
@@ -81,7 +81,7 @@ const StepSecond = () => {
           multiline
           value={text}
           onChangeText={handleTextChange}
-          placehoder="첫 인사와 함께 이 책을 고른 이유를 알려주세요!"
+          placeholder={`첫 인사와 함께 이 책에서 인상 깊었던 내용과\n인상 깊었던 이유를 알려주세요!\n10자 이상 작성해주세요!`}
           maxLength={maxLength}
         />
         <T.TextCount>

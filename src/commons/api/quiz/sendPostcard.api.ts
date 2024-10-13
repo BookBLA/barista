@@ -1,4 +1,10 @@
 import { Post } from '@commons/configs/axios/http.api';
 import { ISendPostcardRequest } from '@screens/Quiz/QuizStack.types';
 
-export const postPostcard = (contents: ISendPostcardRequest) => Post('postcard/send', contents, true);
+export const postPostcardSend = async (contents: ISendPostcardRequest, channel: string) => {
+  const updatedContents = {
+    ...contents,
+    channelUrl: channel,
+  };
+  await Post('postcard/send', updatedContents, true);
+};

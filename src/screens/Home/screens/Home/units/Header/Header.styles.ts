@@ -42,7 +42,8 @@ export const IconWrapper = styled.View`
 `;
 
 export const IconButton = styled.TouchableOpacity`
-  margin-right: 5px;
+  margin-left: 2px;
+  margin-right: 3px;
 `;
 
 export const IconImage = styled.Image`

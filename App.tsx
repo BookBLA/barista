@@ -19,10 +19,17 @@ import queryClient from './src/commons/configs/queryClient/queryClient';
 import { useInitializeApp } from './src/commons/hooks/appStatus/useInitializeApp';
 import useToast from './src/commons/hooks/utils/toast/useToast';
 import { useAppStatus } from './src/commons/store/ui/appStatus/useAppStatus';
+import { platformServices } from './src/screens/Chat/NativeModule';
+import { SendbirdUIKitContainer, TypingIndicatorType } from '@sendbird/uikit-react-native';
+import { MMKV } from 'react-native-mmkv';
+import { StringSets } from './src/screens/Chat/options/StringOptions';
+import { UseReactNavigationHeader } from './src/screens/Chat/options/UseReactNavigationHeader';
+import { Theme } from './src/screens/Chat/options/Theme';
 
 export default function App() {
   useInitializeApp();
   useToast();
+  const mmkv = new MMKV();
   const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const isLight = backgroundColor !== '#fff' ? 'light' : 'dark';
   // Core.initializeKakaoSDK(`${process.env.EXPO_PUBLIC_NATIVE_APP_KEY}`, {
@@ -35,17 +42,37 @@ export default function App() {
   return (
     <FontLoader>
       <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <UpdateModal />
-          <BottomSheetModalProvider>
-            <SafeAreaProvider style={{ flex: 1 }}>
-              <StatusBar style={isLight} translucent />
-              <CustomNavigator />
-            </SafeAreaProvider>
-            <GlobalErrorModal />
-          </BottomSheetModalProvider>
-          <Toast config={toastConfig} />
-        </GestureHandlerRootView>
+        <SendbirdUIKitContainer
+          appId={`${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`}
+          chatOptions={{ localCacheStorage: mmkv, enableAutoPushTokenRegistration: true }}
+          platformServices={platformServices}
+          localization={{ stringSet: StringSets['ko'] }}
+          uikitOptions={{
+            groupChannel: {
+              enableTypingIndicator: true,
+              typingIndicatorTypes: new Set([TypingIndicatorType.Bubble, TypingIndicatorType.Text]),
+              replyType: 'quote_reply',
+              enableReactions: true,
+            },
+            groupChannelList: {
+              enableTypingIndicator: true,
+              enableMessageReceiptStatus: true,
+            },
+          }}
+          styles={{ HeaderComponent: UseReactNavigationHeader, theme: Theme, defaultHeaderTitleAlign: 'left' }}
+        >
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <UpdateModal />
+            <BottomSheetModalProvider>
+              <SafeAreaProvider style={{ flex: 1 }}>
+                <StatusBar style={isLight} translucent />
+                <CustomNavigator />
+              </SafeAreaProvider>
+              <GlobalErrorModal />
+            </BottomSheetModalProvider>
+            <Toast config={toastConfig} />
+          </GestureHandlerRootView>
+        </SendbirdUIKitContainer>
       </QueryClientProvider>
     </FontLoader>
   );

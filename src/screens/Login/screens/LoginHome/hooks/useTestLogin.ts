@@ -20,7 +20,7 @@ export const useTestLogin = () => {
       });
 
       if (!result.accessToken) return;
-      setToken(result.accessToken);
+      setToken({ bookbla: result.accessToken });
 
       const pushToken = await getPushToken();
       await postPushToken(pushToken);

@@ -9,6 +9,7 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { EErrorMessage } from '@commons/types/errorMessage';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { LoginResponse } from '@commons/types/openapiGenerator';
+import { useConnection } from '@sendbird/uikit-react-native';
 
 export const useSuccessfulLogin = () => {
   const showToast = useToastStore((state) => state.showToast);
@@ -18,13 +19,19 @@ export const useSuccessfulLogin = () => {
   const { handleReset } = useMovePage();
   const { getPushToken } = useGetPushToken();
   const { postPushToken } = usePostPushToken();
+  const { connect } = useConnection();
 
   const handleSuccessfulLogin = async (result: LoginResponse) => {
     if (!result.accessToken || !result.memberStatus) {
       throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
     }
 
-    setToken(result.accessToken);
+    // sendbird accessToken 추가
+    setToken({ bookbla: result.accessToken, sendbird: result.sendbirdToken });
+    await connect(String(result.memberId), { accessToken: result.sendbirdToken }).catch((error) => {
+      console.debug('sendbird login denied');
+    });
+
     updateMemberInfo('memberStatus', result.memberStatus);
     let schoolStatus = null;
 

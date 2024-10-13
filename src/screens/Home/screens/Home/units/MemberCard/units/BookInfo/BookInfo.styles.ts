@@ -5,9 +5,16 @@ export const Wrapper = styled.View`
   display: flex;
   flex-direction: column;
   align-items: center;
-
   padding: 16px 20px;
 `;
+
+// export const ReviewWrapper = styled.View`
+//   margin-top: 5px;
+//   width: 100%;
+//   height: 70%;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
 export const QuoteWrapper = styled.View`
   width: 16px;
@@ -23,9 +30,9 @@ export const QuoteImage = styled.Image`
 `;
 
 export const ReviewWrapper = styled.View`
-  height: 70%;
   flex-direction: column;
+  height: 70%;
+  width: 100%;
   align-items: center;
   justify-content: center;
-  width: 100%;
 `;

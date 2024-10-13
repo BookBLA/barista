@@ -10,6 +10,7 @@ import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect, useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 const ModifyProfile = () => {
   const route = useRoute<Props>();
@@ -23,6 +24,7 @@ const ModifyProfile = () => {
   // const { updateStyleInfo, styleInfo } = useStyleStore();
   const [profile, setProfile] = useState(profileUrl);
   const [profileList, setProfileList] = useState<{ profileImageId: number; profileImageUrl: string }[]>([]);
+  const { updateCurrentUserInfo } = useSendbirdChat();
 
   useEffect(() => {
     callGetProfileImage();
@@ -49,6 +51,9 @@ const ModifyProfile = () => {
     try {
       const profileImageId = profileList.find((item) => item.profileImageUrl === profile)?.profileImageId;
       const response = await patchMemberProfileImageApi({ profileImageTypeId: profileImageId as number });
+      // TODO: update시 채팅 프로필 사진 수정
+      // const updatedUserWithUrl = await updateCurrentUserInfo('PROFILE_URL');
+      // updatedUserWithUrl;
       showToast({ content: '프로필 사진이 수정되었습니다.' });
     } catch (error) {
       console.log('ERROR) patchProfileImageType', error);

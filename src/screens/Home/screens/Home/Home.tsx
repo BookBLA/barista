@@ -1,3 +1,6 @@
+import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useMemo, useState } from 'react';
+
 import { getMembersMatch } from '@commons/api/members/match/memberMatch';
 import { getInvitationRewardStatus, getOnboardingStatus } from '@commons/api/modal/modal.api';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -9,16 +12,15 @@ import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
-
 import { ResponseData } from '@commons/types/responseData';
+
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 import * as S from '@screens/Home/screens/Home/Home.styles';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
-import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
-import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useMemo, useState } from 'react';
+
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
@@ -30,13 +32,7 @@ const Home = () => {
   const { isOpen, toggle } = useToggle(true);
   const [invitingModalOpen, setInvitingModalOpen] = useState<boolean>(false);
   const [invitedModalOpen, setInvitedModalOpen] = useState<boolean>(false);
-  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
-    queryKey: ['membersMatch'],
-    queryFn: getMembersMatch,
-  });
-  const [memberData, setMemberData] = useState<IMemberData>({});
-  const [isReported, setIsReported] = useState(false);
-  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
   const [modalStatus, setModalStatus] = useState<{
     isAlreadyEntry: boolean;
     invitedRewardStatus: string;
@@ -47,34 +43,32 @@ const Home = () => {
     invitingRewardStatus: false,
   });
 
-  const [invitedMembersGender, setInvitedMembersGender] = useState<string | null>('male');
-  const isMemberData = Object.keys(memberData).length > 0;
-
-  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
+  // GET /members-match
+  const { data, isLoading, refetch } = useQuery<ResponseData<MemberIntroResponse>>({
+    queryKey: ['membersMatch'],
+    queryFn: getMembersMatch,
+  });
+  const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
+  const [memberData, setMemberData] = useState<IMemberData>({});
+  const [isReported, setIsReported] = useState(false);
+  const memberStore = useMemberStore((state) => state.memberInfo);
+  const memberStatus = memberStore.memberStatus;
+  const isMemberData = Object.keys(memberData).length > 0 && memberData && memberData.memberId;
 
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['75%'], []);
   const reportedMemberId = memberData?.memberId ?? 0;
 
-  const handleRefresh = () => {
-    setIsSubmitQuiz(false);
-    refetch();
-    setIsReported(false);
-  };
-
-  useEffect(() => {
-    console.log('isSubmitQuiz updated:', isSubmitQuiz);
-  }, [isSubmitQuiz]);
-
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
       try {
+        // TODO - 한결: asyncStorage 사용하여 저장해놓기
         const res = await getOnboardingStatus();
         const response = await getInvitationRewardStatus();
         setModalStatus({
-          isAlreadyEntry: res.result.homeOnboardingStatus || true,
-          invitedRewardStatus: response.result.invitedRewardStatus || 'NONE',
-          invitingRewardStatus: response.result.invitingRewardStatus || false,
+          isAlreadyEntry: res.result.homeOnboardingStatus ?? true,
+          invitedRewardStatus: response.result.invitedRewardStatus ?? 'NONE',
+          invitingRewardStatus: response.result.invitingRewardStatus ?? false,
         });
         setInvitedMembersGender(response.result.invitedMembersGender ? response.result.invitedMembersGender : null);
         if (res.result.homeOnboardingStatus === true) {
@@ -92,6 +86,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
+    setIsInvitationCard(data?.result.isInvitationCard ?? false);
     setMemberData(data?.result ?? {});
   }, [data]);
 
@@ -115,7 +110,7 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return null;
+    return <Spinner />;
   }
 
   return (
@@ -141,11 +136,11 @@ const Home = () => {
         )}
         {EMemberStatus.MATCHING_DISABLED === memberStatus && <Lock />}
 
-        {isSubmitQuiz || isReported ? (
+        {isInvitationCard || isReported ? (
           <InviteCard />
         ) : (
           <>
-            {isMemberData && !isReported ? (
+            {isMemberData ? (
               <MemberCard memberData={memberData} handleReport={reportBottomSheet.handleOpenBottomSheet} />
             ) : (
               <EventCard />
@@ -153,7 +148,7 @@ const Home = () => {
           </>
         )}
 
-        <Advert memberData={memberData} handleRefresh={handleRefresh} />
+        <Advert memberData={memberData} handleRefresh={refetch} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
             bottomClose={reportBottomSheet.handleCloseBottomSheet}

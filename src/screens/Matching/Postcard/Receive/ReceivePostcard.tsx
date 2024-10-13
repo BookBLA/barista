@@ -1,5 +1,13 @@
-import manIcon from '@assets/images/icons/ManSmall.png';
-import womanIcon from '@assets/images/icons/WomanSmall.png';
+import React, { useState } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
+
+import * as S from './ReceivePostcard.styles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import { EPostcardStatus } from '../Send/SendPostcard.types';
+import { IReceivePostcardProps } from './ReceivePostcard.types';
+
 import { readPostcard } from '@commons/api/matching/matching.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -8,30 +16,13 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
-import useModalStore from '@commons/store/ui/modal/useModalStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
-import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
-import React, { useState } from 'react';
-import { Image, Linking, TouchableOpacity, View } from 'react-native';
-import {
-  CircularImage,
-  GenderIconStyled,
-  ModalBookImage,
-  ModalBookListContainer,
-  ModalBookShelves,
-  ModalBookWrapper,
-  ModalSchoolNameText,
-  ModalUserInfoViewStyled,
-  UserInfoNameWrapper,
-  UserInfoWrapper,
-  UserNameText,
-  styles,
-} from '../Send/SendPostcard.styles';
-import { EGender, EPostcardStatus } from '../Send/SendPostcard.types';
-import * as S from './ReceivePostcard.styles';
-import { IReceivePostcardProps } from './ReceivePostcard.types';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
+import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
+import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+
+import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -62,13 +53,21 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
-  const { isMatchingApproveModalVisible, setMatchingApproveModalVisible, modalData } = useModalStore();
   const logEvent = useAnalyticsEventLogger();
+  const showToast = useToastStore((state) => state.showToast);
+
+  const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
+  const studentIdImageStatus = useMemberStore((state) => state.memberInfo.studentIdImageStatus);
+  const { updateMemberInfo } = useMemberStore();
+  const [, forceRender] = useState(0);
+
   const { toggle: studentIdToggle, isOpen } = useToggle();
   const studentIdModalConfig = getStudentIdConfig({
     isOpen,
     studentIdToggle,
   });
+  const { sdk } = useSendbirdChat();
+  const navigation = useNavigation<any>();
 
   const toggleNoPostcardModal = () => {
     setModalVisible(!isNoPostcardModalVisible);
@@ -79,29 +78,86 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
-    // if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
-    //   movePageNoReference('receivePostcardDetail', rest);
-    // } else {
-    //   if (memberPostcard > 0) {
-    //     toggleCheckBeforeSendPostcardModal();
-    //   } else {
-    //     toggleNoPostcardModal();
-    //   }
-    // }
-    studentIdToggle;
-    console.log('studentIdToggle', studentIdToggle);
-  };
+    if (memberStatus === EMemberStatus.REJECTED || memberStatus === EMemberStatus.APPROVAL) {
+      if (!studentIdImageStatus) {
+        await getStudentIdStatus();
+      }
 
-  const showPostcardDetail = async () => {
-    try {
-      await readPostcard(postcardId);
-      toggleCheckBeforeSendPostcardModal();
+      switch (memberStatus) {
+        case EMemberStatus.REJECTED:
+          studentIdToggle();
+          break;
 
-      movePageNoReference('receivePostcardDetail', rest);
-    } catch {
-      useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
+        case EMemberStatus.APPROVAL:
+          handleApprovalStatus();
+          break;
+      }
+    } else if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
+      navigation.navigate('chat', {
+        screen: 'GroupChannelList',
+      });
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
     }
   };
+
+  const handleApprovalStatus = () => {
+    if (studentIdImageStatus === EStudentIdImageStatus.PENDING) {
+      showToast({
+        content: '학생증 승인 대기 중입니다.',
+      });
+    } else if (
+      studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
+      studentIdImageStatus === EStudentIdImageStatus.DENIAL
+    ) {
+      studentIdToggle();
+    } else {
+      if (memberPostcard > 0) {
+        toggleCheckBeforeSendPostcardModal();
+      } else {
+        toggleNoPostcardModal();
+      }
+    }
+  };
+
+  const getStudentIdStatus = async () => {
+    try {
+      const response = await getStudentIdImageStatusApi();
+      updateMemberInfo('studentIdImageStatus', response.result.studentIdImageStatus as string);
+      forceRender((prev) => prev + 1);
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+
+  const showPostcardDetail = _.debounce(async () => {
+    try {
+      const { result } = await readPostcard(postcardId);
+      toggleCheckBeforeSendPostcardModal();
+
+      // @ts-ignore
+      const channel = sdk.groupChannel.getChannel(result.channelUrl);
+      await channel.then((res) => {
+        res.unhide();
+        navigation.navigate('chat', {
+          screen: 'GroupChannelList',
+        });
+        // navigation.navigate('chat', {
+        //   screen: 'GroupChannel',
+        //   params: {
+        //     channelUrl: result.url,
+        //   },
+        // });
+      });
+    } catch (error) {
+      console.error('error', error);
+      useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
+    }
+  }, 500);
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
@@ -116,32 +172,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const noPostcardModalConfig = {
     visible: isNoPostcardModalVisible,
     onClose: toggleNoPostcardModal,
-  };
-
-  const handleOpenKakaoRoomUrl = async () => {
-    const supported = await Linking.canOpenURL(modalData.memberOpenKakaoRoomUrl);
-    logEvent('move_open_kakao_chat', { targetMemberId: memberId });
-
-    if (supported) {
-      await Linking.openURL(modalData.memberOpenKakaoRoomUrl);
-    } else {
-      useToastStore.getState().showToast({ content: '올바르지 않은 링크입니다! 관리자에게 문의해주세요!' });
-    }
-  };
-
-  const matchingApproveModalConfig = {
-    visible: isMatchingApproveModalVisible,
-    onClose: () => setMatchingApproveModalVisible(false),
-    mode: 'round',
-    close: true,
-    buttons: [
-      {
-        label: '오픈채팅방으로 이동',
-        action: handleOpenKakaoRoomUrl,
-        color: colors.textYellow,
-        bgColor: colors.buttonPrimary,
-      },
-    ],
   };
 
   return (
@@ -164,6 +194,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
         </S.PostcardInfoViewStyled>
         {[EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus) && <S.BookImageWrapper />}
       </TouchableOpacity>
+
       <CustomModal modalConfig={checkBeforeSendPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
@@ -186,6 +217,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
+
       <CustomModal modalConfig={noPostcardModalConfig}>
         <S.EmptyPostcardModalWrapper>
           <CustomText font="fontMedium" size="16px" style={{ marginBottom: 12 }}>
@@ -208,36 +240,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           </S.ModalBottomWrapper>
         </S.EmptyPostcardModalWrapper>
       </CustomModal>
-      <CustomModal modalConfig={matchingApproveModalConfig}>
-        <View>
-          <ModalUserInfoViewStyled>
-            <CircularImage source={{ uri: modalData.memberProfileImageUrl }} resizeMode="cover" />
-            <UserInfoWrapper>
-              <UserInfoNameWrapper>
-                <UserNameText
-                  style={{ fontSize: 16 }}
-                >{`${modalData.memberName} | ${modalData.memberAge}`}</UserNameText>
-                <GenderIconStyled source={modalData.memberGender === EGender.MALE ? manIcon : womanIcon} />
-              </UserInfoNameWrapper>
-              <ModalSchoolNameText>{modalData.memberSchoolName}</ModalSchoolNameText>
-            </UserInfoWrapper>
-          </ModalUserInfoViewStyled>
-          <ModalBookListContainer>
-            {modalData.bookImageUrls?.map((bookImageUrl, index) => (
-              <ModalBookWrapper>
-                {index === 0 && (
-                  <Image
-                    style={{ width: 15, height: 30, position: 'absolute', zIndex: 3, left: deviceWidth / 5, top: -3 }}
-                    source={icons.bookmark}
-                  />
-                )}
-                <ModalBookImage source={bookImageUrl ? { uri: bookImageUrl } : img.prepareBookImage} />
-              </ModalBookWrapper>
-            ))}
-          </ModalBookListContainer>
-          <ModalBookShelves style={styles.Shadow} />
-        </View>
-      </CustomModal>
+
       <CustomModal modalConfig={studentIdModalConfig} />
     </S.ContainerViewStyled>
   );
