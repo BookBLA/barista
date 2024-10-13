@@ -1,28 +1,12 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import { IProps } from './CustomBottomSheetModal.types';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { forwardRef, useCallback } from 'react';
 import { BackHandler } from 'react-native';
+import { IProps } from './CustomBottomSheetModal.types';
 
 const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(
   ({ children, snapPoints, index, enableContentPanningGesture }, ref) => {
     const handleSheetChanges = useCallback((index: number) => {}, []);
-    const bottomSheetRef = useRef<BottomSheetModal>(null);
-
-    // TODO: 성진 - 타입 오류는 추후에 수정예정
-    useImperativeHandle(
-      ref,
-      // @ts-ignore
-      () => ({
-        close: () => bottomSheetRef.current?.close(),
-        present: () => bottomSheetRef.current?.present(),
-        dismiss: () => bottomSheetRef.current?.dismiss(),
-        snapToIndex: (index: number) => bottomSheetRef.current?.snapToIndex(index),
-        snapToPosition: (position: number | string, animationConfigs?: any) =>
-          bottomSheetRef.current?.snapToPosition(position, animationConfigs),
-        expand: () => bottomSheetRef.current?.expand(),
-      }),
-      [],
-    );
 
     const renderBackdrop = useCallback(
       (props: any) => (
@@ -31,20 +15,24 @@ const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(
       [],
     );
 
-    useEffect(() => {
-      const backAction = () => {
-        if (bottomSheetRef.current) {
-          bottomSheetRef.current.close();
-          return true;
-        }
-        return false;
-      };
+    useFocusEffect(
+      useCallback(() => {
+        console.log('refQQQ', ref);
+        const backAction = () => {
+          if (ref && ref.current) {
+            ref.current.close();
+            return true;
+          } else {
+            return false;
+          }
+        };
 
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
-      return () => {
-        backHandler.remove();
-      };
-    }, []);
+        const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+        return () => {
+          backHandler.remove();
+        };
+      }, [ref]),
+    );
 
     return (
       <BottomSheetModal

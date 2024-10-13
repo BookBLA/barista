@@ -52,6 +52,7 @@ const TapScreens = () => {
             <Image source={focused ? homeDark : homeBright} resizeMode="contain" style={{ width: 21, height: 21 }} />
           ),
           unmountOnBlur: true,
+          lazy: true,
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
@@ -78,6 +79,7 @@ const TapScreens = () => {
             />
           ),
           unmountOnBlur: true,
+          lazy: true,
         }}
       />
       <Tab.Screen
@@ -93,6 +95,7 @@ const TapScreens = () => {
             />
           ),
           unmountOnBlur: true,
+          lazy: true,
         }}
       />
       <Tab.Screen
@@ -108,6 +111,7 @@ const TapScreens = () => {
             />
           ),
           unmountOnBlur: true,
+          lazy: true,
         }}
       />
     </Tab.Navigator>
