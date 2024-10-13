@@ -19,10 +19,7 @@ const ProductListContent: React.FC<ProductProps> = ({ props, index, admobCount, 
         Platform.OS === 'ios'
           ? await requestPurchase({ sku, andDangerouslyFinishTransactionAutomaticallyIOS: false })
           : await requestPurchase({ skus });
-      // Alert.alert('Purchase Success:', JSON.stringify(result, null, 2));
-    } catch (err) {
-      // Alert.alert('requestPurchase 실패', JSON.stringify(err, null, 2));
-    }
+    } catch (err) {}
   };
 
   const isLoadingRef = useRef(false);
