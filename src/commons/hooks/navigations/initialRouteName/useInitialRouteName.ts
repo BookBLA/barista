@@ -24,7 +24,10 @@ export const useInitialRouteName = () => {
       (memberInfo.schoolStatus === 'CLOSED' || schoolStatus === 'CLOSED')
     ) {
       return 'inviteFriends';
-    } else return routeMap[memberStatusParam ?? memberStatus ?? 'DEFAULT'];
+    } else {
+      const status = memberStatusParam || memberStatus || 'DEFAULT';
+      return routeMap[status];
+    }
 
     // return routeMap[memberStatusParam ?? memberStatus ?? 'DEFAULT'];
   };
