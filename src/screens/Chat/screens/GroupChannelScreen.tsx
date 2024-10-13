@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Platform, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import _ from 'lodash';
 
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSheetModal/CustomBottomSheetModal';
@@ -78,32 +79,30 @@ export const GroupChannelScreen = () => {
     }
   });
 
-  const chatAccept = async () => {
+  const chatAccept = _.debounce(async () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
       setIsConfirm(MODAL_STATE_ACCEPT);
       await postChatAccept(targetMemberId);
-      setTimeout(() => {}, 500);
       toast.show('채팅을 수락했어요', 'normal');
     } catch (error) {
       console.error(error);
       toast.show('채팅을 수락하는 도중 문제가 생겼습니다', 'error');
     }
-  };
+  }, 500);
 
-  const chatDeny = async () => {
+  const chatDeny = _.debounce(async () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
       setIsConfirm(MODAL_STATE_DENY);
       await postChatReject(sendMemberId);
-      setTimeout(() => {}, 500);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'normal');
     } catch (error) {
       console.error(error);
       toast.show('채팅을 거절하는 도중 문제가 생겼습니다', 'error');
     }
-  };
+  }, 500);
 
   if (isReport) {
     setIsConfirm(MODAL_STATE_DENY);
