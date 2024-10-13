@@ -19,6 +19,7 @@ export const NoticeWrapper = styled.View`
   flex-direction: column;
   justify-content: flex-start;
   margin-bottom: 10px;
+  border-radius: 10px;
   padding: 12px;
   background-color: ${colors.background};
 `;
