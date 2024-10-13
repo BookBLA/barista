@@ -22,9 +22,12 @@ import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { CreateChat } from '@screens/Quiz/hooks/CreateChat';
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
+import { GroupChannel } from '@sendbird/chat/groupChannel';
 
 const StepThird = () => {
   useScreenLogger();
+  const { sdk } = useSendbirdChat();
   const { movePage } = useMovePage();
   const route = useRoute<TProps>();
   const logEvent = useAnalyticsEventLogger();
@@ -50,14 +53,19 @@ const StepThird = () => {
       receiveMemberBookId: route.params.memberBookId,
       memberReply: route.params.text ?? '',
     };
+    let channel: GroupChannel;
     try {
-      const channel = await CreateChat(postcardInfo, memberId, memberName); // 채팅방 hide 상태로 생성
-      await postPostcardSend(postcardInfo, channel); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
+      channel = await CreateChat(postcardInfo, memberId, memberName, sdk);
+      await postPostcardSend(postcardInfo, channel.url); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
     } catch (error) {
       const { response } = error as unknown as AxiosError<AxiosError>;
       if (response) {
+        // @ts-ignore
+        if (channel) {
+          await channel.delete();
+        }
         console.log(response.data, response.status);
         useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\n${response.data.message}` });
       }

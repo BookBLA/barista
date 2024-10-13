@@ -18,9 +18,8 @@ import {
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
-export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
+export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string, sdk: any) => {
   const sendMemberId = memberId.toString();
   const sendMemberName = memberName;
   const sendMemberReview = contents.memberReply;
@@ -36,7 +35,6 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     acceptStatus: 'yet',
   };
 
-  const { sdk } = useSendbirdChat();
   const channelCreateParams: GroupChannelCreateParams = {
     invitedUserIds: [sendMemberId, targetMemberId],
     isDistinct: true,
@@ -118,5 +116,5 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
   };
   await channel.hide(params);
 
-  return channel.url;
+  return channel;
 };
