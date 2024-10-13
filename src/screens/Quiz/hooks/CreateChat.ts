@@ -1,7 +1,6 @@
 import { ISendPostcardRequest } from '@screens/Quiz/QuizStack.types';
 import { getBookInfo } from '@commons/api/postcard/library.api';
 
-import SendbirdChat from '@sendbird/chat';
 import {
   GroupChannel,
   GroupChannelCreateParams,
@@ -19,6 +18,7 @@ import {
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
 
 export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string) => {
   const sendMemberId = memberId.toString();
@@ -36,17 +36,13 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     acceptStatus: 'yet',
   };
 
-  const sb = SendbirdChat.init({
-    appId: `${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`,
-    modules: [new GroupChannelModule()],
-  }) as SendbirdGroupChat;
-
+  const { sdk } = useSendbirdChat();
   const channelCreateParams: GroupChannelCreateParams = {
     invitedUserIds: [sendMemberId, targetMemberId],
     isDistinct: true,
     isPublic: false,
   };
-  const channel: GroupChannel = await sb.groupChannel.createChannel(channelCreateParams);
+  const channel: GroupChannel = await sdk.groupChannel.createChannel(channelCreateParams);
   await channel.createMetaData(metaData);
   console.debug('GroupChat initialize -', sendMemberId, targetMemberId, 'book -', targetMemberBookId);
 
@@ -104,7 +100,9 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
   };
   // @ts-ignore
-  channel.sendUserMessage(bookTitleMessageCreateParams).onSucceeded((message: UserMessage) => {
+  channel
+    .sendUserMessage(bookTitleMessageCreateParams)
+    .onSucceeded((message: UserMessage) => {
       channel.sendUserMessage(userMessageCreateParams);
       console.debug('GroupChat message send complete', sendMemberId, targetMemberId);
     })

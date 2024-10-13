@@ -13,7 +13,7 @@ import { LeaveChannelModal } from '@screens/Chat/units/modal/LeaveChannelModal';
 import { createGroupChannelSettingsFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import createGroupChannelSettingsModule from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/createGroupChannelSettingsModule';
-import { Icon, Switch, useHeaderStyle, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
+import { Icon, Switch, useHeaderStyle, useToast, useUIKitTheme } from '@sendbird/uikit-react-native-foundation';
 import { GroupChannelSettingsContexts } from '@sendbird/uikit-react-native/src/domain/groupChannelSettings/module/moduleContext';
 import { useLocalization } from '@sendbird/uikit-react-native/src/hooks/useContext';
 import { PushTriggerOption } from '@sendbird/chat';
@@ -54,6 +54,7 @@ const GroupChannelSettingMenus = () => {
   const { channel } = useContext(GroupChannelSettingsContexts.Fragment);
   const { STRINGS } = useLocalization();
   const { colors } = useUIKitTheme();
+  const toast = useToast();
 
   const { movePage } = useMovePage();
 
@@ -73,9 +74,6 @@ const GroupChannelSettingMenus = () => {
   const { toggle, isOpen } = useToggle();
 
   const navigateToGroupChannelListScreen = () => {};
-  const navigateToGroupChannelNotificationScreen = () => {
-    console.log('navigateToGroupChannelListScreen');
-  };
 
   const exitChannel = (channel: SendbirdGroupChannel) => {
     channel.leave().then(() => {
@@ -126,9 +124,9 @@ const GroupChannelSettingMenus = () => {
   const currentUser = sdk.currentUser;
   // @ts-ignore
   const otherMember = members.find((member) => member.userId !== currentUser.userId);
-  if (!otherMember) return null;
+  // if (!otherMember) return null;
   // @ts-ignore
-  const otherMemberId = otherMember.userId;
+  const otherMemberId = otherMember ? otherMember.userId : '0';
 
   const defaultMenuItems: MenuBarProps[] = [
     {
@@ -141,18 +139,26 @@ const GroupChannelSettingMenus = () => {
     {
       icon: icons.libraryChat,
       name: '서재 구경하기',
-      onPress: movePage('library', {
-        memberId: otherMemberId,
-        isYourLibrary: true,
-      }),
+      onPress: otherMember
+        ? movePage('library', {
+            memberId: otherMemberId,
+            isYourLibrary: true,
+          })
+        : () => {
+            toast.show('상대방이 없어 서재를 조회할 수 없습니다', 'error');
+          },
     },
     {
       icon: icons.reportChat,
       name: '신고하기',
-      onPress: () => {
-        // FIXME - 한결: 첫 화면 렌더링시에 동작하지 않고, 화면에서 다른 행동을 해야지만 동작함. 원인 무엇..???
-        reportBottomSheet.handleOpenBottomSheet();
-      },
+      onPress: otherMember
+        ? () => {
+            // FIXME - 한결: 첫 화면 렌더링시에 동작하지 않고, 화면에서 다른 행동을 해야지만 동작함. 원인 무엇..???
+            reportBottomSheet.handleOpenBottomSheet();
+          }
+        : () => {
+            toast.show('상대방이 없어 신고가 불가능합니다', 'error');
+          },
     },
   ];
 

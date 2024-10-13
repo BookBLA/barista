@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { deviceHeight, deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import { colors } from '@commons/styles/variablesStyles';
 
 // LeaveChannelModal.tsx
@@ -46,8 +46,9 @@ export const Wrapper = styled.View`
   bottom: 0;
   margin-bottom: 15px;
   padding: 20px 0;
+  z-index: 10;
   width: ${deviceWidth};
-  height: ${deviceHeight}*0.5;
+  height: 160px;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: ${colors.buttonPrimary};
@@ -104,4 +105,50 @@ export const ButtonText = styled.Text`
   font-size: 14px;
   font-weight: 500;
   color: ${(props: any) => props.color};
+`;
+
+// EndChatModal.tsx
+export const EndChatWrapper = styled.View`
+  padding: 25px;
+  width: 100%;
+  height: 188px;
+  border-radius: 10px;
+  background-color: white;
+  overflow: hidden;
+  justify-content: center;
+`;
+
+export const EndChatTextWrapper = styled.View`
+  flex: 1;
+`;
+
+export const EndChatTitle = styled.Text`
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: left;
+  color: black;
+`;
+
+export const EndChatText = styled.Text`
+  font-size: 12px;
+  text-align: left;
+  line-height: 16px;
+`;
+
+export const EndChatButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 45px;
+  background-color: #ecedef;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+export const EndChatButtonText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
 `;

@@ -12,11 +12,14 @@ import { MemberBookReadResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as T from '@screens/InitBook/InitBookStack.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Image, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { EBook } from './AddBook.types';
 import { useFetchMemberBook } from './hooks/useFetchMemberBook';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
+import { postSendbird } from '@commons/api/auth/login.api';
+import { useConnection } from '@sendbird/uikit-react-native';
 
 const AddBook = () => {
   useScreenLogger();
@@ -24,6 +27,8 @@ const AddBook = () => {
   const { movePage, handleReset } = useMovePage();
   const { data, fetchGetMemberBook } = useFetchMemberBook();
   const { updateMemberInfo } = useMemberStore();
+  const setToken = useAuthStore((state) => state.setToken);
+  const { connect } = useConnection();
   const dataLength = data.length;
 
   const nextPage = () => {
@@ -35,6 +40,19 @@ const AddBook = () => {
       console.log('ERROR) postMemberStatusesApi', error);
     }
   };
+
+  useEffect(() => {
+    const setSendbirdToken = async () => {
+      const sendbirdResponse = await postSendbird();
+      if (sendbirdResponse.result.memberId) {
+        setToken({ sendbird: sendbirdResponse.result.sendbirdToken });
+        await connect(String(sendbirdResponse.result.memberId), { accessToken: sendbirdResponse.result.sendbirdToken });
+      }
+    };
+    setSendbirdToken().then(() => {
+      console.debug('SendbirdToken Issuance successfully.');
+    });
+  }, []);
 
   return (
     <S.Wrapper>

@@ -1,13 +1,17 @@
-import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
-import * as T from '@screens/Quiz/QuizStack.styles';
-import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
+import React, { useEffect, useState } from 'react';
 import { useRoute } from '@react-navigation/native';
+import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { AxiosError } from 'axios';
+import _ from 'lodash';
+
+import * as T from '@screens/Quiz/QuizStack.styles';
+
+import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
+import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { TProps } from '@screens/Quiz/QuizStack.types';
 import { BookInfo } from '@screens/Quiz/units/BookInfo';
 import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
-import { Image, Text, TouchableWithoutFeedback, View } from 'react-native';
-import React, { useEffect, useState } from 'react';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { TPostcardInfo } from '@screens/Library/SendPostcardModal/SendPostcardModal.types';
 import { getPostcardTypeList } from '@commons/api/postcard/library.api';
@@ -18,7 +22,6 @@ import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { CreateChat } from '@screens/Quiz/hooks/CreateChat';
-import { AxiosError } from 'axios';
 
 const StepThird = () => {
   useScreenLogger();
@@ -40,7 +43,7 @@ const StepThird = () => {
     setCurrentPressedPostcard(postcardId);
   };
 
-  const sendPostCard = async () => {
+  const sendPostCard = _.debounce(async () => {
     const postcardInfo = {
       postcardTypeId: currentPressedPostcard?.postcardTypeId!,
       receiveMemberId: route.params.targetMemberId,
@@ -59,7 +62,7 @@ const StepThird = () => {
         useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\n${response.data.message}` });
       }
     }
-  };
+  }, 500);
 
   useEffect(() => {
     fetchPostcardInfo();

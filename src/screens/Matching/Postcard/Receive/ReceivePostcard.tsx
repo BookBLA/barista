@@ -1,3 +1,13 @@
+import React, { useState } from 'react';
+import { TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
+
+import * as S from './ReceivePostcard.styles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import { EPostcardStatus } from '../Send/SendPostcard.types';
+import { IReceivePostcardProps } from './ReceivePostcard.types';
+
 import { readPostcard } from '@commons/api/matching/matching.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
@@ -8,18 +18,11 @@ import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { EPostcardStatus } from '../Send/SendPostcard.types';
-import * as S from './ReceivePostcard.styles';
-import { IReceivePostcardProps } from './ReceivePostcard.types';
-
-import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
-import { useNavigation } from '@react-navigation/native';
-import { EMemberStatus } from '@commons/types/memberStatus';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
 import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+
+import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -131,7 +134,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     }
   };
 
-  const showPostcardDetail = async () => {
+  const showPostcardDetail = _.debounce(async () => {
     try {
       const { result } = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
@@ -154,7 +157,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       console.error('error', error);
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
     }
-  };
+  }, 500);
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
