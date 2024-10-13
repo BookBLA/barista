@@ -7,6 +7,8 @@ import CustomBottomSheetModal from '@commons/components/Feedbacks/CustomBottomSh
 import { ConfirmChatModal } from '@screens/Chat/units/modal/ConfirmChatModal';
 import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import { postChatAccept, postChatReject } from '@screens/Chat/Chat.api';
+import { EndChatModal } from '@screens/Chat/units/modal/EndChatModal';
+import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
@@ -27,6 +29,7 @@ export const GroupChannelScreen = () => {
   const reportSnapPoints = useMemo(() => ['78%'], []);
   const [isReport, setIsReport] = useState(false);
   const [isConfirm, setIsConfirm] = useState(MODAL_STATE_NONE);
+  const { toggle: endChatToggle, isOpen: isEndChatToggleOpen } = useToggle(false);
 
   const [targetMemberId, setTargetMemberId] = useState(0);
   const [sendMemberId, setSendMemberId] = useState(0);
@@ -111,6 +114,7 @@ export const GroupChannelScreen = () => {
   }
   console.log(isConfirm);
 
+  // TODO - 한결: 상대방이 나갔을 경우 EndChatModal 띄워야 함.
   // FIXME - 한결: 작은 화면을 가진 핸드폰은 Offset값이 너무 큼. 적절히 조정 필요해보임
   // @ts-ignore
   return (
@@ -141,6 +145,16 @@ export const GroupChannelScreen = () => {
         />
       )}
       {isConfirm === MODAL_STATE_YET && <View style={{ height: 80, width: '100%' }} />}
+      {/*<EndChatModal*/}
+      {/*  visible={isEndChatToggleOpen}*/}
+      {/*  onClose={endChatToggle}*/}
+      {/*  leave={() => {*/}
+      {/*    endChatToggle();*/}
+      {/*    channel.leave().then(() => {*/}
+      {/*      sdk.clearCachedMessages([channel.url]).catch();*/}
+      {/*    });*/}
+      {/*  }}*/}
+      {/*/>*/}
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption
           bottomClose={reportBottomSheet.handleCloseBottomSheet}

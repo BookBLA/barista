@@ -15,3 +15,9 @@ export type MenuBarProps = {
   actionLabel?: string;
   actionItem?: React.ReactNode;
 };
+
+export interface IModalProps {
+  onClose: () => void;
+  visible: boolean;
+  leave: () => void;
+}

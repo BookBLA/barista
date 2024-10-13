@@ -106,3 +106,49 @@ export const ButtonText = styled.Text`
   font-weight: 500;
   color: ${(props: any) => props.color};
 `;
+
+// EndChatModal.tsx
+export const EndChatWrapper = styled.View`
+  padding: 25px;
+  width: 100%;
+  height: 188px;
+  border-radius: 10px;
+  background-color: white;
+  overflow: hidden;
+  justify-content: center;
+`;
+
+export const EndChatTextWrapper = styled.View`
+  flex: 1;
+`;
+
+export const EndChatTitle = styled.Text`
+  margin-bottom: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 18px;
+  text-align: left;
+  color: black;
+`;
+
+export const EndChatText = styled.Text`
+  font-size: 12px;
+  text-align: left;
+  line-height: 16px;
+`;
+
+export const EndChatButton = styled.TouchableOpacity`
+  width: 100%;
+  height: 45px;
+  background-color: #ecedef;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  overflow: hidden;
+`;
+
+export const EndChatButtonText = styled.Text`
+  font-size: 14px;
+  font-weight: 500;
+  color: black;
+`;
