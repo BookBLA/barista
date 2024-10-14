@@ -24,7 +24,6 @@ import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.
 import { getMemberApi } from '@commons/api/members/default/member.api';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
-import {CreateChat} from "@screens/Matching/Postcard/CreateChat";
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -144,9 +143,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const showPostcardDetail = _.debounce(async () => {
     try {
-      const res = await readPostcard(postcardId);
+      await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
-      await CreateChat(res.result, sdk);
+      // await CreateChat(res.result, sdk);
 
       navigation.navigate('chat', {
         screen: 'GroupChannelList',

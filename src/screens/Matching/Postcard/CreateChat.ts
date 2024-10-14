@@ -96,7 +96,7 @@ export const CreateChat = async (contents: IReadPostcardProps, sdk: any) => {
     metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
   };
-  // @ts-ignore
+
   channel
     .sendUserMessage(bookTitleMessageCreateParams)
     .onSucceeded((message: UserMessage) => {

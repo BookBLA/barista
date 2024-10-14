@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Platform, View } from 'react-native';
+import { Linking, Platform, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import _ from 'lodash';
 
@@ -60,6 +60,16 @@ export const GroupChannelScreen = () => {
       unsubscribe();
     };
   }, [navigation]);
+
+  const originalOpenURL = Linking.openURL;
+  Linking.openURL = (url) => {
+    if (url.startsWith('http')) {
+      console.log('Blocked external link:', url);
+      return Promise.resolve(false); // 외부 링크 차단
+    } else {
+      return originalOpenURL(url); // 외부 링크가 아니면 원래 동작 유지
+    }
+  };
 
   const { sdk, currentUser } = useSendbirdChat();
   const { channel } = useGroupChannel(sdk, params.channelUrl);
@@ -122,6 +132,9 @@ export const GroupChannelScreen = () => {
         enableTypingIndicator
         keyboardAvoidOffset={Platform.OS === 'ios' ? 100 : 25}
         channel={channel}
+        onPressMediaMessage={(message, deleteMessage, uri) => {
+          console.log(channel?.url);
+        }}
         onChannelDeleted={() => {
           // Navigate to GroupChannelList function.
           navigation.navigate('GroupChannelList');
