@@ -24,6 +24,7 @@ import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.
 import { getMemberApi } from '@commons/api/members/default/member.api';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
+import {CreateChat} from "@screens/Matching/Postcard/CreateChat";
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
   const {
@@ -143,23 +144,19 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const showPostcardDetail = _.debounce(async () => {
     try {
-      const { result } = await readPostcard(postcardId);
+      const res = await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
+      await CreateChat(res.result, sdk);
 
-      // @ts-ignore
-      const channel = sdk.groupChannel.getChannel(result.channelUrl);
-      await channel.then((res) => {
-        res.unhide();
-        navigation.navigate('chat', {
-          screen: 'GroupChannelList',
-        });
-        // navigation.navigate('chat', {
-        //   screen: 'GroupChannel',
-        //   params: {
-        //     channelUrl: result.url,
-        //   },
-        // });
+      navigation.navigate('chat', {
+        screen: 'GroupChannelList',
       });
+      // navigation.navigate('chat', {
+      //   screen: 'GroupChannel',
+      //   params: {
+      //     channelUrl: result.url,
+      //   },
+      // });
     } catch (error) {
       console.error('error', error);
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });
