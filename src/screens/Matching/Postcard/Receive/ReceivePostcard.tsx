@@ -21,6 +21,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
 import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+import { getMemberApi } from '@commons/api/members/default/member.api';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 
@@ -96,12 +97,20 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       navigation.navigate('chat', {
         screen: 'GroupChannelList',
       });
-    } else {
+    } else if (memberStatus === EMemberStatus.COMPLETED) {
       if (memberPostcard > 0) {
         toggleCheckBeforeSendPostcardModal();
       } else {
         toggleNoPostcardModal();
       }
+    } else {
+      getMemberApi().then((result) => {
+        updateMemberInfo('memberStatus', result.result.memberStatus as string);
+        forceRender((prev) => prev + 1);
+      });
+      showToast({
+        content: '잠시만 기다려주세요',
+      });
     }
   };
 
@@ -116,11 +125,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     ) {
       studentIdToggle();
     } else {
-      if (memberPostcard > 0) {
-        toggleCheckBeforeSendPostcardModal();
-      } else {
-        toggleNoPostcardModal();
-      }
+      showToast({
+        content: '학생증 심사 중입니다',
+      });
     }
   };
 
@@ -136,23 +143,19 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const showPostcardDetail = _.debounce(async () => {
     try {
-      const { result } = await readPostcard(postcardId);
+      await readPostcard(postcardId);
       toggleCheckBeforeSendPostcardModal();
+      // await CreateChat(res.result, sdk);
 
-      // @ts-ignore
-      const channel = sdk.groupChannel.getChannel(result.channelUrl);
-      await channel.then((res) => {
-        res.unhide();
-        navigation.navigate('chat', {
-          screen: 'GroupChannelList',
-        });
-        // navigation.navigate('chat', {
-        //   screen: 'GroupChannel',
-        //   params: {
-        //     channelUrl: result.url,
-        //   },
-        // });
+      navigation.navigate('chat', {
+        screen: 'GroupChannelList',
       });
+      // navigation.navigate('chat', {
+      //   screen: 'GroupChannel',
+      //   params: {
+      //     channelUrl: result.url,
+      //   },
+      // });
     } catch (error) {
       console.error('error', error);
       useToastStore.getState().showToast({ content: '엽서를 읽을 수 없는 상태입니다.' });

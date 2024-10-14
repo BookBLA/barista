@@ -24,3 +24,11 @@ export interface IReceivePostcardProps {
   postcardImageUrl: string;
   postcardStatus: EPostcardStatus;
 }
+
+export interface IReadPostcardProps {
+  sendMemberId: number;
+  sendMemberName: string;
+  receiveMemberId: number;
+  receiveMemberBookId: number;
+  memberReply: string;
+}

@@ -91,7 +91,7 @@ export const GroupChannelListScreen = () => {
     (props) => {
       const channel = props.channel;
       const onPress = (channel: SendbirdGroupChannel) => {
-        navigation.navigate('GroupChannel', { channelUrl: channel.url });
+        navigation.push('GroupChannel', { channelUrl: channel.url });
       };
       return <GroupChannelPreviewContainer channel={channel} onPress={() => onPress(channel)} onLongPress={() => {}} />;
     },
@@ -109,14 +109,14 @@ export const GroupChannelListScreen = () => {
     //   }}
     //   onPressChannel={(channel) => {
     //     // Navigate to GroupChannel function.
-    //     navigation.navigate('GroupChannel', { channelUrl: channel.url });
+    //     navigation.navixgate('GroupChannel', { channelUrl: channel.url });
     //   }}
     // />
     <GroupChannelListModule.Provider>
       <StatusComposition loading={!initialized} LoadingComponent={<GroupChannelListModule.StatusLoading />}>
         <GroupChannelListModule.List
           onPressChannel={(channel) => {
-            navigation.navigate('GroupChannel', { channelUrl: channel.url });
+            navigation.push('GroupChannel', { channelUrl: channel.url });
           }}
           groupChannels={groupChannels}
           menuItemCreator={PASS}

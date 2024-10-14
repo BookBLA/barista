@@ -26,7 +26,7 @@ import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResp
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { RouteProp, useFocusEffect, useIsFocused } from '@react-navigation/native';
+import {RouteProp, useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
 import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
 import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
@@ -87,6 +87,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const [isProfileImageModificationStatus, setIsProfileImageModificationStatus] = useState<boolean>(false);
   const showToast = useToastStore((state) => state.showToast);
   const { movePage, movePageNoReference, handleReset, goBack } = useMovePage();
+  const nav = useNavigation<any>();
   const logEvent = useAnalyticsEventLogger();
   const [invitationCode, setInvitationCode] = useState('');
   const { libraryInfo, bookRows, fetchLibraryInfo } = useFetchLibraryInfo(isYourLibrary, targetMemberId);
@@ -527,7 +528,10 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
         </S.BookListContainerView>
       </LinearGradient>
       {!isYourLibrary && (
-        <TouchableOpacity style={S.styles.AddBookButton} onPress={movePage('initBookStack', { screen: 'searchBook' })}>
+        <TouchableOpacity
+          style={S.styles.AddBookButton}
+          onPress={() => nav.push('initBookStack', { screen: 'searchBook' })}
+        >
           <S.AddBookButton source={icons.addBook} />
         </TouchableOpacity>
       )}

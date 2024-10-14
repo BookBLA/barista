@@ -1,10 +1,10 @@
-import { ISendPostcardRequest } from '@screens/Quiz/QuizStack.types';
 import { getBookInfo } from '@commons/api/postcard/library.api';
+import { IReadPostcardProps } from '@screens/Matching/Postcard/Receive/ReceivePostcard.types';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 
 import {
   GroupChannel,
   GroupChannelCreateParams,
-  GroupChannelHideParams,
   GroupChannelModule,
   SendbirdGroupChat,
 } from '@sendbird/chat/groupChannel';
@@ -17,11 +17,10 @@ import {
   UserMessage,
   UserMessageCreateParams,
 } from '@sendbird/chat/message';
-import useToastStore from '@commons/store/ui/toast/useToastStore';
 
-export const CreateChat = async (contents: ISendPostcardRequest, memberId: number, memberName: string, sdk: any) => {
-  const sendMemberId = memberId.toString();
-  const sendMemberName = memberName;
+export const CreateChat = async (contents: IReadPostcardProps, sdk: any) => {
+  const sendMemberId = contents.sendMemberId.toString();
+  const sendMemberName = contents.sendMemberName;
   const sendMemberReview = contents.memberReply;
   const targetMemberId = contents.receiveMemberId.toString();
   const targetMemberBookId = contents.receiveMemberBookId.toString();
@@ -97,7 +96,7 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
     metaArrays: [new MessageMetaArray({ key: 'memberBookId', value: [targetMemberBookId] })],
     pushNotificationDeliveryOption: PushNotificationDeliveryOption.DEFAULT, // Either DEFAULT or SUPPRESS
   };
-  // @ts-ignore
+
   channel
     .sendUserMessage(bookTitleMessageCreateParams)
     .onSucceeded((message: UserMessage) => {
@@ -109,12 +108,12 @@ export const CreateChat = async (contents: ISendPostcardRequest, memberId: numbe
       console.error('GroupChat message send Failed', sendMemberId, targetMemberId);
     });
 
-  // hide Channel until read postcard
-  const params: GroupChannelHideParams = {
-    hidePreviousMessages: true,
-    allowAutoUnhide: false,
-  };
-  await channel.hide(params);
+  // // hide Channel until read postcard
+  // const params: GroupChannelHideParams = {
+  //   hidePreviousMessages: true,
+  //   allowAutoUnhide: false,
+  // };
+  // await channel.hide(params);
 
   return channel;
 };

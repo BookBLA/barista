@@ -56,7 +56,7 @@ const GroupChannelSettingMenus = () => {
   const { colors } = useUIKitTheme();
   const toast = useToast();
 
-  const { movePage } = useMovePage();
+  const navigation = useNavigation<any>();
 
   const [isReport, setIsReport] = useState(false);
   useEffect(() => {
@@ -140,10 +140,11 @@ const GroupChannelSettingMenus = () => {
       icon: icons.libraryChat,
       name: '서재 구경하기',
       onPress: otherMember
-        ? movePage('library', {
-            memberId: otherMemberId,
-            isYourLibrary: true,
-          })
+        ? () =>
+            navigation.push('library', {
+              memberId: otherMemberId,
+              isYourLibrary: true,
+            })
         : () => {
             toast.show('상대방이 없어 서재를 조회할 수 없습니다', 'error');
           },

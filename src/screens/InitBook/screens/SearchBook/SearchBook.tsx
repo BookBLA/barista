@@ -20,6 +20,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import { NoSearch } from './units/NoSearch';
+import {useNavigation} from "@react-navigation/native";
 
 const SearchBook = () => {
   useScreenLogger();
@@ -29,7 +30,7 @@ const SearchBook = () => {
     left: true,
   });
   const handleLinkPress = useLinkingOpen();
-  const { movePage } = useMovePage();
+  const navigation = useNavigation<any>();
   const csLink = CS_CENTTER_URL;
   const { handleMoveTop, scrollViewRef } = useHandleMoveTop();
   const { pageIndex, startPage, totalPage, setTotalPage, movePageIndex, changePageGroup, nextEndPage, prevEndPage } =
@@ -128,7 +129,7 @@ const SearchBook = () => {
             />
             <S.NextButtonStyled
               style={{ height: 44, position: 'absolute', bottom: 10, zIndex: 1 }}
-              onPress={movePage('initQuiz', { selectedBook })}
+              onPress={() => navigation.push('initQuiz', { selectedBook })}
             >
               <Text style={{ color: colors.secondary, fontFamily: 'fontMedium', fontSize: 14 }}>등록하기</Text>
             </S.NextButtonStyled>
