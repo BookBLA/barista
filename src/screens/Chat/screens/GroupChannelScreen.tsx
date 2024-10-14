@@ -132,7 +132,7 @@ export const GroupChannelScreen = () => {
         }}
         onPressHeaderRight={() => {
           // Navigate to GroupChannelSettings function.
-          navigation.navigate('GroupChannelSettings', { channelUrl: params.channelUrl });
+          navigation.push('GroupChannelSettings', { channelUrl: params.channelUrl });
         }}
       />
       {isConfirm === MODAL_STATE_YET && (
