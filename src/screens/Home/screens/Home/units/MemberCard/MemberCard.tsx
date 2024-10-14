@@ -46,6 +46,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
     if (memberStatus === EMemberStatus.REJECTED || memberStatus === EMemberStatus.APPROVAL) {
       if (!studentIdImageStatus) {
         await getStudentIdStatus();
+        return;
       }
     }
 
@@ -100,8 +101,12 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
       studentIdImageStatus === EStudentIdImageStatus.DENIAL
     ) {
       studentIdToggle();
-    } else {
+    } /*else if (studentIdImageStatus === EStudentIdImageStatus.DONE) {
       movePage('quizStack', { memberBookId, targetMemberId })();
+    }*/ else {
+      showToast({
+        content: '학생증 심사 중입니다',
+      });
     }
   };
 
