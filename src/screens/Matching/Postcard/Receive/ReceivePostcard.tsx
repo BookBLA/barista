@@ -21,6 +21,7 @@ import { colors } from '@commons/styles/variablesStyles';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
 import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
+import { getMemberApi } from '@commons/api/members/default/member.api';
 
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 
@@ -96,12 +97,20 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       navigation.navigate('chat', {
         screen: 'GroupChannelList',
       });
-    } else {
+    } else if (memberStatus === EMemberStatus.COMPLETED) {
       if (memberPostcard > 0) {
         toggleCheckBeforeSendPostcardModal();
       } else {
         toggleNoPostcardModal();
       }
+    } else {
+      getMemberApi().then((result) => {
+        updateMemberInfo('memberStatus', result.result.memberStatus as string);
+        forceRender((prev) => prev + 1);
+      });
+      showToast({
+        content: '잠시만 기다려주세요',
+      });
     }
   };
 
@@ -116,11 +125,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
     ) {
       studentIdToggle();
     } else {
-      if (memberPostcard > 0) {
-        toggleCheckBeforeSendPostcardModal();
-      } else {
-        toggleNoPostcardModal();
-      }
+      showToast({
+        content: '학생증 심사 중입니다',
+      });
     }
   };
 
