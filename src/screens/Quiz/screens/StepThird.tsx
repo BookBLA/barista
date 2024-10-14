@@ -45,14 +45,11 @@ const StepThird = () => {
   const sendPostCard = _.debounce(async () => {
     const postcardInfo = {
       postcardTypeId: currentPressedPostcard?.postcardTypeId!,
-      sendMemberId: memberId,
-      sendMemberName: memberName,
       receiveMemberId: route.params.targetMemberId,
       receiveMemberBookId: route.params.memberBookId,
       memberReply: route.params.text ?? '',
     };
     try {
-      // channel = await CreateChat(postcardInfo, memberId, memberName, sdk);
       await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();

@@ -30,8 +30,6 @@ export interface IPostPostcard {
 
 export interface ISendPostcardRequest {
   postcardTypeId: number;
-  sendMemberId: number;
-  sendMemberName: string;
   receiveMemberId: number;
   receiveMemberBookId: number;
   memberReply: string;
