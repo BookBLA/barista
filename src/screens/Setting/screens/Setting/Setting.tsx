@@ -13,7 +13,7 @@ import useHeaderControl from '@commons/hooks/ui/headerControl/useHeaderControl';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
 import { colors } from '@commons/styles/variablesStyles';
 import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
-import { useRoute } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import * as S from '@screens/Setting/SettingStack.styles';
 import { useState } from 'react';
 import { TProps } from './Setting.types';
@@ -27,6 +27,7 @@ const Setting = () => {
   const route = useRoute<TProps>();
   const { age, name, school, profileImageUrl } = route.params;
   const { movePage, handleReset } = useMovePage();
+  const navigation = useNavigation<any>();
   const outerLinkModal = useToggle();
   const handleLinkPress = useLinkingOpen();
   const appVersion = getAppVersion();
@@ -84,7 +85,7 @@ const Setting = () => {
         </S.MenuWrapper>
         <S.Line />
         <S.BottomWrapper>
-          <CustomText onPress={movePage('account')} margin="16px 0">
+          <CustomText onPress={() => navigation.push('account')} margin="16px 0">
             계정
           </CustomText>
           <CustomText margin="16px 0" onPress={() => hanldeOuterLinkModal(AGREEMENT_MAIN_URL)}>

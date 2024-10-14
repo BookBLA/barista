@@ -14,10 +14,12 @@ import { getHeaderConfig } from './configs/headerConfig';
 import { getLogoutConfig } from './configs/logoutConfig';
 import { getMatchingConfig } from './configs/matchingconfig';
 import { useEnableMatching } from './hooks/useEnableMatching';
+import { useNavigation } from '@react-navigation/native';
 
 const Account = () => {
   useScreenLogger();
   const { movePage, handleReset } = useMovePage();
+  const navigation = useNavigation<any>();
   const memberStatus = useMemberStore((state) => state.memberInfo.memberStatus);
   const { toggle: matchingToggle, isOpen: isMatching } = useToggle();
   const { toggle: logoutToggle, isOpen: isLogout } = useToggle();
@@ -56,7 +58,7 @@ const Account = () => {
         <CustomText margin="16px 0" onPress={logoutToggle}>
           로그아웃
         </CustomText>
-        <CustomText onPress={movePage('modifyStyle')} margin="16px 0">
+        <CustomText onPress={() => navigation.push('modifyStyle')} margin="16px 0">
           회원정보 수정
         </CustomText>
         <S.BetweenWrapper>
@@ -74,7 +76,7 @@ const Account = () => {
         </S.BetweenWrapper>
         <S.BetweenWrapper>
           <S.RowWrapper>
-            <CustomText margin="16px 5px 0 0" onPress={movePage('delete')}>
+            <CustomText margin="16px 5px 0 0" onPress={() => navigation.push('delete')}>
               회원 탈퇴
             </CustomText>
           </S.RowWrapper>
