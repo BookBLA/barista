@@ -18,6 +18,13 @@ export const useInitialRouteName = () => {
       MATCHING_DISABLED: 'tapScreens',
       DEFAULT: 'loginStack',
       REJECTED: 'rejectStudentId', //학생증 거절
+      p: 'initUserinfoStack',
+      s: 'completePage',
+      b: 'initBookStack',
+      a: 'tapScreens',
+      r: 'rejectStudentId',
+      c: 'tapScreens',
+      mb: 'tapScreens',
     };
     if (
       (memberStatusParam === 'STYLE' || memberStatus === 'STYLE') &&
