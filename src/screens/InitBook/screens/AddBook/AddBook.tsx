@@ -1,3 +1,4 @@
+import { postSendbird } from '@commons/api/auth/login.api';
 import { postMemberStatusesApi } from '@commons/api/members/default/member.api';
 import { FavBookList } from '@commons/components/Lists/FavBookList/FavBookList';
 import { DashDividerLine } from '@commons/components/Utils/DashDividerLine/DashDividerLine';
@@ -5,6 +6,7 @@ import { LightText } from '@commons/components/Utils/TextComponents/LightText/Li
 import useScreenLogger from '@commons/hooks/analytics/analyticsScreenLogger/useAnalyticsScreenLogger';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
+import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { EMemberStatus } from '@commons/types/memberStatus';
@@ -12,14 +14,12 @@ import { MemberBookReadResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as T from '@screens/InitBook/InitBookStack.styles';
 import * as S from '@screens/InitUserInfo/InitUserInfo.styles';
+import { useConnection } from '@sendbird/uikit-react-native';
 import React, { useEffect } from 'react';
 import { Image, Text, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { EBook } from './AddBook.types';
 import { useFetchMemberBook } from './hooks/useFetchMemberBook';
-import useAuthStore from '@commons/store/auth/auth/useAuthStore';
-import { postSendbird } from '@commons/api/auth/login.api';
-import { useConnection } from '@sendbird/uikit-react-native';
 
 const AddBook = () => {
   useScreenLogger();
@@ -31,9 +31,9 @@ const AddBook = () => {
   const { connect } = useConnection();
   const dataLength = data.length;
 
-  const nextPage = () => {
+  const nextPage = async () => {
     try {
-      postMemberStatusesApi({ memberStatus: 'APPROVAL' });
+      await postMemberStatusesApi({ memberStatus: 'APPROVAL' });
       updateMemberInfo('memberStatus', EMemberStatus.APPROVAL);
       handleReset('tapScreens');
     } catch (error) {
