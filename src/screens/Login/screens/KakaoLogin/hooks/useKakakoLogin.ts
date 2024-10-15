@@ -1,7 +1,7 @@
 import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogger/useAnalyticsEventLogger';
 import { useLogin } from '@commons/hooks/auths/login/useLogin';
-import { login } from '@react-native-kakao/user';
 import { EErrorMessage } from '@commons/types/errorMessage';
+import { login } from '@react-native-kakao/user';
 
 export const useKakaoLogin = () => {
   const { handleLogin } = useLogin();
@@ -9,11 +9,9 @@ export const useKakaoLogin = () => {
 
   const handleKakaoLogin = async () => {
     try {
-      let authCode = '';
-      await login().then((result) => {
-        authCode = result.accessToken;
-      });
-      if (authCode === null) {
+      const result = await login();
+      const authCode = result.accessToken;
+      if (!authCode) {
         throw new Error(EErrorMessage.KAKAO_AUTH_CODE);
       }
 
