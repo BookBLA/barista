@@ -1,6 +1,9 @@
 import { postMemberStatusesApi } from '@commons/api/members/default/member.api';
+import { useStudentIdStatus } from '@commons/hooks/datas/studentIdStatus/useStudentIdStatus';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
 import useMemberStore from '@commons/store/members/member/useMemberStore';
+import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberStatusUpdateRequestMemberStatusEnum } from '@commons/types/openapiGenerator';
 import { useState } from 'react';
@@ -11,6 +14,8 @@ export const useEnableMatching = (toggle: () => void) => {
   const [selected, setSelected] = useState('');
   const [reason, setReason] = useState('');
   const { movePage } = useMovePage();
+  const showToast = useToastStore((state) => state.showToast);
+  const { getStudentIdStatus } = useStudentIdStatus();
 
   const handleEnableMatching = async (memberStatus: MemberStatusUpdateRequestMemberStatusEnum) => {
     try {
@@ -30,15 +35,25 @@ export const useEnableMatching = (toggle: () => void) => {
     }
   };
 
-  const onClickEnableMatching = () => {
+  const onClickEnableMatching = async () => {
+    alert(memberStatus);
     if (EMemberStatus.COMPLETED === memberStatus) {
-      toggle();
-    } else if (EMemberStatus.MATCHING_DISABLED === memberStatus) {
-      handleEnableMatching(EMemberStatus.COMPLETED);
-    } else {
-      console.log('MMMemberStatus', memberStatus);
-      movePage('studentId')();
+      return toggle();
     }
+
+    if (EMemberStatus.MATCHING_DISABLED === memberStatus) {
+      return handleEnableMatching(EMemberStatus.COMPLETED);
+    }
+
+    const studentIdImageStatus = await getStudentIdStatus();
+    const isIdCheckPending = EStudentIdImageStatus.PENDING === studentIdImageStatus;
+    if (isIdCheckPending) {
+      return showToast({
+        content: '학생증 승인 대기 중입니다.',
+      });
+    }
+
+    movePage('studentId')();
   };
 
   return {
