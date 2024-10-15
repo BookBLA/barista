@@ -1,5 +1,6 @@
-import { getToken, saveToken, ITokenStore } from '@commons/store/auth/token/tokenStore';
+import { deleteToken, getToken, ITokenStore, saveToken } from '@commons/store/auth/token/tokenStore';
 import { create } from 'zustand';
+import { EErrorMessage } from '../../../types/errorMessage';
 
 interface IAuth {
   bookblaToken: string;
@@ -22,9 +23,15 @@ const useAuthStore = create<IAuth>((set) => ({
     saveToken(tokens);
   },
   removeToken: async () => {
-    const emptyToken: ITokenStore = { bookbla: '', sendbird: '' };
-    set({ bookblaToken: emptyToken.bookbla, sendbirdToken: emptyToken.sendbird });
-    await saveToken(emptyToken);
+    try {
+      const emptyToken: ITokenStore = { bookbla: '', sendbird: '' };
+      set({ bookblaToken: emptyToken.bookbla, sendbirdToken: emptyToken.sendbird });
+      await deleteToken();
+      await saveToken(emptyToken);
+    } catch (error) {
+      console.error('토큰 제거 중 오류 발생:', error);
+      throw new Error(EErrorMessage.DELETE_TOKEN_FAILED);
+    }
   },
   initializeToken: async () => {
     const tokens = await getToken();
