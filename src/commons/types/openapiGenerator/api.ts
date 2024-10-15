@@ -2350,18 +2350,6 @@ export interface NotificationResponse {
      * @type {string}
      * @memberof NotificationResponse
      */
-    'status'?: string;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof NotificationResponse
-     */
-    'success'?: boolean;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
     'message'?: string;
     /**
      * 
@@ -2369,6 +2357,18 @@ export interface NotificationResponse {
      * @memberof NotificationResponse
      */
     'id'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'status'?: string;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof NotificationResponse
+     */
+    'success'?: boolean;
 }
 /**
  * 
@@ -2400,13 +2400,13 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalElements'?: number;
+    'totalPages'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalPages'?: number;
+    'totalElements'?: number;
     /**
      * 
      * @type {SortObject}
@@ -2430,6 +2430,18 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<MemberBookProfileResponse>}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'content'?: Array<MemberBookProfileResponse>;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
     'number'?: number;
     /**
      * 
@@ -2443,18 +2455,6 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'pageable'?: PageableObject;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'size'?: number;
-    /**
-     * 
-     * @type {Array<MemberBookProfileResponse>}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'content'?: Array<MemberBookProfileResponse>;
     /**
      * 
      * @type {boolean}
@@ -2504,6 +2504,12 @@ export interface PageableObject {
      * @type {number}
      * @memberof PageableObject
      */
+    'offset'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageableObject
+     */
     'pageNumber'?: number;
     /**
      * 
@@ -2523,12 +2529,6 @@ export interface PageableObject {
      * @memberof PageableObject
      */
     'unpaged'?: boolean;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableObject
-     */
-    'offset'?: number;
 }
 /**
  * 
@@ -2557,10 +2557,34 @@ export interface PaymentPurchaseResponse {
 export interface PostcardReadResponse {
     /**
      * 
+     * @type {number}
+     * @memberof PostcardReadResponse
+     */
+    'sendMemberId'?: number;
+    /**
+     * 
      * @type {string}
      * @memberof PostcardReadResponse
      */
-    'channelUrl'?: string;
+    'sendMemberName'?: string;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostcardReadResponse
+     */
+    'receiveMemberId'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof PostcardReadResponse
+     */
+    'receiveMemberBookId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof PostcardReadResponse
+     */
+    'memberReply'?: string;
 }
 /**
  * 
@@ -2999,12 +3023,6 @@ export interface SendPostcardRequest {
      * @memberof SendPostcardRequest
      */
     'memberReply': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof SendPostcardRequest
-     */
-    'channelUrl': string;
 }
 /**
  * 
@@ -3049,6 +3067,12 @@ export interface SortObject {
      * @type {boolean}
      * @memberof SortObject
      */
+    'empty'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SortObject
+     */
     'sorted'?: boolean;
     /**
      * 
@@ -3056,12 +3080,6 @@ export interface SortObject {
      * @memberof SortObject
      */
     'unsorted'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SortObject
-     */
-    'empty'?: boolean;
 }
 /**
  * 
@@ -10211,7 +10229,7 @@ export const SendbirdApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장 or 유저 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10281,7 +10299,7 @@ export const SendbirdApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장 or 유저 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10323,7 +10341,7 @@ export const SendbirdApiFactory = function (configuration?: Configuration, baseP
         },
         /**
          * 
-         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+         * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장 or 유저 조회
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
@@ -10366,7 +10384,7 @@ export class SendbirdApi extends BaseAPI {
 
     /**
      * 
-     * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장
+     * @summary Sendbird 유저 생성 및 유저 토큰 생성/저장 or 유저 조회
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof SendbirdApi
