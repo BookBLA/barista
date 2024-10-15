@@ -12,6 +12,7 @@ import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
+import _ from 'lodash';
 import { useEffect, useState } from 'react';
 import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -30,16 +31,16 @@ const EmailAuth = () => {
 
   const [email, setEmail] = useState('');
   const { updateUserInfo, userInfo } = useUserStore();
-  const { movePage, handleReset } = useMovePage();
+  const { movePage } = useMovePage();
 
   useEffect(() => {
     console.log('isSuccess', isSuccess);
   }, [isSuccess]);
 
-  const SendEmail = () => {
+  const debounceSendEmail = _.debounce(async () => {
     setIsSuccess(IsSuccess.done);
     callPostAuthEmailApi();
-  };
+  }, 500);
 
   const formatTime = () => {
     const minutes = Math.floor(time / 60);
@@ -78,6 +79,11 @@ const EmailAuth = () => {
       }
     }
   };
+
+  const debounceVerifyCode = _.debounce(async () => {
+    await callPostAuthVerifyApi();
+  }, 500);
+
   const callPostAuthVerifyApi = async () => {
     try {
       const response = await postAuthVerifyApi({
@@ -105,7 +111,6 @@ const EmailAuth = () => {
 
   return (
     <S.Wrapper>
-      {/* <TitleProgress gauge={25} /> */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <KeyboardAwareScrollView
           style={{ width: '100%' }}
@@ -133,7 +138,7 @@ const EmailAuth = () => {
               />
               {/* 이메일 전송 버튼 */}
               <S.ButtonStyled
-                onPress={() => SendEmail()}
+                onPress={() => debounceSendEmail()}
                 disabled={
                   isSuccess === IsSuccess.done ||
                   isSuccess === IsSuccess.error ||
@@ -209,7 +214,7 @@ const EmailAuth = () => {
               </S.CodeFiledStyled>
               {/* 코드 확인 버튼 */}
               <S.ButtonStyled
-                onPress={() => callPostAuthVerifyApi()}
+                onPress={() => debounceVerifyCode()}
                 disabled={isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''}
                 style={{
                   width: 70,

@@ -7,6 +7,7 @@ import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { IconButton, IconImage } from '@screens/Home/screens/Home/units/Header/Header.styles';
 import { useFetchReceivePostcard } from '@screens/Home/screens/Matching/hooks/useFetchReceivePostcard';
+import _ from 'lodash';
 import React, { useRef, useState } from 'react';
 import { FlatList, TouchableOpacity, View } from 'react-native';
 import * as S from './Matching.styles';
@@ -44,16 +45,21 @@ const Matching = () => {
     flatListRef.current?.scrollToOffset({ offset: 0, animated: true });
   };
 
+  const debounceMoveProduct = _.debounce(async () => {
+    movePage('HomeStack')();
+    movePage('product')();
+  }, 500);
+
   return (
     <S.Wrapper>
       <S.ListWrapper>
         <S.InfoViewStyled>
           <S.InfoTextStyled>받은 엽서 확인 시 소지한 책갈피 5개가 소모 됩니다</S.InfoTextStyled>
           <S.postcardCountViewStyled>
-            <IconButton onPress={movePage('HomeStack', { screen: 'product' })}>
+            <IconButton onPress={() => debounceMoveProduct()}>
               <IconImage source={icons.bookmarkAdd} />
             </IconButton>
-            <S.postcardCountTextStyled onPress={movePage('HomeStack', { screen: 'product' })}>
+            <S.postcardCountTextStyled onPress={() => debounceMoveProduct()}>
               {memberPostcard}
             </S.postcardCountTextStyled>
           </S.postcardCountViewStyled>

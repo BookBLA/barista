@@ -21,3 +21,8 @@ export const getToken = async () => {
   };
   return tokens;
 };
+
+export const deleteToken = async () => {
+  await SecureStore.deleteItemAsync('accessToken');
+  await SecureStore.deleteItemAsync('sendbirdToken');
+};

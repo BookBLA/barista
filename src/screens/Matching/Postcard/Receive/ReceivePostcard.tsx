@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
+import React, { useState } from 'react';
+import { TouchableOpacity } from 'react-native';
 
-import * as S from './ReceivePostcard.styles';
 import { EMemberStatus } from '@commons/types/memberStatus';
 import { EPostcardStatus } from '../Send/SendPostcard.types';
+import * as S from './ReceivePostcard.styles';
 import { IReceivePostcardProps } from './ReceivePostcard.types';
 
 import { readPostcard } from '@commons/api/matching/matching.api';
+import { getMemberApi } from '@commons/api/members/default/member.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { getStudentIdConfig } from '@commons/configs/StudentIdModal/studentIdConfig';
@@ -16,13 +17,12 @@ import useAnalyticsEventLogger from '@commons/hooks/analytics/analyticsEventLogg
 import useFetchMemberPostcard from '@commons/hooks/datas/MemberPostcard/useMemberPostcard';
 import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useMemberStore from '@commons/store/members/member/useMemberStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
-import useMemberStore from '@commons/store/members/member/useMemberStore';
-import { getStudentIdImageStatusApi } from '@commons/api/members/profile/memberProfile.api';
-import { EStudentIdImageStatus } from '@commons/store/members/member/MemberInfo.types';
-import { getMemberApi } from '@commons/api/members/default/member.api';
 
+import { useStudentIdStatus } from '@commons/hooks/datas/studentIdStatus/useStudentIdStatus';
+import { useApprovalStatus } from '@commons/hooks/ui/approvalStatus/useApprovalStatus';
 import { useSendbirdChat } from '@sendbird/uikit-react-native/src/hooks/useContext';
 
 export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) => {
@@ -54,6 +54,8 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   const [isCheckBeforeSendPostcardModalVisible, setCheckBeforeSendPostcardModalVisible] = useState(false);
   const { memberPostcard } = useFetchMemberPostcard();
   const { movePageNoReference } = useMovePage();
+  const { getStudentIdStatus } = useStudentIdStatus();
+  const { handleApprovalStatus } = useApprovalStatus();
   const logEvent = useAnalyticsEventLogger();
   const showToast = useToastStore((state) => state.showToast);
 
@@ -79,10 +81,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
   };
 
   const handlePostcardClick = async () => {
+    let studentStatus = null;
     if (memberStatus === EMemberStatus.REJECTED || memberStatus === EMemberStatus.APPROVAL) {
-      if (!studentIdImageStatus) {
-        await getStudentIdStatus();
-      }
+      studentStatus = await getStudentIdStatus();
 
       switch (memberStatus) {
         case EMemberStatus.REJECTED:
@@ -90,7 +91,7 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
           break;
 
         case EMemberStatus.APPROVAL:
-          handleApprovalStatus();
+          handleApprovalStatus(studentStatus || '', studentIdToggle);
           break;
       }
     } else if ([EPostcardStatus.READ, EPostcardStatus.ACCEPT].includes(postcardStatus)) {
@@ -111,33 +112,6 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
       showToast({
         content: '잠시만 기다려주세요',
       });
-    }
-  };
-
-  const handleApprovalStatus = () => {
-    if (studentIdImageStatus === EStudentIdImageStatus.PENDING) {
-      showToast({
-        content: '학생증 승인 대기 중입니다.',
-      });
-    } else if (
-      studentIdImageStatus === EStudentIdImageStatus.UNREGISTER ||
-      studentIdImageStatus === EStudentIdImageStatus.DENIAL
-    ) {
-      studentIdToggle();
-    } else {
-      showToast({
-        content: '학생증 심사 중입니다',
-      });
-    }
-  };
-
-  const getStudentIdStatus = async () => {
-    try {
-      const response = await getStudentIdImageStatusApi();
-      updateMemberInfo('studentIdImageStatus', response.result.studentIdImageStatus as string);
-      forceRender((prev) => prev + 1);
-    } catch (error) {
-      console.log('error', error);
     }
   };
 

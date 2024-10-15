@@ -4,6 +4,7 @@ import { useInitialRouteName } from '@commons/hooks/navigations/initialRouteName
 import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import ChatStack from '@screens/Chat/ChatStack';
 import RejectStudentId from '@screens/Home/screens/StudentId/RejectStudentId';
 import StudentId from '@screens/Home/screens/StudentId/StudentId';
 import InitBookStack from '@screens/InitBook/initBookStack';
@@ -22,22 +23,18 @@ import { Platform, SafeAreaView } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import TapScreens from '../TapComponent/TapScreens';
-import ChatStack from '@screens/Chat/ChatStack';
 
 const Stack = createNativeStackNavigator();
 const screens = [
   { name: 'tapScreens', component: TapScreens },
   { name: 'initUserinfoStack', component: InitUserInfoStack },
   { name: 'completePage', component: CompletePage },
-  // { name: 'infoOpenChat', component: InfoOpenChat },
-  // { name: 'failedSign', component: FailedSign },
   { name: 'initStyleStack', component: InitStyleStack },
   { name: 'initBookStack', component: InitBookStack },
   { name: 'settingStack', component: SettingStack },
   { name: 'loginStack', component: LoginStack },
   { name: 'notice', component: CustomScreen(Notice) },
   { name: 'quizStack', component: QuizStack },
-  // { name: 'waitConfirm', component: WaitConfirm },
   { name: 'inviteFriends', component: InviteFriends },
   { name: 'modifyStyle', component: ModifyStyle },
   { name: 'modifyProfile', component: ModifyProfile },

@@ -114,7 +114,6 @@ const Product = () => {
             try {
               // 이미 완료된 트랜잭션인지 확인
               if (purchase.isAcknowledgedAndroid || purchase.transactionId === undefined) {
-                // Alert.alert('Transaction already acknowledged', JSON.stringify(purchase, null, 2));
                 Alert.alert('구매 완료', '이미 완료된 구매입니다.');
                 return;
               }
@@ -124,18 +123,13 @@ const Product = () => {
                   purchase.productId as string,
                   purchase.purchaseToken as string,
                 );
-                // Alert.alert('구글 결제',  JSON.stringify(response, null, 2));
               } else if (Platform.OS === 'ios') {
                 const response = await postPaymentApi(purchase.transactionId as string);
-                // Alert.alert('애플 결제', JSON.stringify(response, null, 2));
               }
               const ackResult = await finishTransaction({ purchase: purchase, isConsumable: true });
-              // Alert.alert('finishTransaction',  JSON.stringify(ackResult, null, 2));
-              Alert.alert('구매 완료', '구매가 완료되었습니다.');
+              // Alert.alert('구매 완료', '구매가 완료되었습니다.');
               fetchMemberPostcard();
-            } catch (error) {
-              // Alert.alert('구매 실패 ', JSON.stringify(error, null, 2));
-            }
+            } catch (error) {}
           }
           isLoadingRef.current = false;
         }, 500);
@@ -152,7 +146,6 @@ const Product = () => {
             Alert.alert('구매 취소', '구매를 취소하셨습니다.');
           } else {
             Alert.alert('구매 실패', '구매 중 오류가 발생하였습니다.');
-            // Alert.alert('구매 실패',  JSON.stringify(error, null, 2));
           }
           isLoadingRef.current = false;
         }, 500);
@@ -166,6 +159,9 @@ const Product = () => {
         Alert.alert('연결 오류', '연결에 실패하였습니다.');
       }
     };
+
+    // const debouncedConnection = _.debounce(connection, 500);
+    // debouncedConnection();
 
     connection();
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import React, { useEffect, useMemo, useState } from 'react';
 
 import { getMembersMatch } from '@commons/api/members/match/memberMatch';
 import { getInvitationRewardStatus, getOnboardingStatus } from '@commons/api/modal/modal.api';
@@ -14,19 +14,20 @@ import { EMemberStatus } from '@commons/types/memberStatus';
 import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { ResponseData } from '@commons/types/responseData';
 
+import Spinner from '@commons/components/Layouts/Spinner/Spinner';
 import * as S from '@screens/Home/screens/Home/Home.styles';
-import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
-import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 import { IMemberData } from '@screens/Home/screens/Home/Home.types';
 import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
-import Spinner from '@commons/components/Layouts/Spinner/Spinner';
+import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
+import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 
+import { getMemberApi } from '@commons/api/members/default/member.api';
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
+import InviteModal from './units/InviteModal/InviteModal';
 import Lock from './units/Lock/Lock';
 import MemberCard from './units/MemberCard/MemberCard';
-import InviteModal from './units/InviteModal/InviteModal';
 
 const Home = () => {
   const { isOpen, toggle } = useToggle(true);
@@ -48,6 +49,7 @@ const Home = () => {
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
   });
+  const { updateMemberInfo } = useMemberStore();
   const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
   const [memberData, setMemberData] = useState<IMemberData>({});
   const [isReported, setIsReported] = useState(false);
@@ -83,6 +85,15 @@ const Home = () => {
       }
     };
     fetchOnboardingStatus();
+
+    const fetchMemberInfo = async () => {
+      if (memberStatus) {
+        return null;
+      }
+      const response = await getMemberApi();
+      updateMemberInfo('memberStatus', response?.result?.memberStatus || '');
+    };
+    fetchMemberInfo();
   }, []);
 
   useEffect(() => {

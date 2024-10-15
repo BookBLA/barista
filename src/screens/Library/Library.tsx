@@ -35,7 +35,7 @@ import * as Clipboard from 'expo-clipboard';
 import * as ImagePicker from 'expo-image-picker';
 import { LinearGradient } from 'expo-linear-gradient';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
+import { BackHandler, FlatList, SafeAreaView, TouchableOpacity, View } from 'react-native';
 import uuid from 'react-native-uuid';
 import * as S from './Library.styles';
 import { BookItemList, TBookResponses } from './Library.types';
@@ -360,6 +360,31 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const fetchInvitationCode = async () => {
     const result = await getInvitationCode();
     setInvitationCode(result.invitationCode);
+  };
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+    return () => backHandler.remove();
+  }, [modifyBookModalRef.current]);
+
+  const handleBackPress = () => {
+    if (modifyBookModalRef.current && reportBottomSheet.bottomRef.current && viewBookInfoModalRef.current) {
+      modifyBookModalRef.current?.close();
+      reportBottomSheet.handleCloseBottomSheet();
+      viewBookInfoModalRef.current?.close();
+
+      return true;
+    }
+    if (reportBottomSheet.bottomRef.current) {
+      reportBottomSheet.handleCloseBottomSheet();
+      return true;
+    }
+    if (viewBookInfoModalRef.current) {
+      viewBookInfoModalRef.current?.close();
+      return true;
+    }
+    // Add more conditions for other modals if needed
+    return false;
   };
 
   useHeaderControl(
