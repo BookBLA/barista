@@ -21,6 +21,7 @@ import InviteCard from '@screens/Home/screens/Home/units/InviteCard/InviteCard';
 import { HomeOnboardingModal } from '@screens/Home/screens/Home/units/OnboardingModal/HomeOnboardingModal';
 import ReportOption from '@screens/Library/utils/ReportOption/ReportOption';
 
+import { getMemberApi } from '@commons/api/members/default/member.api';
 import Advert from './units/Advert/Advert';
 import EventCard from './units/EventCard/EventCard';
 import Header from './units/Header/Header';
@@ -48,6 +49,7 @@ const Home = () => {
     queryKey: ['membersMatch'],
     queryFn: getMembersMatch,
   });
+  const { updateMemberInfo } = useMemberStore();
   const [isInvitationCard, setIsInvitationCard] = useState<boolean>(true);
   const [memberData, setMemberData] = useState<IMemberData>({});
   const [isReported, setIsReported] = useState(false);
@@ -83,6 +85,15 @@ const Home = () => {
       }
     };
     fetchOnboardingStatus();
+
+    const fetchMemberInfo = async () => {
+      if (memberStatus) {
+        return null;
+      }
+      const response = await getMemberApi();
+      updateMemberInfo('memberStatus', response?.result?.memberStatus || '');
+    };
+    fetchMemberInfo();
   }, []);
 
   useEffect(() => {
