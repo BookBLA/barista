@@ -64,7 +64,6 @@ const Home = () => {
   useEffect(() => {
     const fetchOnboardingStatus = async () => {
       try {
-        // TODO - 한결: asyncStorage 사용하여 저장해놓기
         const res = await getOnboardingStatus();
         const response = await getInvitationRewardStatus();
         setModalStatus({
@@ -140,6 +139,7 @@ const Home = () => {
         {modalStatus.invitingRewardStatus && (
           <InviteModal
             key="inviting-modal"
+            invitedType={modalStatus.invitedRewardStatus}
             invitedGender={invitedMembersGender ? invitedMembersGender : undefined}
             isVisible={invitingModalOpen}
             setIsVisible={setInvitingModalOpen}
