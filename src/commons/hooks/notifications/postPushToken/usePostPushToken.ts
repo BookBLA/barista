@@ -6,6 +6,9 @@ export const usePostPushToken = () => {
 
   const postPushToken = async (token: string) => {
     try {
+      if (!token) {
+        throw new Error('유효하지 않은 토큰입니다.');
+      }
       await postPushes({
         token: token.split('[')[1].split(']')[0],
       });
