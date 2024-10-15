@@ -3,8 +3,11 @@ import useAuthStore from '@commons/store/auth/auth/useAuthStore';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { ResponseData } from '@commons/types/responseData';
 import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
+import { useSendbirdChat } from '@sendbird/uikit-react-native';
+import messaging from '@react-native-firebase/messaging';
 import axios from 'axios';
 import * as Device from 'expo-device';
+import { Platform } from 'react-native';
 
 export const httpApi = axios.create({ baseURL: process.env.EXPO_PUBLIC_BASE_URL });
 
@@ -48,10 +51,24 @@ httpApi.interceptors.response.use(
     console.debug(error.response.status);
     console.debug(error.response.data);
     const originalRequest = error.config;
+    const { sdk } = useSendbirdChat();
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
         useErrorMessage.getState().setErrorMessage('일주일이 경과되어 자동 로그아웃 되었습니다.');
+        // if (Platform.OS === 'ios') {
+        //   const token = await messaging().getAPNSToken();
+        //   messaging().onTokenRefresh(async (newToken: string) => {
+        //     console.debug('refresh token');
+        //   });
+        //   await sdk.unregisterAPNSPushTokenForCurrentUser(token ?? '');
+        // } else {
+        //   const token = await messaging().getToken();
+        //   messaging().onTokenRefresh(async (newToken: string) => {
+        //     console.debug('refresh token');
+        //   });
+        //   await sdk.unregisterFCMPushTokenForCurrentUser(token);
+        // }
         return useAuthStore.getState().removeToken();
       } catch (error) {
         return Promise.reject(error);
