@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useMemo, useState } from 'react';
+import { View } from 'react-native';
 
 import { getMembersMatch } from '@commons/api/members/match/memberMatch';
 import { getInvitationRewardStatus, getOnboardingStatus } from '@commons/api/modal/modal.api';
@@ -120,7 +121,11 @@ const Home = () => {
   };
 
   if (isLoading) {
-    return <Spinner />;
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Spinner />
+      </View>
+    );
   }
 
   return (
