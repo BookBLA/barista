@@ -173,7 +173,7 @@ export const GroupChannelScreen = () => {
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption
           bottomClose={reportBottomSheet.handleCloseBottomSheet}
-          reportedMemberId={targetMemberId}
+          reportedMemberId={sendMemberId}
           setIsReported={setIsReport}
         />
       </CustomBottomSheetModal>
