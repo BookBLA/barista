@@ -512,6 +512,12 @@ export interface EntryRequest {
      * @memberof EntryRequest
      */
     'targetMemberId': number;
+    /**
+     * 
+     * @type {string}
+     * @memberof EntryRequest
+     */
+    'channelUrl'?: string;
 }
 /**
  * 
@@ -2400,19 +2406,13 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalPages'?: number;
+    'totalElements'?: number;
     /**
      * 
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'totalElements'?: number;
-    /**
-     * 
-     * @type {SortObject}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'sort'?: SortObject;
+    'totalPages'?: number;
     /**
      * 
      * @type {boolean}
@@ -2425,6 +2425,12 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'last'?: boolean;
+    /**
+     * 
+     * @type {SortObject}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'sort'?: SortObject;
     /**
      * 
      * @type {number}

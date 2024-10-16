@@ -431,7 +431,11 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
         {!isAlreadyEntry && <LibraryOnboardingModal onClose={onboardingToggle} visible={isOnboardingOpen} />}
         <S.UserInfoContainerView>
           <S.UserInfoView>
-            <TouchableOpacity onPress={movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl })}>
+            <TouchableOpacity
+              onPress={
+                !isYourLibrary ? movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl }) : undefined
+              }
+            >
               <S.CircularImage
                 source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}
               />
