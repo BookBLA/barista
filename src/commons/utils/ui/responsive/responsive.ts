@@ -11,34 +11,37 @@ const BREAKPOINTS = {
 };
 
 export const mediaQuery = {
-  xs: (styles: any) => css`
-    ${styles}
+  xs: (styles: string) => css`
+    ${deviceHeight <= BREAKPOINTS.XS &&
+    css`
+      ${styles}
+    `}
   `,
-  sm: (styles: any) => css`
+  sm: (styles: string) => css`
     ${deviceHeight <= BREAKPOINTS.SM &&
     css`
       ${styles}
     `}
   `,
-  md: (styles: any) => css`
+  md: (styles: string) => css`
     ${deviceHeight <= BREAKPOINTS.MD &&
     css`
       ${styles}
     `}
   `,
-  lg: (styles: any) => css`
+  lg: (styles: string) => css`
     ${deviceHeight <= BREAKPOINTS.LG &&
     css`
       ${styles}
     `}
   `,
-  xl: (styles: any) => css`
+  xl: (styles: string) => css`
     ${deviceHeight <= BREAKPOINTS.XL &&
     css`
       ${styles}
     `}
   `,
-  xxl: (styles: any) => css`
+  xxl: (styles: string) => css`
     ${deviceHeight <= BREAKPOINTS.XXL &&
     css`
       ${styles}
