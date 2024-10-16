@@ -41,6 +41,9 @@ const StringSetKo = createBaseStringSet({
       MENU_NOTIFICATIONS_OPTION_ALL: '새로운 메시지들',
       MENU_NOTIFICATIONS_OPTION_MENTION_ONLY: '태그만',
     },
+    GROUP_CHANNEL_MODERATION: {
+      MENU_FREEZE_CHANNEL: '상대방이 엽서를 수락하면 대화가 시작됩니다',
+    },
     MESSAGE_SEARCH: {
       HEADER_INPUT_PLACEHOLDER: '검색',
       HEADER_RIGHT: '검색하기',

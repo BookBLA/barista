@@ -25,14 +25,7 @@ const QuizStack = () => {
       screenOptions={{ headerShown: false, animationEnabled: false, headerTransparent: true }}
     >
       {screens.map(({ name, component }) => (
-        <Stack.Screen
-          key={name}
-          name={name}
-          component={CustomScreen(component, {
-            isGradient: true,
-          })}
-          initialParams={{ ...route.params }}
-        />
+        <Stack.Screen key={name} name={name} component={CustomScreen(component)} initialParams={{ ...route.params }} />
       ))}
     </Stack.Navigator>
   );
