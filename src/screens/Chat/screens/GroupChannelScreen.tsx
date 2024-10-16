@@ -94,12 +94,9 @@ export const GroupChannelScreen = () => {
 
   const chatAccept = _.debounce(async () => {
     try {
+      await postChatAccept(targetMemberId, channel.url);
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
       setIsConfirm(MODAL_STATE_ACCEPT);
-      if (channel.isFrozen) {
-        await channel.unfreeze();
-      }
-      await postChatAccept(targetMemberId);
       toast.show('채팅을 수락했어요', 'normal');
     } catch (error) {
       console.error(error);
@@ -111,8 +108,7 @@ export const GroupChannelScreen = () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
       setIsConfirm(MODAL_STATE_DENY);
-      await postChatReject(sendMemberId);
-      // await channel.delete();
+      await postChatReject(sendMemberId, channel.url);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'normal');
     } catch (error) {
