@@ -41,9 +41,6 @@ const StringSetKo = createBaseStringSet({
       MENU_NOTIFICATIONS_OPTION_ALL: '새로운 메시지들',
       MENU_NOTIFICATIONS_OPTION_MENTION_ONLY: '태그만',
     },
-    GROUP_CHANNEL_MODERATION: {
-      MENU_FREEZE_CHANNEL: '상대방이 엽서를 수락하면 대화가 시작됩니다',
-    },
     MESSAGE_SEARCH: {
       HEADER_INPUT_PLACEHOLDER: '검색',
       HEADER_RIGHT: '검색하기',
@@ -103,8 +100,9 @@ const StringSetKo = createBaseStringSet({
       UNMUTE: '음소거 해제',
       BAN: '채팅금지',
       UNBAN: '채팅금지 해제',
-      CHANNEL_MESSAGE_LIST_FROZEN: '얼음!',
+      CHANNEL_MESSAGE_LIST_FROZEN: '상대방이 엽서를 수락하면 대화가 시작됩니다',
 
+      CHANNEL_INPUT_PLACEHOLDER_DISABLED: '상대방이 엽서를 수락할 때까지 기다려주세요',
       CHANNEL_INPUT_PLACEHOLDER_REPLY_IN_THREAD: '스레드에서 답장하기',
       CHANNEL_INPUT_PLACEHOLDER_REPLY_TO_THREAD: '스레드로 답장하기',
       CHANNEL_INPUT_PLACEHOLDER_ACTIVE: '메시지 보내기',
