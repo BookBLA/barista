@@ -7,7 +7,6 @@ import { useAppStatus } from '@commons/store/ui/appStatus/useAppStatus';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { ResponseData } from '@commons/types/responseData';
 import { getAppVersion } from '@commons/utils/data/getAppVersion/getAppVersion';
-import { useSendbirdChat } from '@sendbird/uikit-react-native';
 import axios from 'axios';
 import * as Device from 'expo-device';
 
@@ -53,7 +52,6 @@ httpApi.interceptors.response.use(
     console.debug(error.response.status);
     console.debug(error.response.data);
     const originalRequest = error.config;
-    const { sdk } = useSendbirdChat();
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       try {
