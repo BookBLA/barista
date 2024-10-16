@@ -8,11 +8,12 @@ interface IProps {
 }
 
 const useAppUIManager = ({ setHasMargin = false, setBackgroundColor = '#fff' }: IProps = {}) => {
-  const setStatus = useAppStatus((state) => state.setStatus);
+  // const setStatus = useAppStatus((state) => state.setStatus);
+  const { status, setStatus } = useAppStatus();
+  const { hasMargin, isBackgroundColor } = status;
 
   useFocusEffect(
     useCallback(() => {
-      console.log('화면 포커스 얻음');
       if (setBackgroundColor !== '#fff') {
         setStatus({ isBackgroundColor: setBackgroundColor });
       }
@@ -23,10 +24,9 @@ const useAppUIManager = ({ setHasMargin = false, setBackgroundColor = '#fff' }: 
       }
 
       return () => {
-        console.log('화면 포커스 잃음');
         setStatus({ hasMargin: false, isBackgroundColor: '#fff' });
       };
-    }, [setBackgroundColor, setHasMargin]),
+    }, [hasMargin, isBackgroundColor]),
   );
 };
 
