@@ -22,36 +22,40 @@ export const useSuccessfulLogin = () => {
   const { connect } = useConnection();
 
   const handleSuccessfulLogin = async (result: LoginResponse) => {
-    if (!result.accessToken || !result.memberStatus) {
-      throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
+    try {
+      if (!result.accessToken || !result.memberStatus) {
+        throw new Error(EErrorMessage.INVALID_LOGIN_RESPONSE);
+      }
+
+      // sendbird accessToken 추가
+      setToken({ bookbla: result.accessToken, sendbird: result.sendbirdToken });
+      await connect(String(result.memberId), { accessToken: result.sendbirdToken }).catch((error) => {
+        console.debug('sendbird login denied');
+      });
+
+      updateMemberInfo('memberStatus', result.memberStatus);
+      let schoolStatus = null;
+
+      if (result.memberStatus !== EMemberStatus.PROFILE) {
+        const pushToken = await getPushToken();
+        await postPushToken(pushToken || '');
+      }
+      if (result.memberStatus === EMemberStatus.STYLE) {
+        //로그인 성공 시>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다
+        const response = await getMemberStatusesApi();
+        updateMemberInfo('schoolStatus', response.result?.schoolStatus ?? 'OPEN');
+        schoolStatus = response.result?.schoolStatus;
+      }
+
+      showToast({
+        content: '로그인에 성공하였습니다.',
+      });
+      if (result.memberStatus === EMemberStatus.STYLE) {
+        handleReset(getInitialRouteName(result.memberStatus, schoolStatus as string));
+      } else handleReset(getInitialRouteName(result.memberStatus));
+    } catch (err) {
+      throw new Error(EErrorMessage.LOGIN_FAILED);
     }
-
-    // sendbird accessToken 추가
-    setToken({ bookbla: result.accessToken, sendbird: result.sendbirdToken });
-    await connect(String(result.memberId), { accessToken: result.sendbirdToken }).catch((error) => {
-      console.debug('sendbird login denied');
-    });
-
-    updateMemberInfo('memberStatus', result.memberStatus);
-    let schoolStatus = null;
-
-    if (result.memberStatus !== EMemberStatus.PROFILE) {
-      const pushToken = await getPushToken();
-      await postPushToken(pushToken);
-    }
-    if (result.memberStatus === EMemberStatus.STYLE) {
-      //로그인 성공 시>memberStatus가 STYLE일 때>schoolStatus를 가져온다>updateMemberInfo로 schoolStatus를 업데이트한다
-      const response = await getMemberStatusesApi();
-      updateMemberInfo('schoolStatus', response.result?.schoolStatus ?? 'OPEN');
-      schoolStatus = response.result?.schoolStatus;
-    }
-
-    showToast({
-      content: '로그인에 성공하였습니다.',
-    });
-    if (result.memberStatus === EMemberStatus.STYLE) {
-      handleReset(getInitialRouteName(result.memberStatus, schoolStatus as string));
-    } else handleReset(getInitialRouteName(result.memberStatus));
   };
 
   return handleSuccessfulLogin;
