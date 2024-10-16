@@ -15,12 +15,15 @@ import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-rea
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
 import { useToast } from '@sendbird/uikit-react-native-foundation';
+import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';
 const MODAL_STATE_YET = 'yet';
 const MODAL_STATE_DENY = 'deny';
 const GroupChannelFragment = createGroupChannelFragment();
+
+const DEVICE_OFFSET = deviceHeight < 700 ? 0 : 20;
 
 export const GroupChannelScreen = () => {
   const navigation = useNavigation<any>();
@@ -91,9 +94,9 @@ export const GroupChannelScreen = () => {
 
   const chatAccept = _.debounce(async () => {
     try {
+      await postChatAccept(targetMemberId, channel.url);
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
       setIsConfirm(MODAL_STATE_ACCEPT);
-      await postChatAccept(targetMemberId);
       toast.show('채팅을 수락했어요', 'normal');
     } catch (error) {
       console.error(error);
@@ -105,7 +108,7 @@ export const GroupChannelScreen = () => {
     try {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
       setIsConfirm(MODAL_STATE_DENY);
-      await postChatReject(sendMemberId);
+      await postChatReject(sendMemberId, channel.url);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'normal');
     } catch (error) {
@@ -130,7 +133,7 @@ export const GroupChannelScreen = () => {
     <>
       <GroupChannelFragment
         enableTypingIndicator
-        keyboardAvoidOffset={Platform.OS === 'ios' ? 100 : 25}
+        keyboardAvoidOffset={Platform.OS === 'ios' ? 80 + DEVICE_OFFSET : 5 + DEVICE_OFFSET}
         channel={channel}
         onPressMediaMessage={(message, deleteMessage, uri) => {
           console.log(channel?.url);
@@ -170,7 +173,7 @@ export const GroupChannelScreen = () => {
       <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
         <ReportOption
           bottomClose={reportBottomSheet.handleCloseBottomSheet}
-          reportedMemberId={targetMemberId}
+          reportedMemberId={sendMemberId}
           setIsReported={setIsReport}
         />
       </CustomBottomSheetModal>

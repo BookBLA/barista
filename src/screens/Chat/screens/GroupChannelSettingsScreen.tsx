@@ -69,7 +69,7 @@ const GroupChannelSettingMenus = () => {
     }
   }, [isReport]);
   const reportBottomSheet = useBottomSheet();
-  const reportSnapPoints = useMemo(() => ['78%'], []);
+  const reportSnapPoints = useMemo(() => ['82%'], []);
 
   const { toggle, isOpen } = useToggle();
 
@@ -108,7 +108,7 @@ const GroupChannelSettingMenus = () => {
       actionItemNotificationMenu: conditionChaining(
         [false /*sbOptions.uikit.groupChannel.channel.enableMention*/],
         [
-          <Icon icon={'chevron-right'} color={colors.onBackground01} />,
+          <Icon icon="chevron-right" color={colors.onBackground01} />,
           <Switch value={channel.myPushTriggerOption !== 'off'} onChangeValue={toggleNotification} />,
         ],
       ),

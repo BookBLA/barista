@@ -13,7 +13,7 @@ const InviteModal = ({
   setIsVisible,
   onCloseCallback,
 }: {
-  invitedType?: string;
+  invitedType: string;
   invitedGender?: string;
   isVisible: boolean;
   setIsVisible: React.Dispatch<React.SetStateAction<boolean>>;
@@ -23,7 +23,7 @@ const InviteModal = ({
 
   const closeInviteModal = async () => {
     try {
-      await postInvitationRewardStatus();
+      await postInvitationRewardStatus(invitedType);
       setIsVisible(false);
       if (onCloseCallback) {
         onCloseCallback();
@@ -64,15 +64,15 @@ const InviteModal = ({
               <S.CoinImage source={icons.inviteCoin} />
             </S.ImageWrapper>
             <CustomText font="fontInviteCoin" size="24px">
-              {invitedGender
-                ? invitedGender === 'male'
-                  ? 'X 35'
-                  : 'X 70'
-                : invitedType === 'FESTIVAL'
+              {invitedGender // 초대를 한사람이냐
+                ? invitedType === 'FEMALE'
+                  ? 'X 70'
+                  : 'X 35'
+                : invitedType === 'FESTIVAL' // 초대를 당한사람이냐
                   ? 'X 105'
-                  : memberGender === 'male'
-                    ? 'X 35'
-                    : 'X 70'}
+                  : invitedType === 'FEMALE'
+                    ? 'X 70'
+                    : 'X 35'}
             </CustomText>
           </S.CoinWrapper>
           <S.ButtonWrapper>

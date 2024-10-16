@@ -2350,18 +2350,6 @@ export interface NotificationResponse {
      * @type {string}
      * @memberof NotificationResponse
      */
-    'message'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
-    'id'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof NotificationResponse
-     */
     'status'?: string;
     /**
      * 
@@ -2369,6 +2357,18 @@ export interface NotificationResponse {
      * @memberof NotificationResponse
      */
     'success'?: boolean;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'message'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof NotificationResponse
+     */
+    'id'?: string;
 }
 /**
  * 
@@ -2430,18 +2430,6 @@ export interface PageMemberBookProfileResponse {
      * @type {number}
      * @memberof PageMemberBookProfileResponse
      */
-    'size'?: number;
-    /**
-     * 
-     * @type {Array<MemberBookProfileResponse>}
-     * @memberof PageMemberBookProfileResponse
-     */
-    'content'?: Array<MemberBookProfileResponse>;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageMemberBookProfileResponse
-     */
     'number'?: number;
     /**
      * 
@@ -2455,6 +2443,18 @@ export interface PageMemberBookProfileResponse {
      * @memberof PageMemberBookProfileResponse
      */
     'pageable'?: PageableObject;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'size'?: number;
+    /**
+     * 
+     * @type {Array<MemberBookProfileResponse>}
+     * @memberof PageMemberBookProfileResponse
+     */
+    'content'?: Array<MemberBookProfileResponse>;
     /**
      * 
      * @type {boolean}
@@ -2504,12 +2504,6 @@ export interface PageableObject {
      * @type {number}
      * @memberof PageableObject
      */
-    'offset'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof PageableObject
-     */
     'pageNumber'?: number;
     /**
      * 
@@ -2529,6 +2523,12 @@ export interface PageableObject {
      * @memberof PageableObject
      */
     'unpaged'?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof PageableObject
+     */
+    'offset'?: number;
 }
 /**
  * 
@@ -3067,12 +3067,6 @@ export interface SortObject {
      * @type {boolean}
      * @memberof SortObject
      */
-    'empty'?: boolean;
-    /**
-     * 
-     * @type {boolean}
-     * @memberof SortObject
-     */
     'sorted'?: boolean;
     /**
      * 
@@ -3080,6 +3074,12 @@ export interface SortObject {
      * @memberof SortObject
      */
     'unsorted'?: boolean;
+    /**
+     * 
+     * @type {boolean}
+     * @memberof SortObject
+     */
+    'empty'?: boolean;
 }
 /**
  * 

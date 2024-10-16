@@ -28,6 +28,7 @@ import {
 import * as S from '../../HomeStack.styles';
 import Header from '../Home/units/Header/Header';
 import ProductList from './components/ProductList';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const ITEM_ID = ['bookmarks_10', 'bookmarks_150', 'bookmarks_35', 'bookmarks_80'];
 
@@ -126,7 +127,7 @@ const Product = () => {
               } else if (Platform.OS === 'ios') {
                 const response = await postPaymentApi(purchase.transactionId as string);
               }
-              const ackResult = await finishTransaction({ purchase: purchase, isConsumable: true });
+              const ackResult = await finishTransaction({ purchase, isConsumable: true });
               // Alert.alert('구매 완료', '구매가 완료되었습니다.');
               fetchMemberPostcard();
             } catch (error) {}
@@ -242,7 +243,7 @@ const Product = () => {
   };
 
   return (
-    <View style={{ flex: 1, paddingTop: 64 }}>
+    <LinearGradient colors={['transparent', colors.background02]} style={{ flex: 1, paddingTop: 64 }} start={{ x: 0.5, y: 0 }} end={{ x: 0.5, y: 0.7 }} >
       {loading ? (
         <ActivityIndicator size="large" color={colors.primary} />
       ) : (
@@ -277,7 +278,7 @@ const Product = () => {
           </ScrollView>
         </>
       )}
-    </View>
+    </LinearGradient>
   );
 };
 

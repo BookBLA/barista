@@ -8,4 +8,5 @@ export const postOnboardingStatus = async (where: string) => Post('member-modal/
 export const getInvitationRewardStatus = async () =>
   Get<MemberInvitationRewardResponse>('member-modal/invitation-reward');
 
-export const postInvitationRewardStatus = async () => Post('member-modal/invitation-reward');
+export const postInvitationRewardStatus = async (invitedRewardStatus: string) =>
+  Post('member-modal/invitation-reward', invitedRewardStatus);

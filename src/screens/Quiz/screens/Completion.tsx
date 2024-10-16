@@ -9,17 +9,11 @@ import { useRoute } from '@react-navigation/native';
 import { TCompleteQuiz } from '@screens/Quiz/QuizStack.types';
 import useAppUIManager from '@commons/hooks/ui/appUIManager/useAppUIManager';
 import { colors } from '@commons/styles/variablesStyles';
-import { useQuizStore } from '@screens/Quiz/hooks/useSubmitQuiz';
 
 const Completion = () => {
   const { movePage } = useMovePage();
   const route = useRoute<TCompleteQuiz>();
   const isSuccess = route.params.isPassQuiz;
-
-  const { isSubmitQuiz, setIsSubmitQuiz } = useQuizStore();
-  useEffect(() => {
-    setIsSubmitQuiz(true);
-  }, []);
 
   useAppUIManager({
     setBackgroundColor: colors.primary,

@@ -18,16 +18,16 @@ export const ConfirmChatModal = ({ sendMemberName, report, chatAccept, chatDeny 
       </S.TextWrapper>
 
       <S.ButtonListWrapper>
-        <S.Button borderColor={'#FFFFFF'} backgroundColor={'transparent'} onPress={report}>
-          <S.ButtonText color={'white'}>신고</S.ButtonText>
+        <S.Button borderColor="#FFFFFF" backgroundColor="transparent" onPress={report}>
+          <S.ButtonText color="white">신고</S.ButtonText>
         </S.Button>
         <View style={{ flex: 1 }} />
-        <S.Button borderColor={'#FFFFFF'} backgroundColor={'transparent'} onPress={chatDeny}>
-          <S.ButtonText color={'white'}>거절</S.ButtonText>
+        <S.Button borderColor="#FFFFFF" backgroundColor="transparent" onPress={chatDeny}>
+          <S.ButtonText color="white">거절</S.ButtonText>
         </S.Button>
         <View style={{ flex: 1 }} />
         <S.Button borderColor={colors.primary02} backgroundColor={colors.primary02} onPress={chatAccept}>
-          <S.ButtonText color={'black'}>수락</S.ButtonText>
+          <S.ButtonText color="black">수락</S.ButtonText>
         </S.Button>
       </S.ButtonListWrapper>
     </S.Wrapper>

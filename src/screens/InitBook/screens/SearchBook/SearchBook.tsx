@@ -20,7 +20,7 @@ import { Image, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useSearchBooks } from './hooks/useSearchBooks';
 import { NoSearch } from './units/NoSearch';
-import {useNavigation} from "@react-navigation/native";
+import { useNavigation } from '@react-navigation/native';
 
 const SearchBook = () => {
   useScreenLogger();

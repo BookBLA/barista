@@ -15,7 +15,16 @@ import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResp
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import _ from 'lodash';
 import { useEffect, useState } from 'react';
-import { Image, Keyboard, Text, TouchableOpacity, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as S from '../../InitUserInfo.styles';
 
@@ -112,163 +121,169 @@ const EmailAuth = () => {
 
   return (
     <S.Wrapper>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <KeyboardAwareScrollView
-          style={{ width: '100%' }}
-          contentContainerStyle={{
-            height: '100%',
-            // justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <View style={{ marginBottom: 125, marginTop: '34%' }}>
-            <S.ContentStyled style={{ textAlign: 'center' }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
-            <S.RowStyled style={{ width: '93%' }}>
-              <S.TextFiledStyled
-                defaultValue={userInfo.schoolEmail}
-                onChangeText={(text: string) => setEmail(text)}
-                placeholder="example@gachon.ac.kr"
-                placeholderTextColor={colors.textGray2}
-                editable={isSuccess === IsSuccess.false || isSuccess === IsSuccess.resend}
-                style={{
-                  color: colors.primary,
-                  width: '78%',
-                  textAlign: 'left',
-                  paddingLeft: 20,
-                }}
-              />
-              {/* 이메일 전송 버튼 */}
-              <S.ButtonStyled
-                onPress={() => debounceSendEmail()}
-                disabled={
-                  isSuccess === IsSuccess.done ||
-                  isSuccess === IsSuccess.error ||
-                  isSuccess === IsSuccess.true ||
-                  email === ''
-                }
-                style={{
-                  width: 70,
-                  marginBottom: 6,
-                  backgroundColor:
-                    (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
-                      ? colors.buttonNavStroke
-                      : colors.primary,
-                }}
-              >
-                <Text
-                  style={{
-                    color:
-                      (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
-                        ? colors.textGray2
-                        : colors.secondary,
-                    fontFamily: 'fontMedium',
-                    fontSize: 16,
-                  }}
-                >
-                  전송
-                </Text>
-              </S.ButtonStyled>
-            </S.RowStyled>
-            {isSuccess === IsSuccess.done || isSuccess === IsSuccess.error ? (
-              <TouchableOpacity onPress={() => setIsSuccess(IsSuccess.resend)}>
-                <Text
-                  style={{
-                    color: colors.textGray,
-                    textDecorationLine: 'underline',
-                    fontFamily: 'fontMedium',
-                    fontSize: 12,
-                    textAlign: 'right',
-                    marginLeft: 2,
-                  }}
-                >
-                  인증 코드를 다시 받고 싶어요.
-                </Text>
-              </TouchableOpacity>
-            ) : (
-              isSuccess === IsSuccess.false && (
-                <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                  올바른 이메일 형식을 입력해주세요.
-                </Text>
-              )
-            )}
-          </View>
-          <View>
-            <S.ContentStyled style={{ textAlign: 'center' }}>인증 코드를 입력해 주세요.</S.ContentStyled>
-            <S.RowStyled style={{ width: '93%' }}>
-              <S.CodeFiledStyled>
-                <S.InputStyled
-                  maxLength={6}
-                  editable={isSuccess !== IsSuccess.true && time !== 0}
-                  value={code}
-                  placeholder="000000"
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 20}
+        style={{ flex: 1 }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <KeyboardAwareScrollView
+            style={{ width: '100%' }}
+            contentContainerStyle={{
+              height: '100%',
+              // justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <View style={{ marginBottom: 125, marginTop: '34%' }}>
+              <S.ContentStyled style={{ textAlign: 'center' }}>학교 이메일을 입력해 주세요.</S.ContentStyled>
+              <S.RowStyled style={{ width: '93%' }}>
+                <S.TextFiledStyled
+                  defaultValue={userInfo.schoolEmail}
+                  onChangeText={(text: string) => setEmail(text)}
+                  placeholder="example@gachon.ac.kr"
                   placeholderTextColor={colors.textGray2}
-                  onChangeText={(code: string) => setCode(code)}
+                  editable={isSuccess === IsSuccess.false || isSuccess === IsSuccess.resend}
                   style={{
                     color: colors.primary,
                     width: '78%',
                     textAlign: 'left',
+                    paddingLeft: 20,
                   }}
                 />
-                <Text style={{ fontSize: 16, fontFamily: 'fontSemiBold', color: colors.errorMessageRed }}>
-                  {isActive === false ? '' : formatTime()}
-                </Text>
-              </S.CodeFiledStyled>
-              {/* 코드 확인 버튼 */}
-              <S.ButtonStyled
-                onPress={() => debounceVerifyCode()}
-                disabled={isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''}
-                style={{
-                  width: 70,
-                  marginBottom: 6,
-                  backgroundColor:
-                    isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
-                      ? colors.buttonNavStroke
-                      : colors.primary,
-                }}
-              >
-                <Text
+                {/* 이메일 전송 버튼 */}
+                <S.ButtonStyled
+                  onPress={() => debounceSendEmail()}
+                  disabled={
+                    isSuccess === IsSuccess.done ||
+                    isSuccess === IsSuccess.error ||
+                    isSuccess === IsSuccess.true ||
+                    email === ''
+                  }
                   style={{
-                    color:
-                      isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
-                        ? colors.textGray2
-                        : colors.secondary,
-                    fontFamily: 'fontMedium',
-                    fontSize: 16,
+                    width: 70,
+                    marginBottom: 6,
+                    backgroundColor:
+                      (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
+                        ? colors.buttonNavStroke
+                        : colors.primary,
                   }}
                 >
-                  확인
-                </Text>
-              </S.ButtonStyled>
-            </S.RowStyled>
-            {isSuccess === IsSuccess.error && (
-              <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
-                <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                  인증 코드가 올바르지 않습니다.
-                </Text>
+                  <Text
+                    style={{
+                      color:
+                        (isSuccess !== IsSuccess.false && isSuccess !== IsSuccess.resend) || email === ''
+                          ? colors.textGray2
+                          : colors.secondary,
+                      fontFamily: 'fontMedium',
+                      fontSize: 16,
+                    }}
+                  >
+                    전송
+                  </Text>
+                </S.ButtonStyled>
               </S.RowStyled>
-            )}
-            {isSuccess === IsSuccess.true && (
-              <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
-                <Text style={{ color: colors.primary, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
-                  인증 코드가 확인되었습니다.
-                </Text>
+              {isSuccess === IsSuccess.done || isSuccess === IsSuccess.error ? (
+                <TouchableOpacity onPress={() => setIsSuccess(IsSuccess.resend)}>
+                  <Text
+                    style={{
+                      color: colors.textGray,
+                      textDecorationLine: 'underline',
+                      fontFamily: 'fontMedium',
+                      fontSize: 12,
+                      textAlign: 'right',
+                      marginLeft: 2,
+                    }}
+                  >
+                    인증 코드를 다시 받고 싶어요.
+                  </Text>
+                </TouchableOpacity>
+              ) : (
+                isSuccess === IsSuccess.false && (
+                  <Text style={{ color: colors.textGray2, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                    올바른 이메일 형식을 입력해주세요.
+                  </Text>
+                )
+              )}
+            </View>
+            <View>
+              <S.ContentStyled style={{ textAlign: 'center' }}>인증 코드를 입력해 주세요.</S.ContentStyled>
+              <S.RowStyled style={{ width: '93%' }}>
+                <S.CodeFiledStyled>
+                  <S.InputStyled
+                    maxLength={6}
+                    editable={isSuccess !== IsSuccess.true && time !== 0}
+                    value={code}
+                    placeholder="000000"
+                    placeholderTextColor={colors.textGray2}
+                    onChangeText={(code: string) => setCode(code)}
+                    style={{
+                      color: colors.primary,
+                      width: '78%',
+                      textAlign: 'left',
+                    }}
+                  />
+                  <Text style={{ fontSize: 16, fontFamily: 'fontSemiBold', color: colors.errorMessageRed }}>
+                    {isActive === false ? '' : formatTime()}
+                  </Text>
+                </S.CodeFiledStyled>
+                {/* 코드 확인 버튼 */}
+                <S.ButtonStyled
+                  onPress={() => debounceVerifyCode()}
+                  disabled={isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''}
+                  style={{
+                    width: 70,
+                    marginBottom: 6,
+                    backgroundColor:
+                      isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
+                        ? colors.buttonNavStroke
+                        : colors.primary,
+                  }}
+                >
+                  <Text
+                    style={{
+                      color:
+                        isSuccess === IsSuccess.false || isSuccess === IsSuccess.true || time === 0 || code === ''
+                          ? colors.textGray2
+                          : colors.secondary,
+                      fontFamily: 'fontMedium',
+                      fontSize: 16,
+                    }}
+                  >
+                    확인
+                  </Text>
+                </S.ButtonStyled>
               </S.RowStyled>
-            )}
-          </View>
-        </KeyboardAwareScrollView>
-      </TouchableWithoutFeedback>
-      <S.ButtonArea>
-        <S.MoveButton onPress={movePage()}>
-          <Image source={prevButton} />
-        </S.MoveButton>
-        {isSuccess !== IsSuccess.true ? (
-          <Image source={notYetNextButton} /> //코드 인증 미완료
-        ) : (
-          <S.MoveButton onPress={movePage('namePhone')}>
-            <Image source={nextButton} />
+              {isSuccess === IsSuccess.error && (
+                <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
+                  <Text style={{ color: colors.textGray, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                    인증 코드가 올바르지 않습니다.
+                  </Text>
+                </S.RowStyled>
+              )}
+              {isSuccess === IsSuccess.true && (
+                <S.RowStyled style={{ justifyContent: 'flex-end', width: deviceWidth * 0.9 }}>
+                  <Text style={{ color: colors.primary, fontFamily: 'fontMedium', fontSize: 12, textAlign: 'right' }}>
+                    인증 코드가 확인되었습니다.
+                  </Text>
+                </S.RowStyled>
+              )}
+            </View>
+          </KeyboardAwareScrollView>
+        </TouchableWithoutFeedback>
+        <S.ButtonArea>
+          <S.MoveButton onPress={movePage()}>
+            <Image source={prevButton} />
           </S.MoveButton>
-        )}
-      </S.ButtonArea>
+          {isSuccess !== IsSuccess.true ? (
+            <Image source={notYetNextButton} /> //코드 인증 미완료
+          ) : (
+            <S.MoveButton onPress={movePage('namePhone')}>
+              <Image source={nextButton} />
+            </S.MoveButton>
+          )}
+        </S.ButtonArea>
+      </KeyboardAvoidingView>
     </S.Wrapper>
   );
 };
