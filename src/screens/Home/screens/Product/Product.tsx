@@ -126,7 +126,7 @@ const Product = () => {
               } else if (Platform.OS === 'ios') {
                 const response = await postPaymentApi(purchase.transactionId as string);
               }
-              const ackResult = await finishTransaction({ purchase: purchase, isConsumable: true });
+              const ackResult = await finishTransaction({ purchase, isConsumable: true });
               // Alert.alert('구매 완료', '구매가 완료되었습니다.');
               fetchMemberPostcard();
             } catch (error) {}

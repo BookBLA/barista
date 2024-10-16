@@ -247,7 +247,7 @@ const StepFirst = () => {
         </T.AnswerCheckboxContainer>
       </T.ReadingQuizTestContainer>
 
-      <View style={{ flexGrow: 1 }}></View>
+      <View style={{ flexGrow: 1 }} />
 
       {!isCorrectAnswer && (
         <T.NextButton

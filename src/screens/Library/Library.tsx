@@ -26,7 +26,7 @@ import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResp
 import { icons, img } from '@commons/utils/ui/variablesImages/variablesImages';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import {RouteProp, useFocusEffect, useIsFocused, useNavigation} from '@react-navigation/native';
+import { RouteProp, useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native';
 import { useFetchLibraryInfo } from '@screens/Library/hooks/useFetchLibraryInfo';
 import DeleteBookModalContent from '@screens/Library/utils/DeleteBookModalContent';
 import { LibraryOnboardingModal } from '@screens/Library/utils/OnboardingModal/LibraryOnboardingModal';
@@ -362,10 +362,12 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
     setInvitationCode(result.invitationCode);
   };
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-    return () => backHandler.remove();
-  }, [modifyBookModalRef.current]);
+  useFocusEffect(
+    useCallback(() => {
+      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
+      return () => backHandler.remove();
+    }, [modifyBookModalRef.current]),
+  );
 
   const handleBackPress = () => {
     if (modifyBookModalRef.current && reportBottomSheet.bottomRef.current && viewBookInfoModalRef.current) {

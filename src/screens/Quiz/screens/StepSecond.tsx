@@ -90,7 +90,7 @@ const StepSecond = () => {
         </T.TextCount>
       </T.ReadingQuizTestContainer>
 
-      <View style={{ flexGrow: 1 }}></View>
+      <View style={{ flexGrow: 1 }} />
 
       {!isKeyboardVisible && (
         <T.NextButton

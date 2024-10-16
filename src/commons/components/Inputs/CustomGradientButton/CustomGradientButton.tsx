@@ -6,7 +6,7 @@ import { IProps } from '../CustomButton/CustomButton.types';
 
 export const CustomGradientButton: React.FC<IProps> = ({ contents, onPress, ...rest }) => {
   return (
-    <ButtonStyled {...rest} onPress={onPress} padding={'0'}>
+    <ButtonStyled {...rest} onPress={onPress} padding="0">
       <LinearGradient
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}

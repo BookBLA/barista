@@ -27,7 +27,7 @@ const RejectStudentId = () => {
           <CustomText font="fontMedium" size="16" color={colors.errorMessageRed} style={{ marginBottom: 6 }}>
             실패 사유 : 학생증 확인이 불가능합니다
           </CustomText>
-          <CustomText font="fontRegular" size="16" color={'black'}>
+          <CustomText font="fontRegular" size="16" color="black">
             학생증을 다시 업로드해 주세요
           </CustomText>
 
