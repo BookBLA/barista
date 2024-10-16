@@ -1,12 +1,15 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
-import React, { forwardRef, useCallback } from 'react';
+import React, {forwardRef, useCallback, useRef} from 'react';
 import { BackHandler } from 'react-native';
 import { IProps } from './CustomBottomSheetModal.types';
 
 const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(
   ({ children, snapPoints, index, enableContentPanningGesture }, ref) => {
-    const handleSheetChanges = useCallback((index: number) => {}, []);
+    const isBottomSheetOpen = useRef(false);
+    const handleSheetChanges = useCallback((index: number) => {
+      isBottomSheetOpen.current = index !== -1;
+    }, []);
 
     const renderBackdrop = useCallback(
       (props: any) => (
@@ -19,7 +22,7 @@ const CustomBottomSheetModal = forwardRef<BottomSheetModal, IProps>(
       useCallback(() => {
         console.log('refQQQ', ref);
         const backAction = () => {
-          if (ref && ref.current) {
+          if (ref && 'current' in ref && ref.current && isBottomSheetOpen.current) {
             ref.current.close();
             return true;
           } else {

@@ -70,7 +70,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const viewBookInfoModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['15%', '30%', '43%', '55%', '70%', '80%', '93%'], []);
   const reportBlockSnapPoints = useMemo(() => ['24%'], []);
-  const reportSnapPoints = useMemo(() => ['78%'], []);
+  const reportSnapPoints = useMemo(() => ['82%'], []);
   //todo 추후 삭제
   const isYourLibrary = route.params?.isYourLibrary ?? false;
   // const isYourLibrary = true;
@@ -360,33 +360,6 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
   const fetchInvitationCode = async () => {
     const result = await getInvitationCode();
     setInvitationCode(result.invitationCode);
-  };
-
-  useFocusEffect(
-    useCallback(() => {
-      const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackPress);
-      return () => backHandler.remove();
-    }, [modifyBookModalRef.current]),
-  );
-
-  const handleBackPress = () => {
-    if (modifyBookModalRef.current && reportBottomSheet.bottomRef.current && viewBookInfoModalRef.current) {
-      modifyBookModalRef.current?.close();
-      reportBottomSheet.handleCloseBottomSheet();
-      viewBookInfoModalRef.current?.close();
-
-      return true;
-    }
-    if (reportBottomSheet.bottomRef.current) {
-      reportBottomSheet.handleCloseBottomSheet();
-      return true;
-    }
-    if (viewBookInfoModalRef.current) {
-      viewBookInfoModalRef.current?.close();
-      return true;
-    }
-    // Add more conditions for other modals if needed
-    return false;
   };
 
   useHeaderControl(
