@@ -122,7 +122,7 @@ const EmailAuth = () => {
     <S.Wrapper>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 30 : 20}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 40}
         style={{ flex: 1 }}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
