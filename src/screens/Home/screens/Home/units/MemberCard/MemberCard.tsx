@@ -1,3 +1,4 @@
+import { getMemberApi } from '@commons/api/members/default/member.api';
 import { CustomModal } from '@commons/components/Feedbacks/CustomModal/CustomModal';
 import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import { getStudentIdConfig } from '@commons/configs/StudentIdModal/studentIdConfig';
@@ -25,6 +26,7 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const showToast = useToastStore((state) => state.showToast);
   const { getStudentIdStatus } = useStudentIdStatus();
   const { handleApprovalStatus } = useApprovalStatus();
+  const updateMemberInfo = useMemberStore((state) => state.updateMemberInfo);
 
   // MemberData
   // const memberBookId = 2849765;
@@ -35,12 +37,16 @@ const MemberCard = ({ memberData, handleReport }: { handleReport: () => void; me
   const handleMemberStatus = async () => {
     try {
       let studentStatus = null;
+      let currentMemberStatus = memberStatus;
       if (memberStatus === EMemberStatus.REJECTED || memberStatus === EMemberStatus.APPROVAL) {
-        // NOTE: 학생증 인증 정보 상태의 무결성을 위해 API 매번 호출
+        // NOTE: 학생증 인증 정보 상태의 무결성을 위해 API 매번 호출 => 추후에 더 좋은 방법 찾기
         studentStatus = await getStudentIdStatus();
+        const response = await getMemberApi();
+        currentMemberStatus = response?.result?.memberStatus ?? memberStatus;
+        updateMemberInfo('memberStatus', currentMemberStatus);
       }
 
-      switch (memberStatus) {
+      switch (currentMemberStatus) {
         case EMemberStatus.REJECTED:
           studentIdToggle();
           break;
