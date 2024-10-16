@@ -15,12 +15,15 @@ import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-rea
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
 import { useToast } from '@sendbird/uikit-react-native-foundation';
+import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';
 const MODAL_STATE_YET = 'yet';
 const MODAL_STATE_DENY = 'deny';
 const GroupChannelFragment = createGroupChannelFragment();
+
+const DEVICE_OFFSET = deviceHeight < 700 ? 0 : 20;
 
 export const GroupChannelScreen = () => {
   const navigation = useNavigation<any>();
@@ -130,7 +133,7 @@ export const GroupChannelScreen = () => {
     <>
       <GroupChannelFragment
         enableTypingIndicator
-        keyboardAvoidOffset={Platform.OS === 'ios' ? 100 : 25}
+        keyboardAvoidOffset={Platform.OS === 'ios' ? 80 + DEVICE_OFFSET : 5 + DEVICE_OFFSET}
         channel={channel}
         onPressMediaMessage={(message, deleteMessage, uri) => {
           console.log(channel?.url);
