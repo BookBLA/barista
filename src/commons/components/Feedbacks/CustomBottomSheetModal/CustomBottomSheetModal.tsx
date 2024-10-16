@@ -1,6 +1,6 @@
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
 import { useFocusEffect } from '@react-navigation/native';
-import React, {forwardRef, useCallback, useRef} from 'react';
+import React, { forwardRef, useCallback, useRef } from 'react';
 import { BackHandler } from 'react-native';
 import { IProps } from './CustomBottomSheetModal.types';
 
