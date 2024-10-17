@@ -24,11 +24,9 @@ import useMemberStore from '@commons/store/members/member/useMemberStore';
 
 const StepThird = () => {
   useScreenLogger();
-  const { movePage } = useMovePage();
+  const { movePage, movePageNoReference } = useMovePage();
   const route = useRoute<TProps>();
   const logEvent = useAnalyticsEventLogger();
-  const memberId = useMemberStore((state) => state.memberInfo.id);
-  const memberName = useMemberStore((state) => state.memberInfo.name);
 
   const [postcardTypeInfoList, setPostcardTypeInfoList] = useState<TPostcardInfo[]>([]);
   const [currentPressedPostcard, setCurrentPressedPostcard] = useState<TPostcardInfo>();
@@ -53,11 +51,18 @@ const StepThird = () => {
       await postPostcardSend(postcardInfo); // 채팅방 생성 완료 후 postcard 전송, bookmark 소모
       logEvent('send_postcard');
       movePage('completion', { isPassQuiz: true })();
-    } catch (error) {
+    } catch (error: any) {
+      if (error.response?.data?.code === 'member-bookmark_001') {
+        useToastStore.getState().showToast({ content: `책갈피 개수가 부족합니다` });
+        movePageNoReference('HomeStack', {
+          screen: 'product',
+        });
+        return;
+      }
       const { response } = error as unknown as AxiosError<AxiosError>;
       if (response) {
         console.log(response.data, response.status);
-        useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다.\n${response.data.message}` });
+        useToastStore.getState().showToast({ content: `엽서 보내기에 실패했습니다\n${response.data.message}` });
       }
     }
   }, 500);
