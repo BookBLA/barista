@@ -15,15 +15,11 @@ const usePushNotifications = () => {
 
   useEffect(() => {
     messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-      // console.log('Message handled in the background!', remoteMessage);
       const { data } = remoteMessage; // 메시지 데이터에서 'data' 부분 추출
 
       if (isSendbirdNotification(data)) {
         const sendbirdPayload = parseSendbirdNotification(data); // 'sendbird' 데이터 파싱
 
-        // console.log('Parsed Sendbird Notification: ', sendbirdPayload);
-
-        // 백그라운드에서 알림 표시
         await Notifications.scheduleNotificationAsync({
           content: {
             title: `${sendbirdPayload.sender?.name}님의 새 메시지`,
@@ -57,7 +53,6 @@ const usePushNotifications = () => {
 
       if (isSendbirdNotification(data)) {
         const sendbirdPayload = parseSendbirdNotification(data);
-        // alert(JSON.stringify(sendbirdPayload));
         await Notifications.scheduleNotificationAsync({
           content: {
             title: `${sendbirdPayload.sender?.name}님의 새 메시지`,
