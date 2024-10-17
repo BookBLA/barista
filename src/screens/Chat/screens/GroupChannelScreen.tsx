@@ -159,7 +159,7 @@ export const GroupChannelScreen = () => {
           chatDeny={chatDeny}
         />
       )}
-      {isConfirm === MODAL_STATE_YET && <View style={{ height: 80, width: '100%' }} />}
+      {isConfirm === MODAL_STATE_YET && <View style={{ height: 80 + DEVICE_OFFSET, width: '100%' }} />}
       {/*<EndChatModal*/}
       {/*  visible={isEndChatToggleOpen}*/}
       {/*  onClose={endChatToggle}*/}
