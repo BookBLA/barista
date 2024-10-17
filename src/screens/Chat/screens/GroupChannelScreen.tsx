@@ -10,12 +10,13 @@ import { useBottomSheet } from '@commons/hooks/ui/bottomSheet/useBottomSheet';
 import { postChatAccept, postChatReject } from '@screens/Chat/Chat.api';
 import { EndChatModal } from '@screens/Chat/units/modal/EndChatModal';
 import { useToggle } from '@commons/hooks/utils/toggle/useToggle';
+import useMovePage from '@commons/hooks/navigations/movePage/useMovePage';
+import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 
 import { createGroupChannelFragment, useSendbirdChat } from '@sendbird/uikit-react-native';
 import { useGroupChannel } from '@sendbird/uikit-chat-hooks';
 import { NOOP } from '@sendbird/uikit-utils';
 import { useToast } from '@sendbird/uikit-react-native-foundation';
-import { deviceHeight } from '@commons/utils/ui/dimensions/dimensions';
 
 const MODAL_STATE_NONE = 'none';
 const MODAL_STATE_ACCEPT = 'accept';
@@ -27,8 +28,10 @@ const DEVICE_OFFSET = deviceHeight < 700 ? 0 : 20;
 
 export const GroupChannelScreen = () => {
   const navigation = useNavigation<any>();
+  const { movePageNoReference } = useMovePage();
   const { params } = useRoute<any>();
   const toast = useToast();
+
   const reportBottomSheet = useBottomSheet();
   const reportSnapPoints = useMemo(() => ['78%'], []);
   const [isReport, setIsReport] = useState(false);
@@ -98,17 +101,23 @@ export const GroupChannelScreen = () => {
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_ACCEPT });
       setIsConfirm(MODAL_STATE_ACCEPT);
       toast.show('채팅을 수락했어요', 'normal');
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      if (error.response?.data?.code === 'member-bookmark_001') {
+        toast.show('책갈피 개수가 부족합니다', 'error');
+        movePageNoReference('HomeStack', {
+          screen: 'product',
+        });
+        return;
+      }
       toast.show('채팅을 수락하는 도중 문제가 생겼습니다', 'error');
     }
   }, 500);
 
   const chatDeny = _.debounce(async () => {
     try {
+      await postChatReject(sendMemberId, channel.url);
       await channel.updateMetaData({ acceptStatus: MODAL_STATE_DENY });
       setIsConfirm(MODAL_STATE_DENY);
-      await postChatReject(sendMemberId, channel.url);
       await channel.leave().then(() => sdk.clearCachedMessages([channel.url]).catch(NOOP));
       toast.show('채팅을 거절했어요', 'normal');
     } catch (error) {
@@ -159,7 +168,7 @@ export const GroupChannelScreen = () => {
           chatDeny={chatDeny}
         />
       )}
-      {isConfirm === MODAL_STATE_YET && <View style={{ height: 80, width: '100%' }} />}
+      {isConfirm === MODAL_STATE_YET && <View style={{ height: 80 + DEVICE_OFFSET, width: '100%' }} />}
       {/*<EndChatModal*/}
       {/*  visible={isEndChatToggleOpen}*/}
       {/*  onClose={endChatToggle}*/}

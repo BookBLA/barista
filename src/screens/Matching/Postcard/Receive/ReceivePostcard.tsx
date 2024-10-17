@@ -138,7 +138,9 @@ export const ReceivePostcard: React.FC<IReceivePostcardProps> = ({ ...rest }) =>
 
   const moveProductScreen = () => {
     toggleNoPostcardModal();
-    movePageNoReference('receivePostcardDetail', rest);
+    movePageNoReference('HomeStack', {
+      screen: 'product',
+    });
   };
 
   const checkBeforeSendPostcardModalConfig = {
