@@ -1,21 +1,40 @@
 import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import { useSendbirdChat } from '@sendbird/uikit-react-native';
+import { parseSendbirdNotification, isSendbirdNotification } from '@sendbird/uikit-utils';
+import { Platform } from 'react-native';
 
 const usePushNotifications = () => {
-  const { sdk } = useSendbirdChat();
-  const initializeSendbirdPushNotification = async () => {
-    if (Platform.OS === 'ios') {
-      const token = await messaging().getAPNSToken();
-      await sdk.registerAPNSPushTokenForCurrentUser(token ?? '');
-    } else {
-      const token = await messaging().getToken();
-      await sdk.registerFCMPushTokenForCurrentUser(token);
-    }
-  };
+  if (Platform.OS === 'android') {
+    const channelId = `${process.env.EXPO_PUBLIC_SENDBIRD_APP_ID}`;
+    Notifications.setNotificationChannelAsync(channelId, {
+      name: 'Sendbird Notification',
+      importance: Notifications.AndroidImportance.HIGH,
+    });
+  }
+
   useEffect(() => {
+    messaging().setBackgroundMessageHandler(async (remoteMessage) => {
+      // console.log('Message handled in the background!', remoteMessage);
+      const { data } = remoteMessage; // 메시지 데이터에서 'data' 부분 추출
+
+      if (isSendbirdNotification(data)) {
+        const sendbirdPayload = parseSendbirdNotification(data); // 'sendbird' 데이터 파싱
+
+        // console.log('Parsed Sendbird Notification: ', sendbirdPayload);
+
+        // 백그라운드에서 알림 표시
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: `${sendbirdPayload.sender?.name}님의 새 메시지`,
+            body: sendbirdPayload.message,
+            data: sendbirdPayload,
+          },
+          trigger: null,
+        });
+      }
+    });
+
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -23,17 +42,36 @@ const usePushNotifications = () => {
         shouldSetBadge: true,
       }),
     });
-    initializeSendbirdPushNotification().then(() => {
-      console.debug('sendbird notification setting complete');
-    });
 
     // NOTE: 알림을 사용자가 탭했을 때 호출될 리스너
     const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      // TODO: 백그라운드 상태 로직과 포그라운드 상태 로직 구현 필요
+      const data = response.notification.request.content.data;
+
+      if (isSendbirdNotification(data)) {
+        const sendbirdPayload = parseSendbirdNotification(data);
+      }
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      const data = remoteMessage.data;
+
+      if (isSendbirdNotification(data)) {
+        const sendbirdPayload = parseSendbirdNotification(data);
+        // alert(JSON.stringify(sendbirdPayload));
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: `${sendbirdPayload.sender?.name}님의 새 메시지`,
+            body: sendbirdPayload.message,
+            data: sendbirdPayload,
+          },
+          trigger: null,
+        });
+      }
     });
 
     return () => {
       Notifications.removeNotificationSubscription(responseListener);
+      unsubscribe();
     };
   }, []);
 };
