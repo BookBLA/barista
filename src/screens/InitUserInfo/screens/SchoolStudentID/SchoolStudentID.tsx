@@ -22,17 +22,12 @@ const SchoolStudentID = () => {
   const { isOpen, toggle } = useToggle();
 
   useScreenLogger();
-  const { updateUserInfo, userInfo } = useUserStore();
+  const { userInfo } = useUserStore();
   const { movePage } = useMovePage();
   const [school, setSchool] = useState('');
 
   const moveNext = async () => {
     movePage('emailAuth')();
-  };
-
-  const selectSchool = (school: string) => {
-    updateUserInfo({ schoolName: school });
-    toggle();
   };
 
   const modalConfig = {
@@ -41,8 +36,7 @@ const SchoolStudentID = () => {
     onClose: toggle,
     close: true,
     mode: 'round',
-    contents: <ModalContent school={school} setSchool={setSchool} />,
-    buttons: [{ label: '확인', action: () => selectSchool(school) }],
+    contents: <ModalContent school={school} setSchool={setSchool} toggle={toggle} />,
   };
 
   return (
