@@ -10,6 +10,7 @@ import { IsSuccess, useEmailStatusStore } from '@commons/store/members/emailStat
 import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
+import { EStatusCode } from '@commons/types/statusCode';
 import { isAxiosErrorResponse } from '@commons/utils/api/errors/isAxiosErrorResponse/isAxiosErrorResponse';
 import { deviceWidth } from '@commons/utils/ui/dimensions/dimensions';
 import _ from 'lodash';
@@ -74,14 +75,14 @@ const EmailAuth = () => {
         content: '인증 코드가 전송되었습니다.',
       });
     } catch (error) {
-      if (!isAxiosErrorResponse(error)) return;
       console.log('callPostAuthApi error', error);
+      if (!isAxiosErrorResponse(error)) return;
       setIsSuccess(IsSuccess.false);
-      if (error.response.data.message === '이메일이 이미 존재합니다.') {
+      if (error.response.data.code === EStatusCode.MEMBER_Email_003) {
         showToast({
           content: '이메일이 이미 존재합니다.',
         });
-      } else if (error.response.data.code === 'member_email_011') {
+      } else if (error.response.data.code === EStatusCode.MEMBER_Email_011) {
         showToast({
           content: '학교 이메일의 도메인 URL이 해당 학교와 맞지 않습니다.',
         });

@@ -10,6 +10,7 @@ export const Wrapper = styled.View`
   background-color: white;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 12px;
 `;
 
 export const SafeAreaViewStyled = styled.SafeAreaView`

@@ -1,19 +1,29 @@
 import checkBlack from '@assets/images/icons/CheckBlack.png';
 import { getSchools } from '@commons/api/schools/school.api';
+import { CustomButton } from '@commons/components/Inputs/CustomButton/CustomButton';
+import { useUserStore } from '@commons/store/members/userinfo/useUserinfo';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
 import { colors } from '@commons/styles/variablesStyles';
 import { SchoolDetail } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import * as T from '@screens/InitBook/InitBookStack.styles';
-import { ModalWrapper } from '@screens/Setting/SettingStack.styles';
 import { useEffect, useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 
-const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value: string) => void }) => {
+const ModalContent = ({
+  school,
+  setSchool,
+  toggle,
+}: {
+  school: string;
+  setSchool: (value: string) => void;
+  toggle: () => void;
+}) => {
   const showToast = useToastStore((state) => state.showToast);
   const [search, setSearch] = useState('');
-  const [searchList, setSearchList] = useState([]); //검색해서 걸러진 데이터
+  const [searchList, setSearchList] = useState<string[]>([]); //검색해서 걸러진 데이터
   const [universityList, setUniversityList] = useState<string[]>([]);
+  const { updateUserInfo } = useUserStore();
 
   const callSchoolList = async () => {
     try {
@@ -57,19 +67,24 @@ const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value
         content: '검색어를 입력하세요',
       });
     updateSearch(search);
-    // if (pageIndex !== 1) prevEndPage();
-    // callGetSearchBookApi(search, pageIndex, true);
   };
 
   const updateSearch = (search: string) => {
     setSearch(search);
-    const filtered = universityList.filter((itemList: string[]) => {
+    const filtered = universityList.filter((itemList: string) => {
       return itemList.includes(search.toUpperCase());
     });
     setSearchList(filtered);
   };
+
+  const selectSchool = (school: string) => {
+    updateUserInfo({ schoolName: school });
+    setSchool('');
+    toggle();
+  };
+
   return (
-    <ModalWrapper>
+    <View style={{ padding: 20 }}>
       <T.SearchContainer style={{ width: '100%', paddingRight: 5 }}>
         <T.SearchBarStyled
           placeholder="원하는 학교를 검색해 보세요."
@@ -85,7 +100,17 @@ const ModalContent = ({ school, setSchool }: { school: string; setSchool: (value
           <FlatList style={{ width: '100%' }} data={searchList} renderItem={renderItem} />
         </View>
       )}
-    </ModalWrapper>
+
+      <CustomButton
+        contents="확인"
+        margin="20px 0 0"
+        backgroundColor={school ? colors.primary : colors.buttonAuthToggle}
+        fontColor={school ? colors.textYellow : colors.primary02}
+        onPress={() => {
+          selectSchool(school);
+        }}
+      />
+    </View>
   );
 };
 
