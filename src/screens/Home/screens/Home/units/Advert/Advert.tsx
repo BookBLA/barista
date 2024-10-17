@@ -1,14 +1,23 @@
 import { getReloadAdmobCount, postReloadAdmobUse } from '@commons/api/admob/reloadAdmob.api';
-import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
-import { MemberIntroResponse } from '@commons/types/openapiGenerator';
-import { useEffect, useState } from 'react';
 import { postMembersMatchRefresh } from '@commons/api/members/match/memberMatch';
+import { CustomText } from '@commons/components/Utils/TextComponents/CustomText/CustomText';
 import useToastStore from '@commons/store/ui/toast/useToastStore';
-import * as S from './Advert.styles';
+import { EMemberStatus } from '@commons/types/memberStatus';
+import { MemberIntroResponse } from '@commons/types/openapiGenerator';
 import { icons } from '@commons/utils/ui/variablesImages/variablesImages';
 import { AxiosError } from 'axios';
+import { useEffect, useState } from 'react';
+import * as S from './Advert.styles';
 
-const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse; handleRefresh: () => void }) => {
+const Advert = ({
+  memberData,
+  handleRefresh,
+  memberStatus,
+}: {
+  memberData: MemberIntroResponse;
+  handleRefresh: () => void;
+  memberStatus: string;
+}) => {
   const showToast = useToastStore((state) => state.showToast);
   const [admobCount, setAdmobCount] = useState<number>(0);
 
@@ -27,6 +36,12 @@ const Advert = ({ memberData, handleRefresh }: { memberData: MemberIntroResponse
   };
 
   const refreshNewPerson = async () => {
+    if (memberStatus === EMemberStatus.REPORTED) {
+      return showToast({
+        content: '신고 3회로 매칭이 제한되었습니다. 문의는 고객센터에 해주세요.',
+      });
+    }
+
     try {
       await postMembersMatchRefresh();
       await new Promise((resolve) => setTimeout(resolve, 200));

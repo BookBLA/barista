@@ -97,7 +97,7 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    setIsInvitationCard(data?.result.isInvitationCard ?? false);
+    setIsInvitationCard(data?.result?.isInvitationCard ?? false);
     setMemberData(data?.result ?? {});
   }, [data]);
 
@@ -164,7 +164,7 @@ const Home = () => {
           </>
         )}
 
-        <Advert memberData={memberData} handleRefresh={refetch} />
+        <Advert memberData={memberData} handleRefresh={refetch} memberStatus={memberStatus} />
         <CustomBottomSheetModal ref={reportBottomSheet.bottomRef} index={0} snapPoints={reportSnapPoints}>
           <ReportOption
             bottomClose={reportBottomSheet.handleCloseBottomSheet}
