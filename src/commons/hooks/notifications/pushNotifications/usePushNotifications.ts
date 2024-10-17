@@ -1,21 +1,11 @@
 import { useEffect } from 'react';
 import * as Notifications from 'expo-notifications';
-import { Platform } from 'react-native';
 import messaging from '@react-native-firebase/messaging';
-import { useSendbirdChat } from '@sendbird/uikit-react-native';
+import { parseSendbirdNotification, isSendbirdNotification } from '@sendbird/uikit-utils';
 
 const usePushNotifications = () => {
-  const { sdk } = useSendbirdChat();
-  const initializeSendbirdPushNotification = async () => {
-    if (Platform.OS === 'ios') {
-      const token = await messaging().getAPNSToken();
-      await sdk.registerAPNSPushTokenForCurrentUser(token ?? '');
-    } else {
-      const token = await messaging().getToken();
-      await sdk.registerFCMPushTokenForCurrentUser(token);
-    }
-  };
   useEffect(() => {
+    alert('notification useEffect');
     Notifications.setNotificationHandler({
       handleNotification: async () => ({
         shouldShowAlert: true,
@@ -23,17 +13,39 @@ const usePushNotifications = () => {
         shouldSetBadge: true,
       }),
     });
-    initializeSendbirdPushNotification().then(() => {
-      console.debug('sendbird notification setting complete');
-    });
 
     // NOTE: 알림을 사용자가 탭했을 때 호출될 리스너
     const responseListener = Notifications.addNotificationResponseReceivedListener((response) => {
-      // TODO: 백그라운드 상태 로직과 포그라운드 상태 로직 구현 필요
+      const data = response.notification.request.content.data;
+      alert(JSON.stringify(data));
+
+      if (isSendbirdNotification(data)) {
+        const sendbirdPayload = parseSendbirdNotification(data);
+      }
+    });
+
+    const unsubscribe = messaging().onMessage(async (remoteMessage) => {
+      const data = remoteMessage.data;
+      alert(JSON.stringify(data));
+
+      if (isSendbirdNotification(data)) {
+        const sendbirdPayload = parseSendbirdNotification(data);
+        alert(JSON.stringify(sendbirdPayload));
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            title: `[Sendbird] ${sendbirdPayload.channel.name}`,
+            body: sendbirdPayload.message,
+            data: sendbirdPayload,
+          },
+          trigger: null,
+        });
+      }
     });
 
     return () => {
+      alert('notification return');
       Notifications.removeNotificationSubscription(responseListener);
+      unsubscribe();
     };
   }, []);
 };
