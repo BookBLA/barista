@@ -36,7 +36,6 @@ export const useEnableMatching = (toggle: () => void) => {
   };
 
   const onClickEnableMatching = async () => {
-    alert(memberStatus);
     if (EMemberStatus.COMPLETED === memberStatus) {
       return toggle();
     }
