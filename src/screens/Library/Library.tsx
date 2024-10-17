@@ -435,6 +435,7 @@ const Library: React.FC<Props> = ({ route, navigation }) => {
               onPress={
                 !isYourLibrary ? movePage('modifyProfile', { profileUrl: libraryInfo?.profileImageUrl }) : undefined
               }
+              disabled={isYourLibrary}
             >
               <S.CircularImage
                 source={selectedImage ? { uri: selectedImage } : { uri: libraryInfo?.profileImageUrl }}

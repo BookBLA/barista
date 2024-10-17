@@ -25,10 +25,12 @@ import { MMKV } from 'react-native-mmkv';
 import { StringSets } from './src/screens/Chat/options/StringOptions';
 import { UseReactNavigationHeader } from './src/screens/Chat/options/UseReactNavigationHeader';
 import { Theme } from './src/screens/Chat/options/Theme';
+import usePushNotifications from './src/commons/hooks/notifications/pushNotifications/usePushNotifications';
 
 export default function App() {
   useInitializeApp();
   useToast();
+  usePushNotifications();
   const mmkv = new MMKV();
   const backgroundColor = useAppStatus((state) => state.status.isBackgroundColor);
   const isLight = backgroundColor !== '#fff' ? 'light' : 'dark';
