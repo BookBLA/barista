@@ -11,13 +11,14 @@ export const useInitialRouteName = () => {
   const getInitialRouteName = (memberStatusParam?: string, schoolStatus?: string) => {
     const routeMap: TRouteMap = {
       PROFILE: 'initUserinfoStack',
-      APPROVAL: 'tapScreens', //학생증 인증 전
       STYLE: 'completePage',
       BOOK: 'initBookStack',
+      APPROVAL: 'tapScreens', //학생증 인증 전
+      REJECTED: 'rejectStudentId', //학생증 거절
       COMPLETED: 'tapScreens', //학생증 인증 후
       MATCHING_DISABLED: 'tapScreens',
+      REPORTED: 'tapScreens',
       DEFAULT: 'loginStack',
-      REJECTED: 'rejectStudentId', //학생증 거절
       p: 'initUserinfoStack',
       s: 'completePage',
       b: 'initBookStack',
